@@ -1,5 +1,13 @@
 package geneticAlgorithm.operators.replacement;
 
-public interface ReplacementOperator
-{
+import geneticAlgorithm.Individual;
+import geneticAlgorithm.fitnessFunctions.FitnessFunction;
+
+import java.util.List;
+
+public interface ReplacementOperator {
+
+
+    List<Individual> doReplacement(Individual father, Individual mother, List<Individual> child,
+                                   FitnessFunction fitnessFunction);
 }

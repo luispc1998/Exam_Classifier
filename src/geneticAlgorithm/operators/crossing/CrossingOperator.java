@@ -2,8 +2,10 @@ package geneticAlgorithm.operators.crossing;
 
 import geneticAlgorithm.Individual;
 
+import java.util.List;
+
 public interface CrossingOperator {
 
-    Individual cross(Individual a, Individual b);
+    List<Individual> doCrossing(Individual a, Individual b);
 
 }

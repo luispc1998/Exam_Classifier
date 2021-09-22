@@ -99,21 +99,21 @@ public class GeneticCore {
             Individual father = selectionOperator.selection(population, fitnessFunction);
             Individual mother = selectionOperator.selection(population, fitnessFunction);
 
-            Individual child = crossingOperator.cross(father, mother);
-
-            checkForMutation(child, mutationProbability);
-
-
+            List<Individual> childs = crossingOperator.doCrossing(father, mother);
+            checkForMutation(childs, mutationProbability);
+            newGeneration.addAll(replacementOperator.doReplacement(father, mother, childs, fitnessFunction));
 
         }
 
         return newGeneration;
     }
 
-    private void checkForMutation(Individual child, double mutationProb) {
-          if (RandomGenerator.getGenerator().nextDouble() <= mutationProb){
+    private void checkForMutation(List<Individual> childs, double mutationProb) {
+        for (Individual child: childs) {
+            if (RandomGenerator.getGenerator().nextDouble() <= mutationProb){
               mutationOperator.mutation(child);
-          }
+            }
+        }
 
     }
 }

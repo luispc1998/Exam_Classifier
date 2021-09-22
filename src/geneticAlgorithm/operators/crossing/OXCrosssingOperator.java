@@ -10,8 +10,16 @@ import java.util.Random;
 public class OXCrosssingOperator implements CrossingOperator {
 
 
+
     @Override
-    public Individual cross(Individual a, Individual b) {
+    public List<Individual> doCrossing(Individual a, Individual b) {
+        List<Individual> childs = new ArrayList<>();
+        childs.add(cross(a, b));
+
+        return childs;
+    }
+
+    private Individual cross(Individual a, Individual b) {
 
         // Get the cromosomes
         List<Integer> aCromosome = a.getCromosome();
@@ -66,4 +74,6 @@ public class OXCrosssingOperator implements CrossingOperator {
 
         return new Individual(newCromosome);
     }
+
+
 }
