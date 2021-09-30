@@ -15,4 +15,9 @@ public class RandomGenerator {
         }
         return generator;
     }
+
+
+    public static Random getGeneratorWithSeed(int seed){
+        return new Random(seed);
+    }
 }

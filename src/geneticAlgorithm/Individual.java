@@ -14,4 +14,25 @@ public class Individual {
     public List<Integer> getCromosome() {
         return new ArrayList<>(cromosome);
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if (! (obj instanceof Individual)) {
+            return false;
+        }
+        Individual idv = (Individual) obj;
+        if (((Individual) obj).getCromosome().size() != getCromosome().size()) {
+            return false;
+        }
+
+        for (int i = 0; i < getCromosome().size(); i++) {
+            if (getCromosome().get(i) != idv.getCromosome().get(i)){
+                return false;
+            }
+        }
+
+        return true;
+
+
+    }
 }

@@ -9,7 +9,16 @@ import java.util.Random;
 
 public class OXCrosssingOperator implements CrossingOperator {
 
+    //For testing
+    private Random generator;
 
+
+    public OXCrosssingOperator(){
+
+    }
+    public OXCrosssingOperator(Random generatorWithSeed) {
+        this.generator = generatorWithSeed;
+    }
 
     @Override
     public List<Individual> doCrossing(Individual a, Individual b) {
@@ -25,9 +34,11 @@ public class OXCrosssingOperator implements CrossingOperator {
         List<Integer> aCromosome = a.getCromosome();
         List<Integer> bCromosome = b.getCromosome();
         List<Integer> newCromosome = new ArrayList<>(aCromosome.size());
-
+        for (int i = 0; i < aCromosome.size(); i++) {
+            newCromosome.add(0);
+        }
         //Generate two random positions
-        Random generator = RandomGenerator.getGenerator();
+        Random generator = chooseGenerator();
         int cromosomeLength = aCromosome.size();
         int lowerLimit = generator.nextInt(cromosomeLength);
         int upperLimit = generator.nextInt(cromosomeLength);
@@ -41,7 +52,7 @@ public class OXCrosssingOperator implements CrossingOperator {
 
 
         ArrayList<Integer> usedValues = new ArrayList<>();
-        for (int i = lowerLimit; i < upperLimit; i++) {
+        for (int i = lowerLimit; i <= upperLimit; i++) {
             newCromosome.set(i, aCromosome.get(i));
             usedValues.add(aCromosome.get(i));
         }
@@ -73,6 +84,14 @@ public class OXCrosssingOperator implements CrossingOperator {
         }
 
         return new Individual(newCromosome);
+    }
+
+    public Random chooseGenerator() {
+        if (this.generator == null){
+            return RandomGenerator.getGenerator();
+        }
+        return this.generator;
+
     }
 
 
