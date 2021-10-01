@@ -1,4 +1,4 @@
-package entities;
+package domain.entities;
 
 import constrictions.Constriction;
 
@@ -6,7 +6,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Exam {
@@ -46,4 +45,31 @@ public class Exam {
     }
 
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public boolean isInPerson() {
+        return inPerson;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Constriction> getConstrictions() {
+        return constrictions;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getInitialHour() {
+        return initialHour;
+    }
+
+    public Duration getExtraTime() {
+        return extraTime;
+    }
 }
