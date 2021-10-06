@@ -1,6 +1,6 @@
-package constrictions;
+package domain.constrictions;
 
-import constrictions.counter.ConstrictionCounter;
+import domain.constrictions.counter.ConstrictionCounter;
 
 public interface Constriction {
 

@@ -1,8 +1,8 @@
-package constrictions.counter;
+package domain.constrictions.counter;
 
-import constrictions.types.DayBannedConstriction;
-import constrictions.types.SameDayConstriction;
-import constrictions.types.TimeDisplacementConstriction;
+import domain.constrictions.types.DayBannedConstriction;
+import domain.constrictions.types.SameDayConstriction;
+import domain.constrictions.types.TimeDisplacementConstriction;
 
 public class ConstrictionCounterImpl implements ConstrictionCounter {
 

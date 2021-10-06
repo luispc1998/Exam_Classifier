@@ -1,8 +1,8 @@
-package constrictions.types;
+package domain.constrictions.types;
 
 
-import constrictions.Constriction;
-import constrictions.counter.ConstrictionCounter;
+import domain.constrictions.Constriction;
+import domain.constrictions.counter.ConstrictionCounter;
 import domain.entities.Exam;
 
 import java.time.Duration;

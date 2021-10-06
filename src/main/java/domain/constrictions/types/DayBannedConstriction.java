@@ -1,13 +1,11 @@
-package constrictions.types;
+package domain.constrictions.types;
 
 
-import constrictions.Constriction;
-import constrictions.counter.ConstrictionCounter;
+import domain.constrictions.Constriction;
+import domain.constrictions.counter.ConstrictionCounter;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This will represent for an exam a list of days in which it cannot be placed

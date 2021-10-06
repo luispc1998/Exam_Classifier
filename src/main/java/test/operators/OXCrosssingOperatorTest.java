@@ -4,11 +4,7 @@ import geneticAlgorithm.Individual;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
 import geneticAlgorithm.operators.crossing.OXCrosssingOperator;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
 import random.RandomCromosomeGenerator;
 import random.RandomGenerator;
 
@@ -18,13 +14,8 @@ import java.util.Random;
 public class OXCrosssingOperatorTest {
 
     private final static int CROMOSOME_LENGTH = 10;
-    private final static int TEST_RANDOM_SEED = 0;
-
-    @Before
-    public void setUp(){
 
 
-    }
 
 
     @Test

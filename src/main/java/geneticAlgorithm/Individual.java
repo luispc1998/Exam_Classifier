@@ -26,7 +26,7 @@ public class Individual {
         }
 
         for (int i = 0; i < getCromosome().size(); i++) {
-            if (getCromosome().get(i) != idv.getCromosome().get(i)){
+            if (getCromosome().get(i).equals(idv.getCromosome().get(i))){
                 return false;
             }
         }
