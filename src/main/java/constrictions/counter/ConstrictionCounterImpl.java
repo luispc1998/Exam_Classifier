@@ -1,6 +1,6 @@
 package constrictions.counter;
 
-import constrictions.types.DaysBannedConstriction;
+import constrictions.types.DayBannedConstriction;
 import constrictions.types.SameDayConstriction;
 import constrictions.types.TimeDisplacementConstriction;
 
@@ -22,7 +22,7 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
     }
 
     @Override
-    public void count(DaysBannedConstriction daysBannedConstriction) {
+    public void count(DayBannedConstriction dayBannedConstriction) {
         daysBannedCounter++;
     }
 

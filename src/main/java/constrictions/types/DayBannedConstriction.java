@@ -12,21 +12,21 @@ import java.util.List;
 /**
  * This will represent for an exam a list of days in which it cannot be placed
  */
-public class DaysBannedConstriction implements Constriction {
+public class DayBannedConstriction implements Constriction {
 
-    private List<LocalDate> daysBanned;
+    private LocalDate dayBanned;
     private Exam exam;
 
 
-    public DaysBannedConstriction(Exam exam, List<LocalDate> daysBanned) {
-        this.daysBanned = new ArrayList<>(daysBanned);
+    public DayBannedConstriction(Exam exam, LocalDate dayBanned) {
+        this.dayBanned = dayBanned;
         this.exam = exam;
     }
 
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
 
-        if (daysBanned.contains(exam.getDate())){
+        if (dayBanned.atStartOfDay().equals(exam.getDate().atStartOfDay())){
             counter.count(this);
             return false;
         }

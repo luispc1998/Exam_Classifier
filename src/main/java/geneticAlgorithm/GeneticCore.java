@@ -5,6 +5,8 @@ import geneticAlgorithm.operators.crossing.CrossingOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
 import geneticAlgorithm.operators.selection.SelectionOperator;
+import geneticAlgorithm.utils.Utils;
+import me.tongfei.progressbar.ProgressBar;
 import random.RandomGenerator;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 
 public class GeneticCore {
 
+    private List<Individual> initialPopulation;
     private List<Individual> population;
 
     // Operators that will be used in the execution
@@ -19,19 +22,20 @@ public class GeneticCore {
     private MutationOperator mutationOperator;
     private CrossingOperator crossingOperator;
 
-    private ReplacementOperator replacementOperator; //Todo
+    private ReplacementOperator replacementOperator;
 
 
     //Probabilities to be considered during the execution
     private double selectionProbability;
     private double mutationProbability;
 
+    public GeneticCore(Individual individualPrime, int popSize) {
+        initialPopulation = Utils.generatePopulationOfSizeFromIndividual(popSize, individualPrime);
+        population = new ArrayList<>(initialPopulation);
+    }
 
 
-
-
-
-    private Individual geneticAlgorithm(double mutationProbability, FitnessFunction fitnessFunction) {
+    private Individual geneticAlgorithm(double mutationProbability, FitnessFunction fitnessFunction, int maxIterations) {
 
         // Coger al mejor individuo y hacer la media del fitness para estudiar convergencia.
         int genCounter = 0;
@@ -44,22 +48,26 @@ public class GeneticCore {
                 + ", Best Fitness: " + fitnessFunction.apply(bestIndividual)
                 + ", Avg Fitness: " + averageFitness);
 
+        int counter = 0;
 
-        while (true) { //limit by iterations, limit by finnding a solution.
+        try (ProgressBar pb = new ProgressBar("Genetic Algorithm", maxIterations)) { // name, initial max
+            while (counter < maxIterations) { //limit by iterations, limit by finnding a solution.
 
-            population = computeNewGeneration(fitnessFunction);
-
-
-            bestIndividual = getBestIndividual(fitnessFunction);
-            averageFitness = averageFitness(fitnessFunction);
-
-            System.out.println("\n" + "Gen: " + genCounter
-                    + ", Best Fitness: " + fitnessFunction.apply(bestIndividual)
-                    + ", Avg Fitness: " + averageFitness);
+                population = computeNewGeneration(fitnessFunction);
 
 
+                bestIndividual = getBestIndividual(fitnessFunction);
+                averageFitness = averageFitness(fitnessFunction);
+
+                System.out.println("\n" + "Gen: " + genCounter
+                        + ", Best Fitness: " + fitnessFunction.apply(bestIndividual)
+                        + ", Avg Fitness: " + averageFitness);
+
+                counter++;
+                pb.step();
+            }
         }
-
+            return null;
     }
 
     private double averageFitness(FitnessFunction fitnessFunction) {
