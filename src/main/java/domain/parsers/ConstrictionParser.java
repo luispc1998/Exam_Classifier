@@ -33,7 +33,7 @@ public class ConstrictionParser {
 
     public static List<Constriction> parseConstrictions(String filepath, DataHandler dataHandler) throws IOException {
         List<Constriction> constrictions = new ArrayList<>();
-        FileInputStream fis=new FileInputStream(new File(filepath));
+        FileInputStream fis=new FileInputStream(filepath);
         //creating workbook instance that refers to .xls file
         Workbook workbook =new XSSFWorkbook(fis);
         Sheet sheet = workbook.getSheetAt(1);
@@ -44,7 +44,7 @@ public class ConstrictionParser {
 
         for (Row row : sheet) {
 
-            if (jumpLines >0) {
+            if (jumpLines > 0) {
                 System.out.println("Skipped line");
                 jumpLines--;
                 continue;
@@ -52,7 +52,7 @@ public class ConstrictionParser {
 
             Constriction constriction = generateConstriction(row, i, dataHandler);
             if (constriction == null) {
-                System.out.println("Línea " + i +" saltada. No fue posible parsear el examen");
+                //System.out.println("Línea " + i +" saltada. No fue posible parsear el examen");
                 continue;
             }
             constrictions.add(constriction);
@@ -66,7 +66,7 @@ public class ConstrictionParser {
         Constriction constriction = null;
         try {
             Exam exam1 = dataHandler.getExam(row.getCell(1).getStringCellValue());
-            Exam exam2 = null;
+            Exam exam2;
             switch (row.getCell(0).getStringCellValue()) {
                 case "a":
                     //TD - GCCAS-02-12 - GDVS-2-131 - 3

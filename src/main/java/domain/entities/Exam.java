@@ -13,10 +13,6 @@ public class Exam {
 
 
 
-    private boolean inPerson;
-    private String name;
-
-    private List<Constriction> constrictions;
 
     // To be obtained in most of the cases.
     private LocalDate date;
@@ -53,6 +49,8 @@ public class Exam {
         this.duration = Duration.ofMinutes(transformDuration(duration));
     }
 
+
+
     private long transformDuration(double duration) {
         return (long) (duration * 24 * 60);
     }
@@ -60,18 +58,6 @@ public class Exam {
 
     public Duration getDuration() {
         return duration;
-    }
-
-    public boolean isInPerson() {
-        return inPerson;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<Constriction> getConstrictions() {
-        return constrictions;
     }
 
     public LocalDate getDate() {
@@ -92,13 +78,45 @@ public class Exam {
                 .toLocalDate();
     }
 
+    @Override
+    public Exam clone() {
+        return new Exam(course, sem, code, acronim, subject, order, contentType, modality, duration.toMinutes());
+    }
+
     public void setHour(double v) {
         this.initialHour = LocalTime.ofSecondOfDay((long) v * 3600);
     }
 
-    public Object getCode() { return this.code; }
+    public String getCode() { return this.code; }
 
     public boolean isScheduled() {
         return getDate()!=null && getInitialHour() != null;
+    }
+
+    public void resetScheduling() {
+        this.date = null;
+        this.initialHour=null;
+    }
+
+    public LocalTime getFinishingHour() {
+        return initialHour.plus(duration);
+    }
+
+    public boolean willCollideWith(LocalDate currentDate, LocalTime currentHour, Duration duration) {
+        if (isScheduled()){
+            LocalTime endingCurrentTime= currentHour.plus(duration);
+            return getDate().atStartOfDay().equals(currentDate.atStartOfDay()) &&
+                    ( currentHour.isAfter(initialHour) && currentHour.isBefore(getFinishingHour()) ||
+                            endingCurrentTime.isAfter(initialHour) && endingCurrentTime.isBefore(getFinishingHour()));
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public void scheduleFor(LocalDate currentDate, LocalTime currentHour) {
+        this.date = currentDate;
+        this.initialHour = currentHour;
     }
 }

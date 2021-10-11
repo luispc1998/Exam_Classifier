@@ -13,7 +13,7 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         DataHandler dataHandler = new DataHandler();
-
+        /*
         Enconder basicEncoder = new Enconder();
         Individual individualPrime = basicEncoder.encodeListExams(dataHandler.getExams());
 
@@ -32,5 +32,7 @@ public class App {
                 pb.setExtraMessage("Reading..."); // Set extra message to display at the end of the bar
             }
         }
+        */
+
     }
 }

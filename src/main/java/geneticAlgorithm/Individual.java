@@ -1,5 +1,8 @@
 package geneticAlgorithm;
 
+import domain.entities.Exam;
+import fitnessFunctions.greedyAlgorithm.CromosomeDecoder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,4 +38,6 @@ public class Individual {
 
 
     }
+
+
 }
