@@ -12,7 +12,7 @@ import java.time.LocalDate;
  */
 public class DayBannedConstriction implements Constriction {
 
-    private final static String CONSTRICTION_ID = "DB";
+    public final static String CONSTRICTION_ID = "DB";
 
     private LocalDate dayBanned;
     private Exam exam;
