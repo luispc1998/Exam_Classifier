@@ -7,5 +7,4 @@ public interface Constriction {
 
     boolean isFulfilled(ConstrictionCounter counter);
 
-
 }

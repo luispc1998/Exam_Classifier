@@ -20,31 +20,38 @@ public class ExamParser {
 
     public static List<Exam> parseExams(String filepath) throws IOException {
         List<Exam> exams = new ArrayList<>();
-        FileInputStream fis=new FileInputStream(new File(filepath));
-        //creating workbook instance that refers to .xls file
-        Workbook workbook =new XSSFWorkbook(fis);
-        Sheet sheet = workbook.getSheetAt(0);
+        FileInputStream fis;
+        Workbook workbook;
+        try {
 
-        Map<Integer, List<String>> data = new HashMap<>();
-        int i = 0;
-        int jumpLines = 4;
 
-        for (Row row : sheet) {
-            if (jumpLines >0) {
-                System.out.println("Skipped line");
-                jumpLines--;
-                continue;
+            fis = new FileInputStream(new File(filepath));
+            //creating workbook instance that refers to .xls file
+            workbook = new XSSFWorkbook(fis);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            Map<Integer, List<String>> data = new HashMap<>();
+            int i = 0;
+            int jumpLines = 4;
+
+            for (Row row : sheet) {
+                if (jumpLines > 0) {
+                    System.out.println("Skipped line");
+                    jumpLines--;
+                    continue;
+                }
+
+                Exam exam = generateExam(row, i);
+                if (exam == null) {
+                    System.out.println("Línea " + i + " saltada. No fue posible parsear el examen");
+                    continue;
+                }
+                exams.add(exam);
+                i++;
             }
+            System.out.println("Examenes creados: " + i);
 
-            Exam exam = generateExam(row, i);
-            if (exam == null) {
-                System.out.println("Línea " + i +" saltada. No fue posible parsear el examen");
-                continue;
-            }
-            exams.add(exam);
-            i++;
-        }
-        System.out.println("Examenes creados: " + i);
+        }finally {}
         return exams;
     }
 

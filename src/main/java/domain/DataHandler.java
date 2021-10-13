@@ -1,5 +1,6 @@
 package domain;
 
+import configuration.Configurer;
 import domain.constrictions.Constriction;
 import domain.entities.Exam;
 import domain.parsers.ConstrictionParser;
@@ -16,18 +17,18 @@ import java.util.Set;
 
 public class DataHandler {
 
+    private final Configurer configurer;
     private ExamParser exParser;
     private List<Exam> exams;
     private Set<String> preScheduledExams;
     private List<Constriction> constrictions;
 
 
-    private LocalTime beginningHourProhibitedInterval;
-    private LocalTime finishingHourProhibitedInterval;
 
 
 
-    public DataHandler() throws IOException {
+
+    public DataHandler(Configurer configurer) throws IOException {
 
         this.exams = ExamParser.parseExams("files/v6 (junio-julio).xlsx");
         identifyScheduledExams();
@@ -35,6 +36,7 @@ public class DataHandler {
 
         this.constrictions = ConstrictionParser.parseConstrictions("files/v6 (junio-julio).xlsx", this);
 
+        this.configurer = configurer;
         // TODO, parse hours for prohibited interval.
     }
 
@@ -86,28 +88,7 @@ public class DataHandler {
         return new ArrayList<>(constrictions);
     }
 
-    public List<LocalDate> getDates() {
-        throw new NotImplementedException("Functionality not yet implemented");
-    }
 
-
-    public void checkValidityOf(LocalDate currentDate, LocalTime currentHour, Duration duration) {
-
-    }
-
-    public boolean isValidEndingHourFor(LocalTime currentHour, Duration duration) {
-        return false;
-    }
-
-    public boolean isHourInProhibitedInterval(LocalTime currentHour) {
-
-        return currentHour.isAfter(beginningHourProhibitedInterval) &&
-                currentHour.isBefore(finishingHourProhibitedInterval);
-    }
-
-    public LocalTime getFinishingHourProhibitedInterval() {
-        return finishingHourProhibitedInterval;
-    }
 
     public Exam checkColisionOf(LocalDate currentDate, LocalTime currentHour, Duration duration) {
         for (Exam exam: exams) {
@@ -122,5 +103,9 @@ public class DataHandler {
 
     public void schedule(Exam exam, LocalDate currentDate, LocalTime currentHour) {
         exam.scheduleFor(currentDate, currentHour);
+    }
+
+    public Configurer getConfigurer() {
+        return configurer;
     }
 }

@@ -13,6 +13,8 @@ import java.time.Duration;
  */
 public class TimeDisplacementConstriction implements Constriction {
 
+    public final static String CONSTRICTION_ID = "TD";
+
     private Exam first;
     private Exam second;
     private long distanceInDays;
@@ -35,4 +37,6 @@ public class TimeDisplacementConstriction implements Constriction {
         }
         return true;
     }
+
+
 }

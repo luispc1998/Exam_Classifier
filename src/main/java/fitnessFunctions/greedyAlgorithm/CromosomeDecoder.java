@@ -1,5 +1,6 @@
 package fitnessFunctions.greedyAlgorithm;
 
+import configuration.DateTimeConfigurer;
 import domain.DataHandler;
 import domain.entities.Exam;
 import geneticAlgorithm.Individual;
@@ -14,12 +15,14 @@ public class CromosomeDecoder {
 
     public void decode(Individual individual, DataHandler dataHandler){
 
+        DateTimeConfigurer dateTimeConfigurer = dataHandler.getConfigurer().getDateTimeConfigurer();
+
         // Counters
-        LocalTime currentHour = LocalTime.of(9,0);
+        LocalTime currentHour = dateTimeConfigurer.getDayInitialHour();
         LocalDate currentDate = null;
         Exam exam;
 
-        List<LocalDate> dates = dataHandler.getDates();
+        List<LocalDate> dates = dateTimeConfigurer.getExamDates();
         Iterator<LocalDate> datesIterator = dates.listIterator();
 
         List<Exam> exams = dataHandler.getExams();
@@ -33,22 +36,22 @@ public class CromosomeDecoder {
         }
 
         do {
-
             //check de hora y duración sobre hora máxima de finalización.
-            if (! dataHandler.isValidEndingHourFor(currentHour, exam.getDuration())){
+            if (! dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration())){
                 if (datesIterator.hasNext()){
                     currentDate = datesIterator.next();
                     currentHour = LocalTime.of(9,0);
                 }
                 else {
+                    break;
                     // TODO, what happens if i run out of days ?
+                    // I can do nothing, for now. Maybe some fixes later.
                 }
             }
 
-            if (dataHandler.isHourInProhibitedInterval(currentHour)){
-                currentHour = dataHandler.getFinishingHourProhibitedInterval();
+            if (dateTimeConfigurer.isHourInProhibitedInterval(currentHour)){
+                currentHour = dateTimeConfigurer.getFinishingHourProhibitedInterval();
             }
-
 
             Exam collidingExam = dataHandler.checkColisionOf(currentDate, currentHour, exam.getDuration());
             // Sí. Lo clasifico

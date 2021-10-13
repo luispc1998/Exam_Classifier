@@ -26,39 +26,48 @@ public class ConstrictionParser {
 
 
     public static void main(String[] args) throws IOException {
-        parseConstrictions("files/v6 (junio-julio).xlsx", new DataHandler());
+        //parseConstrictions("files/v6 (junio-julio).xlsx", new DataHandler());
 
     }
 
 
     public static List<Constriction> parseConstrictions(String filepath, DataHandler dataHandler) throws IOException {
         List<Constriction> constrictions = new ArrayList<>();
-        FileInputStream fis=new FileInputStream(filepath);
+
+
+        FileInputStream fis;
         //creating workbook instance that refers to .xls file
-        Workbook workbook =new XSSFWorkbook(fis);
-        Sheet sheet = workbook.getSheetAt(1);
+        Workbook workbook;
 
-        Map<Integer, List<String>> data = new HashMap<>();
-        int i = 0;
-        int jumpLines = JUMP_LINES;
+        try {
+            fis = new FileInputStream(filepath);
+            //creating workbook instance that refers to .xls file
+            workbook = new XSSFWorkbook(fis);
+            Sheet sheet = workbook.getSheetAt(1);
 
-        for (Row row : sheet) {
+            Map<Integer, List<String>> data = new HashMap<>();
+            int i = 0;
+            int jumpLines = JUMP_LINES;
 
-            if (jumpLines > 0) {
-                System.out.println("Skipped line");
-                jumpLines--;
-                continue;
+            for (Row row : sheet) {
+
+                if (jumpLines > 0) {
+                    System.out.println("Skipped line");
+                    jumpLines--;
+                    continue;
+                }
+
+                Constriction constriction = generateConstriction(row, i, dataHandler);
+                if (constriction == null) {
+                    //System.out.println("Línea " + i +" saltada. No fue posible parsear el examen");
+                    continue;
+                }
+                constrictions.add(constriction);
+                i++;
+                System.out.println("Restricciones creadas: " + i);
             }
+        }finally {}
 
-            Constriction constriction = generateConstriction(row, i, dataHandler);
-            if (constriction == null) {
-                //System.out.println("Línea " + i +" saltada. No fue posible parsear el examen");
-                continue;
-            }
-            constrictions.add(constriction);
-            i++;
-        }
-        System.out.println("Restricciones creadas: " + i);
         return constrictions;
     }
 
@@ -67,7 +76,7 @@ public class ConstrictionParser {
         try {
             Exam exam1 = dataHandler.getExam(row.getCell(1).getStringCellValue());
             Exam exam2;
-            switch (row.getCell(0).getStringCellValue()) {
+            switch (row.getCell(0).getStringCellValue()) { //Todo, establish naming convention for constrictions.
                 case "a":
                     //TD - GCCAS-02-12 - GDVS-2-131 - 3
                     exam2 = dataHandler.getExam(row.getCell(1).getStringCellValue());

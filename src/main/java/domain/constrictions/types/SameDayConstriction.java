@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class SameDayConstriction implements Constriction {
 
+    public final static String CONSTRICTION_ID= "SD";
+
     List<Exam> exams;
 
     public SameDayConstriction(List<Exam> exams) {
@@ -31,4 +33,6 @@ public class SameDayConstriction implements Constriction {
         }
         return true;
     }
+
+
 }

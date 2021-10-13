@@ -31,7 +31,20 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
         sameDayCounter++;
     }
 
+    @Override
+    public int getCountOfTimeDisplacementConstriction() {
+        return timeDisplacementCounter;
+    }
 
+    @Override
+    public int getCountOfDaysBannedConstriction() {
+        return daysBannedCounter;
+    }
+
+    @Override
+    public int getCountOfSameDayConstriction() {
+        return sameDayCounter;
+    }
 
 
     public int getTimeDisplacementCounter() {

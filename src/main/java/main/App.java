@@ -12,7 +12,7 @@ public class App {
 
     public static void main(String[] args) throws IOException {
 
-        DataHandler dataHandler = new DataHandler();
+        //DataHandler dataHandler = new DataHandler();
         /*
         Enconder basicEncoder = new Enconder();
         Individual individualPrime = basicEncoder.encodeListExams(dataHandler.getExams());

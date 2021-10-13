@@ -12,4 +12,9 @@ public interface ConstrictionCounter {
     void count(DayBannedConstriction daysBannedConstriction);
 
     void count(SameDayConstriction sameDayConstriction);
+
+
+    int getCountOfTimeDisplacementConstriction();
+    int getCountOfDaysBannedConstriction();
+    int getCountOfSameDayConstriction();
 }
