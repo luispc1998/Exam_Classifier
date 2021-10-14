@@ -1,0 +1,6 @@
+defaultCleaningTimeMinutes=10
+initialDayHour=9:00
+endDayHour=21:00
+
+beginningProhibitedIntervalHour=13:00
+endProhibitedIntervalHour=15:00

@@ -76,7 +76,7 @@ public class ConstrictionParser {
         try {
             Exam exam1 = dataHandler.getExam(row.getCell(1).getStringCellValue());
             Exam exam2;
-            switch (row.getCell(0).getStringCellValue()) { //Todo, establish naming convention for constrictions.
+            switch (row.getCell(0).getStringCellValue()) {
                 case TimeDisplacementConstriction.CONSTRICTION_ID:
                     //TD - GCCAS-02-12 - GDVS-2-131 - 3
                     exam2 = dataHandler.getExam(row.getCell(1).getStringCellValue());

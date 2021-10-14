@@ -12,23 +12,24 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class DataHandler {
 
     private final Configurer configurer;
-    private ExamParser exParser;
     private List<Exam> exams;
     private Set<String> preScheduledExams;
     private List<Constriction> constrictions;
 
 
 
-
-
-
     public DataHandler(Configurer configurer) throws IOException {
+
+        this.configurer = configurer;
+        this.preScheduledExams = new HashSet<>();
+
 
         this.exams = ExamParser.parseExams("files/v6 (junio-julio).xlsx");
         identifyScheduledExams();
@@ -36,8 +37,6 @@ public class DataHandler {
 
         this.constrictions = ConstrictionParser.parseConstrictions("files/v6 (junio-julio).xlsx", this);
 
-        this.configurer = configurer;
-        // TODO, parse hours for prohibited interval.
     }
 
     private void identifyScheduledExams() {
@@ -75,7 +74,7 @@ public class DataHandler {
     }
 
 
-    public List<Exam> getInitialExamSchedule() {
+    public List<Exam> getClonedSchedule() {
         List<Exam> clonedExams = new ArrayList<>();
         for (Exam exam: exams) {
             clonedExams.add(exam.clone());

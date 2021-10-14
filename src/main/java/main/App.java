@@ -1,10 +1,7 @@
 package main;
 
+import configuration.Configurer;
 import domain.DataHandler;
-import geneticAlgorithm.Enconder;
-import geneticAlgorithm.GeneticCore;
-import geneticAlgorithm.Individual;
-import me.tongfei.progressbar.ProgressBar;
 
 import java.io.IOException;
 
@@ -12,7 +9,13 @@ public class App {
 
     public static void main(String[] args) throws IOException {
 
-        //DataHandler dataHandler = new DataHandler();
+
+
+
+        Configurer conf = new Configurer("files");
+
+        DataHandler dataHandler = new DataHandler(conf);
+        System.out.println();
         /*
         Enconder basicEncoder = new Enconder();
         Individual individualPrime = basicEncoder.encodeListExams(dataHandler.getExams());

@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DateTimeConfigurer {
@@ -28,20 +30,24 @@ public class DateTimeConfigurer {
 
 
     public DateTimeConfigurer(String inputFilePath, String inputDataFilePath) throws IOException {
+        this.examDates = new ArrayList<>();
         parseDates(inputFilePath);
         parseTimeConfigurations(inputDataFilePath);
     }
 
     private void parseTimeConfigurations(String inputDataFilePath) throws IOException {
+
         Properties fileProperties = new Properties();
         fileProperties.load(getClass().getClassLoader().getResourceAsStream(inputDataFilePath));
 
-        this.dayInitialHour = LocalTime.parse(fileProperties.getProperty("dayInitialHour"));
-        this.dayEndingHour = LocalTime.parse(fileProperties.getProperty("dayInitialHour"));
-        this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("prohibitedIntervalInitialHour"));
-        this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("prohibitedIntervalInitialHour"));
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
 
-        this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("extraMinutes")));
+        this.dayInitialHour = LocalTime.parse(fileProperties.getProperty("initialDayHour"), formatter);
+        this.dayEndingHour = LocalTime.parse(fileProperties.getProperty("endDayHour"), formatter);
+        this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
+        this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
+
+        this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
     }
 
 
@@ -83,7 +89,7 @@ public class DateTimeConfigurer {
     }
 
     private LocalDate generateDate(Row row, int i) {
-        return LocalDate.parse(row.getCell(0).getStringCellValue());
+        return LocalDate.ofInstant(row.getCell(0).getDateCellValue().toInstant(), ZoneId.systemDefault());
     }
 
     public boolean isHourInProhibitedInterval(LocalTime currentHour) {
