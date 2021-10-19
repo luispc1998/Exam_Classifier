@@ -9,6 +9,12 @@ import java.util.List;
 
 public class RouletteSelection implements SelectionOperator {
 
+    private int maxPairs;
+
+
+    public RouletteSelection(int i) {
+        this.maxPairs = i;
+    }
 
     @Override
     public Individual selection(List<Individual> population, FitnessFunction fitnessFunction) {
@@ -47,7 +53,7 @@ public class RouletteSelection implements SelectionOperator {
 
     @Override
     public int maxPairs() {
-        return 0;
+        return maxPairs;
     }
 
 

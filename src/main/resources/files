@@ -1,4 +1,4 @@
-inputFile=files/v6 (junio-julio).xlsx
-outputFile=files/output/prueba
+inputFile=files/pruebas/v6 (junio-julio).xlsx
+outputFile=files/output/prueba.xlsx
 dateTimes=dateTime
 weights=weights

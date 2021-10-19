@@ -2,8 +2,11 @@ package geneticAlgorithm;
 
 import fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
+import geneticAlgorithm.operators.crossing.OXCrosssingOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;
+import geneticAlgorithm.operators.mutation.MutationSwap;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
+import geneticAlgorithm.operators.selection.RouletteSelection;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 import geneticAlgorithm.utils.Utils;
 import me.tongfei.progressbar.ProgressBar;
@@ -32,10 +35,14 @@ public class GeneticCore {
     public GeneticCore(Individual individualPrime, int popSize) {
         initialPopulation = Utils.generatePopulationOfSizeFromIndividual(popSize, individualPrime);
         population = new ArrayList<>(initialPopulation);
+
+        this.selectionOperator = new RouletteSelection(initialPopulation.size()/2);
+        this.mutationOperator = new MutationSwap();
+        this.crossingOperator = new OXCrosssingOperator();
     }
 
 
-    private Individual geneticAlgorithm(double mutationProbability, FitnessFunction fitnessFunction, int maxIterations) {
+    public Individual geneticAlgorithm(double mutationProbability, FitnessFunction fitnessFunction, int maxIterations) {
 
         // Coger al mejor individuo y hacer la media del fitness para estudiar convergencia.
         int genCounter = 0;
@@ -48,13 +55,13 @@ public class GeneticCore {
                 + ", Best Fitness: " + fitnessFunction.apply(bestIndividual)
                 + ", Avg Fitness: " + averageFitness);
 
-        int counter = 0;
+        System.out.println(bestIndividual);
 
         try (ProgressBar pb = new ProgressBar("Genetic Algorithm", maxIterations)) { // name, initial max
-            while (counter < maxIterations) { //limit by iterations, limit by finnding a solution.
+            while (genCounter < maxIterations) { //limit by iterations, limit by finnding a solution.
 
                 population = computeNewGeneration(fitnessFunction);
-
+                genCounter++;
 
                 bestIndividual = getBestIndividual(fitnessFunction);
                 averageFitness = averageFitness(fitnessFunction);
@@ -63,7 +70,9 @@ public class GeneticCore {
                         + ", Best Fitness: " + fitnessFunction.apply(bestIndividual)
                         + ", Avg Fitness: " + averageFitness);
 
-                counter++;
+                System.out.println(bestIndividual);
+
+
                 pb.step();
             }
         }

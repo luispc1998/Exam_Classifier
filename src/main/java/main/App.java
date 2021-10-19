@@ -2,8 +2,17 @@ package main;
 
 import configuration.Configurer;
 import domain.DataHandler;
+import domain.entities.Exam;
+import domain.parsers.ExamParser;
+import fitnessFunctions.FitnessFunction;
+import fitnessFunctions.greedyAlgorithm.CromosomeDecoder;
+import fitnessFunctions.greedyAlgorithm.FitnessFunctionImpl;
+import geneticAlgorithm.Enconder;
+import geneticAlgorithm.GeneticCore;
+import geneticAlgorithm.Individual;
 
 import java.io.IOException;
+import java.util.List;
 
 public class App {
 
@@ -15,27 +24,24 @@ public class App {
         Configurer conf = new Configurer("files");
 
         DataHandler dataHandler = new DataHandler(conf);
-        System.out.println();
-        /*
+
+
         Enconder basicEncoder = new Enconder();
         Individual individualPrime = basicEncoder.encodeListExams(dataHandler.getExams());
 
-        //GeneticCore genCore = new GeneticCore(individualPrime, 50);
 
-        // Looping over a collection:
-        int[] array = new int[1000000000];
-        // try-with-resource block
+        FitnessFunction fn = new FitnessFunctionImpl(dataHandler);
 
-        try (ProgressBar pb = new ProgressBar("Test", array.length)) { // name, initial max
-            // Use ProgressBar("Test", 100, ProgressBarStyle.ASCII) if you want ASCII output style
-            //pb.maxHint(array.length);
-            for ( int i : array ) {
-                pb.step(); // step by 1
+        GeneticCore genCore = new GeneticCore(individualPrime, 50);
+        Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 10);
+        System.out.println();
 
-                pb.setExtraMessage("Reading..."); // Set extra message to display at the end of the bar
-            }
-        }
-        */
+        CromosomeDecoder decoder = new CromosomeDecoder();
 
+        decoder.decode(finalOne, dataHandler);
+
+
+        List<Exam> finalResult = dataHandler.getClonedSchedule();
+        ExamParser.parseToExcel(finalResult, dataHandler.getConfigurer().getFilePaths("outputFile"));
     }
 }

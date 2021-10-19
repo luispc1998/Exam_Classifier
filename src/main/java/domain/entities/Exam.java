@@ -39,12 +39,36 @@ public class Exam {
     private LocalDate date;
     private LocalTime initialHour;
 
+    private int cn;
+    private int id;
 
     public Exam(int course, int sem, String code,
                 String acronim, String subject, int order,
-                String contentType, String modalidad, double duration) {
+                String contentType, String modalidad, int alumnos,
+                int cn, int id) {
 
         this.course = course;
+        this.sem = sem;
+        this.code = code;
+        this.acronim = acronim;
+        this.subject = subject;
+        this.order = order;
+        this.contentType = contentType;
+        this.modality = modalidad;
+        this.alumnos = alumnos;
+        this.cn = cn;
+        this.id = id;
+        this.extraTime = Duration.ofMinutes(0);
+    }
+
+    public Exam(int course, int sem, String code,
+                String acronim, String subject, int order,
+                String contentType, String modalidad, int alumnos, double duration,
+                int cn, int id) {
+
+        this(course, sem, code, acronim, subject, order, contentType, modalidad, alumnos, cn, id);
+        this.course = course;
+        this.sem = sem;
         this.code = code;
         this.acronim = acronim;
         this.subject = subject;
@@ -52,6 +76,21 @@ public class Exam {
         this.contentType = contentType;
         this.modality = modalidad;
         this.duration = Duration.ofMinutes(transformDuration(duration));
+
+    }
+
+    public Exam(int course, int sem, String code,
+                String acronim, String subject, int order,
+                String contentType, String modalidad, int alumnos, long duration,
+                LocalDate date, LocalTime initialHour, Duration extraTime,
+                int cn, int id) {
+
+        this(course, sem, code, acronim, subject, order, contentType, modalidad, alumnos, cn, id);
+        this.alumnos = alumnos;
+        this.date = date;
+        this.initialHour = initialHour;
+        this.extraTime = extraTime;
+        this.duration = Duration.ofMinutes(duration);
     }
 
 
@@ -62,7 +101,7 @@ public class Exam {
 
 
     public Duration getDuration() {
-        return duration;
+        return Duration.from(duration);
     }
 
     public LocalDate getDate() {
@@ -70,7 +109,7 @@ public class Exam {
     }
 
     public LocalTime getInitialHour() {
-        return initialHour;
+        return LocalTime.ofSecondOfDay(initialHour.toSecondOfDay());
     }
 
     public Duration getExtraTime() {
@@ -85,7 +124,8 @@ public class Exam {
 
     @Override
     public Exam clone() {
-        return new Exam(course, sem, code, acronim, subject, order, contentType, modality, duration.toMinutes());
+        return new Exam(course, sem, code, acronim, subject, order, contentType, modality, alumnos,
+                duration.toMinutes(), date, initialHour, extraTime, cn, id);
     }
 
     public void setHour(double v) {
@@ -104,7 +144,7 @@ public class Exam {
     }
 
     public LocalTime getFinishingHour() {
-        return initialHour.plus(duration);
+        return getInitialHour().plus(getDuration()).plus(extraTime);
     }
 
     public boolean willCollideWith(LocalDate currentDate, LocalTime currentHour, Duration duration) {
@@ -139,7 +179,12 @@ public class Exam {
 
     public Object[] getAttributes() {
 
-        Object[] attributes = new Object[15];
+        Object[] attributes = new Object[16];
+
+        long s = duration.toSeconds();
+
+        long initialHour = getInitialHour().toSecondOfDay();
+        long endingHour = getFinishingHour().toSecondOfDay();
 
         attributes[0] = course;
         attributes[1] = sem;
@@ -149,13 +194,14 @@ public class Exam {
         attributes[5] = order;
         attributes[6] = contentType;
         attributes[7] = modality;
-        attributes[8] = sem;
-        attributes[9] = duration;
+        attributes[8] = alumnos;
+        attributes[9] = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
         attributes[10] = date;
         attributes[11] = getWeekDayString();
-        attributes[12] = getInitialHourExcel();
-        attributes[13] = getEndinglHourExcel();
-        attributes[14] = sem;
+        attributes[12] = String.format("%d:%02d:%02d", initialHour / 3600, (initialHour % 3600) / 60, (initialHour % 60));
+        attributes[13] = String.format("%d:%02d:%02d", endingHour / 3600, (endingHour % 3600) / 60, (endingHour % 60));
+        attributes[14] = 0;
+        attributes[15] = id;
 
 
         return attributes;

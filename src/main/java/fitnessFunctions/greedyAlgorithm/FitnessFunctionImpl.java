@@ -15,12 +15,9 @@ public class FitnessFunctionImpl implements FitnessFunction {
     private DataHandler dataHandler;
     private CromosomeDecoder decoder;
 
-    public FitnessFunctionImpl(){
-        decoder = new CromosomeDecoder();
-    }
 
     public FitnessFunctionImpl(DataHandler dataHandler){
-        this();
+        this.decoder = new CromosomeDecoder();
         this.dataHandler = dataHandler;
     }
 

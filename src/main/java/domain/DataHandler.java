@@ -30,12 +30,12 @@ public class DataHandler {
         this.configurer = configurer;
         this.preScheduledExams = new HashSet<>();
 
-
-        this.exams = ExamParser.parseExams("files/v6 (junio-julio).xlsx");
+        String inputDataFile = configurer.getFilePaths("inputFile");
+        this.exams = ExamParser.parseExams(inputDataFile);
         identifyScheduledExams();
 
 
-        this.constrictions = ConstrictionParser.parseConstrictions("files/v6 (junio-julio).xlsx", this);
+        this.constrictions = ConstrictionParser.parseConstrictions(inputDataFile, this);
 
     }
 

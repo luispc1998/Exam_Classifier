@@ -2,21 +2,36 @@ package domain.parsers;
 
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class ExamParser {
 
     private final static int[] vitalCells = {0, 1, 2, 3, 4, 5, 6, 7, 9};
-    private final static int[] optionalCells = {8, 11, 12, 13, 14};
 
+    private final static String[] excelHeaders = {
+            "Curso",
+            "Sem",
+            "Cod",
+            "Acron.",
+            "Asignatura",
+            "Orden",
+            "Contenido",
+            "Modalidad",
+            "Alumnos",
+            "Tiempo",
+            "Fecha",
+            "Día",
+            "Ini",
+            "Fin",
+            "CN"
+    };
 
-    public static void main(String[] args) throws IOException {
-        parseExams("files/v6 (junio-julio).xlsx");
-
-    }
 
     public static List<Exam> parseExams(String filepath) throws IOException {
         List<Exam> exams = new ArrayList<>();
@@ -70,13 +85,17 @@ public class ExamParser {
                     (int) row.getCell(5).getNumericCellValue(),
                     row.getCell(6).getStringCellValue(),
                     row.getCell(7).getStringCellValue(),
-                    row.getCell(9).getNumericCellValue());
+                    (int) row.getCell(8).getNumericCellValue(),
+                    row.getCell(9).getNumericCellValue(),
+                    (int) row.getCell(14).getNumericCellValue(),
+                    (int) row.getCell(15).getNumericCellValue());
 
 
             if (checkForAlreadyClassifiedExam(row)) {
                 exam.setDate(row.getCell(10).getDateCellValue());
-                exam.setHour(row.getCell(12).getNumericCellValue() * 24);
+                exam.setHour(row.getCell(12).getNumericCellValue());
             }
+
 
 
         } catch (IllegalArgumentException e) {
@@ -90,10 +109,11 @@ public class ExamParser {
 
     private static boolean checkForAlreadyClassifiedExam(Row row) {
 
-        if (row.getCell(10) != null && row.getCell(12) != null){
+        if (row.getCell(10) != null && row.getCell(12) != null) {
             try {
-                row.getCell(10).getDateCellValue();
-                row.getCell(12).getNumericCellValue();
+                if (row.getCell(10).getDateCellValue().equals("") ||  row.getCell(12).getNumericCellValue() == 0) {
+                    return false;
+                };
                 return true;
             } catch (Exception e){
                 return false;
@@ -125,6 +145,58 @@ public class ExamParser {
             }
         }
     }
+
+
+
+
+
+    public static void parseToExcel(List<Exam> exams, String filepath) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Test");
+
+        int rowCount = 0;
+        Row row = sheet.createRow(rowCount);
+        writeHeaders(row);
+
+        for (Exam exam : exams) {
+            row = sheet.createRow(++rowCount);
+            int cellCount = 0;
+
+            for (Object att : exam.getAttributes()) {
+                Cell cell = row.createCell(cellCount++);
+                switch (cellCount-1) {
+                    case 0:
+                    case 1:
+                    case 5:
+                    case 8:
+                    case 14:
+                    case 15:
+                        cell.setCellValue((int) att);
+                        break;
+                    case 10: //date
+                        cell.setCellValue(Date.from(((LocalDate) att).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                        break;
+                    default:
+                        cell.setCellValue((String) att);
+                }
+
+            }
+
+            try (FileOutputStream outputStream = new FileOutputStream(filepath)) {
+                workbook.write(outputStream);
+            }
+
+        }
+    }
+
+    private static void writeHeaders(Row row) {
+        int cellCount = 0;
+        for (String header : excelHeaders) {
+            Cell cell = row.createCell(cellCount++);
+            cell.setCellValue(header);
+        }
+    }
+
 
 }
 

@@ -39,5 +39,16 @@ public class Individual {
 
     }
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Individual: [" );
+        for (int i = 0; i < cromosome.size()-1; i++) {
+            sb.append(cromosome.get(i) + ", ");
+        }
+        sb.append(cromosome.get(cromosome.size()-1) + "]");
+        return sb.toString();
+    }
+
 
 }

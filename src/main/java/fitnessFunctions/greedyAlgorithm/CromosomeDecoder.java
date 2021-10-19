@@ -28,8 +28,9 @@ public class CromosomeDecoder {
         List<Exam> exams = dataHandler.getExams();
         Iterator<Exam> examsIterator = exams.listIterator();
 
-        if (examsIterator.hasNext()){
+        if (examsIterator.hasNext() && datesIterator.hasNext()){
             exam = examsIterator.next();
+            currentDate = datesIterator.next();
         }
         else {
             return;
@@ -40,7 +41,7 @@ public class CromosomeDecoder {
             if (! dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration())){
                 if (datesIterator.hasNext()){
                     currentDate = datesIterator.next();
-                    currentHour = LocalTime.of(9,0);
+                    currentHour = dateTimeConfigurer.getDayInitialHour();
                 }
                 else {
                     break;
@@ -58,15 +59,18 @@ public class CromosomeDecoder {
             // No. Necesito la hora de finalización del otro examen. Y pruebo con esa.
             if (collidingExam == null) {
                 dataHandler.schedule(exam, currentDate, currentHour);
+                currentHour = exam.getFinishingHour();
+                if (! examsIterator.hasNext()){
+                    break;
+                }
                 exam = examsIterator.next();
+
             }
             else{
                 currentHour = collidingExam.getFinishingHour();
             }
 
-        } while(examsIterator.hasNext());
-        
-
+        } while(true);
       
     }
 

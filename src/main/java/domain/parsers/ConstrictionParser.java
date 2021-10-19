@@ -79,8 +79,8 @@ public class ConstrictionParser {
             switch (row.getCell(0).getStringCellValue()) {
                 case TimeDisplacementConstriction.CONSTRICTION_ID:
                     //TD - GCCAS-02-12 - GDVS-2-131 - 3
-                    exam2 = dataHandler.getExam(row.getCell(1).getStringCellValue());
-                    constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(2).getNumericCellValue());
+                    exam2 = dataHandler.getExam(row.getCell(2).getStringCellValue());
+                    constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(3).getNumericCellValue());
                     break;
                 case DayBannedConstriction.CONSTRICTION_ID:
                     //DB - GVVAS-053-13 - 12/2/2022
