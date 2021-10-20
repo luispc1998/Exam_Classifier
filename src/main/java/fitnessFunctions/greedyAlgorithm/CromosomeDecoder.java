@@ -7,11 +7,21 @@ import geneticAlgorithm.Individual;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class CromosomeDecoder {
 
+    public List<Exam> getExamsOrderedForCromosome(List<Integer> cromosome, DataHandler dataHandler){
+        List<Exam> exams = new ArrayList<>();
+
+        for (Integer index: cromosome) {
+            exams.add(dataHandler.getExam(index));
+        }
+
+        return exams;
+    }
 
     public void decode(Individual individual, DataHandler dataHandler){
 
@@ -25,7 +35,9 @@ public class CromosomeDecoder {
         List<LocalDate> dates = dateTimeConfigurer.getExamDates();
         Iterator<LocalDate> datesIterator = dates.listIterator();
 
-        List<Exam> exams = dataHandler.getExams();
+        List<Integer> cromosome = individual.getCromosome();
+
+        List<Exam> exams = getExamsOrderedForCromosome(cromosome, dataHandler);
         Iterator<Exam> examsIterator = exams.listIterator();
 
         if (examsIterator.hasNext() && datesIterator.hasNext()){

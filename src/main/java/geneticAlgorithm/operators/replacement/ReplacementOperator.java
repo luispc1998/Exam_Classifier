@@ -8,6 +8,6 @@ import java.util.List;
 public interface ReplacementOperator {
 
 
-    List<Individual> doReplacement(Individual father, Individual mother, List<Individual> child,
+    List<Individual> doReplacement(List<Individual> prevGeneration, List<Individual> child,
                                    FitnessFunction fitnessFunction);
 }

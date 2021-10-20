@@ -109,6 +109,9 @@ public class Exam {
     }
 
     public LocalTime getInitialHour() {
+        if (initialHour == null){
+            return null;
+        }
         return LocalTime.ofSecondOfDay(initialHour.toSecondOfDay());
     }
 
@@ -144,6 +147,9 @@ public class Exam {
     }
 
     public LocalTime getFinishingHour() {
+        if (initialHour == null){
+            return null;
+        }
         return getInitialHour().plus(getDuration()).plus(extraTime);
     }
 
@@ -166,6 +172,9 @@ public class Exam {
     }
 
     public String getWeekDayString(){
+        if (date == null) {
+            return null;
+        }
         return date.getDayOfWeek().getDisplayName(TextStyle.FULL,
                 Locale.getDefault());
     }
@@ -183,8 +192,8 @@ public class Exam {
 
         long s = duration.toSeconds();
 
-        long initialHour = getInitialHour().toSecondOfDay();
-        long endingHour = getFinishingHour().toSecondOfDay();
+        Integer initialHour = getInitialHour() == null ? null : getInitialHour().toSecondOfDay();
+        Integer endingHour = getFinishingHour() == null ? null : getFinishingHour().toSecondOfDay();
 
         attributes[0] = course;
         attributes[1] = sem;
@@ -198,12 +207,16 @@ public class Exam {
         attributes[9] = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
         attributes[10] = date;
         attributes[11] = getWeekDayString();
-        attributes[12] = String.format("%d:%02d:%02d", initialHour / 3600, (initialHour % 3600) / 60, (initialHour % 60));
-        attributes[13] = String.format("%d:%02d:%02d", endingHour / 3600, (endingHour % 3600) / 60, (endingHour % 60));
+        attributes[12] = getInitialHour() == null ? "" : formatStringForHour(getInitialHour().toSecondOfDay());
+        attributes[13] = getFinishingHour() == null ? "" : formatStringForHour(getFinishingHour().toSecondOfDay());
         attributes[14] = 0;
         attributes[15] = id;
 
 
         return attributes;
+    }
+
+    private String formatStringForHour(Integer hour) {
+        return String.format("%d:%02d:%02d", hour / 3600, (hour % 3600) / 60, (hour % 60));
     }
 }

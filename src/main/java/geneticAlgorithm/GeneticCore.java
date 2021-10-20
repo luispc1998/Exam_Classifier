@@ -6,6 +6,7 @@ import geneticAlgorithm.operators.crossing.OXCrosssingOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.mutation.MutationSwap;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
+import geneticAlgorithm.operators.replacement.ReplacementOperatorImpl;
 import geneticAlgorithm.operators.selection.RouletteSelection;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 import geneticAlgorithm.utils.Utils;
@@ -39,6 +40,7 @@ public class GeneticCore {
         this.selectionOperator = new RouletteSelection(initialPopulation.size()/2);
         this.mutationOperator = new MutationSwap();
         this.crossingOperator = new OXCrosssingOperator();
+        this.replacementOperator = new ReplacementOperatorImpl();
     }
 
 
@@ -76,7 +78,7 @@ public class GeneticCore {
                 pb.step();
             }
         }
-            return null;
+            return bestIndividual;
     }
 
     private double averageFitness(FitnessFunction fitnessFunction) {
@@ -109,7 +111,7 @@ public class GeneticCore {
 
     private List<Individual> computeNewGeneration(FitnessFunction fitnessFunction) {
 
-        List<Individual> newGeneration = new ArrayList<>(population.size());
+        List<Individual> newGenChilds = new ArrayList<>(population.size());
 
         selectionOperator.reset();
         for (int i = 0; i < selectionOperator.maxPairs(); i++) {
@@ -118,11 +120,10 @@ public class GeneticCore {
 
             List<Individual> childs = crossingOperator.doCrossing(father, mother);
             checkForMutation(childs, mutationProbability);
-            newGeneration.addAll(replacementOperator.doReplacement(father, mother, childs, fitnessFunction));
-
+            newGenChilds.addAll(childs);
         }
 
-        return newGeneration;
+        return replacementOperator.doReplacement(population, newGenChilds, fitnessFunction);
     }
 
     private void checkForMutation(List<Individual> childs, double mutationProb) {

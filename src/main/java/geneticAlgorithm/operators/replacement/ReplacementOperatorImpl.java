@@ -4,22 +4,32 @@ import geneticAlgorithm.Individual;
 import fitnessFunctions.FitnessFunction;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ReplacementOperatorImpl implements ReplacementOperator {
 
     @Override
-    public List<Individual> doReplacement(Individual father, Individual mother, List<Individual> childs,
+    public List<Individual> doReplacement(List<Individual> prevGeneration, List<Individual> childs,
                                           FitnessFunction fitnessFunction) {
 
         List<Individual> replacements = new ArrayList<>();
 
         List<Individual> tmp = new ArrayList<>();
 
-        tmp.add(father);
-        tmp.add(mother);
         tmp.addAll(childs);
+        tmp.addAll(prevGeneration);
 
+
+        Collections.sort(tmp, new Comparator<Individual>() {
+            @Override
+            public int compare(Individual c1, Individual c2) {
+                return Double.compare(fitnessFunction.apply(c1), fitnessFunction.apply(c2));
+            }
+        });
+
+    /*
         Individual survivor1 = tmp.get(0);
         Individual survivor2 = tmp.get(1);
 
@@ -42,6 +52,9 @@ public class ReplacementOperatorImpl implements ReplacementOperator {
 
         replacements.add(survivor1);
         replacements.add(survivor2);
+     */
+
+        replacements = tmp.subList(0, prevGeneration.size());
 
         return replacements;
     }

@@ -26,6 +26,9 @@ public class SameDayConstriction implements Constriction {
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
         for (Exam exam: exams) {
+            if (exam.getDate() == null) {
+                return false;
+            }
             if (! exam.getDate().atStartOfDay().equals(exams.get(0).getDate().atStartOfDay())){
                 counter.count(this);
                 return false; // If multiple counts would be desired this would be at the end;

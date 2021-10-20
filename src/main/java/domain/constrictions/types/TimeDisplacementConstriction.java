@@ -28,7 +28,9 @@ public class TimeDisplacementConstriction implements Constriction {
 
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
-
+        if (first.getDate() ==null || second.getDate() ==null) {
+            return false;
+        }
         long hi =  Duration.between(first.getDate().atStartOfDay(), second.getDate().atStartOfDay()).toDays();
 
         if (hi < distanceInDays) {

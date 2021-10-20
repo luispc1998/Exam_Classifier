@@ -25,7 +25,9 @@ public class DayBannedConstriction implements Constriction {
 
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
-
+        if (exam.getDate() ==null){
+            return false;
+        }
         if (dayBanned.atStartOfDay().equals(exam.getDate().atStartOfDay())){
             counter.count(this);
             return false;

@@ -74,12 +74,12 @@ public class ConstrictionParser {
     private static Constriction generateConstriction(Row row, int i, DataHandler dataHandler) {
         Constriction constriction = null;
         try {
-            Exam exam1 = dataHandler.getExam(row.getCell(1).getStringCellValue());
+            Exam exam1 = dataHandler.getExam((int) row.getCell(1).getNumericCellValue());
             Exam exam2;
             switch (row.getCell(0).getStringCellValue()) {
                 case TimeDisplacementConstriction.CONSTRICTION_ID:
                     //TD - GCCAS-02-12 - GDVS-2-131 - 3
-                    exam2 = dataHandler.getExam(row.getCell(2).getStringCellValue());
+                    exam2 = dataHandler.getExam((int) (row.getCell(2).getNumericCellValue()));
                     constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(3).getNumericCellValue());
                     break;
                 case DayBannedConstriction.CONSTRICTION_ID:
@@ -90,7 +90,7 @@ public class ConstrictionParser {
                     break;
                 case SameDayConstriction.CONSTRICTION_ID:
                     //SD - GCCAS-02-12 - GDVS-2-131
-                    exam2 = dataHandler.getExam(row.getCell(2).getStringCellValue());
+                    exam2 = dataHandler.getExam((int) (row.getCell(2).getNumericCellValue()));
                     List<Exam> sameDateExams = new ArrayList<>();
                     sameDateExams.add(exam1); sameDateExams.add(exam2);
                     constriction = new SameDayConstriction(sameDateExams);

@@ -3,6 +3,7 @@ package main;
 import configuration.Configurer;
 import domain.DataHandler;
 import domain.entities.Exam;
+import domain.entities.ExamDatesComparator;
 import domain.parsers.ExamParser;
 import fitnessFunctions.FitnessFunction;
 import fitnessFunctions.greedyAlgorithm.CromosomeDecoder;
@@ -12,6 +13,8 @@ import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class App {
@@ -33,7 +36,7 @@ public class App {
         FitnessFunction fn = new FitnessFunctionImpl(dataHandler);
 
         GeneticCore genCore = new GeneticCore(individualPrime, 50);
-        Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 10);
+        Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 100);
         System.out.println();
 
         CromosomeDecoder decoder = new CromosomeDecoder();
@@ -42,6 +45,8 @@ public class App {
 
 
         List<Exam> finalResult = dataHandler.getClonedSchedule();
+        Comparator<Exam> examComparator = new ExamDatesComparator();
+        Collections.sort(finalResult, examComparator);
         ExamParser.parseToExcel(finalResult, dataHandler.getConfigurer().getFilePaths("outputFile"));
     }
 }

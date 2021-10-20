@@ -44,8 +44,8 @@ public class DateTimeConfigurer {
 
         this.dayInitialHour = LocalTime.parse(fileProperties.getProperty("initialDayHour"), formatter);
         this.dayEndingHour = LocalTime.parse(fileProperties.getProperty("endDayHour"), formatter);
-        this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
-        this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
+        this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
+        this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
 
         this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
     }
@@ -94,8 +94,10 @@ public class DateTimeConfigurer {
 
     public boolean isHourInProhibitedInterval(LocalTime currentHour) {
 
-        return currentHour.isAfter(prohibitedIntervalInitialHour) &&
-                currentHour.isBefore(prohibitedIntervalEndingHour);
+        return (currentHour.isAfter(prohibitedIntervalInitialHour) &&
+                currentHour.isBefore(prohibitedIntervalEndingHour))
+                || currentHour.equals(prohibitedIntervalInitialHour)
+                || currentHour.equals(prohibitedIntervalEndingHour);
     }
 
     public LocalTime getFinishingHourProhibitedInterval() {
@@ -103,7 +105,8 @@ public class DateTimeConfigurer {
     }
 
     public boolean isValidEndingHourFor(LocalTime examStartHour, Duration examDuration) {
-        return dayEndingHour.isAfter(examStartHour.plus(examDuration));
+        return dayEndingHour.isAfter(examStartHour.plus(examDuration)) ||
+                dayEndingHour.equals(examStartHour.plus(examDuration));
     }
 
 

@@ -29,7 +29,8 @@ public class ExamParser {
             "Día",
             "Ini",
             "Fin",
-            "CN"
+            "CN",
+            "ID"
     };
 
 
@@ -174,6 +175,10 @@ public class ExamParser {
                         cell.setCellValue((int) att);
                         break;
                     case 10: //date
+                        if (att==null){
+                            cell.setCellValue("");
+                            break;
+                        }
                         cell.setCellValue(Date.from(((LocalDate) att).atStartOfDay(ZoneId.systemDefault()).toInstant()));
                         break;
                     default:

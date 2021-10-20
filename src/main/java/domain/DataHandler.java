@@ -5,7 +5,6 @@ import domain.constrictions.Constriction;
 import domain.entities.Exam;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
-import org.apache.poi.ss.formula.eval.NotImplementedException;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -106,5 +105,9 @@ public class DataHandler {
 
     public Configurer getConfigurer() {
         return configurer;
+    }
+
+    public Exam getExam(Integer index) {
+        return exams.get(index);
     }
 }
