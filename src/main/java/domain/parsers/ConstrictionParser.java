@@ -80,7 +80,8 @@ public class ConstrictionParser {
                 case TimeDisplacementConstriction.CONSTRICTION_ID:
                     //TD - GCCAS-02-12 - GDVS-2-131 - 3
                     exam2 = dataHandler.getExam((int) (row.getCell(2).getNumericCellValue()));
-                    constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(3).getNumericCellValue());
+                    constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(3).getNumericCellValue(),
+                            dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
                     break;
                 case DayBannedConstriction.CONSTRICTION_ID:
                     //DB - GVVAS-053-13 - 12/2/2022

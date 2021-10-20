@@ -6,6 +6,8 @@ import domain.constrictions.counter.ConstrictionCounter;
 import domain.entities.Exam;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * This class represents the constriction by which two exams must have at least X number of days between their dates,
@@ -18,11 +20,13 @@ public class TimeDisplacementConstriction implements Constriction {
     private Exam first;
     private Exam second;
     private long distanceInDays;
+    private List<LocalDate> calendar;
 
-    public TimeDisplacementConstriction(Exam first, Exam second, long distanceInDays) {
+    public TimeDisplacementConstriction(Exam first, Exam second, long distanceInDays, List<LocalDate> calendar) {
         this.first = first;
         this.second = second;
         this.distanceInDays = distanceInDays;
+        this.calendar = calendar;
     }
 
 
@@ -31,6 +35,16 @@ public class TimeDisplacementConstriction implements Constriction {
         if (first.getDate() ==null || second.getDate() ==null) {
             return false;
         }
+
+        LocalDate limitDate = first.getDate().plusDays(distanceInDays);
+
+        if(limitDate.isBefore(second.getDate()) || limitDate.equals(second.getDate())){
+            counter.count(this);
+            return false;
+        }
+        return true;
+
+/* Old implementation
         long hi =  Duration.between(first.getDate().atStartOfDay(), second.getDate().atStartOfDay()).toDays();
 
         if (hi < distanceInDays) {
@@ -38,6 +52,10 @@ public class TimeDisplacementConstriction implements Constriction {
             return false;
         }
         return true;
+
+ */
+
+
     }
 
 

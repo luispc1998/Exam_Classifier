@@ -47,8 +47,9 @@ public class CromosomeDecoder {
         else {
             return;
         }
-
+        int infiniteCounter = 0;
         do {
+            infiniteCounter++;
             //check de hora y duración sobre hora máxima de finalización.
             if (! dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration())){
                 if (datesIterator.hasNext()){

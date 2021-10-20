@@ -105,8 +105,13 @@ public class DateTimeConfigurer {
     }
 
     public boolean isValidEndingHourFor(LocalTime examStartHour, Duration examDuration) {
-        return dayEndingHour.isAfter(examStartHour.plus(examDuration)) ||
-                dayEndingHour.equals(examStartHour.plus(examDuration));
+        LocalTime finalHour = examStartHour.plus(examDuration);
+        return (dayEndingHour.isAfter(finalHour) ||
+                dayEndingHour.equals(finalHour)) &&
+
+                dayInitialHour.isBefore(finalHour) &&
+                ! dayInitialHour.equals(finalHour)
+                ;
     }
 
 
