@@ -1,6 +1,7 @@
 package geneticAlgorithm;
 
 import domain.entities.Exam;
+import fitnessFunctions.FitnessFunction;
 import fitnessFunctions.greedyAlgorithm.CromosomeDecoder;
 
 import java.util.ArrayList;
@@ -16,6 +17,15 @@ public class Individual {
 
     public List<Integer> getCromosome() {
         return new ArrayList<>(cromosome);
+    }
+
+    private Double fitnessScore;
+
+    public double getFitnessScore(FitnessFunction fitnessFunction) {
+        if (fitnessScore == null) {
+            fitnessScore = fitnessFunction.apply(this);
+        }
+        return fitnessScore;
     }
 
     @Override

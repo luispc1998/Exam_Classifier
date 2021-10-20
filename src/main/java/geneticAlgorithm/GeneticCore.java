@@ -54,7 +54,7 @@ public class GeneticCore {
         double averageFitness = averageFitness(fitnessFunction);
 
         System.out.println("\n" + "Gen: " + genCounter
-                + ", Best Fitness: " + fitnessFunction.apply(bestIndividual)
+                + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
                 + ", Avg Fitness: " + averageFitness);
 
         System.out.println(bestIndividual);
@@ -69,7 +69,7 @@ public class GeneticCore {
                 averageFitness = averageFitness(fitnessFunction);
 
                 System.out.println("\n" + "Gen: " + genCounter
-                        + ", Best Fitness: " + fitnessFunction.apply(bestIndividual)
+                        + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
                         + ", Avg Fitness: " + averageFitness);
 
                 System.out.println(bestIndividual);
@@ -86,7 +86,7 @@ public class GeneticCore {
         double accumulator = 0;
 
         for (Individual idv: population) {
-            accumulator += fitnessFunction.apply(idv);
+            accumulator += idv.getFitnessScore(fitnessFunction);
         }
 
         return accumulator / population.size();
@@ -98,7 +98,7 @@ public class GeneticCore {
         double bestFitnessFound = Double.POSITIVE_INFINITY;
 
         for (Individual idv: population) {
-            double idvFitness = fitnessFunction.apply(idv);
+            double idvFitness = idv.getFitnessScore(fitnessFunction);
             if (idvFitness < bestFitnessFound){
                 bestFitnessFound = idvFitness;
                 bestIndividual = idv;

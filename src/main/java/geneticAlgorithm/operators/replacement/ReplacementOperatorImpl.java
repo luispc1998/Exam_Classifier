@@ -25,7 +25,8 @@ public class ReplacementOperatorImpl implements ReplacementOperator {
         Collections.sort(tmp, new Comparator<Individual>() {
             @Override
             public int compare(Individual c1, Individual c2) {
-                return Double.compare(fitnessFunction.apply(c1), fitnessFunction.apply(c2));
+                return Double.compare(c1.getFitnessScore(fitnessFunction),
+                        c2.getFitnessScore(fitnessFunction));
             }
         });
 

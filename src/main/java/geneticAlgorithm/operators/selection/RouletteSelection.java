@@ -26,7 +26,7 @@ public class RouletteSelection implements SelectionOperator {
         // Determine all of the fitness values
         double[] fValues = new double[population.size()];
         for (int i = 0; i < population.size(); i++) {
-            fValues[i] = fitnessFunction.apply(population.get(i));
+            fValues[i] = population.get(i).getFitnessScore(fitnessFunction);
         }
         // Normalize the fitness values
         fValues = Utils.normalizeDoubleArray(fValues);
