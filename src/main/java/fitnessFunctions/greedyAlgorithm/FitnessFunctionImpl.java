@@ -5,10 +5,7 @@ import domain.DataHandler;
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.ConstrictionCounterImpl;
-import domain.constrictions.types.DayBannedConstriction;
-import domain.constrictions.types.DifferentDayConstriction;
-import domain.constrictions.types.SameDayConstriction;
-import domain.constrictions.types.TimeDisplacementConstriction;
+import domain.constrictions.types.*;
 import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 import geneticAlgorithm.Individual;
 import fitnessFunctions.FitnessFunction;
@@ -56,7 +53,9 @@ public class FitnessFunctionImpl implements FitnessFunction {
                 counter.getCountOfUnclassifiedExamsConstriction()
                         * wc.getConstrictionWeight(UnclassifiedExamsConstriction.CONSTRICTION_ID) +
                 counter.getCountOfDifferentDayConstriction()
-                        * wc.getConstrictionWeight(DifferentDayConstriction.CONSTRICTION_ID);
+                        * wc.getConstrictionWeight(DifferentDayConstriction.CONSTRICTION_ID) +
+                counter.getCountOrderExamsConstriction()
+                        *wc.getConstrictionWeight(OrderExamsConstriction.CONSTRICTION_ID);
 
     }
 }

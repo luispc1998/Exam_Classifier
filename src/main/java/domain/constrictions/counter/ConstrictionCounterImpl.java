@@ -1,9 +1,6 @@
 package domain.constrictions.counter;
 
-import domain.constrictions.types.DayBannedConstriction;
-import domain.constrictions.types.DifferentDayConstriction;
-import domain.constrictions.types.SameDayConstriction;
-import domain.constrictions.types.TimeDisplacementConstriction;
+import domain.constrictions.types.*;
 import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 
 public class ConstrictionCounterImpl implements ConstrictionCounter {
@@ -13,6 +10,7 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
     private int sameDayCounter;
     private int unclassifiedExamsCounter;
     private int differentDayCounter;
+    private int orderExamsCounter;
 
 
 
@@ -42,6 +40,11 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
     }
 
     @Override
+    public void count(OrderExamsConstriction orderExamsConstriction) {
+        orderExamsCounter++;
+    }
+
+    @Override
     public int getCountOfTimeDisplacementConstriction() {
         return timeDisplacementCounter;
     }
@@ -64,5 +67,10 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
     @Override
     public int getCountOfDifferentDayConstriction() {
         return differentDayCounter;
+    }
+
+    @Override
+    public int getCountOrderExamsConstriction() {
+        return orderExamsCounter;
     }
 }
