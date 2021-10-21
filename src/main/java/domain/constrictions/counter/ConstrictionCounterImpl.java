@@ -1,20 +1,20 @@
 package domain.constrictions.counter;
 
 import domain.constrictions.types.DayBannedConstriction;
+import domain.constrictions.types.DifferentDayConstriction;
 import domain.constrictions.types.SameDayConstriction;
 import domain.constrictions.types.TimeDisplacementConstriction;
+import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 
 public class ConstrictionCounterImpl implements ConstrictionCounter {
 
     private int timeDisplacementCounter;
     private int daysBannedCounter;
     private int sameDayCounter;
+    private int unclassifiedExamsCounter;
+    private int differentDayCounter;
 
-    public ConstrictionCounterImpl() {
-        timeDisplacementCounter = 0;
-        daysBannedCounter = 0;
-        sameDayCounter = 0;
-    }
+
 
     @Override
     public void count(TimeDisplacementConstriction timeDisplacementConstriction) {
@@ -32,6 +32,16 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
     }
 
     @Override
+    public void count(UnclassifiedExamsConstriction unclassifiedExamsConstriction) {
+        unclassifiedExamsCounter++;
+    }
+
+    @Override
+    public void count(DifferentDayConstriction differentDayConstriction) {
+        differentDayCounter++;
+    }
+
+    @Override
     public int getCountOfTimeDisplacementConstriction() {
         return timeDisplacementCounter;
     }
@@ -46,16 +56,13 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
         return sameDayCounter;
     }
 
-
-    public int getTimeDisplacementCounter() {
-        return timeDisplacementCounter;
+    @Override
+    public int getCountOfUnclassifiedExamsConstriction() {
+        return unclassifiedExamsCounter;
     }
 
-    public int getDaysBannedCounter() {
-        return daysBannedCounter;
-    }
-
-    public int getSameDayCounter() {
-        return sameDayCounter;
+    @Override
+    public int getCountOfDifferentDayConstriction() {
+        return differentDayCounter;
     }
 }

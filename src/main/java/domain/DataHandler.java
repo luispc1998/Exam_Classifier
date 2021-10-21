@@ -2,6 +2,7 @@ package domain;
 
 import configuration.Configurer;
 import domain.constrictions.Constriction;
+import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 import domain.entities.Exam;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
@@ -35,6 +36,7 @@ public class DataHandler {
 
 
         this.constrictions = ConstrictionParser.parseConstrictions(inputDataFile, this);
+        addConstriction(new UnclassifiedExamsConstriction(exams));
 
     }
 
@@ -109,5 +111,10 @@ public class DataHandler {
 
     public Exam getExam(Integer index) {
         return exams.get(index);
+    }
+
+
+    public void addConstriction(Constriction constriction) {
+        constrictions.add(constriction);
     }
 }
