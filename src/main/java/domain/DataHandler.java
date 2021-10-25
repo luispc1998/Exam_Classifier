@@ -2,6 +2,7 @@ package domain;
 
 import configuration.Configurer;
 import domain.constrictions.Constriction;
+import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 import domain.entities.Exam;
 import domain.parsers.ConstrictionParser;
@@ -37,6 +38,7 @@ public class DataHandler {
 
         this.constrictions = ConstrictionParser.parseConstrictions(inputDataFile, this);
         addConstriction(new UnclassifiedExamsConstriction(exams));
+        addConstriction(new SameCourseDifferentDayConstriction(exams));
 
     }
 

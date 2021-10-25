@@ -1,6 +1,7 @@
 package domain.constrictions.counter;
 
 import domain.constrictions.types.*;
+import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 
 public interface ConstrictionCounter {
@@ -12,6 +13,7 @@ public interface ConstrictionCounter {
     void count(UnclassifiedExamsConstriction unclassifiedExamsConstriction);
     void count(DifferentDayConstriction differentDayConstriction);
     void count(OrderExamsConstriction orderExamsConstriction);
+    void count(SameCourseDifferentDayConstriction sameCourseDifferentDayConstriction);
 
     int getCountOfTimeDisplacementConstriction();
     int getCountOfDaysBannedConstriction();
@@ -19,6 +21,7 @@ public interface ConstrictionCounter {
     int getCountOfUnclassifiedExamsConstriction();
     int getCountOfDifferentDayConstriction();
     int getCountOrderExamsConstriction();
+    int getCountSameCourseDifferentDayConstriction();
 
 
 

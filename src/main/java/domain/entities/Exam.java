@@ -219,4 +219,8 @@ public class Exam {
     private String formatStringForHour(Integer hour) {
         return String.format("%d:%02d:%02d", hour / 3600, (hour % 3600) / 60, (hour % 60));
     }
+
+    public int getCourse() {
+        return course;
+    }
 }

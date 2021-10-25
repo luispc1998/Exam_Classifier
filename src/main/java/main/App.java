@@ -36,7 +36,7 @@ public class App {
 
         FitnessFunction fn = new FitnessFunctionImpl(dataHandler);
 
-        GeneticCore genCore = new GeneticCore(individualPrime, 50);
+        GeneticCore genCore = new GeneticCore(individualPrime, 100);
         Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 1000);
         System.out.println();
 
