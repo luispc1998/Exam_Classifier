@@ -49,4 +49,8 @@ public class Configurer {
     public DateTimeConfigurer getDateTimeConfigurer() {
         return dateTimeConfigurer;
     }
+
+    public boolean existsConstrinctionID(String id) {
+        return getWeightConfigurer().existsConstrictionID(id);
+    }
 }

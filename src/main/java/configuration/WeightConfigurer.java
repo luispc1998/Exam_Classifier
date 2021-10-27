@@ -22,4 +22,8 @@ public class WeightConfigurer {
     public double getConstrictionWeight(String constrinctionID){
         return weights.get(constrinctionID);
     }
+
+    public boolean existsConstrictionID(String id){
+        return weights.keySet().contains(id);
+    }
 }

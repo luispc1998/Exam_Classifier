@@ -1,17 +1,17 @@
 package domain.parsers;
 
+import configuration.Configurer;
 import domain.constrictions.Constriction;
-import domain.constrictions.types.DayBannedConstriction;
-import domain.constrictions.types.SameDayConstriction;
-import domain.constrictions.types.TimeDisplacementConstriction;
+import domain.constrictions.types.examDependant.*;
 import domain.DataHandler;
 import domain.entities.Exam;
+import domain.parsers.constrictionsParserTools.*;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.ZoneId;
@@ -22,11 +22,15 @@ import java.util.Map;
 
 public class ConstrictionParser {
 
-    private final static int JUMP_LINES = 0;
+    private static int jumpLines = 0;
+    private static ConstrictionParserTool parserTool;
 
 
     public static void main(String[] args) throws IOException {
-        //parseConstrictions("files/v6 (junio-julio).xlsx", new DataHandler());
+        Configurer conf = new Configurer("files");
+
+        DataHandler dataHandler = new DataHandler(conf);
+        parseConstrictions("files/pruebas/v6_sinFechas_2.xlsx", dataHandler);
 
     }
 
@@ -47,28 +51,73 @@ public class ConstrictionParser {
 
             Map<Integer, List<String>> data = new HashMap<>();
             int i = 0;
-            int jumpLines = JUMP_LINES;
 
             for (Row row : sheet) {
 
-                if (jumpLines > 0) {
-                    System.out.println("Skipped line");
+                if (jumpLines > 0 || row.getCell(0) == null) {
                     jumpLines--;
                     continue;
                 }
 
+                if (isSwapNeeded(row.getCell(0), dataHandler)){
+                    swapTool(row, sheet.getRow(row.getRowNum() + 1), sheet.getRow(row.getRowNum() + 2));
+                    jumpLines = 2;
+                }
+                else{
+                    constrictions.add(parserTool.parseConstriction(row, dataHandler));
+                    i++;
+                }
+                /*
                 Constriction constriction = generateConstriction(row, i, dataHandler);
                 if (constriction == null) {
                     //System.out.println("Línea " + i +" saltada. No fue posible parsear el examen");
                     continue;
                 }
                 constrictions.add(constriction);
-                i++;
-                System.out.println("Restricciones creadas: " + i);
+
+
+                 */
+
+
             }
+            System.out.println("Restricciones creadas: " + i);
         }finally {}
 
         return constrictions;
+    }
+
+    private static void swapTool(Row constrictionIdRow, Row constrictionDescription, Row constrictionHeaders) {
+
+        switch (constrictionIdRow.getCell(0).getStringCellValue()){
+            case TimeDisplacementConstriction.CONSTRICTION_ID:
+                TimeDisplacementConstriction.setClassDescription(constrictionDescription.getCell(0).getStringCellValue());
+                //TODO guardo las decripciones para ponerlas luego ?
+                parserTool = new TimeDisplacementConstrictionParserTool();
+                break;
+            case SameDayConstriction.CONSTRICTION_ID:
+                parserTool = new SameDayConstrictionParserTool();
+                break;
+            case DifferentDayConstriction.CONSTRICTION_ID:
+                parserTool = new DifferentDayConstrictionParserTool();
+                break;
+            case OrderExamsConstriction.CONSTRICTION_ID:
+                parserTool = new OrderExamsConstrictionParserTool();
+                break;
+            case DayBannedConstriction.CONSTRICTION_ID:
+                parserTool = new DayBannedConstrictionParserTool();
+                break;
+
+        }
+    }
+
+    private static boolean isSwapNeeded(Cell cell, DataHandler dataHandler) {
+        try {
+            String value = cell.getStringCellValue();
+            return dataHandler.getConfigurer().existsConstrinctionID(value);
+
+        } catch (RuntimeException e){
+            return false;
+        }
     }
 
     private static Constriction generateConstriction(Row row, int i, DataHandler dataHandler) {

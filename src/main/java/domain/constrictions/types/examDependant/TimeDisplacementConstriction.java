@@ -30,6 +30,10 @@ public class TimeDisplacementConstriction extends AbstractConstriction {
         this.calendar = calendar;
     }
 
+    public static void setClassDescription(String stringCellValue) {
+
+    }
+
 
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
