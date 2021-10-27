@@ -27,6 +27,18 @@ public class RouletteSelection implements SelectionOperator {
         double[] fValues = new double[population.size()];
         for (int i = 0; i < population.size(); i++) {
             fValues[i] = population.get(i).getFitnessScore(fitnessFunction);
+
+
+            //Ajuste para selección por ruleta.
+            if (fValues[i] == 0){
+                fValues[i] = 1000;
+            }
+            else{
+                fValues[i] = 1 / fValues[i];
+            }
+
+            //fValues[i] = Math.pow(fValues[i], 1.5);
+
         }
         // Normalize the fitness values
         fValues = Utils.normalizeDoubleArray(fValues);

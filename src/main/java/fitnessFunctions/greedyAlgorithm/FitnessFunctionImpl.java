@@ -5,7 +5,7 @@ import domain.DataHandler;
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.ConstrictionCounterImpl;
-import domain.constrictions.types.*;
+import domain.constrictions.types.examDependant.*;
 import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 import geneticAlgorithm.Individual;

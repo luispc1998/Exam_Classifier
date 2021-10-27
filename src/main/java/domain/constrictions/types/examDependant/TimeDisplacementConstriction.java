@@ -1,8 +1,9 @@
-package domain.constrictions.types;
+package domain.constrictions.types.examDependant;
 
 
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
+import domain.constrictions.types.AbstractConstriction;
 import domain.entities.Exam;
 
 import java.time.Duration;
@@ -13,7 +14,7 @@ import java.util.List;
  * This class represents the constriction by which two exams must have at least X number of days between their dates,
  * being X a natural number.
  */
-public class TimeDisplacementConstriction implements Constriction {
+public class TimeDisplacementConstriction extends AbstractConstriction {
 
     public final static String CONSTRICTION_ID = "TD";
 
@@ -33,6 +34,7 @@ public class TimeDisplacementConstriction implements Constriction {
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
         if (first.getDate() ==null || second.getDate() ==null) {
+            setLastEvaluation(false);
             return false;
         }
 
@@ -40,8 +42,10 @@ public class TimeDisplacementConstriction implements Constriction {
 
         if(limitDate.isBefore(second.getDate()) || limitDate.equals(second.getDate())){
             counter.count(this);
+            setLastEvaluation(false);
             return false;
         }
+        setLastEvaluation(true);
         return true;
 
 /* Old implementation

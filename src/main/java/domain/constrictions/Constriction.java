@@ -6,5 +6,6 @@ public interface Constriction {
 
 
     boolean isFulfilled(ConstrictionCounter counter);
+    boolean getLastEvaluation();
 
 }

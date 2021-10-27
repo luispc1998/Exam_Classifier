@@ -1,6 +1,6 @@
 package domain.constrictions.counter;
 
-import domain.constrictions.types.*;
+import domain.constrictions.types.examDependant.*;
 import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 

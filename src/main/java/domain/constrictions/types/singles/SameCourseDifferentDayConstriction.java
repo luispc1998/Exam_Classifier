@@ -2,6 +2,7 @@ package domain.constrictions.types.singles;
 
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
+import domain.constrictions.types.AbstractConstriction;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SameCourseDifferentDayConstriction implements Constriction {
+public class SameCourseDifferentDayConstriction extends AbstractConstriction {
 
     public final static String CONSTRICTION_ID = "SCDD";
 
@@ -32,7 +33,7 @@ public class SameCourseDifferentDayConstriction implements Constriction {
 
         boolean result = occurrences == 0;
         occurrences = 0;
-
+        setLastEvaluation(result);
         return result;
     }
 

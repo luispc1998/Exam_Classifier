@@ -96,8 +96,7 @@ public class DateTimeConfigurer {
 
         return (currentHour.isAfter(prohibitedIntervalInitialHour) &&
                 currentHour.isBefore(prohibitedIntervalEndingHour))
-                || currentHour.equals(prohibitedIntervalInitialHour)
-                || currentHour.equals(prohibitedIntervalEndingHour);
+                || currentHour.equals(prohibitedIntervalInitialHour);
     }
 
     public LocalTime getFinishingHourProhibitedInterval() {

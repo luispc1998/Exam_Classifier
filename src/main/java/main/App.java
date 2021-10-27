@@ -36,8 +36,9 @@ public class App {
 
         FitnessFunction fn = new FitnessFunctionImpl(dataHandler);
 
-        GeneticCore genCore = new GeneticCore(individualPrime, 100);
-        Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 1000);
+        GeneticCore genCore = new GeneticCore(individualPrime, 5000);
+
+        Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 300);
         System.out.println();
 
         CromosomeDecoder decoder = new CromosomeDecoder();
@@ -49,5 +50,9 @@ public class App {
         Comparator<Exam> examComparator = new ExamDatesComparator();
         sort(finalResult, examComparator);
         ExamParser.parseToExcel(finalResult, dataHandler.getConfigurer().getFilePaths("outputFile"));
+
+
+
+
     }
 }

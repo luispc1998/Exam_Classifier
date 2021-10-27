@@ -7,10 +7,12 @@ import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.mutation.MutationSwap;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
 import geneticAlgorithm.operators.replacement.ReplacementOperatorImpl;
+import geneticAlgorithm.operators.selection.AllSelection;
 import geneticAlgorithm.operators.selection.RouletteSelection;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 import geneticAlgorithm.utils.Utils;
 import me.tongfei.progressbar.ProgressBar;
+import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import random.RandomGenerator;
 
 import java.util.ArrayList;
@@ -59,7 +61,7 @@ public class GeneticCore {
 
         System.out.println(bestIndividual);
 
-        try (ProgressBar pb = new ProgressBar("Genetic Algorithm", maxIterations)) { // name, initial max
+        try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
             while (genCounter < maxIterations) { //limit by iterations, limit by finnding a solution.
 
                 population = computeNewGeneration(fitnessFunction);
@@ -68,15 +70,24 @@ public class GeneticCore {
                 bestIndividual = getBestIndividual(fitnessFunction);
                 averageFitness = averageFitness(fitnessFunction);
 
+                /*
                 System.out.println("\n" + "Gen: " + genCounter
                         + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
                         + ", Avg Fitness: " + averageFitness);
 
                 System.out.println(bestIndividual);
-
+                */
 
                 pb.step();
+                pb.setExtraMessage("Gen: " + genCounter + ", BF: " + bestIndividual.getFitnessScore(fitnessFunction) +
+                        ", AF: " + averageFitness);
             }
+            System.out.println("\n" + "[Gen: " + genCounter
+                    + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
+                    + ", Avg Fitness: " + averageFitness + "]");
+
+            System.out.println(bestIndividual);
+
         }
             return bestIndividual;
     }
