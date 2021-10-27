@@ -52,7 +52,7 @@ public class ExamParser {
 
             for (Row row : sheet) {
                 if (jumpLines > 0) {
-                    System.out.println("Skipped line");
+                    //System.out.println("Skipped line");
                     jumpLines--;
                     continue;
                 }

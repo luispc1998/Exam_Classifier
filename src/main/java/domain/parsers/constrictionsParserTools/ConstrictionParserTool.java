@@ -6,5 +6,5 @@ import org.apache.poi.ss.usermodel.Row;
 
 public interface ConstrictionParserTool {
 
-    Constriction parseConstriction(Row row, DataHandler dataHandler);
+    Constriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
 }

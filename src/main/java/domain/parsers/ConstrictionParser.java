@@ -23,7 +23,9 @@ import java.util.Map;
 public class ConstrictionParser {
 
     private static int jumpLines = 0;
+    private final static int baseExcelColumn = 1;
     private static ConstrictionParserTool parserTool;
+
 
 
     public static void main(String[] args) throws IOException {
@@ -54,17 +56,17 @@ public class ConstrictionParser {
 
             for (Row row : sheet) {
 
-                if (jumpLines > 0 || row.getCell(0) == null) {
+                if (jumpLines > 0 || row.getCell(baseExcelColumn) == null) {
                     jumpLines--;
                     continue;
                 }
 
-                if (isSwapNeeded(row.getCell(0), dataHandler)){
+                if (isSwapNeeded(row.getCell(baseExcelColumn), dataHandler)){
                     swapTool(row, sheet.getRow(row.getRowNum() + 1), sheet.getRow(row.getRowNum() + 2));
                     jumpLines = 2;
                 }
                 else{
-                    constrictions.add(parserTool.parseConstriction(row, dataHandler));
+                    constrictions.add(parserTool.parseConstriction(row, baseExcelColumn, dataHandler));
                     i++;
                 }
                 /*
@@ -88,9 +90,9 @@ public class ConstrictionParser {
 
     private static void swapTool(Row constrictionIdRow, Row constrictionDescription, Row constrictionHeaders) {
 
-        switch (constrictionIdRow.getCell(0).getStringCellValue()){
+        switch (constrictionIdRow.getCell(baseExcelColumn).getStringCellValue()){
             case TimeDisplacementConstriction.CONSTRICTION_ID:
-                TimeDisplacementConstriction.setClassDescription(constrictionDescription.getCell(0).getStringCellValue());
+                TimeDisplacementConstriction.setClassDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 //TODO guardo las decripciones para ponerlas luego ?
                 parserTool = new TimeDisplacementConstrictionParserTool();
                 break;

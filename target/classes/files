@@ -1,4 +1,4 @@
-inputFile=files/pruebas/v6_sinFechas.xlsx
+inputFile=files/pruebas/v6_sinFechas_2.xlsx
 outputFile=files/output/prueba.xlsx
 dateTimes=dateTime
 weights=weights

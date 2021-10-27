@@ -10,10 +10,10 @@ public class TimeDisplacementConstrictionParserTool implements ConstrictionParse
 
 
     @Override
-    public Constriction parseConstriction(Row row, DataHandler dataHandler) {
-        Exam exam1 = dataHandler.getExam((int) row.getCell(0).getNumericCellValue());
-        Exam exam2 = dataHandler.getExam((int) (row.getCell(1).getNumericCellValue()));
-        Constriction constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(2).getNumericCellValue(),
+    public Constriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+        Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
+        Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
+        Constriction constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),
                 dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
         return constriction;
     }
