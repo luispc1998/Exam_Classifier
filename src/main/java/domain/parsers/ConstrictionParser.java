@@ -56,10 +56,7 @@ public class ConstrictionParser {
 
             for (Row row : sheet) {
 
-                if (jumpLines > 0 || row.getCell(baseExcelColumn) == null) {
-                    jumpLines--;
-                    continue;
-                }
+                if (shouldBeJumped(row)) continue;
 
                 if (isSwapNeeded(row.getCell(baseExcelColumn), dataHandler)){
                     swapTool(row, sheet.getRow(row.getRowNum() + 1), sheet.getRow(row.getRowNum() + 2));
@@ -86,6 +83,20 @@ public class ConstrictionParser {
         }finally {}
 
         return constrictions;
+    }
+
+    private static boolean shouldBeJumped(Row row) {
+        if (jumpLines > 0 || row.getCell(baseExcelColumn) == null) {
+            jumpLines--;
+            return true;
+        }
+
+        try {
+            return (row.getCell(baseExcelColumn).getStringCellValue().equals("")) ;
+        } catch (IllegalStateException e) {
+            return false;
+        }
+
     }
 
     private static void swapTool(Row constrictionIdRow, Row constrictionDescription, Row constrictionHeaders) {
