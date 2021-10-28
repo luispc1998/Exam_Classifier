@@ -11,16 +11,33 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This represents a constriction that states that the same course exams should take place on different days.
+ */
 public class SameCourseDifferentDayConstriction extends AbstractConstriction {
 
+    /**
+     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     */
     public final static String CONSTRICTION_ID = "SCDD";
 
+    /**
+     * List of {@link Exam} to check the schedule.
+     */
     private List<Exam> exams;
 
+    /**
+     * Counter of how many cases were found.
+     */
     private int occurrences;
 
+    /**
+     * Contructor for the class.
+     * @param exams List of {@link Exam} to check the schedule.
+     */
     public SameCourseDifferentDayConstriction(List<Exam> exams) {
         this.exams = exams;
+        occurrences = -1;
     }
 
     @Override
@@ -37,6 +54,12 @@ public class SameCourseDifferentDayConstriction extends AbstractConstriction {
         return result;
     }
 
+    /**
+     * Returns for a given course how many dates are repeated mapping the exams to their dates.
+     * @param exams The schedule of {@link Exam}.
+     * @param course The course that we are currently checking
+     * @return The number of repeated dates for the given course.
+     */
     private int getExamsForCourse(List<Exam> exams, int course) {
         List<LocalDate> courseDates = new ArrayList<>();
         for (Exam exam: exams) {
@@ -49,7 +72,13 @@ public class SameCourseDifferentDayConstriction extends AbstractConstriction {
         return courseDates.size() - courseDatesSet.size();
     }
 
+    /**
+     * Returns how many times the constriction was detected over the schedule.
+     * @return the number of times the cosntriction was detected
+     * @throws IllegalStateException in case {@code isFulfilled} was nos called first.
+     */
     public int getOccurrences() {
+        if (occurrences == -1) throw new IllegalStateException("It is need to call isFulfilled at least once before calling this method..");
         return occurrences;
     }
 }

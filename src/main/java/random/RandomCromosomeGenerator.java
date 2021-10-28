@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This groups some functionalities involving random generations.
+ */
 public class RandomCromosomeGenerator {
 
     /**

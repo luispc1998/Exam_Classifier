@@ -14,10 +14,20 @@ import java.util.List;
  */
 public class SameDayConstriction extends AbstractConstriction {
 
+    /**
+     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     */
     public final static String CONSTRICTION_ID= "SD";
 
+    /**
+     * List of {@link Exam} that must take place on the same day.
+     */
     List<Exam> exams;
 
+    /**
+     * Constructor for the class
+     * @param exams the list of {@link Exam} that must take place on the same day.
+     */
     public SameDayConstriction(List<Exam> exams) {
         this.exams = new ArrayList<>(exams);
     }

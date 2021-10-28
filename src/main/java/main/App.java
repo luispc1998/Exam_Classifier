@@ -7,7 +7,7 @@ import domain.entities.ExamDatesComparator;
 import domain.parsers.ExamParser;
 import fitnessFunctions.FitnessFunction;
 import fitnessFunctions.greedyAlgorithm.CromosomeDecoder;
-import fitnessFunctions.greedyAlgorithm.FitnessFunctionImpl;
+import fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
@@ -34,7 +34,7 @@ public class App {
         Individual individualPrime = basicEncoder.encodeListExams(dataHandler.getExams());
 
 
-        FitnessFunction fn = new FitnessFunctionImpl(dataHandler);
+        FitnessFunction fn = new LinearFitnessFunction(dataHandler);
 
         GeneticCore genCore = new GeneticCore(individualPrime, 10000);
 
@@ -48,7 +48,7 @@ public class App {
 
         List<Exam> finalResult = dataHandler.getClonedSchedule();
         Comparator<Exam> examComparator = new ExamDatesComparator();
-        sort(finalResult, examComparator);
+        finalResult.sort(examComparator);
         ExamParser.parseToExcel(finalResult, dataHandler.getConfigurer().getFilePaths("outputFile"));
 
 

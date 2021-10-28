@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This class takes a
+ */
 public class CromosomeDecoder {
 
     public List<Exam> getExamsOrderedForCromosome(List<Integer> cromosome, DataHandler dataHandler){
@@ -30,7 +33,7 @@ public class CromosomeDecoder {
 
         // Counters
         LocalTime currentHour = dateTimeConfigurer.getDayInitialHour();
-        LocalDate currentDate = null;
+        LocalDate currentDate;
         Exam exam;
 
         List<LocalDate> dates = dateTimeConfigurer.getExamDates();
@@ -122,8 +125,6 @@ public class CromosomeDecoder {
         // Fin de la declaración de variables.
 
 
-
-
         //TODO Ordenar las fechas por si no lo están
 
         // Miramos que tengamos días y exámenes para clasificar o acabamos.
@@ -134,15 +135,10 @@ public class CromosomeDecoder {
             // Inicializamos cosas. Primer examen, primera fecha.
             exam = examsIterator.next();
             currentDate = dates.get(++indexDate); //datesIterator.next();
-            currentHour = daysTimes.get(currentDate);
         }
         else {
             return;
         }
-
-
-
-
 
         do {
             // Buscamos el primer día en el que se pueda poner el examen, iterando la lista.
@@ -197,7 +193,6 @@ public class CromosomeDecoder {
             }
             else{
                 daysTimes.put(currentDate, collidingExam.getFinishingHour());
-                continue;
             }
 
         } while(true);

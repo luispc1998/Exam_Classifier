@@ -1,7 +1,5 @@
 package domain.constrictions.types.examDependant;
 
-
-import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.types.AbstractConstriction;
 import domain.entities.Exam;
@@ -9,16 +7,31 @@ import domain.entities.Exam;
 import java.time.LocalDate;
 
 /**
- * This will represent for an exam a list of days in which it cannot be placed
+ * This states for an exam a date in which it cannot be placed.
  */
 public class DayBannedConstriction extends AbstractConstriction {
 
+    /**
+     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     */
     public final static String CONSTRICTION_ID = "DB";
 
+    /**
+     * The date in which {@code exam} cannot take place.
+     */
     private LocalDate dayBanned;
+
+    /**
+     * {@link Exam} that cannot take place on {@code dayBanned}.
+     */
     private Exam exam;
 
 
+    /**
+     * Cosntructor for the class
+     * @param exam the exam that would no be able to take place on {@code dayBanned}
+     * @param dayBanned the date in which {@code exam} cannot take place.
+     */
     public DayBannedConstriction(Exam exam, LocalDate dayBanned) {
         this.dayBanned = dayBanned;
         this.exam = exam;

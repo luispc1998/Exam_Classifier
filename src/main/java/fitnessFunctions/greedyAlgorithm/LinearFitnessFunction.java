@@ -11,13 +11,37 @@ import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 import geneticAlgorithm.Individual;
 import fitnessFunctions.FitnessFunction;
 
-public class FitnessFunctionImpl implements FitnessFunction {
 
+/**
+ * This is a linear fitness function.
+ *
+ * <p>
+ * It will add the times each type of constriction was not fulfilled. It will use a {@code CromosomeDecoder} for such
+ * a purpose. Each type of constriction will also have a weight, that will be a coefficient in the linear function.
+ *
+ * <p>
+ * An example of the behaviour could be. Consider constrictions types A and B, and then the set of not satisfied
+ * constrictions: {a2, a4, a5, b3, b8}. Let Wa and Wb, be the weights of types A and B respectively. Then the linear function
+ * would be: Wa * 3 + Wb * 2
+ */
+public class LinearFitnessFunction implements FitnessFunction {
+
+    /**
+     * Link to the {@link DataHandler} instance, where this will check the exam schedule and constrictions.
+     */
     private DataHandler dataHandler;
+
+    /**
+     * Instance of {@code CromosomeDecoder}
+     */
     private CromosomeDecoder decoder;
 
 
-    public FitnessFunctionImpl(DataHandler dataHandler){
+    /**
+     * Constructor for the class
+     * @param dataHandler Instance where the function will check the exam schedule and constrictions.
+     */
+    public LinearFitnessFunction(DataHandler dataHandler){
         this.decoder = new CromosomeDecoder();
         this.dataHandler = dataHandler;
     }
@@ -42,6 +66,11 @@ public class FitnessFunctionImpl implements FitnessFunction {
         return formula(counter);
     }
 
+    /**
+     * Linear formula for the fitness function.
+     * @param counter Object with the count of how many times each constriction type was ons satisfied.
+     * @return the final fitness value.
+     */
     private double formula(ConstrictionCounter counter) {
         WeightConfigurer wc = dataHandler.getConfigurer().getWeightConfigurer();
 
