@@ -2,6 +2,7 @@ package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
+import domain.constrictions.types.examDependant.DayBannedConstriction;
 import domain.constrictions.types.examDependant.SameDayConstriction;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Row;
@@ -9,6 +10,9 @@ import org.apache.poi.ss.usermodel.Row;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is the parser for {@link SameDayConstriction}
+ */
 public class SameDayConstrictionParserTool implements ConstrictionParserTool{
     @Override
     public Constriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler){

@@ -2,10 +2,14 @@ package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
+import domain.constrictions.types.examDependant.DayBannedConstriction;
 import domain.constrictions.types.examDependant.TimeDisplacementConstriction;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Row;
 
+/**
+ * This is the parser for {@link TimeDisplacementConstriction}
+ */
 public class TimeDisplacementConstrictionParserTool implements ConstrictionParserTool {
 
 
@@ -13,8 +17,7 @@ public class TimeDisplacementConstrictionParserTool implements ConstrictionParse
     public Constriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
         Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
-        Constriction constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),
+        return new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),
                 dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
-        return constriction;
     }
 }

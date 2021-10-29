@@ -4,17 +4,23 @@ import geneticAlgorithm.Individual;
 import fitnessFunctions.FitnessFunction;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class ReplacementOperatorImpl implements ReplacementOperator {
 
+    /**
+     * This implementation takes the individuals with higher fitness for theh next generations.
+     * @param prevGeneration Individuals of the previous generation.
+     * @param childs Individuals created by crossing the individuals in {@code prevGeneration}.
+     * @param fitnessFunction The fitness function of the algorithm.
+     * @return The new generation of Individuals.
+     */
     @Override
     public List<Individual> doReplacement(List<Individual> prevGeneration, List<Individual> childs,
                                           FitnessFunction fitnessFunction) {
 
-        List<Individual> replacements = new ArrayList<>();
+        List<Individual> replacements;
 
         List<Individual> tmp = new ArrayList<>();
 
@@ -22,13 +28,7 @@ public class ReplacementOperatorImpl implements ReplacementOperator {
         tmp.addAll(prevGeneration);
 
 
-        Collections.sort(tmp, new Comparator<Individual>() {
-            @Override
-            public int compare(Individual c1, Individual c2) {
-                return Double.compare(c1.getFitnessScore(fitnessFunction),
-                        c2.getFitnessScore(fitnessFunction));
-            }
-        });
+        tmp.sort(Comparator.comparingDouble(c -> c.getFitnessScore(fitnessFunction)));
 
     /*
         Individual survivor1 = tmp.get(0);

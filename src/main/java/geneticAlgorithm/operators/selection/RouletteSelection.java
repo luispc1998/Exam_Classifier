@@ -7,15 +7,35 @@ import random.RandomGenerator;
 
 import java.util.List;
 
+/**
+ * This is an implementation of the Roulette Selection algorithm.
+ */
 public class RouletteSelection implements SelectionOperator {
 
+    /**
+     * Maximum number of times this selector should be called.
+     */
     private int maxPairs;
 
 
-    public RouletteSelection(int i) {
-        this.maxPairs = i;
+    /**
+     * Constructor for the class
+     * @param maxPairs Maximum number of times this selector should be called.
+     */
+    public RouletteSelection(int maxPairs) {
+        this.maxPairs = maxPairs;
     }
 
+    /**
+     * Implementation of the Roulette Selection algorithm.
+     *
+     * <p>
+     * This algorithm prioritizes the individuals with most fitness value. In our case the values to
+     * be used are f(x) = 1 / fitnessValueOfTheIndividual.
+     * @param population The population of individuals.
+     * @param fitnessFunction The fitness function of the algorithm.
+     * @return An individual of the population.
+     */
     @Override
     public Individual selection(List<Individual> population, FitnessFunction fitnessFunction) {
 
@@ -59,6 +79,7 @@ public class RouletteSelection implements SelectionOperator {
         return selected;
     }
 
+    @Override
     public void reset(){
 
     }

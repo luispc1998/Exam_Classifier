@@ -39,7 +39,7 @@ public class CromosomeDecoder {
         List<LocalDate> dates = dateTimeConfigurer.getExamDates();
         Iterator<LocalDate> datesIterator = dates.listIterator();
 
-        List<Integer> cromosome = individual.getCromosome();
+        List<Integer> cromosome = individual.getChromosome();
 
         List<Exam> exams = getExamsOrderedForCromosome(cromosome, dataHandler);
         Iterator<Exam> examsIterator = exams.listIterator();
@@ -118,7 +118,7 @@ public class CromosomeDecoder {
         HashMap<LocalDate, LocalTime> daysTimes = initializeDays(dateTimeConfigurer);
 
         // Exams to schedule
-        List<Integer> cromosome = individual.getCromosome();
+        List<Integer> cromosome = individual.getChromosome();
         List<Exam> exams = getExamsOrderedForCromosome(cromosome, dataHandler);
         Iterator<Exam> examsIterator = exams.listIterator();
 

@@ -1,26 +1,61 @@
 package geneticAlgorithm;
 
-import domain.entities.Exam;
 import fitnessFunctions.FitnessFunction;
-import fitnessFunctions.greedyAlgorithm.CromosomeDecoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This represents each of the members of the population for the {@link GeneticCore}
+ *
+ * <p>
+ * The main purpose of this class is to contain the {@code chromosome} and provide methods to
+ * get its {@code fitnessScore}
+ *
+ * <p>
+ * There are many functionalities  that work over Individuals.
+ *
+
+ * @see Enconder
+ * @see GeneticCore
+ * @see fitnessFunctions.greedyAlgorithm.CromosomeDecoder
+ */
 public class Individual {
 
-    private List<Integer> cromosome;
+    /**
+     * List of integer representing a state of the problem.
+     *
+     * @see Enconder
+     */
+    private List<Integer> chromosome;
 
-    public Individual(List<Integer> cromosome) {
-        this.cromosome = new ArrayList<>(cromosome);
-    }
-
-    public List<Integer> getCromosome() {
-        return new ArrayList<>(cromosome);
-    }
-
+    /**
+     * Fitness Score assigned to this individual. Null if not computed yet.
+     */
     private Double fitnessScore;
 
+    /**
+     * Constructor for the class
+     * @param chromosome List of integer representing a state of the problem.
+     */
+    public Individual(List<Integer> chromosome) {
+        this.chromosome = new ArrayList<>(chromosome);
+    }
+
+    /**
+     * Returns the {@code chromosome}
+     * @return The {@code chromosome}
+     */
+    public List<Integer> getChromosome() {
+        return new ArrayList<>(chromosome);
+    }
+
+
+    /**
+     * Returns the fitness score of the Individual
+     * @param fitnessFunction In case {@code fitnessScore} is not computed. It is computed with this function.
+     * @return the value of {@code fitnessScore} for the indivial.
+     */
     public double getFitnessScore(FitnessFunction fitnessFunction) {
         if (fitnessScore == null) {
             fitnessScore = fitnessFunction.apply(this);
@@ -34,12 +69,12 @@ public class Individual {
             return false;
         }
         Individual idv = (Individual) obj;
-        if (((Individual) obj).getCromosome().size() != getCromosome().size()) {
+        if (((Individual) obj).getChromosome().size() != getChromosome().size()) {
             return false;
         }
 
-        for (int i = 0; i < getCromosome().size(); i++) {
-            if (getCromosome().get(i).equals(idv.getCromosome().get(i))){
+        for (int i = 0; i < getChromosome().size(); i++) {
+            if (getChromosome().get(i).equals(idv.getChromosome().get(i))){
                 return false;
             }
         }
@@ -53,10 +88,12 @@ public class Individual {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Individual: [" );
-        for (int i = 0; i < cromosome.size()-1; i++) {
-            sb.append(cromosome.get(i) + ", ");
+        for (int i = 0; i < chromosome.size()-1; i++) {
+            sb.append(chromosome.get(i));
+            sb.append(", ");
         }
-        sb.append(cromosome.get(cromosome.size()-1) + "]");
+        sb.append(chromosome.get(chromosome.size()-1));
+        sb.append("]");
         return sb.toString();
     }
 

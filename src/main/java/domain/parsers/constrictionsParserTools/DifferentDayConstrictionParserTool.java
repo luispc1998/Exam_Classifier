@@ -2,10 +2,14 @@ package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
+import domain.constrictions.types.examDependant.DayBannedConstriction;
 import domain.constrictions.types.examDependant.DifferentDayConstriction;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Row;
 
+/**
+ * This is the parser for {@link DifferentDayConstriction}
+ */
 public class DifferentDayConstrictionParserTool implements ConstrictionParserTool {
 
     @Override
