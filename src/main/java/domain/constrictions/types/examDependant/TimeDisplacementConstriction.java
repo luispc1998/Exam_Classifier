@@ -71,6 +71,19 @@ public class TimeDisplacementConstriction extends AbstractConstriction {
             return false;
         }
 
+        int index = Math.abs(calendar.indexOf(second.getDate()) - calendar.indexOf(first.getDate()));
+
+        if (index<= distanceInDays){
+            setLastEvaluation(true);
+            return true;
+        }
+        else {
+            counter.count(this);
+            setLastEvaluation(false);
+            return false;
+        }
+
+        /*
         LocalDate limitDate = first.getDate().plusDays(distanceInDays);
 
         if(limitDate.isBefore(second.getDate()) || limitDate.equals(second.getDate())){
@@ -80,6 +93,8 @@ public class TimeDisplacementConstriction extends AbstractConstriction {
         }
         setLastEvaluation(true);
         return true;
+        */
+
 
 /* Old implementation
         long hi =  Duration.between(first.getDate().atStartOfDay(), second.getDate().atStartOfDay()).toDays();
