@@ -406,4 +406,7 @@ public class Exam {
     public int getCourse() {
         return course;
     }
+
+    public int getId() { return id;
+    }
 }

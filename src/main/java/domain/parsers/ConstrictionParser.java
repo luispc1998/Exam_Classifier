@@ -20,10 +20,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This parses from the input excel file the constrictions stated by the user.
+ */
 public class ConstrictionParser {
 
+    /**
+     * Dinamic counter that states if lines should be jumped.
+     *
+     * Its value is changed dynamically.
+     */
     private static int jumpLines = 0;
+
+    /**
+     * Attribute to state which is the first column of the excel.
+     *
+     * It is needed in case all the tables are not stuck to the first column.
+     */
     private final static int baseExcelColumn = 1;
+
+    /**
+     * Current {@code ConstrictionParserTool} being in use.
+     *
+     * @see ConstrictionParserTool
+     */
     private static ConstrictionParserTool parserTool;
 
 
@@ -36,7 +56,13 @@ public class ConstrictionParser {
 
     }
 
-
+    /**
+     * Method to parse the {@code Constriction} objects from the excel.
+     * @param filepath The input data excel filepath.
+     * @param dataHandler The current dataHandler instance being use
+     * @return The {@code List} of {@code Constriction} parsed from the excel.
+     * @throws IOException In case there are any problems when accesing the excel.
+     */
     public static List<Constriction> parseConstrictions(String filepath, DataHandler dataHandler) throws IOException {
         List<Constriction> constrictions = new ArrayList<>();
 
@@ -58,7 +84,7 @@ public class ConstrictionParser {
 
                 if (shouldBeJumped(row)) continue;
 
-                if (isSwapNeeded(row.getCell(baseExcelColumn), dataHandler)){
+                if (isAToolSwapNeeded(row.getCell(baseExcelColumn), dataHandler)){
                     swapTool(row, sheet.getRow(row.getRowNum() + 1), sheet.getRow(row.getRowNum() + 2));
                     jumpLines = 2;
                 }
@@ -85,6 +111,11 @@ public class ConstrictionParser {
         return constrictions;
     }
 
+    /**
+     * Checks wheter the row it's an empty line or it was stated that should be jumped.
+     * @param row The row that we are currently checking.
+     * @return true if it should be jumped, false otherwise.
+     */
     private static boolean shouldBeJumped(Row row) {
         if (jumpLines > 0 || row.getCell(baseExcelColumn) == null) {
             jumpLines--;
@@ -99,6 +130,12 @@ public class ConstrictionParser {
 
     }
 
+    /** TODO, decripciones y headers todavía no se guardan.
+     * Method to change the parsing type of Cosntriction when detecting it on the Excel.
+     * @param constrictionIdRow The row with the constriction data
+     * @param constrictionDescription The row with the constriction description
+     * @param constrictionHeaders The row with the constriction headers
+     */
     private static void swapTool(Row constrictionIdRow, Row constrictionDescription, Row constrictionHeaders) {
 
         switch (constrictionIdRow.getCell(baseExcelColumn).getStringCellValue()){
@@ -123,7 +160,13 @@ public class ConstrictionParser {
         }
     }
 
-    private static boolean isSwapNeeded(Cell cell, DataHandler dataHandler) {
+    /**
+     * Checks whether it is needed to change the {@code ConstrictionParserTool}.
+     * @param cell Excel cell.
+     * @param dataHandler Current dataHandler.
+     * @return true if it is needed to change the tool, false otherwise.
+     */
+    private static boolean isAToolSwapNeeded(Cell cell, DataHandler dataHandler) {
         try {
             String value = cell.getStringCellValue();
             return dataHandler.getConfigurer().existsConstrinctionID(value);
@@ -132,6 +175,9 @@ public class ConstrictionParser {
             return false;
         }
     }
+
+
+    /* Outdated
 
     private static Constriction generateConstriction(Row row, int i, DataHandler dataHandler) {
         Constriction constriction = null;
@@ -169,5 +215,7 @@ public class ConstrictionParser {
 
 
     }
+
+     */
 
 }

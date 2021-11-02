@@ -10,10 +10,19 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * This parses the exams from the Excel input file. It also writes the schedule to the ouput file.
+ */
 public class ExamParser {
 
+    /**
+     * Index of rows that contain vital information of the exam.
+     */
     private final static int[] vitalCells = {0, 1, 2, 3, 4, 5, 6, 7, 9};
 
+    /**
+     * Constant to store the name of the Excel headers.
+     */
     private final static String[] excelHeaders = {
             "Curso",
             "Sem",
@@ -34,6 +43,12 @@ public class ExamParser {
     };
 
 
+    /**
+     * Parsing method of the exams
+     * @param filepath The input Excel file
+     * @return A {@code List} of parsed {@code Exam}
+     * @throws IOException In case Excel reading fails
+     */
     public static List<Exam> parseExams(String filepath) throws IOException {
         List<Exam> exams = new ArrayList<>();
         FileInputStream fis;
@@ -41,7 +56,7 @@ public class ExamParser {
         try {
 
 
-            fis = new FileInputStream(new File(filepath));
+            fis = new FileInputStream(filepath);
             //creating workbook instance that refers to .xls file
             workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheetAt(0);
@@ -71,7 +86,12 @@ public class ExamParser {
         return exams;
     }
 
-
+    /**
+     * Generates an exam based of a row.
+     * @param row The row with the exm data.
+     * @param i The index of the row.
+     * @return The {@code Exam object parsed}
+     */
     private static Exam generateExam(Row row, int i) {
         Exam exam = null;
 
@@ -108,13 +128,18 @@ public class ExamParser {
         return exam;
     }
 
+    /**
+     * Checks if an exam is already classified.
+     * @param row The row of the exam
+     * @return true if the exam was classified, false otherwise.
+     */
     private static boolean checkForAlreadyClassifiedExam(Row row) {
 
         if (row.getCell(10) != null && row.getCell(12) != null) {
             try {
-                if (row.getCell(10).getDateCellValue().equals("") ||  row.getCell(12).getNumericCellValue() == 0) {
+                if (row.getCell(10).getDateCellValue().toString().equals("") ||  row.getCell(12).getNumericCellValue() == 0) {
                     return false;
-                };
+                }
                 return true;
             } catch (Exception e){
                 return false;
@@ -124,6 +149,11 @@ public class ExamParser {
         return false;
     }
 
+    /**
+     * Checks that all the rows that are needed for the exam instance are in place.
+     * @param row The row with the exam data
+     * @param lineNumber The line number of the row.
+     */
     private static void checkVitalRowData(Row row, int lineNumber) {
 
         for (Integer i: vitalCells) {
@@ -148,9 +178,12 @@ public class ExamParser {
     }
 
 
-
-
-
+    /**
+     * Parses the exam schedule to an Excel file.
+     * @param exams The exam schedule
+     * @param filepath The output file path
+     * @throws IOException In case there is a problem when writing the excel.
+     */
     public static void parseToExcel(List<Exam> exams, String filepath) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Test");
@@ -194,6 +227,10 @@ public class ExamParser {
         }
     }
 
+    /**
+     * Writes the headers row for the excel file
+     * @param row The row at which the Headers will be written.
+     */
     private static void writeHeaders(Row row) {
         int cellCount = 0;
         for (String header : excelHeaders) {
