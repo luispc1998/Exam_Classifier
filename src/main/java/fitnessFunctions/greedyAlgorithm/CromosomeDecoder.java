@@ -26,6 +26,7 @@ public class CromosomeDecoder {
 
         return exams;
     }
+/* Old approach. Sequential.
 
     public void decode2(Individual individual, DataHandler dataHandler){
 
@@ -62,7 +63,7 @@ public class CromosomeDecoder {
                 }
                 else {
                     break;
-                    // TODO, what happens if i run out of days ?
+                    // tod, what happens if i run out of days ?
                     // I can do nothing, for now. Maybe some fixes later.
                 }
             }
@@ -90,7 +91,7 @@ public class CromosomeDecoder {
         } while(true);
       
     }
-
+*/
 
     private HashMap<LocalDate, LocalTime> initializeDays(DateTimeConfigurer dateTimeConfigurer) {
         HashMap<LocalDate, LocalTime> daysTimes = new HashMap<>();
@@ -124,9 +125,6 @@ public class CromosomeDecoder {
 
         // Fin de la declaración de variables.
 
-
-        //TODO Ordenar las fechas por si no lo están
-
         // Miramos que tengamos días y exámenes para clasificar o acabamos.
 
 
@@ -146,7 +144,7 @@ public class CromosomeDecoder {
             // Se se me acaban los exámenes, fin.
             int allDayCheck = 0;
             currentHour = daysTimes.get(currentDate);
-            while (! dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration())) {
+            while (! dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration(), exam.getExtraTime())) {
                 indexDate = updateIndex(indexDate, dates.size());
                 currentDate = dates.get(indexDate);
                 currentHour = dateTimeConfigurer.getDayInitialHour();
@@ -175,7 +173,7 @@ public class CromosomeDecoder {
                 // Pasamos de nuevo arriba para ver si la hora de finalización es válida.
             }
 
-            Exam collidingExam = dataHandler.checkColisionOf(currentDate, currentHour, exam.getDuration());
+            Exam collidingExam = dataHandler.checkCollisionOf(currentDate, currentHour, exam.getDuration(), exam.getExtraTime());
             // Sí. Lo clasifico
             // No. Necesito la hora de finalización del otro examen. Y pruebo con esa.
 

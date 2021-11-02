@@ -59,7 +59,7 @@ public class DataHandler {
         this.preScheduledExams = new HashSet<>();
 
         String inputDataFile = configurer.getFilePaths("inputFile");
-        this.exams = ExamParser.parseExams(inputDataFile);
+        this.exams = ExamParser.parseExams(inputDataFile, this);
         identifyScheduledExams();
 
 
@@ -140,17 +140,18 @@ public class DataHandler {
     }
 
 
-    /** TODO, TIEMPO EXTRA
+    /**
      * Checks if a new schedule is possible or it collides with something already scheduled.
      * @param currentDate The new date of the task.
      * @param currentHour The initial hour of the task.
-     * @param duration The duration of the task.
+     * @param examDuration The duration of the task.
+     * @param extraTime Extra time for the exam.
      * @return The instance that collides with the provided options. Null if there is no collision.
      */
-    public Exam checkColisionOf(LocalDate currentDate, LocalTime currentHour, Duration duration) {
+    public Exam checkCollisionOf(LocalDate currentDate, LocalTime currentHour, Duration examDuration, Duration extraTime) {
         for (Exam exam: exams) {
             if (exam.isScheduled()){
-                if (exam.willCollideWith(currentDate,currentHour,duration)){
+                if (exam.willCollideWith(currentDate,currentHour,examDuration, extraTime)){
                     return exam;
                 }
             }

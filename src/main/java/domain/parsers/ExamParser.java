@@ -1,11 +1,13 @@
 package domain.parsers;
 
+import domain.DataHandler;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -19,6 +21,16 @@ public class ExamParser {
      * Index of rows that contain vital information of the exam.
      */
     private final static int[] vitalCells = {0, 1, 2, 3, 4, 5, 6, 7, 9};
+
+    /**
+     * Date column of the excel.
+     */
+    private final static int dateCol = 10;
+
+    /**
+     * Duration column of the excel.
+     */
+    private final static int durationCol = 12;
 
     /**
      * Constant to store the name of the Excel headers.
@@ -49,7 +61,7 @@ public class ExamParser {
      * @return A {@code List} of parsed {@code Exam}
      * @throws IOException In case Excel reading fails
      */
-    public static List<Exam> parseExams(String filepath) throws IOException {
+    public static List<Exam> parseExams(String filepath, DataHandler dataHandler) throws IOException {
         List<Exam> exams = new ArrayList<>();
         FileInputStream fis;
         Workbook workbook;
@@ -63,7 +75,7 @@ public class ExamParser {
 
             Map<Integer, List<String>> data = new HashMap<>();
             int i = 0;
-            int jumpLines = 4;
+            int jumpLines = 5;
 
             for (Row row : sheet) {
                 if (jumpLines > 0) {
@@ -72,7 +84,7 @@ public class ExamParser {
                     continue;
                 }
 
-                Exam exam = generateExam(row, i);
+                Exam exam = generateExam(row, i, dataHandler);
                 if (exam == null) {
                     System.out.println("Línea " + i + " saltada. No fue posible parsear el examen");
                     continue;
@@ -92,11 +104,11 @@ public class ExamParser {
      * @param i The index of the row.
      * @return The {@code Exam object parsed}
      */
-    private static Exam generateExam(Row row, int i) {
+    private static Exam generateExam(Row row, int i, DataHandler dataHandler) {
         Exam exam = null;
 
         try {
-            checkVitalRowData(row, i);
+            //checkVitalRowData(row, i);
 
             exam = new Exam((int) row.getCell(0).getNumericCellValue(),
                     (int) row.getCell(1).getNumericCellValue(),
@@ -108,13 +120,20 @@ public class ExamParser {
                     row.getCell(7).getStringCellValue(),
                     (int) row.getCell(8).getNumericCellValue(),
                     row.getCell(9).getNumericCellValue(),
-                    (int) row.getCell(14).getNumericCellValue(),
-                    (int) row.getCell(15).getNumericCellValue());
+                    (int) row.getCell(15).getNumericCellValue(),
+                    (int) row.getCell(16).getNumericCellValue());
 
 
             if (checkForAlreadyClassifiedExam(row)) {
                 exam.setDate(row.getCell(10).getDateCellValue());
                 exam.setHour(row.getCell(12).getNumericCellValue());
+            }
+
+            if (row.getCell(14) != null) { //TODO, por defecto tengo un 0.
+                exam.setExtraTimeFromExcel(row.getCell(14).getNumericCellValue());
+            }
+            else {
+                exam.setExtraTime(dataHandler.getConfigurer().getDateTimeConfigurer().getDefaultExamExtraMinutes());
             }
 
 

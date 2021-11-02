@@ -124,6 +124,9 @@ public class DateTimeConfigurer {
             }
             System.out.println("Fechas creadas: " + i);
 
+            //It is important to sort the dates. Later it will be assumed that they are sorted.
+            examDates.sort(LocalDate::compareTo);
+
         } finally {}
     }
 
@@ -164,13 +167,13 @@ public class DateTimeConfigurer {
      * This implies both not to end after the day ending hour, but also not to start
      * before the day initial hour.
      * <p>
-     * @param examStartHour The starting hour for the exam
-     * @param examDuration The duration of the exam
+     * @param examStartHour The starting hour for the exam.
+     * @param examDuration The duration of the exam.
+     * @param extraExamTime The extra time assigned for the exam.
      * @return True if is a valid hour, false otherwise.
      */
-    public boolean isValidEndingHourFor(LocalTime examStartHour, Duration examDuration) {
-        //TODO, debería estar considerando el tiempo extra aquí.
-        LocalTime finalHour = examStartHour.plus(examDuration);
+    public boolean isValidEndingHourFor(LocalTime examStartHour, Duration examDuration, Duration extraExamTime) {
+        LocalTime finalHour = examStartHour.plus(examDuration).plus(extraExamTime);
         return (getDayEndingHour().isAfter(finalHour) ||
                 getDayEndingHour().equals(finalHour)) &&
 
@@ -180,7 +183,7 @@ public class DateTimeConfigurer {
     }
 
     /**
-     * Returns the list of possible dates for the exams
+     * Returns the list of possible dates for the exams.
      * @return the list of possible exam dates.
      */
     public ArrayList<LocalDate> getExamDates() {
@@ -213,7 +216,6 @@ public class DateTimeConfigurer {
      * @return an extra Duration for the exams.
      */
     public Duration getDefaultExamExtraMinutes() {
-        //TODO por qué está esto sin usar?
         return defaultExamExtraMinutes;
     }
 }

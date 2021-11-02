@@ -28,7 +28,7 @@ public class Exam {
     /**
      * Extra time to be added at the end of the exam.
      */
-    private Duration extraTime; //TODO esto hay que usarlo, definirlo, inicializarlo
+    private Duration extraTime;
 
     /**
      * Course of the subject to which the exams belongs.
@@ -241,7 +241,7 @@ public class Exam {
      * Returns the extra time for the exam.
      * @return the extra time for the exam
      */
-    public Duration getExtraTime() { //TODO, esto debería utilizarse
+    public Duration getExtraTime() {
         return extraTime;
     }
 
@@ -271,6 +271,7 @@ public class Exam {
     public void setHour(double excelHour) {
         this.initialHour = LocalTime.ofSecondOfDay((long) (excelHour * 3600 * 24));
     }
+
 
     /**
      * Returns the code of the exam.
@@ -306,19 +307,20 @@ public class Exam {
         if (initialHour == null){
             return null;
         }
-        return getInitialHour().plus(getDuration()).plus(extraTime);
+        return getInitialHour().plus(getDuration()).plus(getExtraTime());
     }
 
-    /** //TODO, tiempo extra?
-     * Checks if this will collide in the schedule with the provided data
-     * @param currentDate
-     * @param currentHour
-     * @param duration
-     * @return
+    /**
+     * Checks wether the input parameters for an exam will provoke a collision with this.
+     * @param currentDate The date of the new scheduled exam.
+     * @param currentHour The initialHour of the new scheduled exam.
+     * @param examDuration The duration of the new scheduled exam.
+     * @param extraTime The extraTime of the new scheduled exam.
+     * @return true if there will be a collision, false otherwise.
      */
-    public boolean willCollideWith(LocalDate currentDate, LocalTime currentHour, Duration duration) {
+    public boolean willCollideWith(LocalDate currentDate, LocalTime currentHour, Duration examDuration, Duration extraTime) {
         if (isScheduled()){
-            LocalTime endingCurrentTime= currentHour.plus(duration);
+            LocalTime endingCurrentTime= currentHour.plus(examDuration).plus(extraTime);
             return getDate().atStartOfDay().equals(currentDate.atStartOfDay()) &&
                     ( currentHour.isAfter(initialHour) && currentHour.isBefore(getFinishingHour()) ||
                             endingCurrentTime.isAfter(initialHour) && endingCurrentTime.isBefore(getFinishingHour()));
@@ -407,6 +409,26 @@ public class Exam {
         return course;
     }
 
+    /**
+     * Returns the id of the exam.
+     * @return The id of the exam.
+     */
     public int getId() { return id;
+    }
+
+    /**
+     * Sets an Excel extra time to the  object
+     * @param excelExtraTime The extra time in excel format.
+     */
+    public void setExtraTimeFromExcel(double excelExtraTime) {
+        this.extraTime = Duration.ofMinutes(transformDuration(excelExtraTime));
+    }
+
+    /**
+     * Sets extra time to the object
+     * @param extraTime The extra time.
+     */
+    public void setExtraTime(Duration extraTime) {
+        this.extraTime = Duration.from(extraTime);
     }
 }
