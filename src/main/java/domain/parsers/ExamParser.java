@@ -50,6 +50,7 @@ public class ExamParser {
             "Día",
             "Ini",
             "Fin",
+            "Extra time",
             "CN",
             "ID"
     };
@@ -129,7 +130,8 @@ public class ExamParser {
                 exam.setHour(row.getCell(12).getNumericCellValue());
             }
 
-            if (row.getCell(14) != null) { //TODO, por defecto tengo un 0.
+            if (row.getCell(14) != null && row.getCell(14).getNumericCellValue() >= 0) { //TOD, por defecto tengo un 0.
+                                                                                            // Tengo que poner un número negativo en el excel.
                 exam.setExtraTimeFromExcel(row.getCell(14).getNumericCellValue());
             }
             else {
@@ -156,10 +158,7 @@ public class ExamParser {
 
         if (row.getCell(10) != null && row.getCell(12) != null) {
             try {
-                if (row.getCell(10).getDateCellValue().toString().equals("") ||  row.getCell(12).getNumericCellValue() == 0) {
-                    return false;
-                }
-                return true;
+                return !row.getCell(10).getDateCellValue().toString().equals("") && row.getCell(12).getNumericCellValue() != 0;
             } catch (Exception e){
                 return false;
             }
@@ -222,8 +221,9 @@ public class ExamParser {
                     case 1:
                     case 5:
                     case 8:
-                    case 14:
+                    //case 14:
                     case 15:
+                    case 16:
                         cell.setCellValue((int) att);
                         break;
                     case 10: //date

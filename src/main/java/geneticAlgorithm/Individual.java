@@ -4,6 +4,7 @@ import fitnessFunctions.FitnessFunction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This represents each of the members of the population for the {@link GeneticCore}
@@ -63,25 +64,24 @@ public class Individual {
         return fitnessScore;
     }
 
+
     @Override
     public boolean equals(Object obj){
         if (! (obj instanceof Individual)) {
             return false;
         }
         Individual idv = (Individual) obj;
-        if (((Individual) obj).getChromosome().size() != getChromosome().size()) {
+        if (idv.getChromosome().size() != getChromosome().size()) {
             return false;
         }
 
         for (int i = 0; i < getChromosome().size(); i++) {
-            if (getChromosome().get(i).equals(idv.getChromosome().get(i))){
+            if (! getChromosome().get(i).equals(idv.getChromosome().get(i))){
                 return false;
             }
         }
 
         return true;
-
-
     }
 
     @Override

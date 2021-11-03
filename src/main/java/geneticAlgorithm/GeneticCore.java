@@ -205,4 +205,12 @@ public class GeneticCore {
             }
         }
     }
+
+    /**
+     * Returns the current population.
+     * @return The current population.
+     */
+    public List<Individual> getPopulation(){
+        return population;
+    }
 }

@@ -310,6 +310,13 @@ public class Exam {
         return getInitialHour().plus(getDuration()).plus(getExtraTime());
     }
 
+    private LocalTime getFinisingHourWithoutExtraTime() {
+        if (initialHour == null){
+            return null;
+        }
+        return getInitialHour().plus(getDuration());
+    }
+
     /**
      * Checks wether the input parameters for an exam will provoke a collision with this.
      * @param currentDate The date of the new scheduled exam.
@@ -368,7 +375,7 @@ public class Exam {
      */
     public Object[] getAttributes() {
 
-        Object[] attributes = new Object[16];
+        Object[] attributes = new Object[17];
 
         long s = duration.toSeconds();
 
@@ -384,10 +391,11 @@ public class Exam {
         attributes[9] = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
         attributes[10] = date;
         attributes[11] = getWeekDayString();
-        attributes[12] = getInitialHour() == null ? "" : formatStringForHour(getInitialHour().toSecondOfDay());
-        attributes[13] = getFinishingHour() == null ? "" : formatStringForHour(getFinishingHour().toSecondOfDay());
-        attributes[14] = cn;
-        attributes[15] = id;
+        attributes[12] = getInitialHour() == null ? "" : formatStringForHour((long) getInitialHour().toSecondOfDay());
+        attributes[13] = getFinisingHourWithoutExtraTime() == null ? "" : formatStringForHour((long) getFinisingHourWithoutExtraTime().toSecondOfDay());
+        attributes[14] = getExtraTime() == null ? "" : formatStringForHour(getExtraTime().toSeconds());
+        attributes[15] = cn;
+        attributes[16] = id;
 
         return attributes;
     }
@@ -397,7 +405,7 @@ public class Exam {
      * @param seconds Integer representing seconds to be transformed.
      * @return an String of format hh:mm:ss equivalent to the provided {@code seconds}
      */
-    private String formatStringForHour(Integer seconds) {
+    private String formatStringForHour(Long seconds) {
         return String.format("%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, (seconds % 60));
     }
 

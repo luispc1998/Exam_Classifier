@@ -42,7 +42,6 @@ public class TimeDisplacementConstriction extends AbstractConstriction {
      */
     private long distanceInDays;
 
-    // TODO change behaviour to use the calendar positions.
     private List<LocalDate> calendar;
 
     /**
