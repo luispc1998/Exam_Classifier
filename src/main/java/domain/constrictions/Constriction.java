@@ -16,9 +16,15 @@ public interface Constriction {
     boolean isFulfilled(ConstrictionCounter counter);
 
     /**
-     * Returns the last result of {@code isFulfilled}
-     * @return the last evaluation of {@code isFulfilled}
+     * Returns the last result of {@code isFulfilled}.
+     * @return the last evaluation of {@code isFulfilled}.
      */
     boolean getLastEvaluation();
+
+    /**
+     * Returns the string id for the type of {@code Constriction}.
+     * @return The String id for the type of {@code Constriction}.
+     */
+    String getConstrictionID();
 
 }

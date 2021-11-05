@@ -198,12 +198,11 @@ public class ExamParser {
 
     /**
      * Parses the exam schedule to an Excel file.
-     * @param exams The exam schedule
-     * @param filepath The output file path
-     * @throws IOException In case there is a problem when writing the excel.
+     * @param exams The exam schedule.
+     * @param workbook The workbook where the exam scheduling must be written.
      */
-    public static void parseToExcel(List<Exam> exams, String filepath) throws IOException {
-        XSSFWorkbook workbook = new XSSFWorkbook();
+    public static void parseToExcel(List<Exam> exams, XSSFWorkbook workbook) {
+
         XSSFSheet sheet = workbook.createSheet("Test");
 
         int rowCount = 0;
@@ -239,9 +238,7 @@ public class ExamParser {
 
             }
 
-            try (FileOutputStream outputStream = new FileOutputStream(filepath)) {
-                workbook.write(outputStream);
-            }
+
 
         }
     }

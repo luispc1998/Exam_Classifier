@@ -47,4 +47,25 @@ public class OrderExamsConstriction extends AbstractConstriction {
         setLastEvaluation(true);
         return true;
     }
+
+    @Override
+    public String getConstrictionID() {
+        return CONSTRICTION_ID;
+    }
+
+    /**
+     * Returns the exam that must take place first.
+     * @return The exam that must take place first.
+     */
+    public Exam getFirst() {
+        return first;
+    }
+
+    /**
+     * Returns the exam that must take place after {@code first}.
+     * @return The exam that must take place after {@code first}.
+     */
+    public Exam getSecond() {
+        return second;
+    }
 }

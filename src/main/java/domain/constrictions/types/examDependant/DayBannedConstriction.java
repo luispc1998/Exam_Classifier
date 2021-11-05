@@ -52,5 +52,24 @@ public class DayBannedConstriction extends AbstractConstriction {
         return true;
     }
 
+    @Override
+    public String getConstrictionID() {
+        return CONSTRICTION_ID;
+    }
 
+    /**
+     * Returns the {@code Exam} that has the constriction.
+     * @return The {@code Exam} that has the constriction.
+     */
+    public Exam getExam() {
+        return exam;
+    }
+
+    /**
+     * Returns the day in  which the exam cannot take place.
+     * @return The day in which {@code exam} cannot take place.
+     */
+    public LocalDate getDayBanned() {
+        return dayBanned;
+    }
 }

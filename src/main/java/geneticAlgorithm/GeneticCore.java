@@ -83,7 +83,7 @@ public class GeneticCore {
      * @param fitnessFunction Fitness function to be used by the algorithm
      * @param maxIterations Maximum number of iterations that the algorithm will do.
      * @return The best individual
-     */ //TODO, return a list of different individuals whose index is the best as possible.
+     */
     public Individual geneticAlgorithm(double mutationProbability, FitnessFunction fitnessFunction, int maxIterations) {
 
         // Coger al mejor individuo y hacer la media del fitness para estudiar convergencia.

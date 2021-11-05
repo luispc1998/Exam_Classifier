@@ -11,6 +11,8 @@ import domain.constrictions.Constriction;
  */
 public abstract class AbstractConstriction implements Constriction {
 
+
+
     /**
      * Stores the value of the last evaluation of isFulfilled.
      * <p>
@@ -28,4 +30,6 @@ public abstract class AbstractConstriction implements Constriction {
     public boolean getLastEvaluation() {
         return lastEvaluation;
     }
+
+
 }

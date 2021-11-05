@@ -2,6 +2,8 @@ package domain;
 
 import configuration.Configurer;
 import domain.constrictions.Constriction;
+import domain.constrictions.counter.ConstrictionCounter;
+import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 import domain.entities.Exam;
@@ -12,10 +14,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This handles all the data. That is the list of exams, the configurations, etc.
@@ -192,5 +191,21 @@ public class DataHandler {
      */
     public void addConstriction(Constriction constriction) {
         constrictions.add(constriction);
+    }
+
+    public HashMap<String, List<Constriction>> verifyConstrictions() {
+        HashMap<String, List<Constriction>> verifiedConstrictions = new HashMap<>();
+        // TODO , silly counter, or another method.
+        ConstrictionCounter counter = new ConstrictionCounterImpl();
+
+        for (Constriction cons: constrictions) {
+            cons.isFulfilled(counter);
+            if (! verifiedConstrictions.containsKey(cons.getConstrictionID())) {
+                verifiedConstrictions.put(cons.getConstrictionID(), new ArrayList<>());
+            }
+            verifiedConstrictions.get(cons.getConstrictionID()).add(cons);
+        }
+
+        return verifiedConstrictions;
     }
 }

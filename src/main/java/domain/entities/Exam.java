@@ -393,7 +393,7 @@ public class Exam {
         attributes[11] = getWeekDayString();
         attributes[12] = getInitialHour() == null ? "" : formatStringForHour((long) getInitialHour().toSecondOfDay());
         attributes[13] = getFinisingHourWithoutExtraTime() == null ? "" : formatStringForHour((long) getFinisingHourWithoutExtraTime().toSecondOfDay());
-        attributes[14] = getExtraTime() == null ? "" : formatStringForHour(getExtraTime().toSeconds());
+        attributes[14] = getExtraTime() == null ? "-1" : formatStringForHour(getExtraTime().toSeconds());
         attributes[15] = cn;
         attributes[16] = id;
 

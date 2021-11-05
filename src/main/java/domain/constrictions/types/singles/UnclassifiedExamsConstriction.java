@@ -43,4 +43,9 @@ public class UnclassifiedExamsConstriction extends AbstractConstriction {
 
         return getLastEvaluation();
     }
+
+    @Override
+    public String getConstrictionID() {
+        return CONSTRICTION_ID;
+    }
 }

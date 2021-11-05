@@ -25,4 +25,30 @@ public interface ConstrictionParserTool {
      * @return A new {@code Constriction} parsed from {@code row}.
      */
     Constriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
+
+    /**
+     * Sets the description of this constriction in the excel.
+     * @param description The description of this constriction in the excel.
+     */
+    void setDescription(String description);
+
+    /**
+     * Gets the description of this constriction in the excel.
+     * @return The description for the type of constriction in the excel.
+     */
+    String getDescription();
+
+    /**
+     * Headers for this type of constriction in the excel
+     * @param headers Headers in the excel.
+     */
+    void setHeaders(String[] headers);
+
+    /**
+     * Gets the headers for this type of constriction in the excel.
+     * @return The headers to be written in the excel.
+     */
+    String[] getHeaders();
+
+    void writeConstriction(Constriction con, Row row, int baseExcelColumn);
 }

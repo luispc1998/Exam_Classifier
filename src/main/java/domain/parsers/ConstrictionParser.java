@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -40,6 +41,13 @@ public class ConstrictionParser {
     private final static int baseExcelColumn = 1;
 
     /**
+     * Attribute to state which is the first row of the excel.
+     *
+     * It is needed in case all the tables are not stuck to the first row.
+     */
+    private final static int baseExcelRow = 1;
+
+    /**
      * Current {@code ConstrictionParserTool} being in use.
      *
      * @see ConstrictionParserTool
@@ -47,6 +55,7 @@ public class ConstrictionParser {
     private static ConstrictionParserTool parserTool;
 
 
+    private static HashMap<String, ConstrictionParserTool> usedTools = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         Configurer conf = new Configurer("files");
@@ -143,21 +152,44 @@ public class ConstrictionParser {
                 TimeDisplacementConstriction.setClassDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 //TODO guardo las decripciones para ponerlas luego ?
                 parserTool = new TimeDisplacementConstrictionParserTool();
+                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1, baseExcelColumn + 2}));
+                usedTools.put(TimeDisplacementConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case SameDayConstriction.CONSTRICTION_ID:
                 parserTool = new SameDayConstrictionParserTool();
+                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1}));
+                usedTools.put(SameDayConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case DifferentDayConstriction.CONSTRICTION_ID:
                 parserTool = new DifferentDayConstrictionParserTool();
+                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1}));
+                usedTools.put(DifferentDayConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case OrderExamsConstriction.CONSTRICTION_ID:
                 parserTool = new OrderExamsConstrictionParserTool();
+                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1}));
+                usedTools.put(OrderExamsConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case DayBannedConstriction.CONSTRICTION_ID:
                 parserTool = new DayBannedConstrictionParserTool();
+                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1}));
+                usedTools.put(DayBannedConstriction.CONSTRICTION_ID, parserTool);
                 break;
-
         }
+
+    }
+
+    private static String[] getHeaders(Row row, int[] indexes) {
+        String[] result = new String[indexes.length];
+        for (int i = 0; i < indexes.length; i++) {
+            result[i] = row.getCell(indexes[i]).getStringCellValue();
+        }
+        return result;
     }
 
     /**
@@ -175,6 +207,50 @@ public class ConstrictionParser {
             return false;
         }
     }
+
+    public static void parseToExcel(HashMap<String, List<Constriction>> verifiedConstrictions, Workbook workbook) {
+
+            //creating workbook instance that refers to .xls file
+
+            Sheet sheet = workbook.createSheet("Restricciones");
+            int rowCount = 0;
+
+            for(Map.Entry<String, List<Constriction>> entry: verifiedConstrictions.entrySet()) {
+                if (usedTools.get(entry.getKey()) == null ){
+                    continue;
+                }
+                parserTool = usedTools.get(entry.getKey());
+
+                // Write ID
+                Row row = sheet.createRow(baseExcelRow + ++rowCount);
+                row.createCell(baseExcelColumn).setCellValue(entry.getKey());
+
+                // Write descriptions
+                row = sheet.createRow(baseExcelRow + ++rowCount);
+                row.createCell(baseExcelColumn).setCellValue(parserTool.getDescription());
+
+
+                // Write headers
+                int col = 0;
+                row = sheet.createRow(baseExcelRow + ++rowCount);
+                for (String header: parserTool.getHeaders()) {
+                    Cell cell = row.createCell(baseExcelColumn + col++);
+                    cell.setCellValue(header);
+                }
+
+                // Write data of the constrictions
+
+                for (Constriction con: entry.getValue()) {
+                    row = sheet.createRow(baseExcelRow + ++rowCount);
+                    parserTool.writeConstriction(con, row, baseExcelColumn);
+                }
+
+                ++rowCount;
+            }
+
+    }
+
+
 
 
     /* Outdated

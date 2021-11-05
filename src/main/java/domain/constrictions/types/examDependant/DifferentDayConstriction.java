@@ -46,4 +46,31 @@ public class DifferentDayConstriction extends AbstractConstriction {
         setLastEvaluation(true);
         return true;
     }
+
+    @Override
+    public String getConstrictionID() {
+        return CONSTRICTION_ID;
+    }
+
+    /**
+     * Returns {@code first}.
+     *
+     * <p>
+     * There is no order in which the exams must be.
+     * @return {@code first}.
+     */
+    public Exam getFirst() {
+        return first;
+    }
+
+    /**
+     * Returns {@code second}.
+     *
+     * <p>
+     * There is no order in which the exams must be.
+     * @return {@code second}.
+     */
+    public Exam getSecond() {
+        return second;
+    }
 }

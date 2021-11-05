@@ -51,5 +51,30 @@ public class SameDayConstriction extends AbstractConstriction {
         return true;
     }
 
+    @Override
+    public String getConstrictionID() {
+        return CONSTRICTION_ID;
+    }
 
+    /**
+     * Returns {@code first}.
+     *
+     * <p>
+     * There is no order in which the exams must be.
+     * @return {@code first}.
+     */
+    public Exam getFirst() {
+        return exams.get(0);
+    }
+
+    /**
+     * Returns {@code second}.
+     *
+     * <p>
+     * There is no order in which the exams must be.
+     * @return {@code second}.
+     */
+    public Exam getSecond() {
+        return exams.get(1);
+    }
 }

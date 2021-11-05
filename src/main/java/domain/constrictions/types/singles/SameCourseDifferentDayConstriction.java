@@ -81,4 +81,9 @@ public class SameCourseDifferentDayConstriction extends AbstractConstriction {
         if (occurrences == -1) throw new IllegalStateException("It is need to call isFulfilled at least once before calling this method..");
         return occurrences;
     }
+
+    @Override
+    public String getConstrictionID() {
+        return CONSTRICTION_ID;
+    }
 }

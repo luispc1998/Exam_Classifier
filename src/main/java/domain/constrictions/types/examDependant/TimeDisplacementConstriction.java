@@ -82,6 +82,7 @@ public class TimeDisplacementConstriction extends AbstractConstriction {
             return false;
         }
 
+
         /*
         LocalDate limitDate = first.getDate().plusDays(distanceInDays);
 
@@ -109,5 +110,32 @@ public class TimeDisplacementConstriction extends AbstractConstriction {
 
     }
 
+    @Override
+    public String getConstrictionID() {
+        return CONSTRICTION_ID;
+    }
 
+    /**
+     * Returns the exam that must take place first.
+     * @return The exam that must take place first.
+     */
+    public Exam getFirst() {
+        return first;
+    }
+
+    /**
+     * Returns the exam that must take place after {@code first}.
+     * @return The exam that must take place after {@code first}.
+     */
+    public Exam getSecond() {
+        return second;
+    }
+
+    /**
+     * Distance in calendar of {@code second} with respect to {@code first}.
+     * @return Distance in calendar of {@code second} with respect to {@code first}.
+     */
+    public long getDistanceInDays() {
+        return distanceInDays;
+    }
 }
