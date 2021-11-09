@@ -102,6 +102,9 @@ public class Exam {
      */
     private int id;
 
+    //Todo, referencia a las restricciones duras que deban considerarse a la hora de planificar este examen.
+
+
     /**
      * Constructor for the class with initial no scheduling information
      * @param course Course of the subject to which the exams belongs.
@@ -268,9 +271,11 @@ public class Exam {
      * Set {@code initialHour} to the new value. Transforms the Excel hour format into {@link LocalTime}
      * @param excelHour Initial hour for the exam in excel hour format.
      */
-    public void setHour(double excelHour) {
+    public void setHourFromExcel(double excelHour) {
         this.initialHour = LocalTime.ofSecondOfDay((long) (excelHour * 3600 * 24));
     }
+    
+    
 
 
     /**
@@ -438,5 +443,33 @@ public class Exam {
      */
     public void setExtraTime(Duration extraTime) {
         this.extraTime = Duration.from(extraTime);
+    }
+
+    /**
+     * Checks whether the exam takes place on the provided day or not.
+     * @param day The day in which we are checking if the exam is placed.
+     * @param interval The hour interval in which we are checking if the exam is placed.
+     * @return true if the exam takes place at {@code day}, false otherwise.
+     */
+    public boolean takesPlaceOn(LocalDate day, Interval interval) {
+        return isScheduled() && getDate().atStartOfDay().equals(day.atStartOfDay()) &&
+                (getInitialHour().equals(interval.getStart()) || getInitialHour().isAfter(interval.getStart()));
+
+    }
+
+    /**
+     * Returns the minimum space needed in the timetable for the exam.
+     * @return The total time consumed by the exam in the timetable.
+     */
+    public Duration getChunkOfTime(){
+        return getDuration().plus(getExtraTime());
+    }
+
+    /**
+     * Sets the initial hour of the exam to the one passed as parameter.
+     * @param newInitialhour New value for the {@code initialHour}
+     */
+    public void setInitialHour(LocalTime newInitialhour) {
+        this.initialHour = newInitialhour;
     }
 }

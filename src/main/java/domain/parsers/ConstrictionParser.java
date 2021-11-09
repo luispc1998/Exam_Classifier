@@ -99,6 +99,8 @@ public class ConstrictionParser {
                 }
                 else{
                     constrictions.add(parserTool.parseConstriction(row, baseExcelColumn, dataHandler));
+
+                    //TODO, si ese tipo de restricción está en modo duro aquí debo añadirla a sus exámenes.
                     i++;
                 }
                 /*

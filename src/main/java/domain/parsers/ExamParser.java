@@ -7,7 +7,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -127,7 +126,7 @@ public class ExamParser {
 
             if (checkForAlreadyClassifiedExam(row)) {
                 exam.setDate(row.getCell(10).getDateCellValue());
-                exam.setHour(row.getCell(12).getNumericCellValue());
+                exam.setHourFromExcel(row.getCell(12).getNumericCellValue());
             }
 
             if (row.getCell(14) != null && row.getCell(14).getNumericCellValue() >= 0) { //TOD, por defecto tengo un 0.

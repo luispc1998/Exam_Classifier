@@ -7,6 +7,7 @@ import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
 import domain.entities.Exam;
+import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 
@@ -193,6 +194,10 @@ public class DataHandler {
         constrictions.add(constriction);
     }
 
+    /**
+     * Recomputes the result of all the constrictions over the current schedule
+     * @return A {@code HashMap} being the keys the constrictions ids, and the values a list of that type of constriction.
+     */
     public HashMap<String, List<Constriction>> verifyConstrictions() {
         HashMap<String, List<Constriction>> verifiedConstrictions = new HashMap<>();
         // TODO , silly counter, or another method.
@@ -207,5 +212,15 @@ public class DataHandler {
         }
 
         return verifiedConstrictions;
+    }
+
+    public List<Exam> getExamsAt(LocalDate day, Interval interval) {
+        List<Exam> resultExams = new ArrayList<>();
+        for (Exam exam: exams) {
+            if (exam.takesPlaceOn(day, interval)) {
+                resultExams.add(exam);
+            }
+        }
+        return resultExams;
     }
 }

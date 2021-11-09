@@ -26,11 +26,14 @@ public class ExcelWriter {
                                   String outputFileName) throws IOException {
 
         CromosomeDecoder decoder = new CromosomeDecoder();
+        PrettyTimetable prettyTimetable = new PrettyTimetable();
+
         String directory = createOuputDirectory(dataHandler.getConfigurer().getFilePaths("outputBaseDirectory"));
 
         int counter = 0;
         for (Individual idv: outputIndividuals) {
             decoder.decode(idv, dataHandler);
+            prettyTimetable.orderScheduling(dataHandler);
             List<Exam> finalResult = dataHandler.getClonedSchedule();
             HashMap<String, List<Constriction>> verifiedConstrictions = dataHandler.verifyConstrictions();
             dataHandler.resetScheduling();

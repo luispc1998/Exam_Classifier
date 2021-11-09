@@ -1,5 +1,6 @@
 package configuration;
 
+import domain.entities.Interval;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -217,5 +218,12 @@ public class DateTimeConfigurer {
      */
     public Duration getDefaultExamExtraMinutes() {
         return defaultExamExtraMinutes;
+    }
+
+    public List<Interval> getValidIntervals(){
+        List<Interval>  result = new ArrayList<>();
+        result.add(new Interval(getDayInitialHour(), getProhibitedIntervalInitialHour()));
+        result.add(new Interval(getFinishingHourProhibitedInterval(), getDayEndingHour()));
+        return result;
     }
 }

@@ -30,6 +30,7 @@ public class Configurer {
      */
     private DateTimeConfigurer dateTimeConfigurer;
 
+    //Todo, debería tener una lista con los tipos de restricciones que son duros.
 
     /**
      * Constructor for the class
