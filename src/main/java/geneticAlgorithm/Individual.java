@@ -1,10 +1,10 @@
 package geneticAlgorithm;
 
 import fitnessFunctions.FitnessFunction;
+import fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This represents each of the members of the population for the {@link GeneticCore}
@@ -19,7 +19,7 @@ import java.util.Objects;
 
  * @see Enconder
  * @see GeneticCore
- * @see fitnessFunctions.greedyAlgorithm.CromosomeDecoder
+ * @see ChromosomeDecoder
  */
 public class Individual {
 

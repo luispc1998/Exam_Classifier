@@ -12,43 +12,51 @@ import java.util.List;
 /**
  * This will represent for a list of exams, that they must take place on the same day.
  */
-public class SameDayConstriction extends AbstractConstriction {
+public class SameDayConstriction extends AbstractHardifiableConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
      */
     public final static String CONSTRICTION_ID= "SD";
 
-    /**
-     * List of {@link Exam} that must take place on the same day.
+     /**
+     * {@link Exam} that must take place on the same date as {@code second}
      */
-    List<Exam> exams;
+    private Exam first;
 
     /**
-     * Constructor for the class
-     * @param exams the list of {@link Exam} that must take place on the same day.
+     * {@link Exam} that must take place on the same date as {@code first}
      */
-    public SameDayConstriction(List<Exam> exams) {
-        this.exams = new ArrayList<>(exams);
+    private Exam second;
+
+    /**
+     * Default constructor for the class.
+     * @param first one of the exams
+     * @param second the other exam
+     */
+    public SameDayConstriction(Exam first, Exam second){
+        this.first = first;
+        this.second = second;
     }
 
 
 
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
-        for (Exam exam: exams) {
-            if (exam.getDate() == null) {
-                setLastEvaluation(false);
-                return false;
-            }
-            if (! exam.getDate().atStartOfDay().equals(exams.get(0).getDate().atStartOfDay())){
-                counter.count(this);
-                setLastEvaluation(false);
-                return false; // If multiple counts would be desired this would be at the end;
-            }
+        // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
+        if (first.getDate() ==null || second.getDate() ==null) {
+            setLastEvaluation(true);
+            return true;
         }
-        setLastEvaluation(true);
-        return true;
+
+        if (first.getDate().equals(second.getDate())) {
+            setLastEvaluation(true);
+            return true;
+        }
+
+        counter.count(this);
+        setLastEvaluation(false);
+        return false;
     }
 
     @Override
@@ -64,7 +72,7 @@ public class SameDayConstriction extends AbstractConstriction {
      * @return {@code first}.
      */
     public Exam getFirst() {
-        return exams.get(0);
+        return first;
     }
 
     /**
@@ -75,6 +83,12 @@ public class SameDayConstriction extends AbstractConstriction {
      * @return {@code second}.
      */
     public Exam getSecond() {
-        return exams.get(1);
+        return second;
+    }
+
+    @Override
+    public void hardify() {
+        first.addHardConstriction(this);
+        second.addHardConstriction(this);
     }
 }

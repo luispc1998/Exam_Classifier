@@ -4,6 +4,7 @@ import domain.DataHandler;
 import domain.constrictions.Constriction;
 import domain.constrictions.types.examDependant.DayBannedConstriction;
 import domain.constrictions.types.examDependant.DifferentDayConstriction;
+import domain.constrictions.types.examDependant.HardifiableConstriction;
 import domain.constrictions.types.examDependant.SameDayConstriction;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
@@ -17,14 +18,11 @@ import java.util.List;
  */
 public class SameDayConstrictionParserTool extends AbstractCosntrictionParserTool {
     @Override
-    public Constriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler){
+    public HardifiableConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler){
         Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
         Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
-        List<Exam> sameDateExams = new ArrayList<>();
-        sameDateExams.add(exam1); sameDateExams.add(exam2);
 
-
-        return new SameDayConstriction(sameDateExams);
+        return new SameDayConstriction(exam1, exam2);
     }
 
     @Override

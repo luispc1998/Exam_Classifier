@@ -1,12 +1,14 @@
 package domain.entities;
 
+import domain.constrictions.types.examDependant.HardifiableConstriction;
+import domain.constrictions.types.examDependant.TimeDisplacementConstriction;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * This represents a task to be scheduled. Given the domain, it is called Exam.
@@ -102,6 +104,9 @@ public class Exam {
      */
     private int id;
 
+
+    private List<HardifiableConstriction> hardConstrictions;
+
     //Todo, referencia a las restricciones duras que deban considerarse a la hora de planificar este examen.
 
 
@@ -136,6 +141,7 @@ public class Exam {
         this.cn = cn;
         this.id = id;
         this.extraTime = Duration.ofMinutes(0);
+        this.hardConstrictions = new ArrayList<>();
     }
 
     /**
@@ -252,7 +258,7 @@ public class Exam {
      * Sets {@code date} to the new value
      * @param dateCellValue new value for {@code date}
      */
-    public void setDate(Date dateCellValue) {
+    public void setDateFromExcel(Date dateCellValue) {
         this.date = dateCellValue.toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }
@@ -454,7 +460,6 @@ public class Exam {
     public boolean takesPlaceOn(LocalDate day, Interval interval) {
         return isScheduled() && getDate().atStartOfDay().equals(day.atStartOfDay()) &&
                 (getInitialHour().equals(interval.getStart()) || getInitialHour().isAfter(interval.getStart()));
-
     }
 
     /**
@@ -471,5 +476,30 @@ public class Exam {
      */
     public void setInitialHour(LocalTime newInitialhour) {
         this.initialHour = newInitialhour;
+    }
+
+    /**
+     * Sets the date of the exam to a specific one.
+     * @param newDate New date value of the exam.
+     */
+    public void setDate(LocalDate newDate){
+        this.date = newDate;
+    }
+
+
+    /**
+     * Adds a hard constriction related with this exam that must be considered when scheduling it.
+     * @param hardifiableConstriction The hard constriction to be considered.
+     */
+    public void addHardConstriction(HardifiableConstriction hardifiableConstriction) {
+        this.hardConstrictions.add(hardifiableConstriction);
+    }
+
+    public Set<LocalDate> getViableDays(HashMap<LocalDate, LocalTime> daysTimes) {
+        Set<LocalDate> days = daysTimes.keySet();
+        for (HardifiableConstriction hardConstriction: hardConstrictions) {
+            days = hardConstriction.filterViableDays(days, this);
+        }
+        return days;
     }
 }

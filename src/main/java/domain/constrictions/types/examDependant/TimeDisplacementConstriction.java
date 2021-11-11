@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @see DateTimeConfigurer#getExamDates()
  */
-public class TimeDisplacementConstriction extends AbstractConstriction {
+public class TimeDisplacementConstriction extends AbstractHardifiableConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -65,14 +65,15 @@ public class TimeDisplacementConstriction extends AbstractConstriction {
 
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
+        // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
         if (first.getDate() ==null || second.getDate() ==null) {
-            setLastEvaluation(false);
-            return false;
+            setLastEvaluation(true);
+            return true;
         }
 
         int index = Math.abs(calendar.indexOf(second.getDate()) - calendar.indexOf(first.getDate()));
 
-        if (index<= distanceInDays){
+        if (index >= distanceInDays){
             setLastEvaluation(true);
             return true;
         }
@@ -137,5 +138,11 @@ public class TimeDisplacementConstriction extends AbstractConstriction {
      */
     public long getDistanceInDays() {
         return distanceInDays;
+    }
+
+    @Override
+    public void hardify() {
+        first.addHardConstriction(this);
+        second.addHardConstriction(this);
     }
 }

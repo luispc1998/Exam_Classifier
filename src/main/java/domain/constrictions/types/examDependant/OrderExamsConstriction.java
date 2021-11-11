@@ -8,7 +8,7 @@ import domain.entities.Exam;
 /**
  * This states for two exams that one of them must be after the other.
  */
-public class OrderExamsConstriction extends AbstractConstriction {
+public class OrderExamsConstriction extends AbstractHardifiableConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -37,9 +37,13 @@ public class OrderExamsConstriction extends AbstractConstriction {
 
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
+        // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
+        if (first.getDate() ==null || second.getDate() ==null) {
+            setLastEvaluation(true);
+            return true;
+        }
 
-
-        if (first.getDate().isBefore(second.getDate())) {
+        if (first.getDate().isBefore(second.getDate()) || first.getDate().isEqual(second.getDate())) {
             counter.count(this);
             setLastEvaluation(false);
             return false;
@@ -67,5 +71,11 @@ public class OrderExamsConstriction extends AbstractConstriction {
      */
     public Exam getSecond() {
         return second;
+    }
+
+    @Override
+    public void hardify() {
+        first.addHardConstriction(this);
+        second.addHardConstriction(this);
     }
 }

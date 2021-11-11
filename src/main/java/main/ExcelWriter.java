@@ -6,7 +6,7 @@ import domain.entities.Exam;
 import domain.entities.ExamDatesComparator;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
-import fitnessFunctions.greedyAlgorithm.CromosomeDecoder;
+import fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 import geneticAlgorithm.Individual;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -25,7 +25,7 @@ public class ExcelWriter {
     public static void excelWrite(HashSet<Individual> outputIndividuals, DataHandler dataHandler,
                                   String outputFileName) throws IOException {
 
-        CromosomeDecoder decoder = new CromosomeDecoder();
+        ChromosomeDecoder decoder = new ChromosomeDecoder();
         PrettyTimetable prettyTimetable = new PrettyTimetable();
 
         String directory = createOuputDirectory(dataHandler.getConfigurer().getFilePaths("outputBaseDirectory"));

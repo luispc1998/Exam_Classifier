@@ -1,10 +1,9 @@
 package domain.parsers;
 
 import configuration.Configurer;
+import domain.DataHandler;
 import domain.constrictions.Constriction;
 import domain.constrictions.types.examDependant.*;
-import domain.DataHandler;
-import domain.entities.Exam;
 import domain.parsers.constrictionsParserTools.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -13,9 +12,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,9 +83,9 @@ public class ConstrictionParser {
             workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheetAt(1);
 
-            Map<Integer, List<String>> data = new HashMap<>();
+            //Map<Integer, List<String>> data = new HashMap<>();
             int i = 0;
-
+            List<String> hardConstrictionsId = dataHandler.getConfigurer().getHardConstrictionsIds();
             for (Row row : sheet) {
 
                 if (shouldBeJumped(row)) continue;
@@ -98,9 +95,13 @@ public class ConstrictionParser {
                     jumpLines = 2;
                 }
                 else{
-                    constrictions.add(parserTool.parseConstriction(row, baseExcelColumn, dataHandler));
+                    HardifiableConstriction constriction = parserTool.parseConstriction(row, baseExcelColumn, dataHandler);
+                    constrictions.add(constriction);
 
-                    //TODO, si ese tipo de restricción está en modo duro aquí debo añadirla a sus exámenes.
+                    if (hardConstrictionsId.contains(constriction.getConstrictionID())){
+                        constriction.hardify();
+                    }
+
                     i++;
                 }
                 /*
@@ -141,7 +142,7 @@ public class ConstrictionParser {
 
     }
 
-    /** TODO, decripciones y headers todavía no se guardan.
+    /**
      * Method to change the parsing type of Cosntriction when detecting it on the Excel.
      * @param constrictionIdRow The row with the constriction data
      * @param constrictionDescription The row with the constriction description
@@ -152,7 +153,6 @@ public class ConstrictionParser {
         switch (constrictionIdRow.getCell(baseExcelColumn).getStringCellValue()){
             case TimeDisplacementConstriction.CONSTRICTION_ID:
                 TimeDisplacementConstriction.setClassDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                //TODO guardo las decripciones para ponerlas luego ?
                 parserTool = new TimeDisplacementConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1, baseExcelColumn + 2}));

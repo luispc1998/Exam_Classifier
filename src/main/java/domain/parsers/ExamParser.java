@@ -125,7 +125,7 @@ public class ExamParser {
 
 
             if (checkForAlreadyClassifiedExam(row)) {
-                exam.setDate(row.getCell(10).getDateCellValue());
+                exam.setDateFromExcel(row.getCell(10).getDateCellValue());
                 exam.setHourFromExcel(row.getCell(12).getNumericCellValue());
             }
 

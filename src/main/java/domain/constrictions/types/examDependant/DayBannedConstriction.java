@@ -1,15 +1,17 @@
 package domain.constrictions.types.examDependant;
 
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.AbstractConstriction;
+import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This states for an exam a date in which it cannot be placed.
  */
-public class DayBannedConstriction extends AbstractConstriction {
+public class DayBannedConstriction extends AbstractHardifiableConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -40,9 +42,10 @@ public class DayBannedConstriction extends AbstractConstriction {
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
         if (exam.getDate() ==null){
-            setLastEvaluation(false);
-            return false;
+            setLastEvaluation(true);
+            return true;
         }
+
         if (dayBanned.atStartOfDay().equals(exam.getDate().atStartOfDay())){
             counter.count(this);
             setLastEvaluation(false);
@@ -72,4 +75,10 @@ public class DayBannedConstriction extends AbstractConstriction {
     public LocalDate getDayBanned() {
         return dayBanned;
     }
+
+    @Override
+    public void hardify() {
+        exam.addHardConstriction(this);
+    }
+
 }

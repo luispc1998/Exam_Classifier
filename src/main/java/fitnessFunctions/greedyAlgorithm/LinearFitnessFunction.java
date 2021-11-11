@@ -34,7 +34,7 @@ public class LinearFitnessFunction implements FitnessFunction {
     /**
      * Instance of {@code CromosomeDecoder}
      */
-    private CromosomeDecoder decoder;
+    private ChromosomeDecoder decoder;
 
 
     /**
@@ -42,7 +42,7 @@ public class LinearFitnessFunction implements FitnessFunction {
      * @param dataHandler Instance where the function will check the exam schedule and constrictions.
      */
     public LinearFitnessFunction(DataHandler dataHandler){
-        this.decoder = new CromosomeDecoder();
+        this.decoder = new ChromosomeDecoder();
         this.dataHandler = dataHandler;
     }
 

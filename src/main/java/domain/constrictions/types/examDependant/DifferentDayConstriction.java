@@ -8,7 +8,7 @@ import domain.entities.Exam;
 /**
  * This states for two exams that they cannot take place on the same day.
  */
-public class DifferentDayConstriction extends AbstractConstriction {
+public class DifferentDayConstriction extends AbstractHardifiableConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -37,6 +37,11 @@ public class DifferentDayConstriction extends AbstractConstriction {
 
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
+        // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
+        if (first.getDate() ==null || second.getDate() ==null) {
+            setLastEvaluation(true);
+            return true;
+        }
 
         if (first.getDate().equals(second.getDate())) {
             counter.count(this);
@@ -72,5 +77,11 @@ public class DifferentDayConstriction extends AbstractConstriction {
      */
     public Exam getSecond() {
         return second;
+    }
+
+    @Override
+    public void hardify() {
+        first.addHardConstriction(this);
+        second.addHardConstriction(this);
     }
 }

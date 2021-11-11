@@ -2,26 +2,14 @@ package main;
 
 import configuration.Configurer;
 import domain.DataHandler;
-import domain.constrictions.Constriction;
-import domain.entities.Exam;
-import domain.entities.ExamDatesComparator;
-import domain.parsers.ConstrictionParser;
-import domain.parsers.ExamParser;
 import fitnessFunctions.FitnessFunction;
-import fitnessFunctions.greedyAlgorithm.CromosomeDecoder;
 import fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.utils.Utils;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
-
-import static java.util.Collections.*;
 
 public class App {
 

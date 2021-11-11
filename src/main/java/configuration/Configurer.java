@@ -1,5 +1,6 @@
 package configuration;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -30,6 +31,12 @@ public class Configurer {
      */
     private DateTimeConfigurer dateTimeConfigurer;
 
+
+    /**
+     * List containins all the Constrictions IDs that should be considered hard.
+     */
+    private List<String> hardConstrictionsIds;
+
     //Todo, debería tener una lista con los tipos de restricciones que son duros.
 
     /**
@@ -44,7 +51,11 @@ public class Configurer {
 
         loadWeightConfigurer(filePaths.getProperty("weights"));
         loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), filePaths.getProperty("inputFile"));
+        loadHardRestrictions(filePaths.getProperty("hardConstrictions"));
+    }
 
+    private void loadHardRestrictions(String hardConstrictionsFilepath) {
+        this.hardConstrictionsIds = Utils.parseHardConstrictionsId(hardConstrictionsFilepath);
     }
 
     /**
@@ -99,4 +110,16 @@ public class Configurer {
     public boolean existsConstrinctionID(String id) {
         return getWeightConfigurer().existsConstrictionID(id);
     }
+
+    /**
+     * Returns the constrictions Ids that are configured as Hard for the execution of the algorithm.
+     * @return A list containing the Ids of the constrictions to be treated as hard.
+     */
+    public List<String> getHardConstrictionsIds() {
+        return hardConstrictionsIds;
+    }
+
+
 }
+
+
