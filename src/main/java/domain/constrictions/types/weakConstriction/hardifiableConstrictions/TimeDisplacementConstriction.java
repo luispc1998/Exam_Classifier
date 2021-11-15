@@ -1,13 +1,11 @@
-package domain.constrictions.types.examDependant;
+package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 
 import configuration.DateTimeConfigurer;
-import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.AbstractConstriction;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.TimeDisplacementConstrictionHardified;
 import domain.entities.Exam;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,7 +18,7 @@ import java.util.List;
  *
  * @see DateTimeConfigurer#getExamDates()
  */
-public class TimeDisplacementConstriction extends AbstractHardifiableConstriction {
+public class TimeDisplacementConstriction extends AbstractUserConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -42,6 +40,9 @@ public class TimeDisplacementConstriction extends AbstractHardifiableConstrictio
      */
     private long distanceInDays;
 
+    /**
+     * Calendar of available days for the {@code Exam} objects.
+     */
     private List<LocalDate> calendar;
 
     /**
@@ -63,8 +64,7 @@ public class TimeDisplacementConstriction extends AbstractHardifiableConstrictio
     }
 
 
-    @Override
-    public boolean isFulfilled(ConstrictionCounter counter) {
+    public boolean isFulfilled() {
         // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
         if (first.getDate() ==null || second.getDate() ==null) {
             setLastEvaluation(true);
@@ -73,7 +73,18 @@ public class TimeDisplacementConstriction extends AbstractHardifiableConstrictio
 
         int index = Math.abs(calendar.indexOf(second.getDate()) - calendar.indexOf(first.getDate()));
 
-        if (index >= distanceInDays){
+        return index >= distanceInDays;
+    }
+
+    @Override
+    public void countMe(ConstrictionCounter counter) {
+        counter.count(this);
+    }
+
+    /*
+    @Override
+    public boolean isFulfilled(ConstrictionCounter counter) {
+        if (isFulfilled()) {
             setLastEvaluation(true);
             return true;
         }
@@ -83,33 +94,8 @@ public class TimeDisplacementConstriction extends AbstractHardifiableConstrictio
             return false;
         }
 
-
-        /*
-        LocalDate limitDate = first.getDate().plusDays(distanceInDays);
-
-        if(limitDate.isBefore(second.getDate()) || limitDate.equals(second.getDate())){
-            counter.count(this);
-            setLastEvaluation(false);
-            return false;
-        }
-        setLastEvaluation(true);
-        return true;
-        */
-
-
-/* Old implementation
-        long hi =  Duration.between(first.getDate().atStartOfDay(), second.getDate().atStartOfDay()).toDays();
-
-        if (hi < distanceInDays) {
-            counter.count(this);
-            return false;
-        }
-        return true;
-
- */
-
-
     }
+    */
 
     @Override
     public String getConstrictionID() {
@@ -140,9 +126,14 @@ public class TimeDisplacementConstriction extends AbstractHardifiableConstrictio
         return distanceInDays;
     }
 
+
+
     @Override
     public void hardify() {
-        first.addHardConstriction(this);
-        second.addHardConstriction(this);
+        TimeDisplacementConstrictionHardified tdhConstriction =
+                new TimeDisplacementConstrictionHardified(this);
+
+        first.addHardConstriction(tdhConstriction);
+        second.addHardConstriction(tdhConstriction);
     }
 }

@@ -1,8 +1,8 @@
 package domain.constrictions.counter;
 
-import domain.constrictions.types.examDependant.*;
-import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
-import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 
 public class ConstrictionCounterImpl implements ConstrictionCounter {
 

@@ -2,8 +2,8 @@ package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
-import domain.constrictions.types.examDependant.HardifiableConstriction;
-import domain.constrictions.types.examDependant.TimeDisplacementConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.TimeDisplacementConstriction;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,7 +15,7 @@ public class TimeDisplacementConstrictionParserTool extends AbstractCosntriction
 
 
     @Override
-    public HardifiableConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
         Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
         return new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),

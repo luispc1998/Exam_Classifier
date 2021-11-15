@@ -1,8 +1,8 @@
-package domain.constrictions.types.singles;
+package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
 
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.AbstractConstriction;
+import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * This {@link Constriction} penalizes schedules by the number of unclassified {@link Exam}.
  */
-public class UnclassifiedExamsConstriction extends AbstractConstriction {
+public class UnclassifiedExamsConstriction implements WeakConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -32,16 +32,14 @@ public class UnclassifiedExamsConstriction extends AbstractConstriction {
     }
 
     @Override
-    public boolean isFulfilled(ConstrictionCounter counter) {
-        setLastEvaluation(true);
+    public void checkConstriction(ConstrictionCounter counter) {
         for (Exam exam: exams) {
             if (! exam.isScheduled()){
                 counter.count(this);
-                setLastEvaluation(false);
             }
         }
 
-        return getLastEvaluation();
+        counter.getCountOfUnclassifiedExamsConstriction();
     }
 
     @Override

@@ -1,8 +1,7 @@
-package domain.constrictions.types.singles;
+package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
 
-import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.AbstractConstriction;
+import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -14,7 +13,7 @@ import java.util.Set;
 /**
  * This represents a constriction that states that the same course exams should take place on different days.
  */
-public class SameCourseDifferentDayConstriction extends AbstractConstriction {
+public class SameCourseDifferentDayConstriction implements WeakConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -41,17 +40,16 @@ public class SameCourseDifferentDayConstriction extends AbstractConstriction {
     }
 
     @Override
-    public boolean isFulfilled(ConstrictionCounter counter) {
-
+    public void checkConstriction(ConstrictionCounter counter) {
+        occurrences = 0;
         for (int i = 1; i < 5; i++) {
             occurrences += getExamsForCourse(exams, i);
         }
         counter.count(this);
 
-        boolean result = occurrences == 0;
-        occurrences = 0;
-        setLastEvaluation(result);
-        return result;
+        //boolean result = occurrences == 0;
+        //occurrences = 0;
+        // setLastEvaluation(result);
     }
 
     /**
@@ -78,7 +76,7 @@ public class SameCourseDifferentDayConstriction extends AbstractConstriction {
      * @throws IllegalStateException in case {@code isFulfilled} was nos called first.
      */
     public int getOccurrences() {
-        if (occurrences == -1) throw new IllegalStateException("It is need to call isFulfilled at least once before calling this method..");
+        if (occurrences == -1) throw new IllegalStateException("It is need to call checkConstriction at least once before calling this method..");
         return occurrences;
     }
 

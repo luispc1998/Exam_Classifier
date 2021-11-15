@@ -3,7 +3,8 @@ package domain.parsers;
 import configuration.Configurer;
 import domain.DataHandler;
 import domain.constrictions.Constriction;
-import domain.constrictions.types.examDependant.*;
+import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 import domain.parsers.constrictionsParserTools.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -69,8 +70,8 @@ public class ConstrictionParser {
      * @return The {@code List} of {@code Constriction} parsed from the excel.
      * @throws IOException In case there are any problems when accesing the excel.
      */
-    public static List<Constriction> parseConstrictions(String filepath, DataHandler dataHandler) throws IOException {
-        List<Constriction> constrictions = new ArrayList<>();
+    public static List<WeakConstriction> parseConstrictions(String filepath, DataHandler dataHandler) throws IOException {
+        List<WeakConstriction> constrictions = new ArrayList<>();
 
 
         FileInputStream fis;
@@ -95,12 +96,15 @@ public class ConstrictionParser {
                     jumpLines = 2;
                 }
                 else{
-                    HardifiableConstriction constriction = parserTool.parseConstriction(row, baseExcelColumn, dataHandler);
+                    UserConstriction constriction = parserTool.parseConstriction(row, baseExcelColumn, dataHandler);
+
+
                     constrictions.add(constriction);
 
                     if (hardConstrictionsId.contains(constriction.getConstrictionID())){
                         constriction.hardify();
                     }
+
 
                     i++;
                 }

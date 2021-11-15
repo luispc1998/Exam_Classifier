@@ -1,5 +1,6 @@
-inputFile=files/pruebas/v6_sinFechas_2.xlsx
+inputFile=files/pruebas/v6_sinFechas_3.xlsx
 outputFile=files/output/prueba.xlsx
 outputBaseDirectory=files/output/
 dateTimes=dateTime
 weights=weights
+hardConstrictions=src/main/resources/hardConstrictions

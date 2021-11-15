@@ -1,25 +1,13 @@
-package domain.constrictions.types.examDependant;
+package domain.constrictions.types.hardConstriction;
 
 import domain.constrictions.Constriction;
+import domain.constrictions.counter.ConstrictionCounter;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
-/**
- * User constrictions that can be specified as hard or weak.
- */
-public interface HardifiableConstriction extends Constriction {
-
-    /**
-     * Makes the constriction hard.
-     *
-     * <p>
-     * This process implies to add it to the related exams, so that the {@link fitnessFunctions.greedyAlgorithm.ChromosomeDecoder},
-     * can take them into account while decoding.
-     */
-    void hardify();
+public interface HardConstriction extends Constriction {
 
     /**
      * Filters a list of days. Returning another list with days that meet the constriction.
@@ -28,5 +16,6 @@ public interface HardifiableConstriction extends Constriction {
      * @return A list of viable days for the constrictions.
      */
     Set<LocalDate> filterViableDays(Set<LocalDate> days, Exam examToCheck);
+
 
 }

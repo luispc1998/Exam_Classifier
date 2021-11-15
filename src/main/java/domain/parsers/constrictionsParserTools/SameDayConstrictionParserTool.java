@@ -2,23 +2,18 @@ package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
-import domain.constrictions.types.examDependant.DayBannedConstriction;
-import domain.constrictions.types.examDependant.DifferentDayConstriction;
-import domain.constrictions.types.examDependant.HardifiableConstriction;
-import domain.constrictions.types.examDependant.SameDayConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.SameDayConstriction;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is the parser for {@link SameDayConstriction}
  */
 public class SameDayConstrictionParserTool extends AbstractCosntrictionParserTool {
     @Override
-    public HardifiableConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler){
+    public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler){
         Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
         Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
 

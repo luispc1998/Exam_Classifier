@@ -4,8 +4,10 @@ import configuration.Configurer;
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.ConstrictionCounterImpl;
-import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
-import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
+import domain.constrictions.types.hardConstriction.fullyHardConstrictions.IsolateCourseOnDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
+import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
@@ -45,7 +47,7 @@ public class DataHandler {
     /**
      * List of {@code Constriction} to be considered.
      */
-    private List<Constriction> constrictions;
+    private List<WeakConstriction> constrictions;
 
 
     /**
@@ -65,6 +67,11 @@ public class DataHandler {
 
         this.constrictions = ConstrictionParser.parseConstrictions(inputDataFile, this);
         addConstriction(new UnclassifiedExamsConstriction(exams));
+
+
+        for (Exam exam: exams) {
+            exam.addHardConstriction(new IsolateCourseOnDayConstriction(exam));
+        }
         addConstriction(new SameCourseDifferentDayConstriction(exams));
 
     }
@@ -90,6 +97,25 @@ public class DataHandler {
                exam.resetScheduling();
             }
         }
+
+        IsolateCourseOnDayConstriction.resetAvailabilities(configurer.getDateTimeConfigurer().getExamDates(),
+                getPreScheduledExams());
+
+    }
+
+    public void test(){
+        IsolateCourseOnDayConstriction.resetAvailabilities(configurer.getDateTimeConfigurer().getExamDates(),
+                getPreScheduledExams());
+    }
+
+    private List<Exam> getPreScheduledExams() {
+        List<Exam> result = new ArrayList<>();
+        for (Exam exam: exams) {
+            if (preScheduledExams.contains(exam.getId())){
+                result.add(exam);
+            }
+        }
+        return result;
     }
 
     /**
@@ -110,15 +136,6 @@ public class DataHandler {
     }
 
 
-    public Exam getExam(String code){
-        for (Exam exam: exams) {
-            if (exam.getCode().equals(code)){
-                return exam;
-            }
-        }
-        return null;
-    }
-
     /**
      * Provides a cloned instance of the schedule.
      * @return A copy of {@code Exams} with all the instances within it also cloned.
@@ -132,10 +149,10 @@ public class DataHandler {
     }
 
     /**
-     * Returns the list of {@code Constriction}
-     * @return The list of {@code Constriction}
+     * Returns the list of {@code WeakConstriction}
+     * @return The list of {@code WeakConstriction}
      */
-    public List<Constriction> getConstrictions() {
+    public List<WeakConstriction> getConstrictions() {
         return new ArrayList<>(constrictions);
     }
 
@@ -167,6 +184,7 @@ public class DataHandler {
      */
     public void schedule(Exam exam, LocalDate currentDate, LocalTime currentHour) {
         exam.scheduleFor(currentDate, currentHour);
+        IsolateCourseOnDayConstriction.addCourseToDate(currentDate, exam.getCourse());
     }
 
     /**
@@ -187,10 +205,10 @@ public class DataHandler {
     }
 
     /**
-     * Adds a {@code Constriction}.
-     * @param constriction The {@code Constriction} to be added.
+     * Adds a {@code WeakConstriction}.
+     * @param constriction The {@code WeakConstriction} to be added.
      */
-    public void addConstriction(Constriction constriction) {
+    public void addConstriction(WeakConstriction constriction) {
         constrictions.add(constriction);
     }
 
@@ -203,8 +221,8 @@ public class DataHandler {
         // TODO , silly counter, or another method.
         ConstrictionCounter counter = new ConstrictionCounterImpl();
 
-        for (Constriction cons: constrictions) {
-            cons.isFulfilled(counter);
+        for (WeakConstriction cons: constrictions) {
+            cons.checkConstriction(counter);
             if (! verifiedConstrictions.containsKey(cons.getConstrictionID())) {
                 verifiedConstrictions.put(cons.getConstrictionID(), new ArrayList<>());
             }

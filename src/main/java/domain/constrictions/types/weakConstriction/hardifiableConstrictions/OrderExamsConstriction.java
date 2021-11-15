@@ -1,14 +1,13 @@
-package domain.constrictions.types.examDependant;
+package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
-import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.AbstractConstriction;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.OrderExamsHardifiedConstriction;
 import domain.entities.Exam;
 
 /**
  * This states for two exams that one of them must be after the other.
  */
-public class OrderExamsConstriction extends AbstractHardifiableConstriction {
+public class OrderExamsConstriction extends AbstractUserConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -36,6 +35,17 @@ public class OrderExamsConstriction extends AbstractHardifiableConstriction {
     }
 
     @Override
+    public boolean isFulfilled() {
+        if (first.getDate() ==null || second.getDate() ==null) {
+            setLastEvaluation(true);
+            return true;
+        }
+
+        return second.getDate().isAfter(first.getDate());
+    }
+
+    /*
+    @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
         // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
         if (first.getDate() ==null || second.getDate() ==null) {
@@ -51,6 +61,7 @@ public class OrderExamsConstriction extends AbstractHardifiableConstriction {
         setLastEvaluation(true);
         return true;
     }
+     */
 
     @Override
     public String getConstrictionID() {
@@ -75,7 +86,13 @@ public class OrderExamsConstriction extends AbstractHardifiableConstriction {
 
     @Override
     public void hardify() {
-        first.addHardConstriction(this);
-        second.addHardConstriction(this);
+        OrderExamsHardifiedConstriction oehConstriction = new OrderExamsHardifiedConstriction(this);
+        first.addHardConstriction(oehConstriction);
+        second.addHardConstriction(oehConstriction);
+    }
+
+    @Override
+    public void countMe(ConstrictionCounter counter) {
+        counter.count(this);
     }
 }

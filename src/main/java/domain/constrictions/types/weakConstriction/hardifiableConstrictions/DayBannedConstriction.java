@@ -1,17 +1,15 @@
-package domain.constrictions.types.examDependant;
+package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.counter.ConstrictionCounterImpl;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.DayBannedConstrictionHardified;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This states for an exam a date in which it cannot be placed.
  */
-public class DayBannedConstriction extends AbstractHardifiableConstriction {
+public class DayBannedConstriction extends AbstractUserConstriction {
 
     /**
      * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
@@ -39,6 +37,23 @@ public class DayBannedConstriction extends AbstractHardifiableConstriction {
         this.exam = exam;
     }
 
+
+    @Override
+    public boolean isFulfilled() {
+        if (exam.getDate() ==null){
+            setLastEvaluation(true);
+            return true;
+        }
+        return ! dayBanned.atStartOfDay().equals(exam.getDate().atStartOfDay());
+    }
+
+    @Override
+    public void countMe(ConstrictionCounter counter) {
+        counter.count(this);
+    }
+
+
+    /*
     @Override
     public boolean isFulfilled(ConstrictionCounter counter) {
         if (exam.getDate() ==null){
@@ -54,6 +69,7 @@ public class DayBannedConstriction extends AbstractHardifiableConstriction {
         setLastEvaluation(true);
         return true;
     }
+*/
 
     @Override
     public String getConstrictionID() {
@@ -78,7 +94,9 @@ public class DayBannedConstriction extends AbstractHardifiableConstriction {
 
     @Override
     public void hardify() {
-        exam.addHardConstriction(this);
+        DayBannedConstrictionHardified dbhConstriction = new DayBannedConstrictionHardified(this);
+
+        exam.addHardConstriction(dbhConstriction);
     }
 
 }

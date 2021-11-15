@@ -1,17 +1,12 @@
-package domain.constrictions.types.examDependant;
+package domain.constrictions.types.hardConstriction;
 
-import domain.constrictions.counter.ConstrictionCounterImpl;
-import domain.constrictions.types.AbstractConstriction;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public abstract class AbstractHardifiableConstriction extends AbstractConstriction
-                                                        implements HardifiableConstriction {
+public abstract class AbstractHardConstriction implements HardConstriction {
 
     @Override
     public Set<LocalDate> filterViableDays(Set<LocalDate> days, Exam examToCheck) {
@@ -19,12 +14,18 @@ public abstract class AbstractHardifiableConstriction extends AbstractConstricti
         for (LocalDate day: days) {
             LocalDate prevDate = examToCheck.getDate();
             examToCheck.setDate(day);
-            if (isFulfilled(new ConstrictionCounterImpl())){
+            if (isFulfilled()){
                 validDates.add(day);
             }
             examToCheck.setDate(prevDate);
         }
         return validDates;
     }
+
+    /**
+     * States whether a Constriction is fulfilled or not.
+     * @return true in case it is fulfilled, false otherwise.
+     */
+    public abstract boolean isFulfilled();
 
 }

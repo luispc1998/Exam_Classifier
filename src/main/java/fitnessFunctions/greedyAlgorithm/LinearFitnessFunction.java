@@ -2,12 +2,12 @@ package fitnessFunctions.greedyAlgorithm;
 
 import configuration.WeightConfigurer;
 import domain.DataHandler;
-import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.ConstrictionCounterImpl;
-import domain.constrictions.types.examDependant.*;
-import domain.constrictions.types.singles.SameCourseDifferentDayConstriction;
-import domain.constrictions.types.singles.UnclassifiedExamsConstriction;
+import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 import geneticAlgorithm.Individual;
 import fitnessFunctions.FitnessFunction;
 
@@ -49,17 +49,19 @@ public class LinearFitnessFunction implements FitnessFunction {
     @Override
     public double apply(Individual a) {
 
+        dataHandler.resetScheduling();
+
         // Deconde the cromosome
         decoder.decode(a, dataHandler);
 
         //Count constrictions
         ConstrictionCounter counter = new ConstrictionCounterImpl();
-        for (Constriction constriction: dataHandler.getConstrictions()) {
-                constriction.isFulfilled(counter);
+        for (WeakConstriction constriction: dataHandler.getConstrictions()) {
+                constriction.checkConstriction(counter);
         }
 
 
-        dataHandler.resetScheduling();
+        //dataHandler.resetScheduling();
 
 
         //Do the formula.

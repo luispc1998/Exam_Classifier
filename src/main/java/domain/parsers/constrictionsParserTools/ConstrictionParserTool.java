@@ -2,7 +2,7 @@ package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
-import domain.constrictions.types.examDependant.HardifiableConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
 import org.apache.poi.ss.usermodel.Row;
 
 /**
@@ -25,7 +25,7 @@ public interface ConstrictionParserTool {
      * @param dataHandler The {@code DataHandler} from which the created constrictions will retrieve data.
      * @return A new {@code Constriction} parsed from {@code row}.
      */
-    HardifiableConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
+    UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
 
     /**
      * Sets the description of this constriction in the excel.

@@ -1,7 +1,6 @@
 package domain.entities;
 
-import domain.constrictions.types.examDependant.HardifiableConstriction;
-import domain.constrictions.types.examDependant.TimeDisplacementConstriction;
+import domain.constrictions.types.hardConstriction.HardConstriction;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -105,9 +104,8 @@ public class Exam {
     private int id;
 
 
-    private List<HardifiableConstriction> hardConstrictions;
+    private List<HardConstriction> hardConstrictions;
 
-    //Todo, referencia a las restricciones duras que deban considerarse a la hora de planificar este examen.
 
 
     /**
@@ -489,15 +487,15 @@ public class Exam {
 
     /**
      * Adds a hard constriction related with this exam that must be considered when scheduling it.
-     * @param hardifiableConstriction The hard constriction to be considered.
+     * @param hardConstriction The hard constriction to be considered.
      */
-    public void addHardConstriction(HardifiableConstriction hardifiableConstriction) {
-        this.hardConstrictions.add(hardifiableConstriction);
+    public void addHardConstriction(HardConstriction hardConstriction) {
+        this.hardConstrictions.add(hardConstriction);
     }
 
     public Set<LocalDate> getViableDays(HashMap<LocalDate, LocalTime> daysTimes) {
         Set<LocalDate> days = daysTimes.keySet();
-        for (HardifiableConstriction hardConstriction: hardConstrictions) {
+        for (HardConstriction hardConstriction: hardConstrictions) {
             days = hardConstriction.filterViableDays(days, this);
         }
         return days;
