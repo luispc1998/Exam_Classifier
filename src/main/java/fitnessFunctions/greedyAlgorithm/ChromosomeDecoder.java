@@ -294,4 +294,112 @@ public class ChromosomeDecoder {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void decodeNew(Individual individual, DataHandler dataHandler){
+
+        DateTimeConfigurer dateTimeConfigurer = dataHandler.getConfigurer().getDateTimeConfigurer();
+
+        // Counters
+        LocalTime currentHour;
+        LocalDate currentDate;
+        //Exam exam;
+        Set<LocalDate> viableDays;
+
+
+        // Dates
+        List<LocalDate> dates = dateTimeConfigurer.getExamDates();
+        int indexDate = -1;
+
+        // Times for the days.
+        HashMap<LocalDate, LocalTime> daysTimes = initializeDays(dateTimeConfigurer);
+
+        // Exams to schedule
+        List<Integer> cromosome = individual.getChromosome();
+        List<Exam> exams = getExamsOrderedForChromosome(cromosome, dataHandler);
+
+
+        // Fin de la declaración de variables.
+
+
+        // Miramos que tengamos días y exámenes para clasificar o acabamos.
+
+
+        // if (examsIterator.hasNext() && datesIterator.hasNext()){
+        // Si tengo exámenes para clasificar, y tengo días para ponerlos.
+
+        for(Exam exam : exams) {
+            viableDays = exam.getViableDays(daysTimes);
+            boolean scheduled = false;
+
+            for (LocalDate day :viableDays){
+                currentHour = daysTimes.get(day);
+
+                Exam collidingExam = null;
+                while (dateTimeConfigurer.isHourInProhibitedInterval(currentHour) ||
+                        (collidingExam = dataHandler.checkCollisionOf(day, currentHour, exam.getDuration(), exam.getExtraTime())) != null) {
+
+                    if (dateTimeConfigurer.isHourInProhibitedInterval(currentHour)){
+                        daysTimes.put(day, dateTimeConfigurer.getFinishingHourProhibitedInterval());
+                    }
+
+                    if(collidingExam != null){
+                        daysTimes.put(day, collidingExam.getFinishingHour());
+                    }
+                    currentHour = daysTimes.get(day);
+                }
+
+
+                if (dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration(), exam.getExtraTime())){
+                    dataHandler.schedule(exam, day, currentHour);
+                    daysTimes.put(day, exam.getFinishingHour());
+                    scheduled = true;
+                    break;
+                }
+            }
+
+            if (!scheduled) {
+                // reparación
+
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

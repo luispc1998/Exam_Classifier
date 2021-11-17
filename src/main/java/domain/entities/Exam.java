@@ -319,7 +319,7 @@ public class Exam {
         return getInitialHour().plus(getDuration()).plus(getExtraTime());
     }
 
-    private LocalTime getFinisingHourWithoutExtraTime() {
+    public LocalTime getFinisingHourWithoutExtraTime() {
         if (initialHour == null){
             return null;
         }

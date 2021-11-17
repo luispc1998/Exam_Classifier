@@ -1,5 +1,6 @@
 package domain.constrictions.counter;
 
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
@@ -64,6 +65,11 @@ public interface ConstrictionCounter {
      */
     void count(SameCourseDifferentDayConstriction sameCourseDifferentDayConstriction);
 
+    /**
+     * Increments the value of the counter for {@link SameCourseDifferentDayConstriction}
+     * @param prohibitedIntervalPenalization the amount of minutes used by the schedule in prohibited interval bounds.
+     */
+    void count(ProhibitedIntervalPenalization prohibitedIntervalPenalization);
 
     /**
      * Returns the current counter for {@link TimeDisplacementConstriction}
@@ -107,6 +113,9 @@ public interface ConstrictionCounter {
      */
     int getCountSameCourseDifferentDayConstriction();
 
-
-
+    /**
+     * Returns the current counter for {@link ProhibitedIntervalPenalization}
+     * @return the current counter for {@link ProhibitedIntervalPenalization}
+     */
+    long getCountProhibitedIntervalPenalization();
 }

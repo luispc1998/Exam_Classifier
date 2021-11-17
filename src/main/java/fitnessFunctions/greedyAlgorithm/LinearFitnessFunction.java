@@ -5,6 +5,7 @@ import domain.DataHandler;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
@@ -52,7 +53,7 @@ public class LinearFitnessFunction implements FitnessFunction {
         dataHandler.resetScheduling();
 
         // Deconde the cromosome
-        decoder.decode(a, dataHandler);
+        decoder.decodeNew(a, dataHandler);
 
         //Count constrictions
         ConstrictionCounter counter = new ConstrictionCounterImpl();
@@ -89,7 +90,9 @@ public class LinearFitnessFunction implements FitnessFunction {
                 counter.getCountOrderExamsConstriction()
                         * wc.getConstrictionWeight(OrderExamsConstriction.CONSTRICTION_ID) +
                 counter.getCountSameCourseDifferentDayConstriction()
-                        * wc.getConstrictionWeight(SameCourseDifferentDayConstriction.CONSTRICTION_ID);
+                        * wc.getConstrictionWeight(SameCourseDifferentDayConstriction.CONSTRICTION_ID) +
+                counter.getCountProhibitedIntervalPenalization()
+                        * wc.getConstrictionWeight(ProhibitedIntervalPenalization.CONSTRICTION_ID);
 
     }
 }

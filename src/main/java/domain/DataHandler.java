@@ -5,6 +5,7 @@ import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.constrictions.types.hardConstriction.fullyHardConstrictions.IsolateCourseOnDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
@@ -66,14 +67,24 @@ public class DataHandler {
 
 
         this.constrictions = ConstrictionParser.parseConstrictions(inputDataFile, this);
-        addConstriction(new UnclassifiedExamsConstriction(exams));
 
+        addConstrictions();
+    }
 
+    /**
+     * Adds all the default constrictions.
+     */
+    private void addConstrictions() {
+
+        //Hard
         for (Exam exam: exams) {
             exam.addHardConstriction(new IsolateCourseOnDayConstriction(exam));
         }
-        addConstriction(new SameCourseDifferentDayConstriction(exams));
 
+        //Weak
+        addConstriction(new UnclassifiedExamsConstriction(exams));
+        //addConstriction(new SameCourseDifferentDayConstriction(exams));
+        addConstriction(new ProhibitedIntervalPenalization(exams, configurer));
     }
 
     /**

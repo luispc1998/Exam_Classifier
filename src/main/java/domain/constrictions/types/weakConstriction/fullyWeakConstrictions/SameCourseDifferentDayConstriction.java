@@ -73,7 +73,7 @@ public class SameCourseDifferentDayConstriction implements WeakConstriction {
     /**
      * Returns how many times the constriction was detected over the schedule.
      * @return the number of times the cosntriction was detected
-     * @throws IllegalStateException in case {@code isFulfilled} was nos called first.
+     * @throws IllegalStateException in case {@code checkConstriction} was nos called first.
      */
     public int getOccurrences() {
         if (occurrences == -1) throw new IllegalStateException("It is need to call checkConstriction at least once before calling this method..");
