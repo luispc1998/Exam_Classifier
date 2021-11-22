@@ -5,16 +5,15 @@ import domain.constrictions.types.hardConstriction.AbstractHardConstriction;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
 
     public final static String CONSTRICTION_ID = "ICD";
 
     private static Hashtable<LocalDate, List<Integer>> availabilities;
-    
+    private static Hashtable<LocalDate, List<Exam>> availabilitiesRelaxed;
+
     private Exam exam;
 
     public IsolateCourseOnDayConstriction(Exam exam) {
@@ -23,19 +22,28 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
 
     public static void resetAvailabilities(List<LocalDate> calendarDays, List<Exam> preScheduledExams) {
         availabilities = new Hashtable<>();
+        availabilitiesRelaxed = new Hashtable<>();
 
         for (LocalDate day: calendarDays) {
             availabilities.put(day, new ArrayList<>());
+            availabilitiesRelaxed.put(day, new ArrayList<>());
         }
 
         for (Exam exam: preScheduledExams) {
             availabilities.get(exam.getDate()).add(exam.getCourse());
+            availabilitiesRelaxed.get(exam.getDate()).add(exam);
         }
 
     }
 
-    public static void addCourseToDate(LocalDate date, int course){
-        availabilities.get(date).add(course);
+    public static void addCourseToDate(LocalDate date, Exam examToAdd){
+        availabilities.get(date).add(examToAdd.getCourse());
+        availabilitiesRelaxed.get(date).add(examToAdd);
+    }
+
+    public static void removeCourseFromDate(LocalDate currentDate, Exam examToRemove) {
+        availabilities.get(currentDate).remove(Integer.valueOf(examToRemove.getCourse()));
+        availabilitiesRelaxed.get(currentDate).remove(examToRemove);
     }
 
     @Override
@@ -53,4 +61,45 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
     public String getConstrictionID() {
         return null;
     }
+
+    @Override
+    public Set<LocalDate> filterViableDays(Set<LocalDate> days, Exam examToCheck) {
+        Set<LocalDate> validDates = super.filterViableDays(days, examToCheck);
+
+        if (days.size()>0 && validDates.size() == 0){
+            return filterViableDaysRelaxed(days, examToCheck);
+        }
+        return validDates;
+    }
+
+    private Set<LocalDate> filterViableDaysRelaxed(Set<LocalDate> days, Exam examToCheck) {
+        Set<LocalDate> validDates = new HashSet<>();
+        for (LocalDate day: days) {
+            LocalDate prevDate = examToCheck.getDate();
+            examToCheck.setDate(day);
+            if (isFulfilledRelaxed()){
+                validDates.add(day);
+            }
+            examToCheck.setDate(prevDate);
+        }
+        return validDates;
+
+    }
+
+    private boolean isFulfilledRelaxed() {
+        if (exam.getDate() == null) {
+            return true;
+        }
+        else{
+            for(Exam examScheduled : availabilitiesRelaxed.get(exam.getDate())) {
+                if (examScheduled.getCourse() == exam.getCourse() &&
+                examScheduled.getSemester() == exam.getSemester()){
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+
 }

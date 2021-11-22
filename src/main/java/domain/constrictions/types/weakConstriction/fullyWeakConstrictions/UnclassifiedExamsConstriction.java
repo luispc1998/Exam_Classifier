@@ -39,7 +39,6 @@ public class UnclassifiedExamsConstriction implements WeakConstriction {
             }
         }
 
-        counter.getCountOfUnclassifiedExamsConstriction();
     }
 
     @Override

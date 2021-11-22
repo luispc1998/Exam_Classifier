@@ -1,6 +1,7 @@
 package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
 
 import configuration.Configurer;
+import domain.DataHandler;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;
@@ -18,6 +19,8 @@ public class UnbalancedDaysPenalization implements WeakConstriction {
      */
     private List<Exam> exams;
 
+    private long minutes = 0;
+
     public UnbalancedDaysPenalization(List<Exam> exams) {
         this.exams = exams;
     }
@@ -29,12 +32,26 @@ public class UnbalancedDaysPenalization implements WeakConstriction {
 
     @Override
     public void checkConstriction(ConstrictionCounter counter) {
-        long minutes = 0;
-        HashMap<LocalDate, Exam> schedule = new HashMap<>();
+
+        HashMap<LocalDate, Long> schedule = new HashMap<>();
         for (Exam exam: exams) {
-            minutes += exam.getDuration().toMinutes();
+            if (! schedule.containsKey(exam.getDate())){
+                schedule.put(exam.getDate(), exam.getChunkOfTime().toMinutes());
+            }
+            else{
+                schedule.put(exam.getDate(), schedule.get(exam.getDate()) + exam.getChunkOfTime().toMinutes());
+            }
+            minutes += exam.getChunkOfTime().toMinutes();
         }
+
+
+        counter.count(this);
+
         // Tengo la suma en minutos de todos los exámenes
 
+    }
+
+    public long getMinutes(){
+        return minutes;
     }
 }

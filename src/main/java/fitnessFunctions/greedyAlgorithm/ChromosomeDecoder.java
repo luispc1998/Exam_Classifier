@@ -14,6 +14,8 @@ import java.util.*;
  */
 public class ChromosomeDecoder {
 
+    private final static int LIMIT_DEPTH = 1;
+
     public List<Exam> getExamsOrderedForChromosome(List<Integer> chromosome, DataHandler dataHandler){
         List<Exam> exams = new ArrayList<>();
 
@@ -315,8 +317,6 @@ public class ChromosomeDecoder {
 
         // Counters
         LocalTime currentHour;
-        LocalDate currentDate;
-        //Exam exam;
         Set<LocalDate> viableDays;
 
 
@@ -334,72 +334,99 @@ public class ChromosomeDecoder {
 
         // Fin de la declaración de variables.
 
-
-        // Miramos que tengamos días y exámenes para clasificar o acabamos.
-
-
-        // if (examsIterator.hasNext() && datesIterator.hasNext()){
-        // Si tengo exámenes para clasificar, y tengo días para ponerlos.
-
         for(Exam exam : exams) {
-            viableDays = exam.getViableDays(daysTimes);
-            boolean scheduled = false;
 
-            for (LocalDate day :viableDays){
-                currentHour = daysTimes.get(day);
+            classifyExam(dataHandler, dateTimeConfigurer, daysTimes, exam, 0);
 
-                Exam collidingExam = null;
-                while (dateTimeConfigurer.isHourInProhibitedInterval(currentHour) ||
-                        (collidingExam = dataHandler.checkCollisionOf(day, currentHour, exam.getDuration(), exam.getExtraTime())) != null) {
-
-                    if (dateTimeConfigurer.isHourInProhibitedInterval(currentHour)){
-                        daysTimes.put(day, dateTimeConfigurer.getFinishingHourProhibitedInterval());
-                    }
-
-                    if(collidingExam != null){
-                        daysTimes.put(day, collidingExam.getFinishingHour());
-                    }
-                    currentHour = daysTimes.get(day);
-                }
-
-
-                if (dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration(), exam.getExtraTime())){
-                    dataHandler.schedule(exam, day, currentHour);
-                    daysTimes.put(day, exam.getFinishingHour());
-                    scheduled = true;
-                    break;
-                }
-            }
-
-            if (!scheduled) {
-                // reparación
-
-            }
         }
-
 
     }
 
+    private boolean classifyExam(DataHandler dataHandler, DateTimeConfigurer dateTimeConfigurer, HashMap<LocalDate,
+            LocalTime> daysTimes, Exam exam, int depth) {
+
+        Set<LocalDate> viableDays;
+        LocalTime currentHour;
+        viableDays = exam.getViableDays(daysTimes);
+        boolean scheduled = false;
+
+        for (LocalDate day :viableDays){
+            currentHour = daysTimes.get(day);
+
+            Exam collidingExam = null;
+            while (dateTimeConfigurer.isHourInProhibitedInterval(currentHour) ||
+                    (collidingExam = dataHandler.checkCollisionOf(day, currentHour, exam.getDuration(), exam.getExtraTime())) != null) {
+
+                if (dateTimeConfigurer.isHourInProhibitedInterval(currentHour)){
+                    daysTimes.put(day, dateTimeConfigurer.getFinishingHourProhibitedInterval());
+                }
+
+                if(collidingExam != null){
+                    daysTimes.put(day, collidingExam.getFinishingHour());
+                }
+                currentHour = daysTimes.get(day);
+            }
 
 
+            if (dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration(), exam.getExtraTime())){
+                dataHandler.schedule(exam, day, currentHour);
+                daysTimes.put(day, exam.getFinishingHour());
+                scheduled = true;
+                break;
+            }
+        }
+
+        if (!scheduled && depth <= LIMIT_DEPTH) {
+            List<Exam> candidates = dataHandler.getSwappableExamsOfOver(exam, viableDays);
+
+            for (Exam examCandidate : candidates) {
+                LocalDate actualDate = examCandidate.getDate();
+                LocalTime actualHour = examCandidate.getInitialHour();
+
+                // Lo asignamos por restricciones como exámenes el mismo día o en día.
+                dataHandler.schedule(exam, actualDate , actualHour);
+                dataHandler.unSchedule(examCandidate, actualDate, actualHour);
+
+                HashMap<LocalDate, LocalTime> daysTimesCopy = cloneMap(daysTimes);
+
+                if (classifyExam(dataHandler, dateTimeConfigurer, daysTimesCopy, examCandidate, depth + 1)) {
+                    // exam.setDate(actualDate);
+                    // exam.setInitialHour(actualHour);
+                    writeNewDaysTimes(daysTimes, daysTimesCopy);
+
+                    //daysTimes = daysTimesCopy;
+                    scheduled = true;
+                    break;
+                }
+                else {
+                    dataHandler.unSchedule(exam, actualDate, actualHour);
+                    dataHandler.schedule(examCandidate, actualDate, actualHour);
+                }
+
+            }
+            // reparación
+            // Coger todos los exámenes móviles fechados esos días.
+            // Tienen que durar lo mismo o más.
+            // copia de daysTimes
+
+        }
+        return scheduled;
+    }
+
+    private void writeNewDaysTimes(HashMap<LocalDate, LocalTime> daysTimes, HashMap<LocalDate, LocalTime> daysTimesCopy) {
+        for (Map.Entry<LocalDate, LocalTime> entry: daysTimesCopy.entrySet()) {
+            daysTimes.put(entry.getKey(), entry.getValue());
+        }
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private HashMap<LocalDate, LocalTime> cloneMap(HashMap<LocalDate, LocalTime> map) {
+        HashMap<LocalDate, LocalTime> result = new HashMap<>();
+        for (Map.Entry<LocalDate, LocalTime> entry: map.entrySet()) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
 
 
 }

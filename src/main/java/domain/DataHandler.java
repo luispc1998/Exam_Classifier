@@ -7,6 +7,7 @@ import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.constrictions.types.hardConstriction.fullyHardConstrictions.IsolateCourseOnDayConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnbalancedDaysPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;
@@ -83,8 +84,9 @@ public class DataHandler {
 
         //Weak
         addConstriction(new UnclassifiedExamsConstriction(exams));
-        //addConstriction(new SameCourseDifferentDayConstriction(exams));
+        addConstriction(new SameCourseDifferentDayConstriction(exams));
         addConstriction(new ProhibitedIntervalPenalization(exams, configurer));
+        //addConstriction(new UnbalancedDaysPenalization(exams));
     }
 
     /**
@@ -191,11 +193,22 @@ public class DataHandler {
      * Schedules an exam, at the specified date and hour.
      * @param exam The exam to be scheduled.
      * @param currentDate The date in which the exam will take place.
-     * @param currentHour The hour at which the exam will tale place.
+     * @param currentHour The hour at which the exam will take place.
      */
     public void schedule(Exam exam, LocalDate currentDate, LocalTime currentHour) {
         exam.scheduleFor(currentDate, currentHour);
-        IsolateCourseOnDayConstriction.addCourseToDate(currentDate, exam.getCourse());
+        IsolateCourseOnDayConstriction.addCourseToDate(currentDate, exam);
+    }
+
+    /**
+     * Schedules an exam, at the specified date and hour.
+     * @param exam The exam to be scheduled.
+     * @param currentDate The date in which the exam was taken place.
+     * @param currentHour The hour at which the exam was taken place.
+     */
+    public void unSchedule(Exam exam, LocalDate currentDate, LocalTime currentHour) {
+        exam.scheduleFor(null, null);
+        IsolateCourseOnDayConstriction.removeCourseFromDate(currentDate, exam);
     }
 
     /**
@@ -251,5 +264,16 @@ public class DataHandler {
             }
         }
         return resultExams;
+    }
+
+    public List<Exam> getSwappableExamsOfOver(Exam notScheduledExam, Set<LocalDate> days) {
+        List<Exam> candidates = new ArrayList<>();
+        for (Exam exam: exams) {
+            if (days.contains(exam.getDate()) &&
+                exam.getChunkOfTime().toMinutes() >= notScheduledExam.getChunkOfTime().toMinutes()) {
+                candidates.add(exam);
+            }
+        }
+        return candidates;
     }
 }

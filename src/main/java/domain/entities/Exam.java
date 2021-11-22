@@ -500,4 +500,12 @@ public class Exam {
         }
         return days;
     }
+
+    /**
+     * Returns the semester of the subject
+     * @return the semester of the subject
+     */
+    public int getSemester() {
+        return sem;
+    }
 }

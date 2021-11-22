@@ -2,6 +2,7 @@ package domain.constrictions.counter;
 
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnbalancedDaysPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 
@@ -15,6 +16,7 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
     private int orderExamsCounter;
     private int sameCourseDifferentDayCounter;
     private long prohibitedIntervalPenalizationCounter;
+    private long unbalancedDaysPenalizationCounter;
 
 
     @Override
@@ -58,6 +60,11 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
     }
 
     @Override
+    public void count(UnbalancedDaysPenalization unbalancedDaysPenalization) {
+        unbalancedDaysPenalizationCounter = unbalancedDaysPenalization.getMinutes();
+    }
+
+    @Override
     public int getCountOfTimeDisplacementConstriction() {
         return timeDisplacementCounter;
     }
@@ -95,5 +102,10 @@ public class ConstrictionCounterImpl implements ConstrictionCounter {
     @Override
     public long getCountProhibitedIntervalPenalization() {
         return prohibitedIntervalPenalizationCounter;
+    }
+
+    @Override
+    public long getCountUmbalancedDaysPenalization() {
+        return unbalancedDaysPenalizationCounter;
     }
 }

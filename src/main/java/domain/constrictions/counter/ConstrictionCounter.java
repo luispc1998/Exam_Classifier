@@ -2,6 +2,7 @@ package domain.constrictions.counter;
 
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnbalancedDaysPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 
@@ -66,10 +67,18 @@ public interface ConstrictionCounter {
     void count(SameCourseDifferentDayConstriction sameCourseDifferentDayConstriction);
 
     /**
-     * Increments the value of the counter for {@link SameCourseDifferentDayConstriction}
-     * @param prohibitedIntervalPenalization the amount of minutes used by the schedule in prohibited interval bounds.
+     * Increments the value of the counter for {@link ProhibitedIntervalPenalization}
+     * @param prohibitedIntervalPenalization the {@link domain.constrictions.Constriction}
+     *                                        whose condition was not fulfilled.
      */
     void count(ProhibitedIntervalPenalization prohibitedIntervalPenalization);
+
+    /**
+     * Increments the value of the counter for {@link UnbalancedDaysPenalization}
+     * @param unbalancedDaysPenalization the {@link domain.constrictions.Constriction}
+     *                                        whose condition was not fulfilled.
+     */
+    void count(UnbalancedDaysPenalization unbalancedDaysPenalization);
 
     /**
      * Returns the current counter for {@link TimeDisplacementConstriction}
@@ -118,4 +127,11 @@ public interface ConstrictionCounter {
      * @return the current counter for {@link ProhibitedIntervalPenalization}
      */
     long getCountProhibitedIntervalPenalization();
+
+
+    /**
+     * Returns the current counter for {@link UnbalancedDaysPenalization}
+     * @return the current counter for {@link UnbalancedDaysPenalization}
+     */
+    long getCountUmbalancedDaysPenalization();
 }

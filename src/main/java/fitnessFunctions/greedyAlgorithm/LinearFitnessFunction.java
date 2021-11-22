@@ -7,6 +7,7 @@ import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnbalancedDaysPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 import geneticAlgorithm.Individual;
@@ -92,7 +93,9 @@ public class LinearFitnessFunction implements FitnessFunction {
                 counter.getCountSameCourseDifferentDayConstriction()
                         * wc.getConstrictionWeight(SameCourseDifferentDayConstriction.CONSTRICTION_ID) +
                 counter.getCountProhibitedIntervalPenalization()
-                        * wc.getConstrictionWeight(ProhibitedIntervalPenalization.CONSTRICTION_ID);
+                        * wc.getConstrictionWeight(ProhibitedIntervalPenalization.CONSTRICTION_ID) +
+                counter.getCountUmbalancedDaysPenalization()
+                        * wc.getConstrictionWeight(UnbalancedDaysPenalization.CONSTRICTION_ID);
 
     }
 }
