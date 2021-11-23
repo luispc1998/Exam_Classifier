@@ -14,6 +14,7 @@ import domain.entities.Exam;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
+import domain.parsers.RoundsParser;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -61,15 +62,18 @@ public class DataHandler {
 
         this.configurer = configurer;
         this.preScheduledExams = new HashSet<>();
+        this.constrictions = new ArrayList<>();
 
         String inputDataFile = configurer.getFilePaths("inputFile");
         this.exams = ExamParser.parseExams(inputDataFile, this);
         identifyScheduledExams();
 
-
-        this.constrictions = ConstrictionParser.parseConstrictions(inputDataFile, this);
-
         addConstrictions();
+        RoundsParser.parseRounds(configurer.getFilePaths("rounds"), exams);
+
+        this.constrictions.addAll(ConstrictionParser.parseConstrictions(inputDataFile, this));
+
+
     }
 
     /**
@@ -116,10 +120,7 @@ public class DataHandler {
 
     }
 
-    public void test(){
-        IsolateCourseOnDayConstriction.resetAvailabilities(configurer.getDateTimeConfigurer().getExamDates(),
-                getPreScheduledExams());
-    }
+
 
     private List<Exam> getPreScheduledExams() {
         List<Exam> result = new ArrayList<>();

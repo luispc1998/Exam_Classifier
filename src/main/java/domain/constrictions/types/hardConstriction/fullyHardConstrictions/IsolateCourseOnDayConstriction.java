@@ -52,7 +52,13 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
             return true;
         }
         else{
-            return ! availabilities.get(exam.getDate()).contains(exam.getCourse());
+            for (Exam ex: availabilitiesRelaxed.get(exam.getDate())) {
+                if (ex.getCourse() == exam.getCourse() && ! ex.getRoundPartners().contains(exam.getId())){
+                    return false;
+                }
+            }
+            return true;
+            //return ! availabilities.get(exam.getDate()).contains(exam.getCourse());
         }
 
     }

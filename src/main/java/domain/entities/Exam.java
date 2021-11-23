@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This represents a task to be scheduled. Given the domain, it is called Exam.
@@ -106,6 +107,10 @@ public class Exam {
 
     private List<HardConstriction> hardConstrictions;
 
+    /**
+     * Round partners ids of the exam if any.
+     */
+    private List<Integer> roundPartners;
 
 
     /**
@@ -140,6 +145,7 @@ public class Exam {
         this.id = id;
         this.extraTime = Duration.ofMinutes(0);
         this.hardConstrictions = new ArrayList<>();
+        this.roundPartners = new ArrayList<>();
     }
 
     /**
@@ -502,10 +508,37 @@ public class Exam {
     }
 
     /**
-     * Returns the semester of the subject
-     * @return the semester of the subject
+     * Returns the semester of the exam.
+     * @return the semester of the exam.
      */
     public int getSemester() {
         return sem;
+    }
+
+    /**
+     * Returns the round partners ids of the exam.
+     * @return the round partners ids of the exam.
+     */
+    public List<Integer> getRoundPartners() {
+        return roundPartners;
+    }
+
+    public void addRound(List<Exam> round) {
+        List<Exam> roundPartners = new ArrayList<>(round);
+        roundPartners.remove(this);
+        this.roundPartners = roundPartners.stream().map((ex) -> ex.getId()).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Exam exam = (Exam) o;
+        return id == exam.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
