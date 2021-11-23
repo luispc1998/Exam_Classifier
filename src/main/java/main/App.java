@@ -50,9 +50,7 @@ public class App {
 
 
     public static void getBestSchedules(List<Individual> finalPopulation, HashSet<Individual> finalSet, int maxToTake) {
-        int iterations = 0;
         for (Individual idv: finalPopulation) {
-            iterations++;
             if (maxToTake == 0) {
                 break;
             }

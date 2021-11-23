@@ -325,7 +325,7 @@ public class Exam {
         return getInitialHour().plus(getDuration()).plus(getExtraTime());
     }
 
-    public LocalTime getFinisingHourWithoutExtraTime() {
+    public LocalTime getFinishingHourWithoutExtraTime() {
         if (initialHour == null){
             return null;
         }
@@ -407,7 +407,7 @@ public class Exam {
         attributes[10] = date;
         attributes[11] = getWeekDayString();
         attributes[12] = getInitialHour() == null ? "" : formatStringForHour((long) getInitialHour().toSecondOfDay());
-        attributes[13] = getFinisingHourWithoutExtraTime() == null ? "" : formatStringForHour((long) getFinisingHourWithoutExtraTime().toSecondOfDay());
+        attributes[13] = getFinishingHourWithoutExtraTime() == null ? "" : formatStringForHour((long) getFinishingHourWithoutExtraTime().toSecondOfDay());
         attributes[14] = getExtraTime() == null ? "-1" : formatStringForHour(getExtraTime().toSeconds());
         attributes[15] = cn;
         attributes[16] = id;

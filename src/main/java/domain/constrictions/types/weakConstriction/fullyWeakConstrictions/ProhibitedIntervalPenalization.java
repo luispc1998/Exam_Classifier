@@ -29,6 +29,8 @@ public class ProhibitedIntervalPenalization implements WeakConstriction {
      */
     private long minutes;
 
+    private Duration dur;
+
     /**
      * Constructor for the class
      * @param exams List of {@link Exam} to check the schedule.
@@ -48,19 +50,29 @@ public class ProhibitedIntervalPenalization implements WeakConstriction {
     @Override
     public void checkConstriction(ConstrictionCounter counter) {
         minutes = 0;
+        dur = Duration.ZERO;
         for (Exam exam: exams) {
             if (! exam.isScheduled()) { continue;}
 
             if (checkProhibitedInterval(exam)) {
-                minutes += Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
-                        exam.getFinisingHourWithoutExtraTime()).toMinutes();
+
+                dur = dur.plus(Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
+                        exam.getFinishingHourWithoutExtraTime()));
+                        //         exam.getFinisingHourWithoutExtraTime()).toMinutes();
+               // minutes += Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
+               //         exam.getFinisingHourWithoutExtraTime()).toMinutes();
             }
             else{
+
                 if (exam.getInitialHour().isBefore(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour())
-                && (exam.getFinisingHourWithoutExtraTime().equals(configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval())
-                || exam.getFinisingHourWithoutExtraTime().isAfter(configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval()))) {
-                    minutes += Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
-                            configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval()).toMinutes();
+                && (exam.getFinishingHourWithoutExtraTime().equals(configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval())
+                || exam.getFinishingHourWithoutExtraTime().isAfter(configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval()))) {
+
+                    dur = dur.plus(Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
+                            configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval()));
+
+                    //minutes += Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
+                    //        configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval()).toMinutes();
                 }
             }
         }
@@ -76,11 +88,12 @@ public class ProhibitedIntervalPenalization implements WeakConstriction {
      * @return
      */
     private boolean checkProhibitedInterval(Exam exam) {
-        return configurer.getDateTimeConfigurer().isHourInProhibitedInterval(exam.getFinishingHour());
+        return configurer.getDateTimeConfigurer().isHourInProhibitedInterval(exam.getFinishingHourWithoutExtraTime());
     }
 
     public long getMinutes() {
         if (minutes == -1) throw new IllegalStateException("It is need to call checkConstriction at least once before calling this method..");
-        return minutes;
+
+        return dur.toMinutes();
     }
 }
