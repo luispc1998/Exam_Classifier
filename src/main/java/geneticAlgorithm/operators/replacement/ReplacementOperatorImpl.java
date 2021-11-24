@@ -1,7 +1,7 @@
 package geneticAlgorithm.operators.replacement;
 
-import geneticAlgorithm.Individual;
 import fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.Individual;
 
 import java.util.ArrayList;
 import java.util.Comparator;

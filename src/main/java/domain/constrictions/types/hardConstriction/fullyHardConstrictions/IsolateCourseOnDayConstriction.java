@@ -1,6 +1,5 @@
 package domain.constrictions.types.hardConstriction.fullyHardConstrictions;
 
-import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.types.hardConstriction.AbstractHardConstriction;
 import domain.entities.Exam;
 

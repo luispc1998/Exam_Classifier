@@ -20,19 +20,33 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * This writes the final individuals to excel format.
+ *
+ * <p>
+ * It provides the final scheduling as well as the user constrictions specifying if they were fulfilled or not
+ * in the provided scheduling.
+ */
 public class ExcelWriter {
 
+    /**
+     * This writes the provided individuals to excel files. One per individual
+     * @param outputIndividuals The {@code Individual} instances, that lead to the final scheduling to be outputted.
+     * @param dataHandler The {@code DataHandler} instance over which the individuals will be decoded.
+     * @param outputFileName The name prefix of the output file.
+     * @throws IOException In case there is a problem when writing the excel.
+     */
     public static void excelWrite(HashSet<Individual> outputIndividuals, DataHandler dataHandler,
                                   String outputFileName) throws IOException {
 
         ChromosomeDecoder decoder = new ChromosomeDecoder();
         PrettyTimetable prettyTimetable = new PrettyTimetable();
 
-        String directory = createOuputDirectory(dataHandler.getConfigurer().getFilePaths("outputBaseDirectory"));
+        String directory = createOutputDirectory(dataHandler.getConfigurer().getFilePaths("outputBaseDirectory"));
 
         int counter = 0;
         for (Individual idv: outputIndividuals) {
-            decoder.decode(idv, dataHandler);
+            decoder.decodeNew(idv, dataHandler);
             prettyTimetable.orderScheduling(dataHandler);
             List<Exam> finalResult = dataHandler.getClonedSchedule();
             HashMap<String, List<Constriction>> verifiedConstrictions = dataHandler.verifyConstrictions();
@@ -55,7 +69,12 @@ public class ExcelWriter {
 
     }
 
-    public static String createOuputDirectory(String outputBaseDirectory) {
+    /**
+     * Creates the output directory for each execution of the program.
+     * @param outputBaseDirectory The base directory path in which the outputs of the program will be saved.
+     * @return The path of the generated directory in which the results of the program execution will be written.
+     */
+    public static String createOutputDirectory(String outputBaseDirectory) {
 
         LocalDate ld = LocalDate.now();
         LocalTime lt = LocalTime.now();
@@ -67,8 +86,8 @@ public class ExcelWriter {
         directoryBuilder.append(ld.getDayOfMonth());
 
         directoryBuilder.append("_");
-        directoryBuilder.append(lt.getHour());
-        directoryBuilder.append(lt.getMinute());
+        directoryBuilder.append(String.format("%02d", lt.getHour()));
+        directoryBuilder.append(String.format("%02d", lt.getMinute()));
 
         File theDir = new File(directoryBuilder.toString());
 

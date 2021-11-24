@@ -1,7 +1,5 @@
 package domain.constrictions;
 
-import domain.constrictions.counter.ConstrictionCounter;
-
 /**
  * This represents a condition or circumstance that the exam scheduling must fulfill.
  */

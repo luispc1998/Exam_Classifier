@@ -10,8 +10,8 @@ import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCo
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnbalancedDaysPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
-import geneticAlgorithm.Individual;
 import fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.Individual;
 
 
 /**
@@ -61,10 +61,6 @@ public class LinearFitnessFunction implements FitnessFunction {
         for (WeakConstriction constriction: dataHandler.getConstrictions()) {
                 constriction.checkConstriction(counter);
         }
-
-
-        //dataHandler.resetScheduling();
-
 
         //Do the formula.
         return formula(counter);

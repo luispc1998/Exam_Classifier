@@ -2,8 +2,8 @@ package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.OrderExamsConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

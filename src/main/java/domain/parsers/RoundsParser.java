@@ -1,26 +1,34 @@
 package domain.parsers;
 
-import domain.DataHandler;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.SameDayConstriction;
 import domain.entities.Exam;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * This parses the rounds file in which the exam rounds are specified.
+ *
+ * <p>
+ * An exam round is a group of exams that must take place on the same day. They are in fact the same exams which is held
+ * multiple times due to a large amount of students.
+ *
+ * <p>
+ * Therefore, an exam can only belong to one round.
+ */
 public class RoundsParser {
 
 
+    /**
+     * Parses the rounds and returns them.
+     * @param filepath The filepath to the rounds file
+     * @param exams The list of parsed exams
+     * @throws IOException In case there is a problem with the file.
+     */
     public static void parseRounds(String filepath, List<Exam> exams) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filepath));
         String line;
@@ -34,6 +42,10 @@ public class RoundsParser {
         }
     }
 
+    /**
+     * Creates a round, sets the hard constrictions to the exams. Configures the rounds on the corresponding exams.
+     * @param round The list of {@code Exam} that conforms the round.
+     */
     private static void setUpRound(List<Exam> round) {
         for (int i = 0; i < round.size(); i++) {
             round.get(i).addRound(round);

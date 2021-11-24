@@ -8,6 +8,13 @@ import domain.entities.Exam;
 import java.time.Duration;
 import java.util.List;
 
+/**
+ * This class penalizes the schedules in which the prohibited interval is occupied by exams.
+ *
+ * <p>
+ * By using it the algorithm prioritizes schedules/solutions which have less high duration exams on the mornings, leaving
+ * them for the afternoon. It's specially effective when having not too much hard constrictions.
+ */
 public class ProhibitedIntervalPenalization implements WeakConstriction {
 
 
@@ -83,17 +90,20 @@ public class ProhibitedIntervalPenalization implements WeakConstriction {
     }
 
     /**
-     *
-     * @param exam
-     * @return
+     * Checks if an exam's ending hour is in the prohibited interval
+     * @param exam The exam whose finishing hour will be checked
+     * @return True if the exam ends on the prohibited interval. False otherwise.
      */
     private boolean checkProhibitedInterval(Exam exam) {
         return configurer.getDateTimeConfigurer().isHourInProhibitedInterval(exam.getFinishingHourWithoutExtraTime());
     }
 
+    /**
+     * Returns the number of minutes used in the prohibited interval by all the exams.
+     * @return the number of minutes used in the prohibited interval by all the exams.
+     */
     public long getMinutes() {
         if (minutes == -1) throw new IllegalStateException("It is need to call checkConstriction at least once before calling this method..");
-
         return dur.toMinutes();
     }
 }

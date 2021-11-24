@@ -10,12 +10,28 @@ import java.time.LocalTime;
 import java.util.*;
 
 /**
- * This class takes a
+ * This decodes an {@code Individual} by using a greedy deterministic algorithm over the collection of exams
+ * stored at {@code DataHandler}.
+ *
+ * <p>
+ * The decoding process takes into account the {@link domain.constrictions.types.hardConstriction.HardConstriction} that
+ * each {@code Exam} has.
+ *
+ * @see fitnessFunctions.FitnessFunction
  */
 public class ChromosomeDecoder {
 
+    /**
+     * Limit depth of the repairing algorithm.
+     */
     private final static int LIMIT_DEPTH = 1;
 
+    /**
+     * Gets the exam list ordered as stated in the chromosome.
+     * @param chromosome The chromosome of the {@code Individual} that we are decoding.
+     * @param dataHandler The {@code DataHandler} instance.
+     * @return The list of {@code Exam} to schedule ordered as stated in {@code chromosome}.
+     */
     public List<Exam> getExamsOrderedForChromosome(List<Integer> chromosome, DataHandler dataHandler){
         List<Exam> exams = new ArrayList<>();
 
@@ -25,73 +41,13 @@ public class ChromosomeDecoder {
 
         return exams;
     }
-/* Old approach. Sequential.
 
-    public void decode2(Individual individual, DataHandler dataHandler){
-
-        DateTimeConfigurer dateTimeConfigurer = dataHandler.getConfigurer().getDateTimeConfigurer();
-
-        // Counters
-        LocalTime currentHour = dateTimeConfigurer.getDayInitialHour();
-        LocalDate currentDate;
-        Exam exam;
-
-        List<LocalDate> dates = dateTimeConfigurer.getExamDates();
-        Iterator<LocalDate> datesIterator = dates.listIterator();
-
-        List<Integer> chromosome = individual.getChromosome();
-
-        List<Exam> exams = getExamsOrderedForChromosome(chromosome, dataHandler);
-        Iterator<Exam> examsIterator = exams.listIterator();
-
-        if (examsIterator.hasNext() && datesIterator.hasNext()){
-            exam = examsIterator.next();
-            currentDate = datesIterator.next();
-        }
-        else {
-            return;
-        }
-        int infiniteCounter = 0;
-        do {
-            infiniteCounter++;
-            //check de hora y duración sobre hora máxima de finalización.
-            if (! dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration())){
-                if (datesIterator.hasNext()){
-                    currentDate = datesIterator.next();
-                    currentHour = dateTimeConfigurer.getDayInitialHour();
-                }
-                else {
-                    break;
-                    // tod, what happens if i run out of days ?
-                    // I can do nothing, for now. Maybe some fixes later.
-                }
-            }
-
-            if (dateTimeConfigurer.isHourInProhibitedInterval(currentHour)){
-                currentHour = dateTimeConfigurer.getFinishingHourProhibitedInterval();
-            }
-
-            Exam collidingExam = dataHandler.checkColisionOf(currentDate, currentHour, exam.getDuration());
-            // Sí. Lo clasifico
-            // No. Necesito la hora de finalización del otro examen. Y pruebo con esa.
-            if (collidingExam == null) {
-                dataHandler.schedule(exam, currentDate, currentHour);
-                currentHour = exam.getFinishingHour();
-                if (! examsIterator.hasNext()){
-                    break;
-                }
-                exam = examsIterator.next();
-
-            }
-            else{
-                currentHour = collidingExam.getFinishingHour();
-            }
-
-        } while(true);
-      
-    }
-*/
-
+    /**
+     * Initializes a map with all the calendar days as keys and the initial day hour specified at {@link DateTimeConfigurer}.
+     * @param dateTimeConfigurer The configurer instance.
+     * @return A {@code HashMap} instance with all the calendar days as keys and the initial day hour specified at {@link DateTimeConfigurer}.
+     * @see DateTimeConfigurer
+     */
     private HashMap<LocalDate, LocalTime> initializeDays(DateTimeConfigurer dateTimeConfigurer) {
         HashMap<LocalDate, LocalTime> daysTimes = new HashMap<>();
         for (LocalDate date :dateTimeConfigurer.getExamDates()) {
@@ -100,217 +56,11 @@ public class ChromosomeDecoder {
         return daysTimes;
     }
 
-
-    public void decode(Individual individual, DataHandler dataHandler){
-
-        DateTimeConfigurer dateTimeConfigurer = dataHandler.getConfigurer().getDateTimeConfigurer();
-
-        // Counters
-        LocalTime currentHour;
-        LocalDate currentDate;
-        Exam exam;
-        Set<LocalDate> viableDays;
-        Iterator<LocalDate> viableDaysIterator;
-
-        // Dates
-        List<LocalDate> dates = dateTimeConfigurer.getExamDates();
-        int indexDate = -1;
-
-        // Times for the days.
-        HashMap<LocalDate, LocalTime> daysTimes = initializeDays(dateTimeConfigurer);
-
-        // Exams to schedule
-        List<Integer> cromosome = individual.getChromosome();
-        List<Exam> exams = getExamsOrderedForChromosome(cromosome, dataHandler);
-        Iterator<Exam> examsIterator = exams.listIterator();
-
-        // Fin de la declaración de variables.
-
-        // Miramos que tengamos días y exámenes para clasificar o acabamos.
-
-
-        // if (examsIterator.hasNext() && datesIterator.hasNext()){
-        // Si tengo exámenes para clasificar, y tengo días para ponerlos.
-        if (examsIterator.hasNext() && indexDate < dates.size() -1){
-            // Inicializamos cosas. Primer examen, primera fecha.
-            exam = examsIterator.next();
-
-            //Miramos qué día se puede poner el examen según sus restricciones duras.
-            viableDays = exam.getViableDays(daysTimes);
-
-
-
-
-
-            //Si no se pueden poner ningún día, saltamos el examen. (No hay reparación, estamos al principio)
-            while (viableDays.size() == 0){
-                //Encontramos un examen que se pueda poner.
-                if (! examsIterator.hasNext()){
-                    return; // Se acabaron los exámenes
-                }
-                exam = examsIterator.next();
-                viableDays = exam.getViableDays(daysTimes);
-
-            }
-
-            viableDaysIterator = viableDays.iterator(); // Iteramos los días que se puede poner ese examen.
-            currentDate = viableDaysIterator.next(); //dates.get(++indexDate); //datesIterator.next();
-        }
-        else {
-            return;
-        }
-
-        do {
-            // Buscamos el primer día en el que se pueda poner el examen, iterando la lista.
-            // Si los pasamos todos, paso al siguiente examen y vuelvo a empezar.
-            // Se se me acaban los exámenes, fin.
-            //int allDayCheck = 0;
-
-
-            currentHour = daysTimes.get(currentDate);
-
-
-            while (! dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration(), exam.getExtraTime())) {
-
-                // indexDate = updateIndex(indexDate, dates.size());
-                if (viableDaysIterator.hasNext()) { //Me quedan más días viables para el examen
-                    currentDate = viableDaysIterator.next();
-                    currentHour = daysTimes.get(currentDate);
-                }
-                else{ // No me quedan días para el examen
-
-                    // Todo, posible algoritmo de reparación aquí.
-
-                    if (examsIterator.hasNext()){ // Voy a mirar si tengo más exámenes.
-                        exam = examsIterator.next();
-                        viableDays = exam.getViableDays(daysTimes);
-
-                        while (viableDays.size() == 0){
-                            // Todo, posible alritmo de reparación ?
-
-                            //Encontramos un examen que se pueda poner.
-                            if (! examsIterator.hasNext()){
-                                return; // Se acabaron los exámenes
-                            }
-                            exam = examsIterator.next();
-                            viableDays = exam.getViableDays(daysTimes);
-
-                        }
-                        // Tengo un examen que puedo intentar poner.
-                        viableDaysIterator = viableDays.iterator();
-                        currentDate = viableDaysIterator.next();
-                        currentHour = daysTimes.get(currentDate);
-
-                    }
-                    else{
-                        // No hemos podido encontrar más exámenes
-                        return; // Aquí se acaba.
-                    }
-                }
-                /*
-                currentDate = dates.get(indexDate);
-                currentHour = daysTimes.get(currentDate); // Tod, tenía el inicio del día aquí. ¿Bug? Sí.
-                allDayCheck++;
-
-                if (allDayCheck == dates.size()) {
-                    // Hemos mirado todos los días y no hemos encontado ninguno válido para el examen
-                    // Tratamos de pasar al siguiente examen
-
-                    if (examsIterator.hasNext()){
-                        exam = examsIterator.next();
-                        allDayCheck = 0;
-                    }
-                    else{
-                        // No hemos podido encontrar más exámenes
-                        return; // Aquí se acaba.
-                    }
-                }
-
-                 */
-            }
-
-
-            if (dateTimeConfigurer.isHourInProhibitedInterval(currentHour)){
-                daysTimes.put(currentDate, dateTimeConfigurer.getFinishingHourProhibitedInterval());
-                continue;
-                // No se pueden iniciar exámenes en el intervalo definido, por tanto ponemos la de final para este día
-                // Pasamos de nuevo arriba para ver si la hora de finalización es válida.
-            }
-
-            Exam collidingExam = dataHandler.checkCollisionOf(currentDate, currentHour, exam.getDuration(), exam.getExtraTime());
-            // Sí. Lo clasifico
-            // No. Necesito la hora de finalización del otro examen. Y pruebo con esa.
-
-
-            if (collidingExam == null) {
-                dataHandler.schedule(exam, currentDate, currentHour);
-                if (! examsIterator.hasNext()){ // si no quedan exámenes por revisar, acabamos
-                    return;
-                }
-                else{
-
-                    daysTimes.put(currentDate, exam.getFinishingHour()); // Ponemos la hora a la que acaba.
-
-                    exam = examsIterator.next();
-                    viableDays = exam.getViableDays(daysTimes);
-
-                    while (viableDays.size() == 0){
-                        // Todo, posible alritmo de reparación ?
-
-                        //Encontramos un examen que se pueda poner.
-                        if (! examsIterator.hasNext()){
-                            return; // Se acabaron los exámenes
-                        }
-                        exam = examsIterator.next();
-                        viableDays = exam.getViableDays(daysTimes);
-
-                    }
-
-                    viableDaysIterator = viableDays.iterator();
-                    currentDate = viableDaysIterator.next();
-                    //currentHour = daysTimes.get(currentDate); // No es necesario por principio de iteración del dowhile.
-
-                    //indexDate = updateIndex(indexDate, dates.size());
-                    //currentDate = dates.get(indexDate);
-
-                }
-
-            }
-            else{
-                daysTimes.put(currentDate, collidingExam.getFinishingHour());
-            }
-
-        } while(true);
-
-    }
-
-    private int updateIndex(int index, int limit) {
-        if (index + 1 == limit){
-            return 0;
-        }
-        else{
-            return ++index;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Decodes the provided individual.
+     * @param individual The {@code Individual} to be decoded.
+     * @param dataHandler The {@code DataHandler} instance over which the individual will be decoded.
+     */
     public void decodeNew(Individual individual, DataHandler dataHandler){
 
         DateTimeConfigurer dateTimeConfigurer = dataHandler.getConfigurer().getDateTimeConfigurer();
@@ -342,6 +92,17 @@ public class ChromosomeDecoder {
 
     }
 
+    /**
+     * Tries to classify an exam.
+     * @param dataHandler The {@code DataHandler} instance where the scheduling is.
+     * @param dateTimeConfigurer The {@code DateTimeConfigurer} instance where the hour configurations, including the prohibited
+     *                           interval bounds are.
+     * @param daysTimes A {@code HashMap} where the keys are the calendar days and the value the first hour of each day in which an
+     *                  exam can start.
+     * @param exam The {@code Exam} to be scheduled.
+     * @param depth The depth of the repairing tree.
+     * @return True if the exam was classified. False otherwise.
+     */
     private boolean classifyExam(DataHandler dataHandler, DateTimeConfigurer dateTimeConfigurer, HashMap<LocalDate,
             LocalTime> daysTimes, Exam exam, int depth) {
 
@@ -357,13 +118,16 @@ public class ChromosomeDecoder {
             while (dateTimeConfigurer.isHourInProhibitedInterval(currentHour) ||
                     (collidingExam = dataHandler.checkCollisionOf(day, currentHour, exam.getDuration(), exam.getExtraTime())) != null) {
 
+
+                if(collidingExam != null){
+                    daysTimes.put(day, collidingExam.getFinishingHour());
+                    currentHour = daysTimes.get(day);
+                }
+
                 if (dateTimeConfigurer.isHourInProhibitedInterval(currentHour)){
                     daysTimes.put(day, dateTimeConfigurer.getFinishingHourProhibitedInterval());
                 }
 
-                if(collidingExam != null){
-                    daysTimes.put(day, collidingExam.getFinishingHour());
-                }
                 currentHour = daysTimes.get(day);
             }
 
@@ -390,11 +154,7 @@ public class ChromosomeDecoder {
                 HashMap<LocalDate, LocalTime> daysTimesCopy = cloneMap(daysTimes);
 
                 if (classifyExam(dataHandler, dateTimeConfigurer, daysTimesCopy, examCandidate, depth + 1)) {
-                    // exam.setDate(actualDate);
-                    // exam.setInitialHour(actualHour);
                     writeNewDaysTimes(daysTimes, daysTimesCopy);
-
-                    //daysTimes = daysTimesCopy;
                     scheduled = true;
                     break;
                 }
@@ -413,13 +173,22 @@ public class ChromosomeDecoder {
         return scheduled;
     }
 
+    /**
+     * Overrides {@code daysTimes} data with the one in {@code daysTimesCopy}.
+     * @param daysTimes The {@code HashMap} containing the dates as keys and the first hour that can be used as value.
+     * @param daysTimesCopy A copy of {@code daysTimes} used by the repairing algorithm.
+     */
     private void writeNewDaysTimes(HashMap<LocalDate, LocalTime> daysTimes, HashMap<LocalDate, LocalTime> daysTimesCopy) {
         for (Map.Entry<LocalDate, LocalTime> entry: daysTimesCopy.entrySet()) {
             daysTimes.put(entry.getKey(), entry.getValue());
         }
     }
 
-
+    /**
+     * Creates a copy of the provided map.
+     * @param map The {@code HashMap} instance that we want to clone.
+     * @return A new {@code HashMap} instance with a copy of the values of {@code map}.
+     */
     private HashMap<LocalDate, LocalTime> cloneMap(HashMap<LocalDate, LocalTime> map) {
         HashMap<LocalDate, LocalTime> result = new HashMap<>();
         for (Map.Entry<LocalDate, LocalTime> entry: map.entrySet()) {

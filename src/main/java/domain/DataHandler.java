@@ -5,11 +5,10 @@ import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.constrictions.types.hardConstriction.fullyHardConstrictions.IsolateCourseOnDayConstriction;
+import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnbalancedDaysPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
@@ -238,7 +237,7 @@ public class DataHandler {
     }
 
     /**
-     * Recomputes the result of all the constrictions over the current schedule
+     * Recomputes the result of all the constrictions over the current schedule.
      * @return A {@code HashMap} being the keys the constrictions ids, and the values a list of that type of constriction.
      */
     public HashMap<String, List<Constriction>> verifyConstrictions() {
@@ -257,6 +256,12 @@ public class DataHandler {
         return verifiedConstrictions;
     }
 
+    /**
+     * Returns the exam on the provided date which take place in the provided interval.
+     * @param day The day in which the returned exams will take place.
+     * @param interval The time interval in which the returned exams start.
+     * @return A {@code List} of {@code Exam} that take place on {@code day} in the time interval {@code interval}.
+     */
     public List<Exam> getExamsAt(LocalDate day, Interval interval) {
         List<Exam> resultExams = new ArrayList<>();
         for (Exam exam: exams) {
@@ -267,6 +272,13 @@ public class DataHandler {
         return resultExams;
     }
 
+    /**
+     * Returns a list of exams, taken place on {@code days} that are viable for a swap with {@code notScheduledExam}.
+     * @param notScheduledExam The exam that is wanted to be placed.
+     * @param days The days in which {@code notScheduledExam} can take place and therefore the days where we need to look
+     *             for interchangeable exams.
+     * @return A {@code List} of {@code Exam} that are viable to be interchanged with {@code notScheduledExam}.
+     */
     public List<Exam> getSwappableExamsOfOver(Exam notScheduledExam, Set<LocalDate> days) {
         List<Exam> candidates = new ArrayList<>();
         for (Exam exam: exams) {

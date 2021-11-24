@@ -1,7 +1,7 @@
 package geneticAlgorithm.operators.selection;
 
-import geneticAlgorithm.Individual;
 import fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.Individual;
 
 import java.util.List;
 

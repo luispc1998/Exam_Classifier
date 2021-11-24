@@ -1,7 +1,5 @@
 package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
 
-import configuration.Configurer;
-import domain.DataHandler;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;

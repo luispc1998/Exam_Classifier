@@ -1,7 +1,6 @@
 package domain.constrictions.types.hardConstriction;
 
 import domain.constrictions.Constriction;
-import domain.constrictions.counter.ConstrictionCounter;
 import domain.entities.Exam;
 
 import java.time.LocalDate;

@@ -2,6 +2,9 @@ package domain.entities;
 
 import java.util.Comparator;
 
+/**
+ * This class is used to order the exams by their dates and hours.
+ */
 public class ExamDatesComparator implements Comparator<Exam> {
 
     @Override

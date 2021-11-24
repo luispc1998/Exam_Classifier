@@ -375,14 +375,6 @@ public class Exam {
                 Locale.getDefault());
     }
 
-    /*
-    public double getInitialHourExcel() {
-        return this.initialHour.toSecondOfDay() /3600 / 24;
-    }
-    public double getEndinglHourExcel() {
-        return getFinishingHour().toSecondOfDay() /3600 / 24;
-    }
-     */
 
     /**
      * Returns an array with all the data of the object to be written in the excel.
@@ -523,10 +515,14 @@ public class Exam {
         return roundPartners;
     }
 
+    /**
+     * Adds the round data to the exam..
+     * @param round The round in which the exam is.
+     */
     public void addRound(List<Exam> round) {
         List<Exam> roundPartners = new ArrayList<>(round);
         roundPartners.remove(this);
-        this.roundPartners = roundPartners.stream().map((ex) -> ex.getId()).collect(Collectors.toList());
+        this.roundPartners = roundPartners.stream().map(Exam::getId).collect(Collectors.toList());
     }
 
     @Override

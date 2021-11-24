@@ -1,11 +1,6 @@
 package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
-import domain.constrictions.types.hardConstriction.HardConstriction;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
-import domain.entities.Exam;
-
-import java.time.LocalDate;
-import java.util.Set;
 
 /**
  * User constrictions that can be specified as hard or weak.
