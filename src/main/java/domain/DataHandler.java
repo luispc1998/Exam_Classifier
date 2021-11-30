@@ -6,6 +6,7 @@ import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.ConstrictionCounterImpl;
 import domain.constrictions.types.hardConstriction.fullyHardConstrictions.IsolateCourseOnDayConstriction;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.NumericalComplexityPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
@@ -89,6 +90,7 @@ public class DataHandler {
         addConstriction(new UnclassifiedExamsConstriction(exams));
         addConstriction(new SameCourseDifferentDayConstriction(exams));
         addConstriction(new ProhibitedIntervalPenalization(exams, configurer));
+        addConstriction(new NumericalComplexityPenalization(exams));
         //addConstriction(new UnbalancedDaysPenalization(exams));
     }
 
@@ -242,7 +244,6 @@ public class DataHandler {
      */
     public HashMap<String, List<Constriction>> verifyConstrictions() {
         HashMap<String, List<Constriction>> verifiedConstrictions = new HashMap<>();
-        // TODO , silly counter, or another method.
         ConstrictionCounter counter = new ConstrictionCounterImpl();
 
         for (WeakConstriction cons: constrictions) {

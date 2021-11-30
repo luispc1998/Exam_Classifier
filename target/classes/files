@@ -1,4 +1,4 @@
-inputFile=files/pruebas/v6_sinFechas_3.xlsx
+inputFile=files/pruebas/v6_sF_numericalComplexity.xlsx
 outputFile=files/output/prueba.xlsx
 outputBaseDirectory=files/output/
 dateTimes=dateTime

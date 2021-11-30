@@ -10,7 +10,11 @@ import java.util.List;
 
 public class UnbalancedDaysPenalization implements WeakConstriction {
 
-    public final static String CONSTRICTION_ID = "UDP";
+    /**
+     * Constriction id of this type of {@code Constriction}.
+     */
+    public final static String CONSTRICTION_ID = "PIP";
+
 
     /**
      * List of {@link Exam} to check the schedule.

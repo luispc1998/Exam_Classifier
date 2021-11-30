@@ -7,6 +7,8 @@ import fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
+import geneticAlgorithm.output.ExcelWriter;
+import geneticAlgorithm.output.OutputHandler;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -30,7 +32,7 @@ public class App {
         GeneticCore genCore = new GeneticCore(individualPrime, 1000);
 
 
-        Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 300);
+        Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 300, 50);
 
 
 
@@ -43,9 +45,11 @@ public class App {
         getBestSchedules(finalPopulation, outputIndividuals, 3);
 
 
-        ExcelWriter.excelWrite(outputIndividuals, dataHandler, outputFileName);
 
 
+        OutputHandler outputHandler = new OutputHandler(outputIndividuals, dataHandler, outputFileName, genCore.getLogging());
+
+        outputHandler.writeOutputFiles();
 
     }
 

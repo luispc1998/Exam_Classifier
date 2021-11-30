@@ -1,6 +1,7 @@
 package geneticAlgorithm;
 
 import fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.logger.GeneticLogger;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
 import geneticAlgorithm.operators.crossing.OXCrosssingOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;
@@ -17,7 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This in the genetic algorithm. In this class the process to produce new generations is declared.
  *
+ * <p>
+ * The operators used by the algorithm are externalized and they are implemented by means of the Strategy design pattern.
+ *
+ * @see SelectionOperator
+ * @see CrossingOperator
+ * @see MutationOperator
+ * @see ReplacementOperator
  */
 public class GeneticCore {
 
@@ -61,6 +70,10 @@ public class GeneticCore {
      */
     private ReplacementOperator replacementOperator;
 
+    /**
+     * Logger for the genetic algorithm.
+     */
+    private GeneticLogger logger;
 
     /**
      * Constructor for the class
@@ -75,6 +88,8 @@ public class GeneticCore {
         this.mutationOperator = new MutationSwap();
         this.crossingOperator = new OXCrosssingOperator();
         this.replacementOperator = new ReplacementOperatorImpl();
+        this.logger = new GeneticLogger();
+
     }
 
     /**
@@ -82,9 +97,11 @@ public class GeneticCore {
      * @param mutationProbability Probability for new individuals to mutate
      * @param fitnessFunction Fitness function to be used by the algorithm
      * @param maxIterations Maximum number of iterations that the algorithm will do.
+     * @param loggingFrequency Number of iterations after which the algorithm logs its state.
      * @return The best individual
      */
-    public Individual geneticAlgorithm(double mutationProbability, FitnessFunction fitnessFunction, int maxIterations) {
+    public Individual geneticAlgorithm(double mutationProbability, FitnessFunction fitnessFunction, int maxIterations,
+                                       int loggingFrequency) {
 
         // Coger al mejor individuo y hacer la media del fitness para estudiar convergencia.
         int genCounter = 0;
@@ -98,6 +115,8 @@ public class GeneticCore {
                 + ", Avg Fitness: " + averageFitness);
 
         System.out.println(bestIndividual);
+
+        logger.log(genCounter, bestIndividual, averageFitness);
 
         try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
             while (genCounter < maxIterations) { //limit by iterations, limit by finnding a solution.
@@ -115,6 +134,10 @@ public class GeneticCore {
 
                 System.out.println(bestIndividual);
                 */
+
+                if (genCounter % loggingFrequency == 0) {
+                    logger.log(genCounter, bestIndividual, averageFitness);
+                }
 
                 pb.step();
                 pb.setExtraMessage("Gen: " + genCounter + ", BF: " + bestIndividual.getFitnessScore(fitnessFunction) +
@@ -212,5 +235,13 @@ public class GeneticCore {
      */
     public List<Individual> getPopulation(){
         return population;
+    }
+
+    /**
+     * Returns the logged data written by {@code GeneticLogger}.
+     * @return Logged data written by the {@code GeneticLogger}.
+     */
+    public String getLogging() {
+        return logger.getLoggedData();
     }
 }

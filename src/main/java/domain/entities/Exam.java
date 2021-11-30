@@ -105,6 +105,9 @@ public class Exam {
     private int id;
 
 
+    /**
+     * List of {@code HardConstriction} that must be considered when scheduling the exam.
+     */
     private List<HardConstriction> hardConstrictions;
 
     /**
@@ -523,6 +526,14 @@ public class Exam {
         List<Exam> roundPartners = new ArrayList<>(round);
         roundPartners.remove(this);
         this.roundPartners = roundPartners.stream().map(Exam::getId).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns {@code cn}  value.
+     * @return {@code cn}  value,
+     */
+    public int getCn() {
+        return cn;
     }
 
     @Override

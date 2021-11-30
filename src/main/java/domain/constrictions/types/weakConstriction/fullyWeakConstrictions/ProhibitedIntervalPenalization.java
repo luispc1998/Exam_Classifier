@@ -17,7 +17,9 @@ import java.util.List;
  */
 public class ProhibitedIntervalPenalization implements WeakConstriction {
 
-
+    /**
+     * Constriction id of this type of {@code Constriction}.
+     */
     public final static String CONSTRICTION_ID = "PIP";
 
 

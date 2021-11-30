@@ -1,9 +1,6 @@
 package domain.constrictions.counter;
 
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnbalancedDaysPenalization;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
+import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.*;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 
 /**
@@ -81,6 +78,13 @@ public interface ConstrictionCounter {
     void count(UnbalancedDaysPenalization unbalancedDaysPenalization);
 
     /**
+     * Increments the value of the counter for {@link UnbalancedDaysPenalization}
+     * @param numericalComplexityPenalization the {@link domain.constrictions.Constriction}
+     *                                        whose condition was not fulfilled.
+     */
+    void count(NumericalComplexityPenalization numericalComplexityPenalization);
+
+    /**
      * Returns the current counter for {@link TimeDisplacementConstriction}
      * @return the current counter for {@link TimeDisplacementConstriction}
      */
@@ -133,5 +137,11 @@ public interface ConstrictionCounter {
      * Returns the current counter for {@link UnbalancedDaysPenalization}
      * @return the current counter for {@link UnbalancedDaysPenalization}
      */
-    long getCountUmbalancedDaysPenalization();
+    long getCountUnbalancedDaysPenalization();
+
+    /**
+     * Returns the current counter for {@link NumericalComplexityPenalization}
+     * @return the current counter for {@link NumericalComplexityPenalization}
+     */
+    double getNumericalComplexityPenalization();
 }
