@@ -20,10 +20,6 @@ public class OutputHandler {
     private DataHandler dataHandler;
 
 
-    public OutputHandler(String outputBaseDirectory) {
-
-    }
-
     public OutputHandler(HashSet<Individual> outputIndividuals, DataHandler dataHandler, String outputFileName, String logging) {
         this.outputDirectory = createOutputDirectory(dataHandler.getConfigurer().getFilePaths("outputBaseDirectory"));
         this.dataHandler = dataHandler;

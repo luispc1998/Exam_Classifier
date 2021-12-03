@@ -75,7 +75,7 @@ public class ExamParser {
             fis = new FileInputStream(filepath);
             //creating workbook instance that refers to .xls file
             workbook = new XSSFWorkbook(fis);
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = workbook.getSheet("planificación");
 
             Map<Integer, List<String>> data = new HashMap<>();
             int i = 0;

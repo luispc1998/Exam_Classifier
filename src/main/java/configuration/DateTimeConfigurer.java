@@ -104,17 +104,7 @@ public class DateTimeConfigurer {
 
             Map<Integer, List<String>> data = new HashMap<>();
             int i = 0;
-            // int jumpLines = 4;
-
             for (Row row : sheet) {
-                /*
-                if (jumpLines > 0) {
-                    System.out.println("Skipped line");
-                    jumpLines--;
-                    continue;
-                }
-                 */
-
                 LocalDate date = generateDate(row);
                 if (date == null) {
                     System.out.println("Línea " + i + " saltada. No fue posible parsear la fecha");

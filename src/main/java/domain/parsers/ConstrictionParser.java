@@ -156,34 +156,38 @@ public class ConstrictionParser {
 
         switch (constrictionIdRow.getCell(baseExcelColumn).getStringCellValue()){
             case TimeDisplacementConstriction.CONSTRICTION_ID:
-                TimeDisplacementConstriction.setClassDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool = new TimeDisplacementConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1, baseExcelColumn + 2}));
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                        , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(TimeDisplacementConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case SameDayConstriction.CONSTRICTION_ID:
                 parserTool = new SameDayConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1}));
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                        , baseExcelColumn + 2}));
                 usedTools.put(SameDayConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case DifferentDayConstriction.CONSTRICTION_ID:
                 parserTool = new DifferentDayConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1}));
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                        , baseExcelColumn + 2}));
                 usedTools.put(DifferentDayConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case OrderExamsConstriction.CONSTRICTION_ID:
                 parserTool = new OrderExamsConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1}));
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                        , baseExcelColumn + 2}));
                 usedTools.put(OrderExamsConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case DayBannedConstriction.CONSTRICTION_ID:
                 parserTool = new DayBannedConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1}));
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                        , baseExcelColumn + 2}));
                 usedTools.put(DayBannedConstriction.CONSTRICTION_ID, parserTool);
                 break;
         }
@@ -217,7 +221,9 @@ public class ConstrictionParser {
     public static void parseToExcel(HashMap<String, List<Constriction>> verifiedConstrictions, Workbook workbook) {
 
             //creating workbook instance that refers to .xls file
-
+            if (usedTools.size() == 0) {
+                loadDefaultTools();
+            }
             Sheet sheet = workbook.createSheet("Restricciones");
             int rowCount = 0;
 
@@ -256,48 +262,37 @@ public class ConstrictionParser {
 
     }
 
+    private static void loadDefaultTools() {
+
+        parserTool = new TimeDisplacementConstrictionParserTool();
+        parserTool.setDescription("default Description");
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Calendar days distance", "Cumplida?"});
+        usedTools.put(TimeDisplacementConstriction.CONSTRICTION_ID, parserTool);
 
 
+        parserTool = new SameDayConstrictionParserTool();
+        parserTool.setDescription("default Description");
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Cumplida?"});
+        usedTools.put(SameDayConstriction.CONSTRICTION_ID, parserTool);
 
-    /* Outdated
+        parserTool = new DifferentDayConstrictionParserTool();
+        parserTool.setDescription("default Description");
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Cumplida?"});
+        usedTools.put(DifferentDayConstriction.CONSTRICTION_ID, parserTool);
 
-    private static Constriction generateConstriction(Row row, int i, DataHandler dataHandler) {
-        Constriction constriction = null;
-        try {
-            Exam exam1 = dataHandler.getExam((int) row.getCell(1).getNumericCellValue());
-            Exam exam2;
-            switch (row.getCell(0).getStringCellValue()) {
-                case TimeDisplacementConstriction.CONSTRICTION_ID:
-                    //TD - GCCAS-02-12 - GDVS-2-131 - 3
-                    exam2 = dataHandler.getExam((int) (row.getCell(2).getNumericCellValue()));
-                    constriction = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(3).getNumericCellValue(),
-                            dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
-                    break;
-                case DayBannedConstriction.CONSTRICTION_ID:
-                    //DB - GVVAS-053-13 - 12/2/2022
-                    constriction = new DayBannedConstriction(exam1, row.getCell(2).getDateCellValue()
-                            .toInstant().atZone(ZoneId.systemDefault())
-                            .toLocalDate());
-                    break;
-                case SameDayConstriction.CONSTRICTION_ID:
-                    //SD - GCCAS-02-12 - GDVS-2-131
-                    exam2 = dataHandler.getExam((int) (row.getCell(2).getNumericCellValue()));
-                    List<Exam> sameDateExams = new ArrayList<>();
-                    sameDateExams.add(exam1); sameDateExams.add(exam2);
-                    constriction = new SameDayConstriction(sameDateExams);
-                    break;
-            }
-        }catch(Exception e){
-            System.out.println("Cannot create constriction for line: " + i + ". " +
-                    "Reason: " + e.getMessage());
-            constriction = null;
-        }
+        parserTool = new OrderExamsConstrictionParserTool();
+        parserTool.setDescription("default Description");
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Cumplida?"});
+        usedTools.put(OrderExamsConstriction.CONSTRICTION_ID, parserTool);
 
-        return constriction;
-
+        parserTool = new DayBannedConstrictionParserTool();
+        parserTool.setDescription("default Description");
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Cumplida?"});
+        usedTools.put(DayBannedConstriction.CONSTRICTION_ID, parserTool);
 
     }
 
-     */
+
+
 
 }

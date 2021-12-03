@@ -9,6 +9,9 @@ import domain.parsers.ExamParser;
 import fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 import geneticAlgorithm.Individual;
 import main.PrettyTimetable;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -16,10 +19,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.time.ZoneId;
+import java.util.*;
 
 /**
  * This writes the final individuals to excel format.
@@ -55,19 +56,37 @@ public class ExcelWriter {
             dataHandler.resetScheduling();
             Comparator<Exam> examComparator = new ExamDatesComparator();
             finalResult.sort(examComparator);
-
-
-
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            ExamParser.parseToExcel(finalResult, workbook);
-            ConstrictionParser.parseToExcel(verifiedConstrictions, workbook);
             counter++;
 
-            try (FileOutputStream outputStream = new FileOutputStream(directory + outputFileName + "_" + counter + ".xlsx")) {
-                workbook.write(outputStream);
-            }
+
+            parseExamListToExcel(directory, outputFileName, counter, finalResult,
+                    verifiedConstrictions, dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
         }
 
+
+    }
+
+    public static void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
+            List<Constriction>> verifiedConstrictions, List<LocalDate> calendar) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        ExamParser.parseToExcel(finalResult, workbook);
+        ConstrictionParser.parseToExcel(verifiedConstrictions, workbook);
+        writeCalendar(workbook, calendar);
+
+        try (FileOutputStream outputStream = new FileOutputStream(directory + outputFileName + "_" + counter + ".xlsx")) {
+            workbook.write(outputStream);
+        }
+    }
+
+    public static void writeCalendar(XSSFWorkbook workbook, List<LocalDate> calendar) {
+
+        XSSFSheet sheet = workbook.createSheet("Calendar");
+        int rowCount = 0;
+        for (LocalDate date: calendar) {
+            Row row = sheet.createRow(rowCount++);
+            Cell cell = row.createCell(0);
+            cell.setCellValue(Date.from((date.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        }
 
     }
 
