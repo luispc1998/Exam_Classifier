@@ -47,7 +47,6 @@ public class SamplesGenerator {
     public static void initialer() {
         initializeExamDurationProbabilities();
         initializeExamExtraTimesProbabilities();
-        initializeConstrictionAmount();
     }
 
     private static void initializeCalendar() {
@@ -63,11 +62,11 @@ public class SamplesGenerator {
     }
 
     private static void initializeConstrictionAmount() {
-        constrictionAmount.put("DB", 100);
-        constrictionAmount.put("SD", 100);
-        constrictionAmount.put("DD", 100);
-        constrictionAmount.put("TD", 100);
-        constrictionAmount.put("OE", 100);
+        constrictionAmount.put("DB", result.size());
+        constrictionAmount.put("SD", result.size());
+        constrictionAmount.put("DD", result.size() / 2);
+        constrictionAmount.put("TD", result.size() / 2);
+        constrictionAmount.put("OE", result.size() / 2);
     }
 
     private static void initializeExamExtraTimesProbabilities() {
@@ -107,6 +106,7 @@ public class SamplesGenerator {
         }
 
         initializeCalendar();
+        initializeConstrictionAmount();
         generateConstrictions();
 
         ExcelWriter.parseExamListToExcel("files/testFilesGenerated/", "test.xslx", 1, result,

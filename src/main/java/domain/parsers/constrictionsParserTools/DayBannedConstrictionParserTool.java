@@ -8,7 +8,9 @@ import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * This is the parser for {@link DayBannedConstriction}
@@ -30,7 +32,7 @@ public class DayBannedConstrictionParserTool extends AbstractCosntrictionParserT
         cell.setCellValue(dbc.getExam().getId());
 
         cell = row.createCell(baseExcelColumn + ++cellCounter);
-        cell.setCellValue(dbc.getDayBanned().toString());
+        cell.setCellValue(Date.from(dbc.getDayBanned().atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         cell = row.createCell(baseExcelColumn + ++cellCounter);
         cell.setCellValue(dbc.getLastEvaluation());

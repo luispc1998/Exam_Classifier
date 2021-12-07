@@ -140,18 +140,21 @@ public class GeneticCore {
                 }
 
                 pb.step();
-                pb.setExtraMessage("Gen: " + genCounter + ", BF: " + bestIndividual.getFitnessScore(fitnessFunction) +
-                        ", AF: " + averageFitness);
+                pb.setExtraMessage("Gen: " + genCounter + ", BF: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction)) +
+                        ", AF: " + String.format("%.2f",averageFitness));
             }
             System.out.println("\n" + "[Gen: " + genCounter
-                    + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
-                    + ", Avg Fitness: " + averageFitness + "]");
+                    + ", Best Fitness: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction))
+                    + ", Avg Fitness: " + String.format("%.2f",averageFitness) + "]");
 
             System.out.println(bestIndividual);
 
         }
             return bestIndividual;
     }
+
+
+
 
     /**
      * Computes the average fitness of the current population.

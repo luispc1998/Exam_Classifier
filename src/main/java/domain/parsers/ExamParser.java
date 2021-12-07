@@ -11,7 +11,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -75,11 +77,11 @@ public class ExamParser {
             fis = new FileInputStream(filepath);
             //creating workbook instance that refers to .xls file
             workbook = new XSSFWorkbook(fis);
-            Sheet sheet = workbook.getSheet("planificación");
+            Sheet sheet = workbook.getSheet("Planificación");
 
             Map<Integer, List<String>> data = new HashMap<>();
             int i = 0;
-            int jumpLines = 5;
+            int jumpLines = 1;
 
             for (Row row : sheet) {
                 if (jumpLines > 0) {
@@ -132,6 +134,8 @@ public class ExamParser {
                 exam.setDateFromExcel(row.getCell(10).getDateCellValue());
                 exam.setHourFromExcel(row.getCell(12).getNumericCellValue());
             }
+
+
 
             if (row.getCell(14) != null && row.getCell(14).getNumericCellValue() >= 0) { //TOD, por defecto tengo un 0.
                                                                                             // Tengo que poner un número negativo en el excel.
@@ -206,7 +210,7 @@ public class ExamParser {
      */
     public static void parseToExcel(List<Exam> exams, XSSFWorkbook workbook) {
 
-        XSSFSheet sheet = workbook.createSheet("Test");
+        XSSFSheet sheet = workbook.createSheet("Planificación");
 
         int rowCount = 0;
         Row row = sheet.createRow(rowCount);
@@ -228,13 +232,22 @@ public class ExamParser {
                     case 16:
                         cell.setCellValue((int) att);
                         break;
+                    case 14:
+                        if (att == null) {
+                            break;
+                        }
+                    case 9: //duration
+                        cell.setCellValue((double) att);
+                        break;
                     case 10: //date
                         if (att==null){
-                            cell.setCellValue("");
+                            //cell.setCellValue("");
                             break;
                         }
                         cell.setCellValue(Date.from(((LocalDate) att).atStartOfDay(ZoneId.systemDefault()).toInstant()));
                         break;
+
+
                     default:
                         cell.setCellValue((String) att);
                 }

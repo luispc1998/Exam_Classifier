@@ -24,10 +24,10 @@ public class GeneticLogger {
         data.append(iterations);
         data.append("\n");
         data.append("Avg Fitness: ");
-        data.append(avgFitness);
+        data.append(String.format("%.2f",avgFitness));
         data.append("\n");
         data.append("Best Fitness: ");
-        data.append(bestIndividual.getFitnessScore(null));
+        data.append(String.format("%.2f",bestIndividual.getFitnessScore(null)));
         data.append("\n");
         data.append("Best Individual");
         data.append("\n");

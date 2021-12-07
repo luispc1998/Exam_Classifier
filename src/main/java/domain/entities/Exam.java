@@ -227,6 +227,16 @@ public class Exam {
     }
 
     /**
+     * Transforms a duration to the Excel format
+     * @return the duration in Excel format
+     * @param duration the duration object to be transformed to excel format.
+     */
+    private double transformToDuration(Duration duration) {
+        return duration.toMinutes() / 60.0 / 24.0;
+        //return (long) (duration * 24 * 60);
+    }
+
+    /**
      * Returns the duration of the exam.
      * @return the duration of the exam.
      */
@@ -398,12 +408,12 @@ public class Exam {
         attributes[6] = contentType;
         attributes[7] = modality;
         attributes[8] = alumnos;
-        attributes[9] = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
+        attributes[9] =  transformToDuration(duration); //String.format("%d:%02d", s / 3600, (s % 3600) / 60);
         attributes[10] = date;
         attributes[11] = getWeekDayString();
         attributes[12] = getInitialHour() == null ? "" : formatStringForHour((long) getInitialHour().toSecondOfDay());
         attributes[13] = getFinishingHourWithoutExtraTime() == null ? "" : formatStringForHour((long) getFinishingHourWithoutExtraTime().toSecondOfDay());
-        attributes[14] = getExtraTime() == null ? "-1" : formatStringForHour(getExtraTime().toSeconds());
+        attributes[14] = getExtraTime() == null ? "-1" : transformToDuration(extraTime);
         attributes[15] = cn;
         attributes[16] = id;
 

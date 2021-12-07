@@ -1,7 +1,0 @@
-inputFile=files/pruebas/v6_sF_numericalComplexity.xlsx
-outputFile=files/output/prueba.xlsx
-outputBaseDirectory=files/output/
-dateTimes=dateTime
-weights=weights
-hardConstrictions=src/main/resources/hardConstrictions
-rounds=src/main/resources/rounds
