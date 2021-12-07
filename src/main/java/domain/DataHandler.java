@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This handles all the data. That is the list of exams, the configurations, etc.
@@ -146,8 +147,10 @@ public class DataHandler {
      * Returns a list of exams.
      * @return A copy of {@code exams}
      */
-    public List<Exam> getExams(){
-        return new ArrayList<>(exams);
+    public List<Exam> getPreUnscheduledExams(){
+
+        return exams.stream().filter( (ex) -> !preScheduledExams.contains(ex.getId())).collect(Collectors.toList());
+
     }
 
 
@@ -289,5 +292,9 @@ public class DataHandler {
             }
         }
         return candidates;
+    }
+
+    public int getIndexOfExam(Exam exam) {
+        return exams.indexOf(exam);
     }
 }

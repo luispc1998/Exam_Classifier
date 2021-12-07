@@ -1,5 +1,6 @@
 package geneticAlgorithm;
 
+import domain.DataHandler;
 import domain.entities.Exam;
 
 import java.util.ArrayList;
@@ -15,18 +16,14 @@ import java.util.List;
 public class Enconder {
 
     /**
-     * Encodes the list of exams to a cromosome
-     * @param exams The list of {@code Exam} to be scheduled
+     * Encodes the list of exams to a chromosome.
+     * @param dataHandler the {@code DataHandler} instance with the data of the problem.
      * @return An individual with the positions of the exams in the list.
      */
-    public Individual encodeListExams(List<Exam> exams){
+    public Individual encodeListExams(DataHandler dataHandler){
         List<Integer> indexes = new ArrayList<>();
-        int indexCounter = 0;
-        for (Exam exam: exams) {
-            if (! exam.isScheduled()){
-                indexes.add(indexCounter);
-            }
-            indexCounter++;
+        for (Exam exam: dataHandler.getPreUnscheduledExams()) {
+                indexes.add(dataHandler.getIndexOfExam(exam));
         }
         return new Individual(indexes);
     }

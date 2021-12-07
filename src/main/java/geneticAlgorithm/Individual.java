@@ -87,6 +87,9 @@ public class Individual {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        if (chromosome.size() == 0) {
+            return "Individual: []";
+        }
         sb.append("Individual: [" );
         for (int i = 0; i < chromosome.size()-1; i++) {
             sb.append(chromosome.get(i));

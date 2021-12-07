@@ -7,7 +7,6 @@ import fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.output.ExcelWriter;
 import geneticAlgorithm.output.OutputHandler;
 
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class App {
         Enconder basicEncoder = new Enconder();
 
 
-        Individual individualPrime = basicEncoder.encodeListExams(dataHandler.getExams());
+        Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
         FitnessFunction fn = new LinearFitnessFunction(dataHandler);
         GeneticCore genCore = new GeneticCore(individualPrime, 1000);
 

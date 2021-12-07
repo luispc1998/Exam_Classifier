@@ -81,6 +81,9 @@ public class GeneticCore {
      * @param popSize Size of the population to be handled by the algorithm.
      */
     public GeneticCore(Individual individualPrime, int popSize) {
+        if (individualPrime.getChromosome().size() == 0) {
+            throw new IllegalArgumentException("There are no exams ids to work with in the given individual.");
+        }
         initialPopulation = Utils.generatePopulationOfSizeFromIndividual(popSize, individualPrime);
         population = new ArrayList<>(initialPopulation);
 
@@ -118,6 +121,7 @@ public class GeneticCore {
 
         logger.log(genCounter, bestIndividual, averageFitness);
 
+
         try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
             while (genCounter < maxIterations) { //limit by iterations, limit by finnding a solution.
 
@@ -140,7 +144,7 @@ public class GeneticCore {
                 }
 
                 pb.step();
-                pb.setExtraMessage("Gen: " + genCounter + ", BF: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction)) +
+                pb.setExtraMessage("BF: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction)) +
                         ", AF: " + String.format("%.2f",averageFitness));
             }
             System.out.println("\n" + "[Gen: " + genCounter

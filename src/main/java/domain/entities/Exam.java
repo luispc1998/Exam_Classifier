@@ -411,9 +411,11 @@ public class Exam {
         attributes[9] =  transformToDuration(duration); //String.format("%d:%02d", s / 3600, (s % 3600) / 60);
         attributes[10] = date;
         attributes[11] = getWeekDayString();
-        attributes[12] = getInitialHour() == null ? "" : formatStringForHour((long) getInitialHour().toSecondOfDay());
-        attributes[13] = getFinishingHourWithoutExtraTime() == null ? "" : formatStringForHour((long) getFinishingHourWithoutExtraTime().toSecondOfDay());
-        attributes[14] = getExtraTime() == null ? "-1" : transformToDuration(extraTime);
+        attributes[12] = getInitialHour() == null ? null : getInitialHour();
+                //getInitialHour() == null ? "" : formatStringForHour((long) getInitialHour().toSecondOfDay());
+        attributes[13] = getFinishingHourWithoutExtraTime() == null ? null : getFinishingHourWithoutExtraTime();
+                //getFinishingHourWithoutExtraTime() == null ? "" : formatStringForHour((long) getFinishingHourWithoutExtraTime().toSecondOfDay());
+        attributes[14] = getExtraTime() == null ? -1 : transformToDuration(extraTime);
         attributes[15] = cn;
         attributes[16] = id;
 

@@ -2,10 +2,7 @@ package domain.parsers;
 
 import domain.DataHandler;
 import domain.entities.Exam;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -135,10 +132,7 @@ public class ExamParser {
                 exam.setHourFromExcel(row.getCell(12).getNumericCellValue());
             }
 
-
-
-            if (row.getCell(14) != null && row.getCell(14).getNumericCellValue() >= 0) { //TOD, por defecto tengo un 0.
-                                                                                            // Tengo que poner un número negativo en el excel.
+            if (row.getCell(14) != null && row.getCell(14).getNumericCellValue() >= 0) {
                 exam.setExtraTimeFromExcel(row.getCell(14).getNumericCellValue());
             }
             else {
@@ -174,33 +168,6 @@ public class ExamParser {
         return false;
     }
 
-    /**
-     * Checks that all the rows that are needed for the exam instance are in place.
-     * @param row The row with the exam data
-     * @param lineNumber The line number of the row.
-     */
-    private static void checkVitalRowData(Row row, int lineNumber) {
-
-        for (Integer i: vitalCells) {
-            if (row.getCell(i) == null) {
-                throw new IllegalArgumentException("Null value detected for row: " + lineNumber + ", at cell: " + i);
-            }
-            try {
-                switch (i) {
-                    case 0:
-                    case 1:
-                    case 5:
-                    case 9:
-                        row.getCell(i).getNumericCellValue();
-                        break;
-                    default:
-                        row.getCell(i).getStringCellValue();
-                }
-            }catch (Exception e){
-                throw new IllegalArgumentException("Illegal type detected for row: " + lineNumber + ", at cell: " + i);
-            }
-        }
-    }
 
 
     /**
@@ -222,7 +189,11 @@ public class ExamParser {
 
             for (Object att : exam.getAttributes()) {
                 Cell cell = row.createCell(cellCount++);
+                if (att == null){
+                    continue;
+                }
                 switch (cellCount-1) {
+
                     case 0:
                     case 1:
                     case 5:
@@ -233,20 +204,16 @@ public class ExamParser {
                         cell.setCellValue((int) att);
                         break;
                     case 14:
-                        if (att == null) {
-                            break;
-                        }
                     case 9: //duration
                         cell.setCellValue((double) att);
                         break;
                     case 10: //date
-                        if (att==null){
-                            //cell.setCellValue("");
-                            break;
-                        }
-                        cell.setCellValue(Date.from(((LocalDate) att).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                        cell.setCellValue(DateUtil.getExcelDate(Date.from(((LocalDate) att).atStartOfDay(ZoneId.systemDefault()).toInstant())));
                         break;
-
+                    case 12: //time
+                    case 13:
+                        cell.setCellValue(DateUtil.convertTime(((LocalTime) att).toString()));
+                        break;
 
                     default:
                         cell.setCellValue((String) att);

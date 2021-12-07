@@ -6,6 +6,7 @@ import domain.constrictions.types.weakConstriction.hardifiableConstrictions.DayB
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.time.LocalDate;
@@ -32,7 +33,7 @@ public class DayBannedConstrictionParserTool extends AbstractCosntrictionParserT
         cell.setCellValue(dbc.getExam().getId());
 
         cell = row.createCell(baseExcelColumn + ++cellCounter);
-        cell.setCellValue(Date.from(dbc.getDayBanned().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        cell.setCellValue(DateUtil.getExcelDate(Date.from(dbc.getDayBanned().atStartOfDay(ZoneId.systemDefault()).toInstant())));
 
         cell = row.createCell(baseExcelColumn + ++cellCounter);
         cell.setCellValue(dbc.getLastEvaluation());

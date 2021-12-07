@@ -19,6 +19,9 @@ public class MutationSwap implements MutationOperator {
     @Override
     public Individual mutation(Individual individual) {
 
+        if (individual.getChromosome().size() < 2){
+            throw new IllegalArgumentException("Cannot use mutation swap for individuals with less that 2 as chromosome size");
+        }
         Random generator = RandomGenerator.getGenerator();
         List<Integer> cromosome = individual.getChromosome();
 
