@@ -1,5 +1,7 @@
 package configuration;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,8 +48,15 @@ public class Configurer {
      */
     public Configurer(String filePathsFilepath) throws IOException {
 
+        InputStream configStream;
         filePaths = new Properties();
-        filePaths.load(getClass().getClassLoader().getResourceAsStream(filePathsFilepath));
+
+
+        configStream = new FileInputStream(filePathsFilepath);
+        filePaths.load(configStream);
+
+
+        //filePaths.load(getClass().getClassLoader().getResourceAsStream(filePathsFilepath));
 
         loadWeightConfigurer(filePaths.getProperty("weights"));
         loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), filePaths.getProperty("inputFile"));

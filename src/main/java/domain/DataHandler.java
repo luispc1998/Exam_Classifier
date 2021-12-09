@@ -124,7 +124,7 @@ public class DataHandler {
 
 
 
-    private List<Exam> getPreScheduledExams() {
+    public List<Exam> getPreScheduledExams() {
         List<Exam> result = new ArrayList<>();
         for (Exam exam: exams) {
             if (preScheduledExams.contains(exam.getId())){
@@ -296,5 +296,15 @@ public class DataHandler {
 
     public int getIndexOfExam(Exam exam) {
         return exams.indexOf(exam);
+    }
+
+    public List<Exam> getExamsAt(LocalDate day) {
+        List<Exam> resultExams = new ArrayList<>();
+        for (Exam exam: exams) {
+            if (exam.takesPlaceOn(day)) {
+                resultExams.add(exam);
+            }
+        }
+        return resultExams;
     }
 }

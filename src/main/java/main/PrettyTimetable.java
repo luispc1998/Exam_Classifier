@@ -34,12 +34,15 @@ public class PrettyTimetable {
         }
     }
 
-    private void orderDay(DataHandler datahandler, LocalDate day) {
+    private void orderDay(DataHandler dataHandler, LocalDate day) {
 
-        List<Interval> validIntervals = datahandler.getConfigurer().getDateTimeConfigurer().getValidIntervals();
+        List<Interval> validIntervals = dataHandler.getConfigurer().getDateTimeConfigurer().getValidIntervals();
 
         for (Interval interval: validIntervals) {
-            List<Exam> examsOnDay = datahandler.getExamsAt(day, interval);
+            List<Exam> examsOnDay = dataHandler.getExamsAt(day, interval);
+            if (isThereFixedExam(dataHandler, examsOnDay)){
+                continue;
+            }
             Duration examsChunkOfTime = addDurations(examsOnDay);
             long freeMinutes = interval.getDuration().minus(examsChunkOfTime).toMinutes();
 
@@ -53,6 +56,16 @@ public class PrettyTimetable {
                 }
             }
         }
+    }
+
+    private boolean isThereFixedExam(DataHandler dataHandler, List<Exam> examsOnDay) {
+        List<Exam> preScheduledExams = dataHandler.getPreScheduledExams();
+        for(Exam exam: examsOnDay) {
+            if (preScheduledExams.contains(exam)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

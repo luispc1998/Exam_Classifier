@@ -85,9 +85,7 @@ public class ChromosomeDecoder {
         // Fin de la declaración de variables.
 
         for(Exam exam : exams) {
-
             classifyExam(dataHandler, dateTimeConfigurer, daysTimes, exam, 0);
-
         }
 
     }

@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -74,8 +75,14 @@ public class DateTimeConfigurer {
      */
     private void parseTimeConfigurations(String dateTimeFilepath) throws IOException {
 
+        InputStream configStream;
         Properties fileProperties = new Properties();
-        fileProperties.load(getClass().getClassLoader().getResourceAsStream(dateTimeFilepath));
+
+        configStream = new FileInputStream(dateTimeFilepath);
+        fileProperties.load(configStream);
+
+
+        //fileProperties.load(getClass().getClassLoader().getResourceAsStream(dateTimeFilepath));
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
 

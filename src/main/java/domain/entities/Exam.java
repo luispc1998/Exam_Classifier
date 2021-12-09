@@ -560,4 +560,13 @@ public class Exam {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    /**
+     * Checks whether the exam takes place on the provided day or not.
+     * @param day The day in which we are checking if the exam is placed.
+     * @return true if the exam takes place at {@code day}, false otherwise.
+     */
+    public boolean takesPlaceOn(LocalDate day) {
+        return isScheduled() && getDate().atStartOfDay().equals(day.atStartOfDay());
+    }
 }

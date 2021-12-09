@@ -1,6 +1,8 @@
 package configuration;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -27,11 +29,17 @@ public class WeightConfigurer {
     public WeightConfigurer(String weightFilepath) throws IOException {
         weights = new HashMap<>();
 
-        Properties p = new Properties();
-        p.load(getClass().getClassLoader().getResourceAsStream(weightFilepath));
+        InputStream configStream;
+        Properties weigthProperties = new Properties();
 
-        for (String key: p.stringPropertyNames()) {
-            weights.put(key, Double.parseDouble(p.getProperty(key)));
+        configStream = new FileInputStream(weightFilepath);
+        weigthProperties.load(configStream);
+
+        // Properties p = new Properties();
+        // p.load(getClass().getClassLoader().getResourceAsStream(weightFilepath));
+
+        for (String key: weigthProperties.stringPropertyNames()) {
+            weights.put(key, Double.parseDouble(weigthProperties.getProperty(key)));
         }
     }
 
