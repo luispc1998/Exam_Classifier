@@ -3,7 +3,7 @@ package domain;
 import configuration.Configurer;
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.counter.ConstrictionCounterImpl;
+import domain.constrictions.counter.DefaultConstrictionCounter;
 import domain.constrictions.types.hardConstriction.fullyHardConstrictions.IsolateCourseOnDayConstriction;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.NumericalComplexityPenalization;
@@ -74,7 +74,6 @@ public class DataHandler {
 
         this.constrictions.addAll(ConstrictionParser.parseConstrictions(inputDataFile, this));
 
-
     }
 
     /**
@@ -122,8 +121,10 @@ public class DataHandler {
 
     }
 
-
-
+    /**
+     * Returns the exams that were initially scheduled.
+     * @return A list of the {@code Exam} instances that were initially scheduled.
+     */
     public List<Exam> getPreScheduledExams() {
         List<Exam> result = new ArrayList<>();
         for (Exam exam: exams) {
@@ -144,13 +145,12 @@ public class DataHandler {
     }
 
     /**
-     * Returns a list of exams.
-     * @return A copy of {@code exams}
+     * Returns the list of exams that are being handled by the algorithm, being those the one that were not scheduled
+     * from the very beginning.
+     * @return A list of {@code exams} which were not initially scheduled.
      */
     public List<Exam> getPreUnscheduledExams(){
-
         return exams.stream().filter( (ex) -> !preScheduledExams.contains(ex.getId())).collect(Collectors.toList());
-
     }
 
 
@@ -167,8 +167,8 @@ public class DataHandler {
     }
 
     /**
-     * Returns the list of {@code WeakConstriction}
-     * @return The list of {@code WeakConstriction}
+     * Returns the list of {@code WeakConstriction}.
+     * @return The list of {@code WeakConstriction}.
      */
     public List<WeakConstriction> getConstrictions() {
         return new ArrayList<>(constrictions);
@@ -247,7 +247,7 @@ public class DataHandler {
      */
     public HashMap<String, List<Constriction>> verifyConstrictions() {
         HashMap<String, List<Constriction>> verifiedConstrictions = new HashMap<>();
-        ConstrictionCounter counter = new ConstrictionCounterImpl();
+        ConstrictionCounter counter = new DefaultConstrictionCounter();
 
         for (WeakConstriction cons: constrictions) {
             cons.checkConstriction(counter);
@@ -294,17 +294,13 @@ public class DataHandler {
         return candidates;
     }
 
+    /**
+     * Returns the index of an exam in the list.
+     * @param exam The exam whose index will be checked.
+     * @return The index of the provided exam in {@code exams}.
+     */
     public int getIndexOfExam(Exam exam) {
         return exams.indexOf(exam);
     }
 
-    public List<Exam> getExamsAt(LocalDate day) {
-        List<Exam> resultExams = new ArrayList<>();
-        for (Exam exam: exams) {
-            if (exam.takesPlaceOn(day)) {
-                resultExams.add(exam);
-            }
-        }
-        return resultExams;
-    }
 }

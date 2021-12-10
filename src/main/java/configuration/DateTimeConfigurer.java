@@ -55,12 +55,11 @@ public class DateTimeConfigurer {
      */
     private Duration defaultExamExtraMinutes;
 
-
     /**
      * Constructor for the class
      * @param dateTimeFilepath filepath to property files where the date and time configurations are stored.
      * @param inputDataFilepath filepath to the input excel, where the exams, constrictions and calendar are provided.
-     * @throws IOException In case the property loading fails.
+     * @throws IOException In case of error with the files.
      */
     public DateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) throws IOException {
         this.examDates = new ArrayList<>();
@@ -77,20 +76,14 @@ public class DateTimeConfigurer {
 
         InputStream configStream;
         Properties fileProperties = new Properties();
-
         configStream = new FileInputStream(dateTimeFilepath);
         fileProperties.load(configStream);
 
-
-        //fileProperties.load(getClass().getClassLoader().getResourceAsStream(dateTimeFilepath));
-
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
-
         this.dayInitialHour = LocalTime.parse(fileProperties.getProperty("initialDayHour"), formatter);
         this.dayEndingHour = LocalTime.parse(fileProperties.getProperty("endDayHour"), formatter);
         this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
         this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
-
         this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
     }
 
@@ -100,32 +93,27 @@ public class DateTimeConfigurer {
      * @throws IOException In case an error occurs when loading the Excel sheet.
      */
     private void parseDates(String inputDataFilepath) throws IOException {
-        FileInputStream fis;
-        Workbook workbook;
-        try {
 
-            fis = new FileInputStream(inputDataFilepath);
-            //creating workbook instance that refers to .xls file
-            workbook = new XSSFWorkbook(fis);
+
+        //creating workbook instance that refers to .xls file
+        try (FileInputStream fis = new FileInputStream(inputDataFilepath);
+        Workbook workbook = new XSSFWorkbook(fis)
+        ) {
             Sheet sheet = workbook.getSheetAt(2);
 
             Map<Integer, List<String>> data = new HashMap<>();
-            int i = 0;
+            int i = -1;
+            i++;
             for (Row row : sheet) {
                 LocalDate date = generateDate(row);
-                if (date == null) {
-                    System.out.println("Línea " + i + " saltada. No fue posible parsear la fecha");
-                    continue;
-                }
                 examDates.add(date);
-                i++;
             }
             System.out.println("Fechas creadas: " + i);
 
             //It is important to sort the dates. Later it will be assumed that they are sorted.
             examDates.sort(LocalDate::compareTo);
+        }
 
-        } finally {}
     }
 
     /**
@@ -196,17 +184,20 @@ public class DateTimeConfigurer {
         return dayInitialHour;
     }
 
-
+    /**
+     * Returns the hour at which all exams must have finished.
+     * @return The {@code LocalTime} at which all exams must have finished.
+     */
     public LocalTime getDayEndingHour() {
         return dayEndingHour;
     }
 
+    /**
+     * Returns the initial hour of the prohibited interval.
+     * @return The {@code LocalTime} at which the prohibited interval ends.
+     */
     public LocalTime getProhibitedIntervalInitialHour() {
         return prohibitedIntervalInitialHour;
-    }
-
-    public LocalTime getProhibitedIntervalEndingHour() {
-        return prohibitedIntervalEndingHour;
     }
 
     /**
@@ -217,6 +208,16 @@ public class DateTimeConfigurer {
         return defaultExamExtraMinutes;
     }
 
+    /**
+     * Returns the time intervals at which exams can be placed.
+     *
+     * <p>
+     * Note that the current implementation considers just a prohibited interval, in case that there were more,
+     * then this method should return every possible time interval.
+     *
+     * @return A list with the time intervals at which exams can be placed.
+     * @see Interval
+     */
     public List<Interval> getValidIntervals(){
         List<Interval>  result = new ArrayList<>();
         result.add(new Interval(getDayInitialHour(), getProhibitedIntervalInitialHour()));

@@ -3,7 +3,7 @@ package domain.constrictions.counter;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.*;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 
-public class ConstrictionCounterImpl implements ConstrictionCounter {
+public class DefaultConstrictionCounter implements ConstrictionCounter {
 
     private int timeDisplacementCounter;
     private int daysBannedCounter;

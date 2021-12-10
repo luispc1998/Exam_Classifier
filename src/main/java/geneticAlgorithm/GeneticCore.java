@@ -131,14 +131,6 @@ public class GeneticCore {
                 bestIndividual = getBestIndividual(fitnessFunction);
                 averageFitness = averageFitness(fitnessFunction);
 
-                /*
-                System.out.println("\n" + "Gen: " + genCounter
-                        + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
-                        + ", Avg Fitness: " + averageFitness);
-
-                System.out.println(bestIndividual);
-                */
-
                 if (genCounter % loggingFrequency == 0) {
                     logger.log(genCounter, bestIndividual, averageFitness);
                 }

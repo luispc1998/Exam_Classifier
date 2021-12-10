@@ -112,11 +112,11 @@ public class Configurer {
     }
 
     /**
-     * Checks with the {@code weigthConfigurer} whether a constriction id exists or not.
+     * Checks with the {@code WeightConfigurer} whether a constriction id exists or not.
      * @param id The constriction id to be checked
      * @return true in case it exists, false otherwise.
      */
-    public boolean existsConstrinctionID(String id) {
+    public boolean existsConstrictionID(String id) {
         return getWeightConfigurer().existsConstrictionID(id);
     }
 

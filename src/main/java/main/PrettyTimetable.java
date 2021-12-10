@@ -16,7 +16,6 @@ import java.util.List;
  * if possible.
  */
 public class PrettyTimetable {
-    //TODO, no puede tocar los exámenes que ya estén fechados de antes, ahora lo hace.
 
     /**
      * Valid starting minutes part for the exam's initial hour.

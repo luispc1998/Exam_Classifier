@@ -19,9 +19,7 @@ public class OXCrosssingOperator implements CrossingOperator {
     /**
      * Default Constructor for the class;
      */
-    public OXCrosssingOperator(){
-
-    }
+    public OXCrosssingOperator(){}
 
     /**
      * Constructor specifiying the random object used to get the points for

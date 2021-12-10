@@ -64,12 +64,8 @@ public class ProhibitedIntervalPenalization implements WeakConstriction {
             if (! exam.isScheduled()) { continue;}
 
             if (checkProhibitedInterval(exam)) {
-
                 dur = dur.plus(Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
                         exam.getFinishingHourWithoutExtraTime()));
-                        //         exam.getFinisingHourWithoutExtraTime()).toMinutes();
-               // minutes += Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
-               //         exam.getFinisingHourWithoutExtraTime()).toMinutes();
             }
             else{
 
@@ -80,8 +76,6 @@ public class ProhibitedIntervalPenalization implements WeakConstriction {
                     dur = dur.plus(Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
                             configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval()));
 
-                    //minutes += Duration.between(configurer.getDateTimeConfigurer().getProhibitedIntervalInitialHour(),
-                    //        configurer.getDateTimeConfigurer().getFinishingHourProhibitedInterval()).toMinutes();
                 }
             }
         }

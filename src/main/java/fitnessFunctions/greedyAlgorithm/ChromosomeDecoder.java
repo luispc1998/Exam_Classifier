@@ -106,7 +106,7 @@ public class ChromosomeDecoder {
 
         Set<LocalDate> viableDays;
         LocalTime currentHour;
-        viableDays = exam.getViableDays(daysTimes);
+        viableDays = exam.getViableDays(daysTimes.keySet());
         boolean scheduled = false;
 
         for (LocalDate day :viableDays){

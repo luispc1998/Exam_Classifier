@@ -6,6 +6,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This provides a default implementation of the {@code filterViableDays} days method, allowing the inheritors to just
+ * implement the necessary constriction logic.
+ */
 public abstract class AbstractHardConstriction implements HardConstriction {
 
     @Override
@@ -24,7 +28,7 @@ public abstract class AbstractHardConstriction implements HardConstriction {
 
     /**
      * States whether a Constriction is fulfilled or not.
-     * @return true in case it is fulfilled, false otherwise.
+     * @return True in case it is fulfilled, False otherwise.
      */
     public abstract boolean isFulfilled();
 

@@ -28,11 +28,19 @@ public class OutputHandler {
         this.loggedData = logging;
     }
 
+    /**
+     * Writes the output files, the excel and the log file.
+     * @throws IOException In case there is an error when writing the files.
+     */
     public void writeOutputFiles() throws IOException {
         ExcelWriter.excelWrite(outputIndividuals, dataHandler, outputDirectory, outputFilename);
         writeLogData();
     }
 
+    /**
+     * Writes the log file.
+     * @throws IOException In case there is an error when writing the log file.
+     */
     private void writeLogData() throws IOException {
         BufferedWriter bfWriter = new BufferedWriter(new FileWriter(outputDirectory + "log.txt"));
         bfWriter.write(loggedData);
@@ -62,7 +70,9 @@ public class OutputHandler {
         File theDir = new File(directoryBuilder.toString());
 
         if (!theDir.exists()){
-            theDir.mkdirs();
+            if (!theDir.mkdirs()) {
+                throw new RuntimeException("The directory could not be created. Path: " + theDir);
+            }
         }
 
         return directoryBuilder + "/";

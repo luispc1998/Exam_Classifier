@@ -46,26 +46,6 @@ public class SameDayConstriction extends AbstractUserConstriction {
         return first.getDate().equals(second.getDate());
     }
 
-    /*
-    @Override
-    public boolean isFulfilled(ConstrictionCounter counter) {
-        // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
-        if (first.getDate() ==null || second.getDate() ==null) {
-            setLastEvaluation(true);
-            return true;
-        }
-
-        if (first.getDate().equals(second.getDate())) {
-            setLastEvaluation(true);
-            return true;
-        }
-
-        counter.count(this);
-        setLastEvaluation(false);
-        return false;
-    }
-    */
-
     @Override
     public String getConstrictionID() {
         return CONSTRICTION_ID;

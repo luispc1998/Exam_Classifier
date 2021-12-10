@@ -66,6 +66,16 @@ public class ExcelWriter {
 
     }
 
+    /**
+     * Writes the exam list to an Excel file
+     * @param directory The directory of the output file.
+     * @param outputFileName The name of the outputFile
+     * @param counter A counter for the suffix.
+     * @param finalResult The List of exams to be written
+     * @param verifiedConstrictions The list of constrictions to be written
+     * @param calendar The calendar of days to be written
+     * @throws IOException if some error occurs when writing the file.
+     */
     public static void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
             List<Constriction>> verifiedConstrictions, List<LocalDate> calendar) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -78,6 +88,11 @@ public class ExcelWriter {
         }
     }
 
+    /**
+     * Writes the calendar in excel format in the provided {@code workbook}.
+     * @param workbook the workbook where the calendar must be written.
+     * @param calendar the list of days that must be written.
+     */
     public static void writeCalendar(XSSFWorkbook workbook, List<LocalDate> calendar) {
 
         XSSFSheet sheet = workbook.createSheet("Calendar");

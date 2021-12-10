@@ -3,7 +3,7 @@ package fitnessFunctions.greedyAlgorithm;
 import configuration.WeightConfigurer;
 import domain.DataHandler;
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.counter.ConstrictionCounterImpl;
+import domain.constrictions.counter.DefaultConstrictionCounter;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.*;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
@@ -54,7 +54,7 @@ public class LinearFitnessFunction implements FitnessFunction {
         decoder.decodeNew(a, dataHandler);
 
         //Count constrictions
-        ConstrictionCounter counter = new ConstrictionCounterImpl();
+        ConstrictionCounter counter = new DefaultConstrictionCounter();
         for (WeakConstriction constriction: dataHandler.getConstrictions()) {
                 constriction.checkConstriction(counter);
         }

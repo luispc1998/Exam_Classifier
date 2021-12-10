@@ -81,22 +81,6 @@ public class TimeDisplacementConstriction extends AbstractUserConstriction {
         counter.count(this);
     }
 
-    /*
-    @Override
-    public boolean isFulfilled(ConstrictionCounter counter) {
-        if (isFulfilled()) {
-            setLastEvaluation(true);
-            return true;
-        }
-        else {
-            counter.count(this);
-            setLastEvaluation(false);
-            return false;
-        }
-
-    }
-    */
-
     @Override
     public String getConstrictionID() {
         return CONSTRICTION_ID;
@@ -125,8 +109,6 @@ public class TimeDisplacementConstriction extends AbstractUserConstriction {
     public long getDistanceInDays() {
         return distanceInDays;
     }
-
-
 
     @Override
     public void hardify() {

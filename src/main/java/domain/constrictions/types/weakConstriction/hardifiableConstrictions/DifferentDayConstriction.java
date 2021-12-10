@@ -49,24 +49,7 @@ public class DifferentDayConstriction extends AbstractUserConstriction {
         counter.count(this);
     }
 
-    /*
-    @Override
-    public boolean isFulfilled(ConstrictionCounter counter) {
-        // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
-        if (first.getDate() ==null || second.getDate() ==null) {
-            setLastEvaluation(true);
-            return true;
-        }
 
-        if (first.getDate().equals(second.getDate())) {
-            counter.count(this);
-            setLastEvaluation(false);
-            return false;
-        }
-        setLastEvaluation(true);
-        return true;
-    }
-*/
     @Override
     public String getConstrictionID() {
         return CONSTRICTION_ID;

@@ -72,16 +72,11 @@ public class ConstrictionParser {
      */
     public static List<WeakConstriction> parseConstrictions(String filepath, DataHandler dataHandler) throws IOException {
         List<WeakConstriction> constrictions = new ArrayList<>();
-
-
-        FileInputStream fis;
         //creating workbook instance that refers to .xls file
-        Workbook workbook;
+        try (FileInputStream fis = new FileInputStream(filepath);
+             Workbook workbook = new XSSFWorkbook(fis)
+             ) {
 
-        try {
-            fis = new FileInputStream(filepath);
-            //creating workbook instance that refers to .xls file
-            workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheetAt(1);
 
             //Map<Integer, List<String>> data = new HashMap<>();
@@ -108,21 +103,10 @@ public class ConstrictionParser {
 
                     i++;
                 }
-                /*
-                Constriction constriction = generateConstriction(row, i, dataHandler);
-                if (constriction == null) {
-                    //System.out.println("Línea " + i +" saltada. No fue posible parsear el examen");
-                    continue;
-                }
-                constrictions.add(constriction);
-
-
-                 */
-
 
             }
             System.out.println("Restricciones creadas: " + i);
-        }finally {}
+        }
 
         return constrictions;
     }
@@ -211,7 +195,7 @@ public class ConstrictionParser {
     private static boolean isAToolSwapNeeded(Cell cell, DataHandler dataHandler) {
         try {
             String value = cell.getStringCellValue();
-            return dataHandler.getConfigurer().existsConstrinctionID(value);
+            return dataHandler.getConfigurer().existsConstrictionID(value);
 
         } catch (RuntimeException e){
             return false;

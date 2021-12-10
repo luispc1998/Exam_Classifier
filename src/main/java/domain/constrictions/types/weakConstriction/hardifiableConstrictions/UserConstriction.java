@@ -11,8 +11,13 @@ public interface UserConstriction extends WeakConstriction {
      * Makes the constriction hard.
      *
      * <p>
-     * This process implies to add it to the related exams, so that the {@link fitnessFunctions.greedyAlgorithm.ChromosomeDecoder},
+     * This process implies the generation of a new instance of {@link domain.constrictions.types.hardConstriction.HardConstriction},
+     * and add it to the related exam or exams, so that the {@link fitnessFunctions.greedyAlgorithm.ChromosomeDecoder}
      * can take them into account while decoding.
+     *
+     * <p>
+     * The creation of the new object is done by composition so the current calling object will be passed as a parameter
+     * to the new object.
      */
     void hardify();
 

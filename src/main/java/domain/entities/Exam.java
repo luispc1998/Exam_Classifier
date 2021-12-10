@@ -408,27 +408,16 @@ public class Exam {
         attributes[6] = contentType;
         attributes[7] = modality;
         attributes[8] = alumnos;
-        attributes[9] =  transformToDuration(duration); //String.format("%d:%02d", s / 3600, (s % 3600) / 60);
+        attributes[9] =  transformToDuration(duration);
         attributes[10] = date;
         attributes[11] = getWeekDayString();
         attributes[12] = getInitialHour() == null ? null : getInitialHour();
-                //getInitialHour() == null ? "" : formatStringForHour((long) getInitialHour().toSecondOfDay());
         attributes[13] = getFinishingHourWithoutExtraTime() == null ? null : getFinishingHourWithoutExtraTime();
-                //getFinishingHourWithoutExtraTime() == null ? "" : formatStringForHour((long) getFinishingHourWithoutExtraTime().toSecondOfDay());
         attributes[14] = getExtraTime() == null ? -1 : transformToDuration(extraTime);
         attributes[15] = cn;
         attributes[16] = id;
 
         return attributes;
-    }
-
-    /**
-     * Formats a given hour, provided in seconds to the format of hour:minute:seconds.
-     * @param seconds Integer representing seconds to be transformed.
-     * @return an String of format hh:mm:ss equivalent to the provided {@code seconds}
-     */
-    private String formatStringForHour(Long seconds) {
-        return String.format("%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, (seconds % 60));
     }
 
     /**
@@ -506,8 +495,12 @@ public class Exam {
         this.hardConstrictions.add(hardConstriction);
     }
 
-    public Set<LocalDate> getViableDays(HashMap<LocalDate, LocalTime> daysTimes) {
-        Set<LocalDate> days = daysTimes.keySet();
+    /**
+     * Provides the set of days in which the exam can be placed according to its {@code HardConstriction}.
+     * @param days The set of available days to place the exam in.
+     * @return A subset of {@code days} where the exam can be placed.
+     */
+    public Set<LocalDate> getViableDays(Set<LocalDate> days) {
         for (HardConstriction hardConstriction: hardConstrictions) {
             days = hardConstriction.filterViableDays(days, this);
         }
@@ -561,12 +554,4 @@ public class Exam {
         return Objects.hash(id);
     }
 
-    /**
-     * Checks whether the exam takes place on the provided day or not.
-     * @param day The day in which we are checking if the exam is placed.
-     * @return true if the exam takes place at {@code day}, false otherwise.
-     */
-    public boolean takesPlaceOn(LocalDate day) {
-        return isScheduled() && getDate().atStartOfDay().equals(day.atStartOfDay());
-    }
 }

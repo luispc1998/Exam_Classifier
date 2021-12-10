@@ -3,6 +3,15 @@ package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 
+/**
+ * Default implementation of {@code checkConstriction} method, and implementation of the logic to hold the result of the
+ * last evaluation.
+ *
+ * <p>
+ * By having a default implementation of {@code checkConstriction} the inheritors just need to implement the constriction
+ * logic, and the call to {@code ConstrictionCounter}, as is requested in the abstract methods {@code isFulfilled} and
+ * {@code countMe}.
+ */
 public abstract class AbstractUserConstriction implements UserConstriction, WeakConstriction {
 
     /**
@@ -25,6 +34,10 @@ public abstract class AbstractUserConstriction implements UserConstriction, Weak
 
     }
 
+    /**
+     * Sets the value of {@code lastEvaluation} to the provided one.
+     * @param value New value for {@code lastEvaluation}
+     */
     protected void setLastEvaluation(boolean value) {
         lastEvaluation = value;
     }
@@ -35,6 +48,17 @@ public abstract class AbstractUserConstriction implements UserConstriction, Weak
         return lastEvaluation;
     }
 
+    /**
+     * This method will contain the constriction logic.
+     * @return True if the constriction was fuldilled, False otherwise.
+     */
     public abstract boolean isFulfilled();
+
+    /**
+     * Do the necessary logic and calls the {@code ConstrictionCounter}.
+     * @param counter The counter that the constriction will call to provide the data.
+     *
+     * @see ConstrictionCounter
+     */
     public abstract void countMe(ConstrictionCounter counter);
 }

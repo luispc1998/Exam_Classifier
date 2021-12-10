@@ -44,25 +44,6 @@ public class OrderExamsConstriction extends AbstractUserConstriction {
         return second.getDate().isAfter(first.getDate());
     }
 
-    /*
-    @Override
-    public boolean isFulfilled(ConstrictionCounter counter) {
-        // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
-        if (first.getDate() ==null || second.getDate() ==null) {
-            setLastEvaluation(true);
-            return true;
-        }
-
-        if (first.getDate().isBefore(second.getDate()) || first.getDate().isEqual(second.getDate())) {
-            counter.count(this);
-            setLastEvaluation(false);
-            return false;
-        }
-        setLastEvaluation(true);
-        return true;
-    }
-     */
-
     @Override
     public String getConstrictionID() {
         return CONSTRICTION_ID;
