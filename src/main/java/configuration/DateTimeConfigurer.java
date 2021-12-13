@@ -5,6 +5,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import utils.ConsoleLogger;
+import utils.StringColorer;
+
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -103,12 +106,17 @@ public class DateTimeConfigurer {
 
             Map<Integer, List<String>> data = new HashMap<>();
             int i = -1;
-            i++;
+
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando fechas...");
+
             for (Row row : sheet) {
                 LocalDate date = generateDate(row);
                 examDates.add(date);
+                i++;
             }
-            System.out.println("Fechas creadas: " + i);
+
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Fechas creadas: " + i);
+            //System.out.println("Fechas creadas: " + i);
 
             //It is important to sort the dates. Later it will be assumed that they are sorted.
             examDates.sort(LocalDate::compareTo);

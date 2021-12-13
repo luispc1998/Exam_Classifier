@@ -2,6 +2,7 @@ package geneticAlgorithm.output;
 
 import domain.DataHandler;
 import geneticAlgorithm.Individual;
+import utils.ConsoleLogger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,6 +36,21 @@ public class OutputHandler {
     public void writeOutputFiles() throws IOException {
         ExcelWriter.excelWrite(outputIndividuals, dataHandler, outputDirectory, outputFilename);
         writeLogData();
+        writeInputLogData();
+    }
+
+
+    private void writeInputLogData() {
+        try (BufferedWriter bfWriterUncolored = new BufferedWriter(new FileWriter(outputDirectory + "inputUncoloredLog.txt"));
+             BufferedWriter bfWriterColored = new BufferedWriter(new FileWriter(outputDirectory + "inputColoredLog.txt"))){
+
+            bfWriterUncolored.write(ConsoleLogger.getConsoleLoggerInstance().getUncoloredMessages());
+            bfWriterColored.write(ConsoleLogger.getConsoleLoggerInstance().getColoredMessages());
+        }catch (IOException e) {
+            ConsoleLogger.getConsoleLoggerInstance().logError("Could not write output files of initial logging.");
+        }
+
+
     }
 
     /**

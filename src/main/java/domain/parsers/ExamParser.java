@@ -5,6 +5,7 @@ import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import utils.ConsoleLogger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -80,7 +81,10 @@ public class ExamParser {
             int i = 0;
             int jumpLines = 1;
 
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando exámenes...");
+
             for (Row row : sheet) {
+                i++;
                 if (jumpLines > 0) {
                     //System.out.println("Skipped line");
                     jumpLines--;
@@ -89,13 +93,14 @@ public class ExamParser {
 
                 Exam exam = generateExam(row, i, dataHandler);
                 if (exam == null) {
-                    System.out.println("Línea " + i + " saltada. No fue posible parsear el examen");
+                    //System.out.println("Línea " + i + " saltada. No fue posible parsear el examen");
                     continue;
                 }
                 exams.add(exam);
-                i++;
+
             }
-            System.out.println("Examenes creados: " + i);
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + i);
+            //System.out.println("Examenes creados: " + i);
 
         }finally {}
         return exams;
@@ -144,7 +149,9 @@ public class ExamParser {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         } catch (Exception e){
-            System.out.println("Unknown error raised when creating exam from line: " + i);
+            ConsoleLogger.getConsoleLoggerInstance().logWarning("Unknown error raised when creating exam from line: "
+                    + i + " Skipping...");
+            //System.out.println("Unknown error raised when creating exam from line: " + i);
         }
 
         return exam;

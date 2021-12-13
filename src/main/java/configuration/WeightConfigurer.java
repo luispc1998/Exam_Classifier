@@ -1,5 +1,7 @@
 package configuration;
 
+import utils.ConsoleLogger;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,9 +40,20 @@ public class WeightConfigurer {
         // Properties p = new Properties();
         // p.load(getClass().getClassLoader().getResourceAsStream(weightFilepath));
 
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando pesos fitness...");
+
         for (String key: weigthProperties.stringPropertyNames()) {
-            weights.put(key, Double.parseDouble(weigthProperties.getProperty(key)));
+            try {
+                weights.put(key, Double.parseDouble(weigthProperties.getProperty(key)));
+            } catch (NumberFormatException e) {
+                ConsoleLogger.getConsoleLoggerInstance().logError("Could not get weigth for cosntriction of ID: "
+                        + key + ". Got value: "
+                        + weigthProperties.getProperty(key) + ", using 0 instead");
+                weights.put(key, 0d);
+            }
         }
+
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseados " + weights.size() + " pesos");
     }
 
     /**

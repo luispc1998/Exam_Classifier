@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import utils.ConsoleLogger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -81,6 +82,9 @@ public class ConstrictionParser {
 
             //Map<Integer, List<String>> data = new HashMap<>();
             int i = 0;
+
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando restricciones...");
+
             List<String> hardConstrictionsId = dataHandler.getConfigurer().getHardConstrictionsIds();
             for (Row row : sheet) {
 
@@ -105,7 +109,7 @@ public class ConstrictionParser {
                 }
 
             }
-            System.out.println("Restricciones creadas: " + i);
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Restricciones creadas: " + i);
         }
 
         return constrictions;
