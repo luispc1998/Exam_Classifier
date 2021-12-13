@@ -1,0 +1,5 @@
+populationSize=1000
+iterations=800
+loggingFreq=50
+mutationProb=0.15
+maxSchedulesToTake=3

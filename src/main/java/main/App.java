@@ -28,10 +28,11 @@ public class App {
 
         Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
         FitnessFunction fn = new LinearFitnessFunction(dataHandler);
-        GeneticCore genCore = new GeneticCore(individualPrime, 1000);
+        GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize());
 
 
-        Individual finalOne = genCore.geneticAlgorithm(0.15, fn, 300, 50);
+        Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability()
+                , fn, conf.getGeneticParameters().getMaxIterations(), conf.getGeneticParameters().getLoggingFrequency());
 
 
 
@@ -41,7 +42,7 @@ public class App {
         HashSet<Individual> outputIndividuals = new HashSet<>();
         outputIndividuals.add(finalOne);
 
-        getBestSchedules(finalPopulation, outputIndividuals, 3);
+        getBestSchedules(finalPopulation, outputIndividuals, conf.getGeneticParameters().getMaxSchedulesToTake());
 
 
 

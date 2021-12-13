@@ -39,7 +39,10 @@ public class Configurer {
      */
     private List<String> hardConstrictionsIds;
 
-
+    /**
+     * Genetic algorithm parameters.
+     */
+    private GeneticParameters geneticParameters;
 
     /**
      * Constructor for the class
@@ -61,8 +64,29 @@ public class Configurer {
         loadWeightConfigurer(filePaths.getProperty("weights"));
         loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), filePaths.getProperty("inputFile"));
         loadHardRestrictions(filePaths.getProperty("hardConstrictions"));
+        loadGeneticAlgorithmParameters(filePaths.getProperty("geneticConfiguration"));
     }
 
+    /**
+     * Loads the parameters of the genetic algorithm.
+     * @param geneticConfiguration The file where the parameters are specified.
+     */
+    private void loadGeneticAlgorithmParameters(String geneticConfiguration) {
+        this.geneticParameters = GeneticParameters.loadFromFile(geneticConfiguration);
+    }
+
+    /**
+     * Returns the parameters of the genetic algorithm.
+     * @return the parameters of the genetic algorithm.
+     */
+    public GeneticParameters getGeneticParameters() {
+        return geneticParameters;
+    }
+
+    /**
+     * Loads from the specified file the types of user constrictions that must be considered hard.
+     * @param hardConstrictionsFilepath The path to the file with the specified types of constrictions.
+     */
     private void loadHardRestrictions(String hardConstrictionsFilepath) {
         this.hardConstrictionsIds = Utils.parseHardConstrictionsId(hardConstrictionsFilepath);
     }
