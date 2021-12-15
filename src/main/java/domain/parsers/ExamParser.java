@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import utils.ConsoleLogger;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -62,22 +63,18 @@ public class ExamParser {
      * Parsing method of the exams
      * @param filepath The input Excel file
      * @return A {@code List} of parsed {@code Exam}
-     * @throws IOException In case Excel reading fails
      */
-    public static List<Exam> parseExams(String filepath, DataHandler dataHandler) throws IOException {
+    public static List<Exam> parseExams(String filepath, DataHandler dataHandler) {
         List<Exam> exams = new ArrayList<>();
-        FileInputStream fis;
-        Workbook workbook;
-        try {
+        int i = 0;
+        try (FileInputStream fis = new FileInputStream(filepath);
+             Workbook workbook = new XSSFWorkbook(fis)
+        ) {
 
-
-            fis = new FileInputStream(filepath);
-            //creating workbook instance that refers to .xls file
-            workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheet("Planificación");
 
             Map<Integer, List<String>> data = new HashMap<>();
-            int i = 0;
+
             int jumpLines = 1;
 
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando exámenes...");
@@ -98,10 +95,16 @@ public class ExamParser {
                 exams.add(exam);
 
             }
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + i);
+
             //System.out.println("Examenes creados: " + i);
 
-        }finally {}
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not find input excel file");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not parse input excel file");
+        }
+
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + i);
         return exams;
     }
 

@@ -3,6 +3,7 @@ package configuration;
 import utils.ConsoleLogger;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -26,16 +27,22 @@ public class WeightConfigurer {
     /**
      * Constructor for the class
      * @param weightFilepath filepath to the properties file where the constriction weights are provided.
-     * @throws IOException in case the property loading fails.
      */
-    public WeightConfigurer(String weightFilepath) throws IOException {
+    public WeightConfigurer(String weightFilepath) {
         weights = new HashMap<>();
 
         InputStream configStream;
         Properties weigthProperties = new Properties();
 
-        configStream = new FileInputStream(weightFilepath);
-        weigthProperties.load(configStream);
+        try {
+            configStream = new FileInputStream(weightFilepath);
+            weigthProperties.load(configStream);
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not find file with constrinction weigths");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not parse properties in constriction weights file");
+        }
+
 
         // Properties p = new Properties();
         // p.load(getClass().getClassLoader().getResourceAsStream(weightFilepath));

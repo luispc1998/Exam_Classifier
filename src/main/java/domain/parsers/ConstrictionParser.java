@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import utils.ConsoleLogger;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class ConstrictionParser {
 
     private static HashMap<String, ConstrictionParserTool> usedTools = new HashMap<>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Configurer conf = new Configurer("files");
 
         DataHandler dataHandler = new DataHandler(conf);
@@ -69,10 +70,10 @@ public class ConstrictionParser {
      * @param filepath The input data excel filepath.
      * @param dataHandler The current dataHandler instance being use
      * @return The {@code List} of {@code Constriction} parsed from the excel.
-     * @throws IOException In case there are any problems when accesing the excel.
      */
-    public static List<WeakConstriction> parseConstrictions(String filepath, DataHandler dataHandler) throws IOException {
+    public static List<WeakConstriction> parseConstrictions(String filepath, DataHandler dataHandler) {
         List<WeakConstriction> constrictions = new ArrayList<>();
+        int i = 0;
         //creating workbook instance that refers to .xls file
         try (FileInputStream fis = new FileInputStream(filepath);
              Workbook workbook = new XSSFWorkbook(fis)
@@ -81,7 +82,7 @@ public class ConstrictionParser {
             Sheet sheet = workbook.getSheetAt(1);
 
             //Map<Integer, List<String>> data = new HashMap<>();
-            int i = 0;
+
 
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando restricciones...");
 
@@ -109,9 +110,13 @@ public class ConstrictionParser {
                 }
 
             }
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Restricciones creadas: " + i);
-        }
 
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not find input excel file");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not parse input excel file");
+        }
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Restricciones creadas: " + i);
         return constrictions;
     }
 

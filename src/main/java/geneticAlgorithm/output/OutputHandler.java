@@ -31,9 +31,8 @@ public class OutputHandler {
 
     /**
      * Writes the output files, the excel and the log file.
-     * @throws IOException In case there is an error when writing the files.
      */
-    public void writeOutputFiles() throws IOException {
+    public void writeOutputFiles()  {
         ExcelWriter.excelWrite(outputIndividuals, dataHandler, outputDirectory, outputFilename);
         writeLogData();
         writeInputLogData();
@@ -54,13 +53,17 @@ public class OutputHandler {
     }
 
     /**
-     * Writes the log file.
-     * @throws IOException In case there is an error when writing the log file.
+     * Writes the genetic algorithm file.
      */
-    private void writeLogData() throws IOException {
-        BufferedWriter bfWriter = new BufferedWriter(new FileWriter(outputDirectory + "log.txt"));
-        bfWriter.write(loggedData);
-        bfWriter.close();
+    private void writeLogData() {
+        String path = outputDirectory + "gLog.txt";
+        try (BufferedWriter bfWriter = new BufferedWriter(new FileWriter(path))){
+            bfWriter.write(loggedData);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not write the genetic algorithm log at path: ["
+                    + path + "]" );
+        }
+
     }
 
     /**

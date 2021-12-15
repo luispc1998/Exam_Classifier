@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import utils.ConsoleLogger;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
@@ -60,9 +61,8 @@ public class DateTimeConfigurer {
      * Constructor for the class
      * @param dateTimeFilepath filepath to property files where the date and time configurations are stored.
      * @param inputDataFilepath filepath to the input excel, where the exams, constrictions and calendar are provided.
-     * @throws IOException In case of error with the files.
      */
-    public DateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) throws IOException {
+    public DateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) {
         this.examDates = new ArrayList<>();
         parseDates(inputDataFilepath);
         parseTimeConfigurations(dateTimeFilepath);
@@ -71,14 +71,20 @@ public class DateTimeConfigurer {
     /**
      * Parses the configurations from the property file
      * @param dateTimeFilepath filepath to the properties file where the date and time configurations are stored.
-     * @throws IOException In case the property loading fails.
      */
-    private void parseTimeConfigurations(String dateTimeFilepath) throws IOException {
+    private void parseTimeConfigurations(String dateTimeFilepath) {
 
         InputStream configStream;
         Properties fileProperties = new Properties();
-        configStream = new FileInputStream(dateTimeFilepath);
-        fileProperties.load(configStream);
+        try {
+            configStream = new FileInputStream(dateTimeFilepath);
+            fileProperties.load(configStream);
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not find dates and times configuration file");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not parse properties in dates and times configuration file");
+        }
+
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
         this.dayInitialHour = LocalTime.parse(fileProperties.getProperty("initialDayHour"), formatter);
@@ -91,10 +97,8 @@ public class DateTimeConfigurer {
     /**
      * Parses the dates from the input Excel file
      * @param inputDataFilepath filepath to the input excel, where the exams, constrictions and calendar are provided.
-     * @throws IOException In case an error occurs when loading the Excel sheet.
      */
-    private void parseDates(String inputDataFilepath) throws IOException {
-
+    private void parseDates(String inputDataFilepath) {
 
         //creating workbook instance that refers to .xls file
         try (FileInputStream fis = new FileInputStream(inputDataFilepath);
@@ -118,6 +122,10 @@ public class DateTimeConfigurer {
 
             //It is important to sort the dates. Later it will be assumed that they are sorted.
             examDates.sort(LocalDate::compareTo);
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not find input excel file");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not parse input excel file");
         }
 
     }

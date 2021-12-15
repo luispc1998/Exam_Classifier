@@ -5,6 +5,7 @@ import domain.entities.Exam;
 import utils.ConsoleLogger;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,44 +29,48 @@ public class RoundsParser {
      * Parses the rounds and returns them.
      * @param filepath The filepath to the rounds file
      * @param exams The list of parsed exams
-     * @throws IOException In case there is a problem with the file.
      */
-    public static void parseRounds(String filepath, List<Exam> exams) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(filepath));
-        String line;
-        int lineCounter = 0;
-        int createdRounds = 0;
+    public static void parseRounds(String filepath, List<Exam> exams) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+            String line;
+            int lineCounter = 0;
+            int createdRounds = 0;
 
-        ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando tandas...");
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando tandas...");
 
-        while((line = reader.readLine()) != null ) {
-            lineCounter++;
-            ArrayList<Integer> ids = new ArrayList<>();
-            for (String idString: line.split(",")) {
-                try {
-                    ids.add(Integer.parseInt(idString));
-                } catch (NumberFormatException e) {
-                    ConsoleLogger.getConsoleLoggerInstance().logError("Could not fully parse Round on line: "
-                            + lineCounter + ". Got id: " + idString + ". Use int Ids. This id will be ignored.");
+            while ((line = reader.readLine()) != null) {
+                lineCounter++;
+                ArrayList<Integer> ids = new ArrayList<>();
+                for (String idString : line.split(",")) {
+                    try {
+                        ids.add(Integer.parseInt(idString));
+                    } catch (NumberFormatException e) {
+                        ConsoleLogger.getConsoleLoggerInstance().logError("Could not fully parse Round on line: "
+                                + lineCounter + ". Got id: " + idString + ". Use int Ids. This id will be ignored.");
+                    }
+
                 }
 
+                List<Exam> round = exams.stream().filter((ex) -> ids.contains(ex.getId())).collect(Collectors.toList());
+                if (round.size() != ids.size()) {
+                    ConsoleLogger.getConsoleLoggerInstance().logError("Nonexistent ids found for round: " + lineCounter +
+                            ". Got round: " + ids + ". Ignoring round...");
+                    continue;
+                }
+
+                if (round.size() != 0) {
+                    setUpRound(round);
+                    createdRounds++;
+                }
+
+                ConsoleLogger.getConsoleLoggerInstance().logInfo("Tandas creadas: " + createdRounds);
             }
-
-            List<Exam> round = exams.stream().filter((ex) -> ids.contains(ex.getId())).collect(Collectors.toList());
-            if (round.size() != ids.size()) {
-                ConsoleLogger.getConsoleLoggerInstance().logError("Nonexistent ids found for round: " + lineCounter +
-                        ". Got round: " + ids + ". Ignoring round...");
-                continue;
-            }
-
-            if (round.size() != 0) {
-                setUpRound(round);
-                createdRounds++;
-            }
-
-
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not find Rounds configuration file");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not parse Rounds configuration file");
         }
-        ConsoleLogger.getConsoleLoggerInstance().logInfo("Tandas creadas: " + createdRounds);
+
     }
 
     /**

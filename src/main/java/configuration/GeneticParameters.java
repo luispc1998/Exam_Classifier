@@ -8,11 +8,11 @@ import java.util.Properties;
 
 public class GeneticParameters {
 
-    private int maxIterations;
-    private int populationSize;
-    private int loggingFrequency;
-    private double mutationProbability;
-    private int maxSchedulesToTake;
+    private final int maxIterations;
+    private final int populationSize;
+    private final int loggingFrequency;
+    private final double mutationProbability;
+    private final int maxSchedulesToTake;
 
     private GeneticParameters(int maxIterations, int populationSize, int loggingFrequency, double mutationProbability,
                              int maxSchedulesToTake) {
@@ -45,13 +45,10 @@ public class GeneticParameters {
 
     public static GeneticParameters loadFromFile(String filePath) {
 
-
         Properties geneticProperties = new Properties();
-
         try (InputStream configStream = new FileInputStream(filePath)) {
 
             geneticProperties.load(configStream);
-
 
             return new GeneticParameters(Integer.parseInt(geneticProperties.getProperty("iterations")),
                     Integer.parseInt(geneticProperties.getProperty("populationSize")),
@@ -61,11 +58,9 @@ public class GeneticParameters {
 
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Could not parse Genetic parameters configuration file");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Could not parse properties in Genetic parameters configuration file");
         }
-
-        throw new IllegalArgumentException("Cannot parse Genetic algorithm parameters.");
     }
 }

@@ -1,5 +1,6 @@
 package configuration;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -47,24 +48,32 @@ public class Configurer {
     /**
      * Constructor for the class
      * @param filePathsFilepath path to a properties file which has the paths to the other configuration files
-     * @throws IOException In case any of the crucial files is not found or the property loading fails.
      */
-    public Configurer(String filePathsFilepath) throws IOException {
+    public Configurer(String filePathsFilepath) {
 
-        InputStream configStream;
-        filePaths = new Properties();
-
-
-        configStream = new FileInputStream(filePathsFilepath);
-        filePaths.load(configStream);
-
-
-        //filePaths.load(getClass().getClassLoader().getResourceAsStream(filePathsFilepath));
-
+        loadFilePaths(filePathsFilepath);
         loadWeightConfigurer(filePaths.getProperty("weights"));
         loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), filePaths.getProperty("inputFile"));
         loadHardRestrictions(filePaths.getProperty("hardConstrictions"));
         loadGeneticAlgorithmParameters(filePaths.getProperty("geneticConfiguration"));
+    }
+
+    /**
+     * Loads from the provided file the properties containing the paths to all the other configuration files.
+     * @param filePathsFilepath path to a properties file containing the paths of the other configuration files.
+     */
+    private void loadFilePaths(String filePathsFilepath) {
+        InputStream configStream;
+        filePaths = new Properties();
+
+        try {
+            configStream = new FileInputStream(filePathsFilepath);
+            filePaths.load(configStream);
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not find file with filepaths.");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not parse file with filepaths.");
+        }
     }
 
     /**
@@ -94,9 +103,8 @@ public class Configurer {
     /**
      * Creates a new instance of the WeightConfigurer.
      * @param weightsFile filepath to the properties file where the weights for the constrictions are declared
-     * @throws IOException In case the property loading fails.
      */
-    private void loadWeightConfigurer(String weightsFile) throws IOException {
+    private void loadWeightConfigurer(String weightsFile) {
         this.weigthConfigurer = new WeightConfigurer(weightsFile);
     }
 
@@ -104,9 +112,8 @@ public class Configurer {
      * Creates a new instance of the DateTimeConfigurer
      * @param dateTimeFilepath filepath to the properties file where the date and times configurations are declared.
      * @param inputDataFilepath filepath to the input excel file where the exams, constrictions, and calendar are declared.
-     * @throws IOException In case the property loading fails.
      */
-    private void loadDateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) throws IOException {
+    private void loadDateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) {
         this.dateTimeConfigurer = new DateTimeConfigurer(dateTimeFilepath, inputDataFilepath);
     }
 

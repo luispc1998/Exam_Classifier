@@ -1,6 +1,7 @@
 package configuration;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,8 +18,10 @@ public class Utils {
             while ((line = reader.readLine()) != null) {
                 result.add(line.trim());
             }
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not find Hard Constrictions file");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Could not parse Hard Constrictions file");
         }
         return result;
     }

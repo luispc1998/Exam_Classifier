@@ -35,10 +35,9 @@ public class ExcelWriter {
      * @param dataHandler The {@code DataHandler} instance over which the individuals will be decoded.
      * @param directory The output directory.
      * @param outputFileName The name prefix of the output file.
-     * @throws IOException In case there is a problem when writing the excel.
      */
     public static void excelWrite(HashSet<Individual> outputIndividuals, DataHandler dataHandler,
-                                  String directory, String outputFileName) throws IOException {
+                                  String directory, String outputFileName) {
 
         ChromosomeDecoder decoder = new ChromosomeDecoder();
         PrettyTimetable prettyTimetable = new PrettyTimetable();
@@ -72,17 +71,19 @@ public class ExcelWriter {
      * @param finalResult The List of exams to be written
      * @param verifiedConstrictions The list of constrictions to be written
      * @param calendar The calendar of days to be written
-     * @throws IOException if some error occurs when writing the file.
      */
     public static void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
-            List<Constriction>> verifiedConstrictions, List<LocalDate> calendar) throws IOException {
+            List<Constriction>> verifiedConstrictions, List<LocalDate> calendar) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         ExamParser.parseToExcel(finalResult, workbook);
         ConstrictionParser.parseToExcel(verifiedConstrictions, workbook);
         writeCalendar(workbook, calendar);
-
-        try (FileOutputStream outputStream = new FileOutputStream(directory + outputFileName + "_" + counter + ".xlsx")) {
+        String path = directory + outputFileName + "_" + counter + ".xlsx";
+        try (FileOutputStream outputStream = new FileOutputStream(path)) {
             workbook.write(outputStream);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not write output excel file on path: "
+                    + "[" + path + "]");
         }
     }
 

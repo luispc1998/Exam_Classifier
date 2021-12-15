@@ -57,9 +57,8 @@ public class DataHandler {
     /**
      * Constructor for the class
      * @param configurer Configurer that contains all the configurations options.
-     * @throws IOException In case any property loading fails.
      */
-    public DataHandler(Configurer configurer) throws IOException {
+    public DataHandler(Configurer configurer) {
 
         this.configurer = configurer;
         this.preScheduledExams = new HashSet<>();

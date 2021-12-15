@@ -17,12 +17,16 @@ import java.util.Set;
 
 public class App {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         String outputFileName = args[1];
 
+
+
         Configurer conf = new Configurer(args[0]);
         DataHandler dataHandler = new DataHandler(conf);
+
+
         Enconder basicEncoder = new Enconder();
 
 
@@ -48,6 +52,7 @@ public class App {
         OutputHandler outputHandler = new OutputHandler(outputIndividuals, dataHandler, outputFileName, genCore.getLogging());
 
         outputHandler.writeOutputFiles();
+
 
     }
 
