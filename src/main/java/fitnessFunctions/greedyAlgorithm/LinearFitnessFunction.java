@@ -90,7 +90,9 @@ public class LinearFitnessFunction implements FitnessFunction {
                 counter.getCountUnbalancedDaysPenalization()
                         * wc.getConstrictionWeight(UnbalancedDaysPenalization.CONSTRICTION_ID) +
                 counter.getNumericalComplexityPenalization()
-                        * wc.getConstrictionWeight(NumericalComplexityPenalization.CONSTRICTION_ID);
+                        * wc.getConstrictionWeight(NumericalComplexityPenalization.CONSTRICTION_ID) +
+                counter.getDayIntervalConstrictionCounter()
+                        * wc.getConstrictionWeight(DayIntervalConstriction.CONSTRICTION_ID);
 
     }
 }

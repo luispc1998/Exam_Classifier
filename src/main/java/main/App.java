@@ -45,8 +45,6 @@ public class App {
         getBestSchedules(finalPopulation, outputIndividuals, conf.getGeneticParameters().getMaxSchedulesToTake());
 
 
-
-
         OutputHandler outputHandler = new OutputHandler(outputIndividuals, dataHandler, outputFileName, genCore.getLogging());
 
         outputHandler.writeOutputFiles();

@@ -178,6 +178,14 @@ public class ConstrictionParser {
                         , baseExcelColumn + 2}));
                 usedTools.put(DayBannedConstriction.CONSTRICTION_ID, parserTool);
                 break;
+            case DayIntervalConstriction.CONSTRICTION_ID:
+                parserTool = new DayIntervalConstrictionParserTool();
+                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                        , baseExcelColumn + 2, baseExcelColumn + 3}));
+                usedTools.put(DayIntervalConstriction.CONSTRICTION_ID, parserTool);
+                break;
+
         }
 
     }

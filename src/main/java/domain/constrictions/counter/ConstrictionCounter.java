@@ -85,6 +85,13 @@ public interface ConstrictionCounter {
     void count(NumericalComplexityPenalization numericalComplexityPenalization);
 
     /**
+     * Increments the value of the counter for {@link DayIntervalConstriction}
+     * @param dayIntervalConstriction the {@link domain.constrictions.Constriction}
+     *                                       whose condition was not fulfilled.
+     */
+    void count(DayIntervalConstriction dayIntervalConstriction);
+
+    /**
      * Returns the current counter for {@link TimeDisplacementConstriction}
      * @return the current counter for {@link TimeDisplacementConstriction}
      */
@@ -144,4 +151,11 @@ public interface ConstrictionCounter {
      * @return the current counter for {@link NumericalComplexityPenalization}
      */
     double getNumericalComplexityPenalization();
+
+    /**
+     * Returns the current counter for {@link DayIntervalConstriction}
+     * @return the current counter for {@link DayIntervalConstriction}
+     */
+    int getDayIntervalConstrictionCounter();
+
 }

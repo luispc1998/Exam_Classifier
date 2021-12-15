@@ -15,6 +15,7 @@ public class DefaultConstrictionCounter implements ConstrictionCounter {
     private long prohibitedIntervalPenalizationCounter;
     private long unbalancedDaysPenalizationCounter;
     private double numericalComplexityPenalizationCounter;
+    private int dayIntervalConstrictionCounter;
 
     @Override
     public void count(TimeDisplacementConstriction timeDisplacementConstriction) {
@@ -67,6 +68,11 @@ public class DefaultConstrictionCounter implements ConstrictionCounter {
     }
 
     @Override
+    public void count(DayIntervalConstriction dayIntervalConstriction) {
+        dayIntervalConstrictionCounter++;
+    }
+
+    @Override
     public int getCountOfTimeDisplacementConstriction() {
         return timeDisplacementCounter;
     }
@@ -114,5 +120,10 @@ public class DefaultConstrictionCounter implements ConstrictionCounter {
     @Override
     public double getNumericalComplexityPenalization() {
         return numericalComplexityPenalizationCounter;
+    }
+
+    @Override
+    public int getDayIntervalConstrictionCounter() {
+        return dayIntervalConstrictionCounter;
     }
 }

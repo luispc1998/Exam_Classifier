@@ -30,30 +30,6 @@ public class ReplacementOperatorImpl implements ReplacementOperator {
 
         tmp.sort(Comparator.comparingDouble(c -> c.getFitnessScore(fitnessFunction)));
 
-    /*
-        Individual survivor1 = tmp.get(0);
-        Individual survivor2 = tmp.get(1);
-
-        for (Individual idv: tmp) {
-            double fitness = fitnessFunction.apply(idv);
-            double fitnessS1 = fitnessFunction.apply(survivor1);
-            double fitnessS2 = fitnessFunction.apply(survivor2);
-
-            if (fitness < fitnessS1 && idv != survivor2) {
-                survivor1 = idv;
-                continue;
-            }
-
-            if (fitness < fitnessS2 && idv != survivor1) {
-                survivor2 = idv;
-            }
-
-        }
-
-
-        replacements.add(survivor1);
-        replacements.add(survivor2);
-     */
 
         replacements = tmp.subList(0, prevGeneration.size());
 

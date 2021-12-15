@@ -87,7 +87,7 @@ public class GeneticCore {
         initialPopulation = Utils.generatePopulationOfSizeFromIndividual(popSize, individualPrime);
         population = new ArrayList<>(initialPopulation);
 
-        this.selectionOperator = new RouletteSelection(initialPopulation.size()/2);
+        this.selectionOperator = new RouletteSelection(initialPopulation.size());
         this.mutationOperator = new MutationSwap();
         this.crossingOperator = new OXCrosssingOperator();
         this.replacementOperator = new ReplacementOperatorImpl();
