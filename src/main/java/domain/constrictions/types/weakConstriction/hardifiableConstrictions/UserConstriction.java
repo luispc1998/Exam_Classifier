@@ -27,6 +27,14 @@ public interface UserConstriction extends WeakConstriction {
      */
     boolean getLastEvaluation();
 
+    /**
+     * This method will contain the constriction logic.
+     *
+     * <p>
+     * This method must never update any state, just provide the result.
+     * @return True if the constriction was fulfilled, False otherwise.
+     */
+    boolean isFulfilled();
 
 
 }

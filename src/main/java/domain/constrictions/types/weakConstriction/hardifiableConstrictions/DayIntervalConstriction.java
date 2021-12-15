@@ -1,8 +1,8 @@
 package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.DayBannedConstrictionHardified;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.DayIntervalHardifiedConstriction;
+import domain.constrictions.types.hardConstriction.HardConstriction;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -85,12 +85,6 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
         counter.count(this);
     }
 
-    @Override
-    public void hardify() {
-        DayIntervalHardifiedConstriction dihConstriction = new DayIntervalHardifiedConstriction(this);
-        exam.addHardConstriction(dihConstriction);
-    }
-
     /**
      * Returns the {@code Exam} that has the constriction.
      * @return The {@code Exam} that has the constriction.
@@ -113,5 +107,11 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
      */
     public LocalDate getIntervalEnd() {
         return intervalEnd;
+    }
+
+    @Override
+    public void hardify() {
+        HardConstriction hConstriction = new HardifiedConstriction(this);
+        exam.addHardConstriction(hConstriction);
     }
 }

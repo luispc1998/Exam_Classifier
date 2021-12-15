@@ -1,7 +1,8 @@
 package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.OrderExamsHardifiedConstriction;
+import domain.constrictions.types.hardConstriction.HardConstriction;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
 import domain.entities.Exam;
 
 /**
@@ -67,10 +68,12 @@ public class OrderExamsConstriction extends AbstractUserConstriction {
 
     @Override
     public void hardify() {
-        OrderExamsHardifiedConstriction oehConstriction = new OrderExamsHardifiedConstriction(this);
-        first.addHardConstriction(oehConstriction);
-        second.addHardConstriction(oehConstriction);
+        HardConstriction hConstriction = new HardifiedConstriction(this);
+        first.addHardConstriction(hConstriction);
+        second.addHardConstriction(hConstriction);
     }
+
+
 
     @Override
     public void countMe(ConstrictionCounter counter) {

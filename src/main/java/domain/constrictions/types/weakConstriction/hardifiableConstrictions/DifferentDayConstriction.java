@@ -1,7 +1,8 @@
 package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.DifferentDayHardifiedConstriction;
+import domain.constrictions.types.hardConstriction.HardConstriction;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
 import domain.entities.Exam;
 
 /**
@@ -79,8 +80,9 @@ public class DifferentDayConstriction extends AbstractUserConstriction {
 
     @Override
     public void hardify() {
-        DifferentDayHardifiedConstriction ddhConstriction = new DifferentDayHardifiedConstriction(this);
-        first.addHardConstriction(ddhConstriction);
-        second.addHardConstriction(ddhConstriction);
+        HardConstriction hConstriction = new HardifiedConstriction(this);
+        first.addHardConstriction(hConstriction);
+        second.addHardConstriction(hConstriction);
     }
+
 }

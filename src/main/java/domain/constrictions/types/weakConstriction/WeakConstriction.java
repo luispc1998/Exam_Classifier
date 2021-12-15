@@ -14,6 +14,9 @@ public interface WeakConstriction extends Constriction {
 
     /**
      * Evaluates the constrictions and increments its type counter if necessary.
+     *
+     * <p>
+     * This method may update states depending on the result of the evaluation for later checks on the constriction.
      * @param counter the {@link ConstrictionCounter} object that is doing the counting.
      */
     void checkConstriction(ConstrictionCounter counter);

@@ -3,7 +3,8 @@ package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 import configuration.DateTimeConfigurer;
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.TimeDisplacementConstrictionHardified;
+import domain.constrictions.types.hardConstriction.HardConstriction;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -112,10 +113,8 @@ public class TimeDisplacementConstriction extends AbstractUserConstriction {
 
     @Override
     public void hardify() {
-        TimeDisplacementConstrictionHardified tdhConstriction =
-                new TimeDisplacementConstrictionHardified(this);
-
-        first.addHardConstriction(tdhConstriction);
-        second.addHardConstriction(tdhConstriction);
+        HardConstriction hConstriction = new HardifiedConstriction(this);
+        first.addHardConstriction(hConstriction);
+        second.addHardConstriction(hConstriction);
     }
 }

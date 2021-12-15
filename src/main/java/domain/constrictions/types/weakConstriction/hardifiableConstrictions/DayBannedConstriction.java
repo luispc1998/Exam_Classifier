@@ -1,7 +1,8 @@
 package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.DayBannedConstrictionHardified;
+import domain.constrictions.types.hardConstriction.HardConstriction;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -94,9 +95,8 @@ public class DayBannedConstriction extends AbstractUserConstriction {
 
     @Override
     public void hardify() {
-        DayBannedConstrictionHardified dbhConstriction = new DayBannedConstrictionHardified(this);
-
-        exam.addHardConstriction(dbhConstriction);
+        HardConstriction hConstriction = new HardifiedConstriction(this);
+        exam.addHardConstriction(hConstriction);
     }
 
 }

@@ -5,7 +5,10 @@ import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

@@ -2,7 +2,6 @@ package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.DayBannedConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.DayIntervalConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
 import domain.entities.Exam;

@@ -2,8 +2,6 @@ package testSamplesGenerator;
 
 import domain.entities.Exam;
 
-import java.util.Objects;
-
 public class ExamPair {
 
     private Exam exam1;

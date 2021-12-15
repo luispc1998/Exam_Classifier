@@ -2,7 +2,8 @@ package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.SameDayConstrictionHardified;
+import domain.constrictions.types.hardConstriction.HardConstriction;
+import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
 import domain.entities.Exam;
 
 /**
@@ -75,9 +76,9 @@ public class SameDayConstriction extends AbstractUserConstriction {
 
     @Override
     public void hardify() {
-        SameDayConstrictionHardified sdhConstriction = new SameDayConstrictionHardified(this);
-        first.addHardConstriction(sdhConstriction);
-        second.addHardConstriction(sdhConstriction);
+        HardConstriction hConstriction = new HardifiedConstriction(this);
+        first.addHardConstriction(hConstriction);
+        second.addHardConstriction(hConstriction);
     }
 
     @Override

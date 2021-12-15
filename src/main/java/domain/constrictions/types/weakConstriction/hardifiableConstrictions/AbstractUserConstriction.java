@@ -48,11 +48,6 @@ public abstract class AbstractUserConstriction implements UserConstriction, Weak
         return lastEvaluation;
     }
 
-    /**
-     * This method will contain the constriction logic.
-     * @return True if the constriction was fuldilled, False otherwise.
-     */
-    public abstract boolean isFulfilled();
 
     /**
      * Do the necessary logic and calls the {@code ConstrictionCounter}.
