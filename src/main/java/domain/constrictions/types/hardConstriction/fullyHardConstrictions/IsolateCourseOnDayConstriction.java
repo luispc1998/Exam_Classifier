@@ -45,7 +45,7 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
     /**
      * The exam to which this {@code HardConstriction} instance is linked.
      */
-    private Exam exam;
+    private final Exam exam;
 
     /**
      * Default constructor for the class.
@@ -98,18 +98,15 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
 
     @Override
     public boolean isFulfilled() {
-        if (exam.getDate() == null) {
-            return true;
-        }
-        else{
+        if (exam.getDate() != null) {
             for (Exam ex: availabilitiesRelaxed.get(exam.getDate())) {
                 if (ex.getCourse() == exam.getCourse() && ! ex.getRoundPartners().contains(exam.getId())){
                     return false;
                 }
             }
-            return true;
             //return ! availabilities.get(exam.getDate()).contains(exam.getCourse());
         }
+        return true;
 
     }
 
@@ -153,18 +150,15 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
      * @return True if there is no other exam with same course and semester. False otherwise.
      */
     private boolean isFulfilledRelaxed() {
-        if (exam.getDate() == null) {
-            return true;
-        }
-        else{
-            for(Exam examScheduled : availabilitiesRelaxed.get(exam.getDate())) {
+        if (exam.getDate() != null) {
+            for (Exam examScheduled : availabilitiesRelaxed.get(exam.getDate())) {
                 if (examScheduled.getCourse() == exam.getCourse() &&
-                examScheduled.getSemester() == exam.getSemester()){
+                        examScheduled.getSemester() == exam.getSemester()) {
                     return false;
                 }
             }
-            return true;
         }
+        return true;
     }
 
 

@@ -1,3 +1,4 @@
+# suppress inspection "UnusedProperty" for whole file
 DB=100
 TD=100
 SD=100asdfas
@@ -9,4 +10,3 @@ SCDD=0.1
 PIP=1
 NCP=2
 UDP=0.001
-asdfsa

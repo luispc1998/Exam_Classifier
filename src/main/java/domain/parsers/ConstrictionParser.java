@@ -55,7 +55,7 @@ public class ConstrictionParser {
     private static ConstrictionParserTool parserTool;
 
 
-    private static HashMap<String, ConstrictionParserTool> usedTools = new HashMap<>();
+    private static final HashMap<String, ConstrictionParserTool> usedTools = new HashMap<>();
 
     public static void main(String[] args) {
         Configurer conf = new Configurer("files");

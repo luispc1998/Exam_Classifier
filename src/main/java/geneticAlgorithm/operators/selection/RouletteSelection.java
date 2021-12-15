@@ -15,7 +15,7 @@ public class RouletteSelection implements SelectionOperator {
     /**
      * Maximum number of times this selector should be called.
      */
-    private int maxPairs;
+    private final int maxPairs;
 
 
     /**

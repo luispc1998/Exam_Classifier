@@ -28,7 +28,7 @@ public class Individual {
      *
      * @see Enconder
      */
-    private List<Integer> chromosome;
+    private final List<Integer> chromosome;
 
     /**
      * Fitness Score assigned to this individual. Null if not computed yet.

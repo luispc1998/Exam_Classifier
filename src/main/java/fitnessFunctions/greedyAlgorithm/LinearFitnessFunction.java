@@ -28,12 +28,12 @@ public class LinearFitnessFunction implements FitnessFunction {
     /**
      * Link to the {@link DataHandler} instance, where this will check the exam schedule and constrictions.
      */
-    private DataHandler dataHandler;
+    private final DataHandler dataHandler;
 
     /**
      * Instance of {@code CromosomeDecoder}
      */
-    private ChromosomeDecoder decoder;
+    private final ChromosomeDecoder decoder;
 
 
     /**

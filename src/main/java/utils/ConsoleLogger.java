@@ -5,10 +5,10 @@ public class ConsoleLogger {
 
     private static ConsoleLogger instance;
 
-    private StringColorer sc;
+    private final StringColorer sc;
 
-    private StringBuilder uncoloredMessages;
-    private StringBuilder coloredMessages;
+    private final StringBuilder uncoloredMessages;
+    private final StringBuilder coloredMessages;
 
     private ConsoleLogger() {
         sc = new StringColorer();
@@ -45,8 +45,10 @@ public class ConsoleLogger {
     }
 
     private void logMessage(String finalMessage) {
-        uncoloredMessages.append(finalMessage + "\n");
-        coloredMessages.append(sc.colorBlue(finalMessage) + "\n");
+        uncoloredMessages.append(finalMessage);
+        uncoloredMessages.append("\n");
+        coloredMessages.append(sc.colorBlue(finalMessage));
+        coloredMessages.append("\n");
     }
 
     public String getColoredMessages() {

@@ -14,11 +14,11 @@ import java.util.HashSet;
 
 public class OutputHandler {
 
-    private String outputDirectory;
-    private HashSet<Individual> outputIndividuals;
-    private String outputFilename;
-    private String loggedData;
-    private DataHandler dataHandler;
+    private final String outputDirectory;
+    private final HashSet<Individual> outputIndividuals;
+    private final String outputFilename;
+    private final String loggedData;
+    private final DataHandler dataHandler;
 
 
     public OutputHandler(HashSet<Individual> outputIndividuals, DataHandler dataHandler, String outputFileName, String logging) {

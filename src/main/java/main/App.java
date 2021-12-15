@@ -9,7 +9,6 @@ import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.output.OutputHandler;
 
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;

@@ -29,22 +29,22 @@ public class TimeDisplacementConstriction extends AbstractUserConstriction {
     /**
      * {@link Exam} that must take place before than {@code second}
      */
-    private Exam first;
+    private final Exam first;
 
     /**
      * {@link Exam} that must take place after than {@code first}
      */
-    private Exam second;
+    private final Exam second;
 
     /**
      * Days that must be between {@code first} and {@code second}.
      */
-    private long distanceInDays;
+    private final long distanceInDays;
 
     /**
      * Calendar of available days for the {@code Exam} objects.
      */
-    private List<LocalDate> calendar;
+    private final List<LocalDate> calendar;
 
     /**
      * Constructor for the class
@@ -58,10 +58,6 @@ public class TimeDisplacementConstriction extends AbstractUserConstriction {
         this.second = second;
         this.distanceInDays = distanceInDays;
         this.calendar = calendar;
-    }
-
-    public static void setClassDescription(String stringCellValue) {
-
     }
 
 

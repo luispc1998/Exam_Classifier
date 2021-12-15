@@ -30,7 +30,7 @@ public class DateTimeConfigurer {
     /**
      * A list with all the possible dates where the exams can take place.
      */
-    private List<LocalDate> examDates;
+    private final List<LocalDate> examDates;
 
     /**
      * First starting hour which an exam can have. It is not possible for a exam to start before this hour.

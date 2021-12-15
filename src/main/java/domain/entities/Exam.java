@@ -97,18 +97,18 @@ public class Exam {
     /**
      * Integer representing the complexity of the exam.
      */
-    private int cn;
+    private final int cn;
 
     /**
      * Unique integer among the exams that identifies it.
      */
-    private int id;
+    private final int id;
 
 
     /**
      * List of {@code HardConstriction} that must be considered when scheduling the exam.
      */
-    private List<HardConstriction> hardConstrictions;
+    private final List<HardConstriction> hardConstrictions;
 
     /**
      * Round partners ids of the exam if any.
@@ -284,6 +284,7 @@ public class Exam {
      * Clones the current instance to a new one in the same state.
      * @return a new instance in the same state as this.
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public Exam clone() {
         return new Exam(course, sem, code, acronym, subject, order, contentType, modality, alumnos,
@@ -297,9 +298,6 @@ public class Exam {
     public void setHourFromExcel(double excelHour) {
         this.initialHour = LocalTime.ofSecondOfDay((long) (excelHour * 3600 * 24));
     }
-    
-    
-
 
     /**
      * Returns the code of the exam.

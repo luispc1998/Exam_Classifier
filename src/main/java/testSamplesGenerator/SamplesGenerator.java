@@ -8,7 +8,6 @@ import domain.constrictions.types.weakConstriction.hardifiableConstrictions.Time
 import domain.entities.Exam;
 import geneticAlgorithm.output.ExcelWriter;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
@@ -40,7 +39,7 @@ public class SamplesGenerator {
 
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         generator();
     }
 
@@ -86,7 +85,7 @@ public class SamplesGenerator {
         examDurations.put(Duration.ofMinutes(210), 2/divisor);
     }
 
-    public static void generator() throws IOException {
+    public static void generator() {
 
         // Iterar la entrada
         initialer();

@@ -19,7 +19,7 @@ public class UnbalancedDaysPenalization implements WeakConstriction {
     /**
      * List of {@link Exam} to check the schedule.
      */
-    private List<Exam> exams;
+    private final List<Exam> exams;
 
     private long minutes = 0;
 

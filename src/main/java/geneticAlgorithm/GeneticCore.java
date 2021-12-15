@@ -31,11 +31,6 @@ import java.util.List;
 public class GeneticCore {
 
     /**
-     * First population of individuals
-     */
-    private List<Individual> initialPopulation;
-
-    /**
      * Current population of individuals
      */
     private List<Individual> population;
@@ -47,33 +42,33 @@ public class GeneticCore {
      * <p>
      * The design follows the "Strategy" design pattern.
      */
-    private SelectionOperator selectionOperator;
+    private final SelectionOperator selectionOperator;
 
     /**
      * Mutation operator for the genetic algorithm.
      * <p>
      * The design follows the "Strategy" design pattern.
      */
-    private MutationOperator mutationOperator;
+    private final MutationOperator mutationOperator;
 
     /**
      * Crossing operator for the genetic algorithm.
      * <p>
      * The design follows the "Strategy" design pattern.
      */
-    private CrossingOperator crossingOperator;
+    private final CrossingOperator crossingOperator;
 
     /**
      * Replacement operator for the genetic algorithm.
      * <p>
      * The design follows the "Strategy" design pattern.
      */
-    private ReplacementOperator replacementOperator;
+    private final ReplacementOperator replacementOperator;
 
     /**
      * Logger for the genetic algorithm.
      */
-    private GeneticLogger logger;
+    private final GeneticLogger logger;
 
     /**
      * Constructor for the class
@@ -84,7 +79,10 @@ public class GeneticCore {
         if (individualPrime.getChromosome().size() == 0) {
             throw new IllegalArgumentException("There are no exams ids to work with in the given individual.");
         }
-        initialPopulation = Utils.generatePopulationOfSizeFromIndividual(popSize, individualPrime);
+        /*
+          First population of individuals
+         */
+        List<Individual> initialPopulation = Utils.generatePopulationOfSizeFromIndividual(popSize, individualPrime);
         population = new ArrayList<>(initialPopulation);
 
         this.selectionOperator = new RouletteSelection(initialPopulation.size());

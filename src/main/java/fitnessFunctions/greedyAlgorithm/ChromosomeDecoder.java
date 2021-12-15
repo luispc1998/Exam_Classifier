@@ -147,7 +147,7 @@ public class ChromosomeDecoder {
 
                 // Lo asignamos por restricciones como exámenes el mismo día o en día.
                 dataHandler.schedule(exam, actualDate , actualHour);
-                dataHandler.unSchedule(examCandidate, actualDate, actualHour);
+                dataHandler.unSchedule(examCandidate, actualDate);
 
                 HashMap<LocalDate, LocalTime> daysTimesCopy = cloneMap(daysTimes);
 
@@ -157,7 +157,7 @@ public class ChromosomeDecoder {
                     break;
                 }
                 else {
-                    dataHandler.unSchedule(exam, actualDate, actualHour);
+                    dataHandler.unSchedule(exam, actualDate);
                     dataHandler.schedule(examCandidate, actualDate, actualHour);
                 }
 

@@ -16,7 +16,6 @@ import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import domain.parsers.RoundsParser;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -41,17 +40,17 @@ public class DataHandler {
     /**
      * List of {@code Exam} to be scheduled
      */
-    private List<Exam> exams;
+    private final List<Exam> exams;
 
     /**
      * Set of {@code Exam} that were already scheduled for a date.
      */
-    private Set<Integer> preScheduledExams;
+    private final Set<Integer> preScheduledExams;
 
     /**
      * List of {@code Constriction} to be considered.
      */
-    private List<WeakConstriction> constrictions;
+    private final List<WeakConstriction> constrictions;
 
 
     /**
@@ -208,9 +207,8 @@ public class DataHandler {
      * Schedules an exam, at the specified date and hour.
      * @param exam The exam to be scheduled.
      * @param currentDate The date in which the exam was taken place.
-     * @param currentHour The hour at which the exam was taken place.
      */
-    public void unSchedule(Exam exam, LocalDate currentDate, LocalTime currentHour) {
+    public void unSchedule(Exam exam, LocalDate currentDate) {
         exam.scheduleFor(null, null);
         IsolateCourseOnDayConstriction.removeCourseFromDate(currentDate, exam);
     }

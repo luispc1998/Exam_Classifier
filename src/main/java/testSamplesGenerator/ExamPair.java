@@ -4,8 +4,8 @@ import domain.entities.Exam;
 
 public class ExamPair {
 
-    private Exam exam1;
-    private Exam exam2;
+    private final Exam exam1;
+    private final Exam exam2;
 
     public ExamPair(Exam exam1, Exam exam2) {
         this.exam1 = exam1;

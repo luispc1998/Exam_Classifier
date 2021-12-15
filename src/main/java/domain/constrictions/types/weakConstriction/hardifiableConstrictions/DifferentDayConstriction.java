@@ -18,12 +18,12 @@ public class DifferentDayConstriction extends AbstractUserConstriction {
     /**
      * {@link Exam} that cannot take place on the same date as {@code second}
      */
-    private Exam first;
+    private final Exam first;
 
     /**
      * {@link Exam} that cannot take place on the same date as {@code first}
      */
-    private Exam second;
+    private final Exam second;
 
     /**
      * Default constructor for the class.

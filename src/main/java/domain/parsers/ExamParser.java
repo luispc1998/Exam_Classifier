@@ -21,21 +21,6 @@ import java.util.*;
 public class ExamParser {
 
     /**
-     * Index of rows that contain vital information of the exam.
-     */
-    private final static int[] vitalCells = {0, 1, 2, 3, 4, 5, 6, 7, 9};
-
-    /**
-     * Date column of the excel.
-     */
-    private final static int dateCol = 10;
-
-    /**
-     * Duration column of the excel.
-     */
-    private final static int durationCol = 12;
-
-    /**
      * Constant to store the name of the Excel headers.
      */
     private final static String[] excelHeaders = {

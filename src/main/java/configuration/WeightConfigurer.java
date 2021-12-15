@@ -22,7 +22,7 @@ public class WeightConfigurer {
      * Hashmap where the keys are constriction ids, and the values their corresponding weights
      * (coefficients) in the {@link fitnessFunctions.FitnessFunction}
      */
-    HashMap<String, Double> weights;
+    final HashMap<String, Double> weights;
 
     /**
      * Constructor for the class

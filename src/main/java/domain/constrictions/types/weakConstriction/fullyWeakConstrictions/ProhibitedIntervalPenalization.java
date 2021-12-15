@@ -26,12 +26,12 @@ public class ProhibitedIntervalPenalization implements WeakConstriction {
     /**
      * List of {@link Exam} to check the schedule.
      */
-    private List<Exam> exams;
+    private final List<Exam> exams;
 
     /**
      * Data Handler configurer.
      */
-    private Configurer configurer;
+    private final Configurer configurer;
 
     /**
      * Amount of time that we have used from the prohibited interval.

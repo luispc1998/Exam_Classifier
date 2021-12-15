@@ -20,12 +20,12 @@ public class DayBannedConstriction extends AbstractUserConstriction {
     /**
      * The date in which {@code exam} cannot take place.
      */
-    private LocalDate dayBanned;
+    private final LocalDate dayBanned;
 
     /**
      * {@link Exam} that cannot take place on {@code dayBanned}.
      */
-    private Exam exam;
+    private final Exam exam;
 
 
     /**

@@ -19,12 +19,12 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
     /**
      * The dates in which {@code exam} can take place
      */
-    private List<LocalDate> validDates;
+    private final List<LocalDate> validDates;
 
     /**
      * {@link Exam} that should take place on {@code validDates}
      */
-    private Exam exam;
+    private final Exam exam;
 
     /**
      * First date of the interval in which the exam can take place.
@@ -32,7 +32,7 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
      * <p>
      * This attribute keeps the value until results are written.
      */
-    private LocalDate intervalStart;
+    private final LocalDate intervalStart;
 
     /**
      * Last date of the interval in which the exam can take place.
@@ -40,7 +40,7 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
      * <p>
      * This attribute keeps the value until results are written.
      */
-    private LocalDate intervalEnd;
+    private final LocalDate intervalEnd;
 
     /**
      * Constructor for the class.

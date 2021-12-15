@@ -18,7 +18,7 @@ public class AllSelection implements SelectionOperator {
     /**
      * Size of the population.
      */
-    public int problemSize;
+    public final int problemSize;
 
     /**
      * Constructor for the class

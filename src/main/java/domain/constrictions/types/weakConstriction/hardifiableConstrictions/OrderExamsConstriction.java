@@ -18,12 +18,12 @@ public class OrderExamsConstriction extends AbstractUserConstriction {
     /**
      * {@link Exam} that must take place before than {@code second}
      */
-    private Exam first;
+    private final Exam first;
 
     /**
      * {@link Exam} that must take place after than {@code first}
      */
-    private Exam second;
+    private final Exam second;
 
     /**
      * Constructor of the class.

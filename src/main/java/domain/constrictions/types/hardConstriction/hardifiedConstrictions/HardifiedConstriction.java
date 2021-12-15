@@ -8,7 +8,7 @@ public class HardifiedConstriction extends AbstractHardConstriction {
     /**
      * {@code UserConstriction} instance to get the constriction logic by composition.
      */
-    private UserConstriction userConstriction;
+    private final UserConstriction userConstriction;
 
     /**
      * Default constructor for the class.
