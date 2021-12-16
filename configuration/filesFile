@@ -1,11 +1,18 @@
+# Input files
 inputFile=files/pruebas/v6_sF_numericalComplexity.xlsx
 inputFileOld2=files/testFilesGenerated/test.xslx_1.xlsx
 inputFileOld=files/output/2021127_1111/test_4.xlsx
-outputFile=files/output/prueba.xlsx
+
+# Output configuration
 outputBaseDirectory=files/output/
+
+
+# Configuration files paths
+## Properties files
+geneticConfiguration=configuration/geneticParameters
 dateTimes=configuration/dateTime
 weights=configuration/weights
+
+## Regular files
 hardConstrictions=configuration/hardConstrictions
 rounds=configuration/rounds
-geneticConfiguration=configuration/geneticConfiguration
-asdfasdfas

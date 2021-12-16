@@ -1,0 +1,16 @@
+# Parameters to configure the genetic algorithm.
+
+## Size of the population of individuals to be considered
+populationSize=1000
+
+## Iterations that must be performed by the algorithm before ending
+iterations=350
+
+## Amount of iterations when the logger will note down the status of the algorithm
+loggingFreq=50
+
+## Mutation probability of the algorithm
+mutationProb=0.15
+
+## Desired maximum amount of different schedules to be retrieved at the end. 
+maxSchedulesToTake=3

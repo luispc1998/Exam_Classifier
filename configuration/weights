@@ -1,4 +1,6 @@
 # suppress inspection "UnusedProperty" for whole file
+
+# Weights of the weak constrictions. (Coefficients in the fitness function)
 DB=100
 TD=100
 SD=100asdfas
