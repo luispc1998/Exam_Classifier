@@ -219,11 +219,19 @@ public class GeneticCore {
      * @param mutationProb The mutation probability of the new individuals.
      */
     private void checkForMutation(List<Individual> childs, double mutationProb) {
+        for (int i = 0; i < childs.size(); i++) {
+            if (RandomGenerator.getGenerator().nextDouble() <= mutationProb){
+                childs.set(i, mutationOperator.mutation(childs.get(i)));
+            }
+        }
+        /*
         for (Individual child: childs) {
             if (RandomGenerator.getGenerator().nextDouble() <= mutationProb){
               mutationOperator.mutation(child);
             }
         }
+        */
+
     }
 
     /**
