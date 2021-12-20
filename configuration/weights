@@ -3,7 +3,7 @@
 # Weights of the weak constrictions. (Coefficients in the fitness function)
 DB=100
 TD=100
-SD=100asdfas
+SD=100
 UE=10000
 DD=100
 OE=50

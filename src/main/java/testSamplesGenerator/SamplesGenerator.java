@@ -217,7 +217,7 @@ public class SamplesGenerator {
         Exam exam = new Exam(course, semester, generateCode(),
                 generateAcronym(), generateSubject(), 1,
                 content, "presencial", generator.nextInt(90) + 40, generateRandomDuration().toMinutes(),
-                null, null, generateRandomExtraTime(), generateRandomNumericalComplexity(), idCounter);
+                null, null, generateRandomExtraTime(), generateRandomNumericalComplexity(), idCounter, null);
         idCounter++;
         result.add(exam);
 

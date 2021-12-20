@@ -40,9 +40,11 @@ public class ExamParser {
             "Fin",
             "Extra time",
             "CN",
-            "ID"
+            "ID",
+            "Tanda"
     };
 
+    private final static HashMap<String, List<Integer>> rounds = new HashMap<>();
 
     /**
      * Parsing method of the exams
@@ -90,6 +92,7 @@ public class ExamParser {
         }
 
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + i);
+        RoundsParser.createRoundIfNecessary(rounds, exams);
         return exams;
     }
 
@@ -101,23 +104,30 @@ public class ExamParser {
      */
     private static Exam generateExam(Row row, int i, DataHandler dataHandler) {
         Exam exam = null;
-
+        String round;
         try {
             //checkVitalRowData(row, i);
-
-            exam = new Exam((int) row.getCell(0).getNumericCellValue(),
-                    (int) row.getCell(1).getNumericCellValue(),
+            round = row.getCell(17).getStringCellValue();
+            exam = new Exam(parseMandatoryNumberCell(row, 0),
+                    parseMandatoryNumberCell(row, 1),
                     row.getCell(2).getStringCellValue(),
                     row.getCell(3).getStringCellValue(),
                     row.getCell(4).getStringCellValue(),
-                    (int) row.getCell(5).getNumericCellValue(),
+                    parseNumberCell(row, 5),
                     row.getCell(6).getStringCellValue(),
                     row.getCell(7).getStringCellValue(),
-                    (int) row.getCell(8).getNumericCellValue(),
+                    parseNumberCell(row, 8),
                     row.getCell(9).getNumericCellValue(),
                     (int) row.getCell(15).getNumericCellValue(),
-                    (int) row.getCell(16).getNumericCellValue());
+                    parseMandatoryNumberCell(row, 16),
+                    round);
 
+            if (row.getCell(17).getStringCellValue() != null && ! row.getCell(17).getStringCellValue().isEmpty()) {
+                if (! rounds.containsKey(row.getCell(17).getStringCellValue())){
+                    rounds.put(round, new ArrayList<>());
+                }
+                rounds.get(row.getCell(17).getStringCellValue()).add(exam.getId());
+            }
 
             if (checkForAlreadyClassifiedExam(row)) {
                 exam.setDateFromExcel(row.getCell(10).getDateCellValue());
@@ -134,14 +144,46 @@ public class ExamParser {
 
 
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            ConsoleLogger.getConsoleLoggerInstance().logWarning(e.getMessage() + "[Line: " + i + "] Skipping...");
         } catch (Exception e){
-            ConsoleLogger.getConsoleLoggerInstance().logWarning("Unknown error raised when creating exam from line: "
-                    + i + " Skipping...");
+            ConsoleLogger.getConsoleLoggerInstance().logWarning("Unknown error raised when creating exam "
+                    + "[Line: " + i + "] Skipping...");
+
             //System.out.println("Unknown error raised when creating exam from line: " + i);
         }
 
         return exam;
+    }
+
+
+
+
+    /**
+     * Parses a cell with Number content.
+     * @param row The row in which the cell is.
+     * @param cell The cell to be checked.
+     * @return The value of the cell. Null if no value or 0.
+     */
+    private static Integer parseNumberCell(Row row, int cell) {
+        if (row.getCell(cell) == null || row.getCell(cell).getNumericCellValue() == 0) {
+            return null;
+        }
+
+        return Double.valueOf(row.getCell(cell).getNumericCellValue()).intValue();
+    }
+
+    /**
+     * Parses a cell with Number content.
+     * @param row The row in which the cell is.
+     * @param cell The cell to be checked.
+     * @return The value of the cell. Null if no value or 0.
+     */
+    private static Integer parseMandatoryNumberCell(Row row, int cell) {
+        if (row.getCell(cell) == null) {
+            throw new IllegalArgumentException("Cannot omit cell: " + cell + " for an exam");
+        }
+
+        return Double.valueOf(row.getCell(cell).getNumericCellValue()).intValue();
     }
 
     /**

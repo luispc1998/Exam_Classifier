@@ -35,12 +35,12 @@ public class Exam {
     /**
      * Course of the subject to which the exams belongs.
      */
-    private int course;
+    private Integer course;
 
     /**
      * The seminar of the Exam.
      */
-    private int sem;
+    private Integer sem;
 
     /**
      * The code of the subject of the exam.
@@ -60,7 +60,7 @@ public class Exam {
     /**
      * The order of the exam.
      */
-    private int order;
+    private Integer order;
 
     /**
      * The type of content of the exam. Could be: "Práctico, Teórico, Trabajo"
@@ -75,7 +75,7 @@ public class Exam {
     /**
      * The number of students enrolled for the exam.
      */
-    private int alumnos;
+    private Integer alumnos;
 
     /**
      * The duration of the exam.
@@ -111,6 +111,10 @@ public class Exam {
     private final List<HardConstriction> hardConstrictions;
 
     /**
+     * Round identifier to indicate if the round the exam belongs to.
+     */
+    private final String roundId;
+    /**
      * Round partners ids of the exam if any.
      */
     private List<Integer> roundPartners;
@@ -129,11 +133,12 @@ public class Exam {
      * @param alumnos The number of students enrolled for the exam.
      * @param cn Integer representing the complexity of the exam.
      * @param id Unique integer among the exams that identifies it.
+     * @param roundId Round identifier to indicate if the round the exam belongs to.
      */
     private Exam(int course, int sem, String code,
-                 String acronym, String subject, int order,
-                 String contentType, String modalidad, int alumnos,
-                 int cn, int id) {
+                 String acronym, String subject, Integer order,
+                 String contentType, String modalidad, Integer alumnos,
+                 int cn, int id, String roundId) {
 
         this.course = course;
         this.sem = sem;
@@ -149,6 +154,7 @@ public class Exam {
         this.extraTime = Duration.ofMinutes(0);
         this.hardConstrictions = new ArrayList<>();
         this.roundPartners = new ArrayList<>();
+        this.roundId = roundId;
     }
 
     /**
@@ -165,13 +171,14 @@ public class Exam {
      * @param duration The duration of the exam.
      * @param cn Integer representing the complexity of the exam.
      * @param id Unique integer among the exams that identifies it.
+     * @param roundId Round identifier to indicate if the round the exam belongs to.
      */
     public Exam(int course, int sem, String code,
-                String acronym, String subject, int order,
-                String contentType, String modalidad, int alumnos, double duration,
-                int cn, int id) {
+                String acronym, String subject, Integer order,
+                String contentType, String modalidad, Integer alumnos, double duration,
+                int cn, int id, String roundId) {
 
-        this(course, sem, code, acronym, subject, order, contentType, modalidad, alumnos, cn, id);
+        this(course, sem, code, acronym, subject, order, contentType, modalidad, alumnos, cn, id, roundId);
         this.course = course;
         this.sem = sem;
         this.code = code;
@@ -201,14 +208,15 @@ public class Exam {
      * @param extraTime Extra time to be added at the end of the exam.
      * @param cn Integer representing the complexity of the exam.
      * @param id Unique integer among the exams that identifies it.
+     * @param roundId Round identifier to indicate if the round the exam belongs to.
      */
     public Exam(int course, int sem, String code,
-                String acronym, String subject, int order,
-                String contentType, String modalidad, int alumnos, long duration,
+                String acronym, String subject, Integer order,
+                String contentType, String modalidad, Integer alumnos, long duration,
                 LocalDate date, LocalTime initialHour, Duration extraTime,
-                int cn, int id) {
+                int cn, int id, String roundId) {
 
-        this(course, sem, code, acronym, subject, order, contentType, modalidad, alumnos, cn, id);
+        this(course, sem, code, acronym, subject, order, contentType, modalidad, alumnos, cn, id, roundId);
         this.alumnos = alumnos;
         this.date = date;
         this.initialHour = initialHour;
@@ -288,7 +296,7 @@ public class Exam {
     @Override
     public Exam clone() {
         return new Exam(course, sem, code, acronym, subject, order, contentType, modality, alumnos,
-                duration.toMinutes(), date, initialHour, extraTime, cn, id);
+                duration.toMinutes(), date, initialHour, extraTime, cn, id, roundId);
     }
 
     /**
@@ -393,9 +401,7 @@ public class Exam {
      */
     public Object[] getAttributes() {
 
-        Object[] attributes = new Object[17];
-
-        long s = duration.toSeconds();
+        Object[] attributes = new Object[18];
 
         attributes[0] = course;
         attributes[1] = sem;
@@ -414,6 +420,7 @@ public class Exam {
         attributes[14] = getExtraTime() == null ? -1 : transformToDuration(extraTime);
         attributes[15] = cn;
         attributes[16] = id;
+        attributes[17] = roundId;
 
         return attributes;
     }
@@ -422,7 +429,7 @@ public class Exam {
      * Returns the course of the exam.
      * @return the course of the exam.
      */
-    public int getCourse() {
+    public Integer getCourse() {
         return course;
     }
 

@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,8 +64,8 @@ public class RoundsParser {
                     createdRounds++;
                 }
 
-                ConsoleLogger.getConsoleLoggerInstance().logInfo("Tandas creadas: " + createdRounds);
             }
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Tandas creadas: " + createdRounds);
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find Rounds configuration file");
         } catch (IOException e) {
@@ -72,6 +73,21 @@ public class RoundsParser {
         }
 
     }
+
+
+    public static void createRoundIfNecessary(HashMap<String, List<Integer>> roundsMap, List<Exam> exams) {
+        int roundCounter = 0;
+        for(List<Integer> ids : roundsMap.values()) {
+            if (ids.size() > 1) {
+                List<Exam> round = exams.stream().filter((ex) -> ids.contains(ex.getId())).collect(Collectors.toList());
+                setUpRound(round);
+                roundCounter++;
+            }
+        }
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Rounds parsed: " + roundCounter);
+    }
+
+
 
     /**
      * Creates a round, sets the hard constrictions to the exams. Configures the rounds on the corresponding exams.

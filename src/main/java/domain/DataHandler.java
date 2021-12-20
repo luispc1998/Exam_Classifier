@@ -68,7 +68,7 @@ public class DataHandler {
         identifyScheduledExams();
 
         addConstrictions();
-        RoundsParser.parseRounds(configurer.getFilePaths("rounds"), exams);
+        //RoundsParser.parseRounds(configurer.getFilePaths("rounds"), exams);
 
         this.constrictions.addAll(ConstrictionParser.parseConstrictions(inputDataFile, this));
 
