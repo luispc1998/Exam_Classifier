@@ -35,7 +35,7 @@ public class PrettyTimetable {
 
     private void orderDay(DataHandler dataHandler, LocalDate day) {
 
-        List<Interval> validIntervals = dataHandler.getConfigurer().getDateTimeConfigurer().getValidIntervals();
+        List<Interval> validIntervals = dataHandler.getConfigurer().getDateTimeConfigurer().getValidIntervals(day);
 
         for (Interval interval: validIntervals) {
             List<Exam> examsOnDay = dataHandler.getExamsAt(day, interval);

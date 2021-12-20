@@ -6,10 +6,12 @@ import domain.constrictions.types.weakConstriction.hardifiableConstrictions.Diff
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.SameDayConstriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.TimeDisplacementConstriction;
 import domain.entities.Exam;
+import domain.entities.Interval;
 import geneticAlgorithm.output.ExcelWriter;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 
@@ -109,9 +111,18 @@ public class SamplesGenerator {
         generateConstrictions();
 
         ExcelWriter.parseExamListToExcel("files/testFilesGenerated/", "test.xslx", 1, result,
-                constrictions, calendar);
+                constrictions, getDefaultCalendarTimeInterval(calendar));
 
 
+    }
+
+    private static HashMap<LocalDate, Interval> getDefaultCalendarTimeInterval(List<LocalDate> dates) {
+        HashMap<LocalDate, Interval> realCalendar = new HashMap<>();
+        Interval defaultInterval = new Interval(LocalTime.of(9,0), LocalTime.of(21,0));
+        for (LocalDate date: dates) {
+            realCalendar.put(date, defaultInterval);
+        }
+        return realCalendar;
     }
 
     private static void generateConstrictions() {

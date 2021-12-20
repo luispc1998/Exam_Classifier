@@ -4,12 +4,14 @@ import domain.DataHandler;
 import domain.constrictions.Constriction;
 import domain.entities.Exam;
 import domain.entities.ExamDatesComparator;
+import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 import geneticAlgorithm.Individual;
 import main.PrettyTimetable;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -57,7 +59,7 @@ public class ExcelWriter {
 
 
             parseExamListToExcel(directory, outputFileName, counter, finalResult,
-                    verifiedConstrictions, dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
+                    verifiedConstrictions, dataHandler.getConfigurer().getDateTimeConfigurer().getExamDatesWithTimes());
         }
 
 
@@ -73,7 +75,7 @@ public class ExcelWriter {
      * @param calendar The calendar of days to be written
      */
     public static void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
-            List<Constriction>> verifiedConstrictions, List<LocalDate> calendar) {
+            List<Constriction>> verifiedConstrictions, HashMap<LocalDate, Interval> calendar) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         ExamParser.parseToExcel(finalResult, workbook);
         ConstrictionParser.parseToExcel(verifiedConstrictions, workbook);
@@ -92,14 +94,20 @@ public class ExcelWriter {
      * @param workbook the workbook where the calendar must be written.
      * @param calendar the list of days that must be written.
      */
-    public static void writeCalendar(XSSFWorkbook workbook, List<LocalDate> calendar) {
+    public static void writeCalendar(XSSFWorkbook workbook, HashMap<LocalDate, Interval> calendar) {
 
         XSSFSheet sheet = workbook.createSheet("Calendar");
         int rowCount = 0;
-        for (LocalDate date: calendar) {
+        for (Map.Entry<LocalDate, Interval> dayTime: calendar.entrySet()) {
             Row row = sheet.createRow(rowCount++);
             Cell cell = row.createCell(0);
-            cell.setCellValue(Date.from((date.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+            cell.setCellValue(Date.from((dayTime.getKey().atStartOfDay(ZoneId.systemDefault()).toInstant())));
+
+            cell = row.createCell(1);
+            cell.setCellValue(DateUtil.convertTime(dayTime.getValue().getStart().toString()));
+
+            cell = row.createCell(2);
+            cell.setCellValue(DateUtil.convertTime(dayTime.getValue().getEnd().toString()));
         }
 
     }

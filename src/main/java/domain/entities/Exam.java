@@ -355,13 +355,12 @@ public class Exam {
      * Checks wether the input parameters for an exam will provoke a collision with this.
      * @param currentDate The date of the new scheduled exam.
      * @param currentHour The initialHour of the new scheduled exam.
-     * @param examDuration The duration of the new scheduled exam.
-     * @param extraTime The extraTime of the new scheduled exam.
+     * @param chunkOfTime Time needed for the exam.
      * @return true if there will be a collision, false otherwise.
      */
-    public boolean willCollideWith(LocalDate currentDate, LocalTime currentHour, Duration examDuration, Duration extraTime) {
+    public boolean willCollideWith(LocalDate currentDate, LocalTime currentHour, Duration chunkOfTime) {
         if (isScheduled()){
-            LocalTime endingCurrentTime= currentHour.plus(examDuration).plus(extraTime);
+            LocalTime endingCurrentTime = currentHour.plus(chunkOfTime);
             return getDate().atStartOfDay().equals(currentDate.atStartOfDay()) &&
                     ( currentHour.isAfter(initialHour) && currentHour.isBefore(getFinishingHour()) ||
                             endingCurrentTime.isAfter(initialHour) && endingCurrentTime.isBefore(getFinishingHour()));

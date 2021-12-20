@@ -3,6 +3,7 @@ package fitnessFunctions.greedyAlgorithm;
 import configuration.DateTimeConfigurer;
 import domain.DataHandler;
 import domain.entities.Exam;
+import domain.entities.Interval;
 import geneticAlgorithm.Individual;
 
 import java.time.LocalDate;
@@ -50,8 +51,8 @@ public class ChromosomeDecoder {
      */
     private HashMap<LocalDate, LocalTime> initializeDays(DateTimeConfigurer dateTimeConfigurer) {
         HashMap<LocalDate, LocalTime> daysTimes = new HashMap<>();
-        for (LocalDate date :dateTimeConfigurer.getExamDates()) {
-            daysTimes.put(date, dateTimeConfigurer.getDayInitialHour());
+        for (Map.Entry<LocalDate, Interval> dayTime :dateTimeConfigurer.getExamDatesWithTimes().entrySet()) {
+            daysTimes.put(dayTime.getKey(), dayTime.getValue().getStart());
         }
         return daysTimes;
     }
@@ -65,14 +66,6 @@ public class ChromosomeDecoder {
 
         DateTimeConfigurer dateTimeConfigurer = dataHandler.getConfigurer().getDateTimeConfigurer();
 
-        // Counters
-        LocalTime currentHour;
-        Set<LocalDate> viableDays;
-
-
-        // Dates
-        List<LocalDate> dates = dateTimeConfigurer.getExamDates();
-        int indexDate = -1;
 
         // Times for the days.
         HashMap<LocalDate, LocalTime> daysTimes = initializeDays(dateTimeConfigurer);
@@ -114,7 +107,7 @@ public class ChromosomeDecoder {
 
             Exam collidingExam = null;
             while (dateTimeConfigurer.isHourInProhibitedInterval(currentHour) ||
-                    (collidingExam = dataHandler.checkCollisionOf(day, currentHour, exam.getDuration(), exam.getExtraTime())) != null) {
+                    (collidingExam = dataHandler.checkCollisionOf(day, currentHour, exam.getChunkOfTime())) != null) {
 
 
                 if(collidingExam != null){
@@ -130,7 +123,7 @@ public class ChromosomeDecoder {
             }
 
 
-            if (dateTimeConfigurer.isValidEndingHourFor(currentHour, exam.getDuration(), exam.getExtraTime())){
+            if (dateTimeConfigurer.isValidEndingHourFor(day, currentHour.plus(exam.getChunkOfTime()))){
                 dataHandler.schedule(exam, day, currentHour);
                 daysTimes.put(day, exam.getFinishingHour());
                 scheduled = true;

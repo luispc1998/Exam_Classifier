@@ -144,7 +144,7 @@ public class ExamParser {
 
 
         } catch (IllegalArgumentException e) {
-            ConsoleLogger.getConsoleLoggerInstance().logWarning(e.getMessage() + "[Line: " + i + "] Skipping...");
+            ConsoleLogger.getConsoleLoggerInstance().logWarning(e.getMessage() + " [Line: " + i + "] Skipping...");
         } catch (Exception e){
             ConsoleLogger.getConsoleLoggerInstance().logWarning("Unknown error raised when creating exam "
                     + "[Line: " + i + "] Skipping...");

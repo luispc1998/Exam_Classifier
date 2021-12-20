@@ -24,6 +24,9 @@ public class Interval {
      * @param end Ending hour of the interval.
      */
     public Interval(LocalTime start, LocalTime end) {
+        if (start.isAfter(end)){
+            throw new IllegalArgumentException("Cannot create interval with an initial hour after the ending hour.");
+        }
         this.start = start;
         this.end = end;
     }

@@ -30,8 +30,7 @@ public class DateTimeConfigurer {
     /**
      * A list with all the possible dates where the exams can take place.
      */
-    private final List<LocalDate> examDates;
-
+    private final HashMap<LocalDate, Interval> examDates;
     /**
      * First starting hour which an exam can have. It is not possible for a exam to start before this hour.
      */
@@ -63,7 +62,7 @@ public class DateTimeConfigurer {
      * @param inputDataFilepath filepath to the input excel, where the exams, constrictions and calendar are provided.
      */
     public DateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) {
-        this.examDates = new ArrayList<>();
+        this.examDates = new HashMap<>();
         parseDates(inputDataFilepath);
         parseTimeConfigurations(dateTimeFilepath);
     }
@@ -113,7 +112,11 @@ public class DateTimeConfigurer {
 
             for (Row row : sheet) {
                 LocalDate date = generateDate(row);
-                examDates.add(date);
+
+                Interval dayInterval = new Interval(setHourFromExcel(row.getCell(1).getNumericCellValue()),
+                        setHourFromExcel(row.getCell(2).getNumericCellValue()));
+
+                examDates.put(date, dayInterval);
                 i++;
             }
 
@@ -121,7 +124,7 @@ public class DateTimeConfigurer {
             //System.out.println("Fechas creadas: " + i);
 
             //It is important to sort the dates. Later it will be assumed that they are sorted.
-            examDates.sort(LocalDate::compareTo);
+            //examDates.sort(LocalDate::compareTo);
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input excel file");
         } catch (IOException e) {
@@ -129,6 +132,17 @@ public class DateTimeConfigurer {
         }
 
     }
+
+    /**
+     * Transforms the Excel hour format into {@link LocalTime}
+     * @param excelHour Hour in excel hour format.
+     * @return A LocalTime object referring the same time.
+     */
+    public LocalTime setHourFromExcel(double excelHour) {
+        return LocalTime.ofSecondOfDay((long) (excelHour * 3600 * 24));
+    }
+
+
 
     /**
      * Auxiliar method. Creates a {@code LocalDate} object from an excel row.
@@ -167,43 +181,52 @@ public class DateTimeConfigurer {
      * This implies both not to end after the day ending hour, but also not to start
      * before the day initial hour.
      * <p>
-     * @param examStartHour The starting hour for the exam.
-     * @param examDuration The duration of the exam.
-     * @param extraExamTime The extra time assigned for the exam.
+     * @param endingHour Hour to be checked valid.
      * @return True if is a valid hour, false otherwise.
      */
-    public boolean isValidEndingHourFor(LocalTime examStartHour, Duration examDuration, Duration extraExamTime) {
-        LocalTime finalHour = examStartHour.plus(examDuration).plus(extraExamTime);
-        return (getDayEndingHour().isAfter(finalHour) ||
-                getDayEndingHour().equals(finalHour)) &&
+    public boolean isValidEndingHourFor(LocalDate day, LocalTime endingHour) {
+        return (getDayEndingHour(day).isAfter(endingHour) ||
+                getDayEndingHour(day).equals(endingHour)) &&
 
-                getDayInitialHour().isBefore(finalHour) &&
-                ! getDayInitialHour().equals(finalHour)
+                getDayInitialHour(day).isBefore(endingHour) &&
+                ! getDayInitialHour(day).equals(endingHour)
                 ;
     }
 
     /**
-     * Returns the list of possible dates for the exams.
-     * @return the list of possible exam dates.
+     * Returns the list of possible dates for the exams with their interval time
+     * @return the list of possible exam dates with their interval time.
      */
-    public ArrayList<LocalDate> getExamDates() {
-        return new ArrayList<>(examDates);
+    public HashMap<LocalDate, Interval> getExamDatesWithTimes() {
+        return examDates;
     }
 
     /**
-     * Returns the day starting hour.
+     * Returns the list of possible dates for the exams with their interval time
+     * @return the list of possible exam dates with their interval time.
+     */
+    public List<LocalDate> getExamDates() {
+        List<LocalDate> dates = new ArrayList<>(examDates.keySet());
+        dates.sort(LocalDate::compareTo);
+        return dates;
+    }
+
+    /**
+     * Returns the day starting hour for the given day.
+     * @param day Day whose ending hour we want to know.
      * @return the day stating hour.
      */
-    public LocalTime getDayInitialHour() {
-        return dayInitialHour;
+    public LocalTime getDayInitialHour(LocalDate day) {
+        return examDates.get(day).getStart();
     }
 
     /**
-     * Returns the hour at which all exams must have finished.
+     * Returns the hour at which all exams must have finished for the given day.
+     * @param day Day whose ending hour we want to know.
      * @return The {@code LocalTime} at which all exams must have finished.
      */
-    public LocalTime getDayEndingHour() {
-        return dayEndingHour;
+    public LocalTime getDayEndingHour(LocalDate day) {
+        return examDates.get(day).getEnd();
     }
 
     /**
@@ -232,10 +255,23 @@ public class DateTimeConfigurer {
      * @return A list with the time intervals at which exams can be placed.
      * @see Interval
      */
-    public List<Interval> getValidIntervals(){
+    public List<Interval> getValidIntervals(LocalDate day){
         List<Interval>  result = new ArrayList<>();
-        result.add(new Interval(getDayInitialHour(), getProhibitedIntervalInitialHour()));
-        result.add(new Interval(getFinishingHourProhibitedInterval(), getDayEndingHour()));
+
+        if (getDayInitialHour(day).isBefore(getProhibitedIntervalInitialHour())){
+            result.add(new Interval(getDayInitialHour(day), getProhibitedIntervalInitialHour()));
+            result.add(new Interval(getFinishingHourProhibitedInterval(), getDayEndingHour(day)));
+            return result;
+        }
+
+        // In the prohibited interval?
+        if (getDayInitialHour(day).isBefore(getFinishingHourProhibitedInterval())) {
+            result.add(new Interval(getFinishingHourProhibitedInterval(), getDayEndingHour(day)));
+            return result;
+        }
+
+
+        result.add(new Interval(getDayInitialHour(day), getDayEndingHour(day)));
         return result;
     }
 }
