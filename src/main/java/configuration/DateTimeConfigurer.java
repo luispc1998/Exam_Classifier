@@ -105,7 +105,6 @@ public class DateTimeConfigurer {
         ) {
             Sheet sheet = workbook.getSheetAt(2);
 
-            Map<Integer, List<String>> data = new HashMap<>();
             int i = -1;
 
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando fechas...");
@@ -115,7 +114,7 @@ public class DateTimeConfigurer {
 
                 Interval dayInterval = new Interval(setHourFromExcel(row.getCell(1).getNumericCellValue()),
                         setHourFromExcel(row.getCell(2).getNumericCellValue()));
-
+                dayInterval.roundBoundsToHours();
                 examDates.put(date, dayInterval);
                 i++;
             }

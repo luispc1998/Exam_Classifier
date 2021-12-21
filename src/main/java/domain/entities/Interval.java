@@ -11,12 +11,12 @@ public class Interval {
     /**
      * Starting hour of the interval.
      */
-    private final LocalTime start;
+    private LocalTime start;
 
     /**
      * Ending hour of the interval
      */
-    private final LocalTime end;
+    private LocalTime end;
 
     /**
      * Default constructor for the class.
@@ -54,4 +54,19 @@ public class Interval {
     public Duration getDuration() {
         return Duration.between(start, end);
     }
+
+
+    /**
+     * Rounds the bounds of the interval
+     */
+    public void roundBoundsToHours() {
+        if (start.getMinute() != 0) {
+            start = start.plusMinutes(60 - start.getMinute());
+        }
+        if (end.getMinute() != 0) {
+            end = end.plusMinutes(60 - end.getMinute());
+        }
+
+    }
+
 }
