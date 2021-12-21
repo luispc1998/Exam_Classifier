@@ -34,8 +34,9 @@ public class App {
         GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize());
 
 
-        Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability()
-                , fn, conf.getGeneticParameters().getMaxIterations(), conf.getGeneticParameters().getLoggingFrequency());
+        Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
+                conf.getGeneticParameters().getCrossingProbability(), fn,
+                conf.getGeneticParameters().getMaxIterations(), conf.getGeneticParameters().getLoggingFrequency());
 
 
 

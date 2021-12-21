@@ -12,5 +12,9 @@ loggingFreq=50
 ## Mutation probability of the algorithm
 mutationProb=0.15
 
+## Crossing probability of the algorithm
+crossingProb=1.0
+
 ## Desired maximum amount of different schedules to be retrieved at the end. 
 maxSchedulesToTake=3
+

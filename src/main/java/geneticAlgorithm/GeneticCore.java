@@ -101,7 +101,7 @@ public class GeneticCore {
      * @param loggingFrequency Number of iterations after which the algorithm logs its state.
      * @return The best individual
      */
-    public Individual geneticAlgorithm(double mutationProbability, FitnessFunction fitnessFunction, int maxIterations,
+    public Individual geneticAlgorithm(double mutationProbability, double crossingProbability, FitnessFunction fitnessFunction, int maxIterations,
                                        int loggingFrequency) {
 
         // Coger al mejor individuo y hacer la media del fitness para estudiar convergencia.
@@ -123,7 +123,7 @@ public class GeneticCore {
         try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
             while (genCounter < maxIterations) { //limit by iterations, limit by finnding a solution.
 
-                population = computeNewGeneration(fitnessFunction, mutationProbability);
+                population = computeNewGeneration(fitnessFunction, mutationProbability, crossingProbability);
                 genCounter++;
 
                 bestIndividual = getBestIndividual(fitnessFunction);
@@ -194,9 +194,11 @@ public class GeneticCore {
      * Computes a new generation of the population.
      * @param fitnessFunction Fitness function to be used by the algorithm
      * @param mutationProbability The mutation probability of the new individuals.
+     * @param crossingProb The crossing probability of the individuals.
      * @return The new population.
      */
-    private List<Individual> computeNewGeneration(FitnessFunction fitnessFunction, double mutationProbability) {
+    private List<Individual> computeNewGeneration(FitnessFunction fitnessFunction, double mutationProbability,
+                                                  double crossingProb) {
 
         List<Individual> newGenChilds = new ArrayList<>(population.size());
 
@@ -205,9 +207,12 @@ public class GeneticCore {
             Individual father = selectionOperator.selection(population, fitnessFunction);
             Individual mother = selectionOperator.selection(population, fitnessFunction);
 
-            List<Individual> childs = crossingOperator.doCrossing(father, mother);
-            checkForMutation(childs, mutationProbability);
-            newGenChilds.addAll(childs);
+            if (RandomGenerator.getGenerator().nextDouble() <= crossingProb){
+                List<Individual> childs = crossingOperator.doCrossing(father, mother);
+                checkForMutation(childs, mutationProbability);
+                newGenChilds.addAll(childs);
+            }
+
         }
 
         return replacementOperator.doReplacement(population, newGenChilds, fitnessFunction);
