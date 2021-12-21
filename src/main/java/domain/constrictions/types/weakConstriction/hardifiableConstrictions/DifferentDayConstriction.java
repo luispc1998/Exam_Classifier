@@ -79,7 +79,7 @@ public class DifferentDayConstriction extends AbstractUserConstriction {
     }
 
     @Override
-    public void hardify() {
+    public void specificHardify() {
         HardConstriction hConstriction = new HardifiedConstriction(this);
         first.addHardConstriction(hConstriction);
         second.addHardConstriction(hConstriction);

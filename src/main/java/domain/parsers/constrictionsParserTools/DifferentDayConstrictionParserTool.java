@@ -17,20 +17,27 @@ public class DifferentDayConstrictionParserTool extends AbstractCosntrictionPars
     public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
         Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
-        return new DifferentDayConstriction(exam1, exam2);
+        UserConstriction uc = new DifferentDayConstriction(exam1, exam2);
+        checkIfHard(uc, row, baseExcelColumn + 2);
+        return uc;
     }
 
     @Override
     public void writeConstriction(Constriction con, Row row, int baseExcelColumn) {
         DifferentDayConstriction ddc = (DifferentDayConstriction) con;
-        int cellCounter = -1;
-        Cell cell = row.createCell(baseExcelColumn + ++cellCounter);
+        int cellCounter = baseExcelColumn -1;
+        Cell cell = row.createCell(++cellCounter);
         cell.setCellValue(ddc.getFirst().getId());
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
+        cell = row.createCell(++cellCounter);
         cell.setCellValue(ddc.getSecond().getId());
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
-        cell.setCellValue(ddc.getLastEvaluation());
+        cellCounter = writeCommonThings(row, cellCounter, ddc.wasHardified(), ddc.getLastEvaluation());
+
+        cell = row.createCell(++cellCounter);
+        cell.setCellValue(ddc.getFirst().getTextualIdentifier());
+
+        cell = row.createCell(++cellCounter);
+        cell.setCellValue(ddc.getSecond().getTextualIdentifier());
     }
 }

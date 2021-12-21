@@ -558,4 +558,11 @@ public class Exam {
         return Objects.hash(id);
     }
 
+    /**
+     * Provides an String by which the exam can be easily recognized.
+     * @return an String by which the exam can be easily recognized.
+     */
+    public String getTextualIdentifier() {
+        return acronym + "-" + contentType;
+    }
 }

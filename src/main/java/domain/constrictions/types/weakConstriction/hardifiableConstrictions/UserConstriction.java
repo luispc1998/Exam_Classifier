@@ -36,5 +36,12 @@ public interface UserConstriction extends WeakConstriction {
      */
     boolean isFulfilled();
 
+    /**
+     * Indicates whether the constriction was marked as hard or not.
+     * @return True if marked as hard, false otherwise.
+     */
+    boolean wasHardified();
+
+
 
 }

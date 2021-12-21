@@ -96,14 +96,14 @@ public class ConstrictionParser {
                     jumpLines = 2;
                 }
                 else{
+
                     UserConstriction constriction = parserTool.parseConstriction(row, baseExcelColumn, dataHandler);
 
-
+                    /*
+                     Even hard constrictions need to be added, because these is the general
+                     track to be written at the end. Hardified constriction will not execute the logic.
+                     */
                     constrictions.add(constriction);
-
-                    if (hardConstrictionsId.contains(constriction.getConstrictionID())){
-                        constriction.hardify();
-                    }
 
 
                     i++;
@@ -152,42 +152,42 @@ public class ConstrictionParser {
                 parserTool = new TimeDisplacementConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
-                        , baseExcelColumn + 2, baseExcelColumn + 3}));
+                        , baseExcelColumn + 2, baseExcelColumn + 3, baseExcelColumn + 4}));
                 usedTools.put(TimeDisplacementConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case SameDayConstriction.CONSTRICTION_ID:
                 parserTool = new SameDayConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
-                        , baseExcelColumn + 2}));
+                        , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(SameDayConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case DifferentDayConstriction.CONSTRICTION_ID:
                 parserTool = new DifferentDayConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
-                        , baseExcelColumn + 2}));
+                        , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(DifferentDayConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case OrderExamsConstriction.CONSTRICTION_ID:
                 parserTool = new OrderExamsConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
-                        , baseExcelColumn + 2}));
+                        , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(OrderExamsConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case DayBannedConstriction.CONSTRICTION_ID:
                 parserTool = new DayBannedConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
-                        , baseExcelColumn + 2}));
+                        , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(DayBannedConstriction.CONSTRICTION_ID, parserTool);
                 break;
             case DayIntervalConstriction.CONSTRICTION_ID:
                 parserTool = new DayIntervalConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
-                        , baseExcelColumn + 2, baseExcelColumn + 3}));
+                        , baseExcelColumn + 2, baseExcelColumn + 3, baseExcelColumn + 4}));
                 usedTools.put(DayIntervalConstriction.CONSTRICTION_ID, parserTool);
                 break;
 

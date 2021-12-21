@@ -21,10 +21,29 @@ public abstract class AbstractUserConstriction implements UserConstriction, Weak
      */
     private boolean lastEvaluation;
 
+    /**
+     * Indicates if theh current constriction was marked as hard.
+     */
+    private boolean hardified;
+
+    /**
+     * States that the constriction was hardified.
+     */
+    protected void setHardified() {
+        if (hardified){
+            throw new IllegalStateException("Cannot hardify same Constriction twice");
+        }
+        hardified = true;
+    }
+    @Override
+    public boolean wasHardified(){
+        return hardified;
+    }
+
 
     @Override
     public void checkConstriction(ConstrictionCounter counter) {
-        if (isFulfilled()) {
+        if (isFulfilled() || wasHardified()) {
             setLastEvaluation(true);
         }
         else {
@@ -56,4 +75,13 @@ public abstract class AbstractUserConstriction implements UserConstriction, Weak
      * @see ConstrictionCounter
      */
     public abstract void countMe(ConstrictionCounter counter);
+
+
+    @Override
+    public void hardify() {
+        setHardified();
+        specificHardify();
+    }
+
+    public abstract void specificHardify();
 }

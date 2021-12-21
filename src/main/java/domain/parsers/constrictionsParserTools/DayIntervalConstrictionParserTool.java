@@ -23,29 +23,31 @@ public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParse
     public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         List<LocalDate> calendar = dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates();
         Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
-
-
-        return new DayIntervalConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
+        UserConstriction uc = new DayIntervalConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate(), row.getCell(baseExcelColumn+2).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate(), calendar);
+        checkIfHard(uc, row, baseExcelColumn + 3);
+        return uc;
     }
 
     @Override
     public void writeConstriction(Constriction con, Row row, int baseExcelColumn) {
         DayIntervalConstriction dic = (DayIntervalConstriction) con;
-        int cellCounter = -1;
-        Cell cell = row.createCell(baseExcelColumn + ++cellCounter);
+        int cellCounter = baseExcelColumn -1;
+        Cell cell = row.createCell(++cellCounter);
         cell.setCellValue(dic.getExam().getId());
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
+        cell = row.createCell(++cellCounter);
         cell.setCellValue(DateUtil.getExcelDate(Date.from(dic.getIntervalStart().atStartOfDay(ZoneId.systemDefault()).toInstant())));
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
+        cell = row.createCell(++cellCounter);
         cell.setCellValue(DateUtil.getExcelDate(Date.from(dic.getIntervalEnd().atStartOfDay(ZoneId.systemDefault()).toInstant())));
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
-        cell.setCellValue(dic.getLastEvaluation());
+        cellCounter = writeCommonThings(row, cellCounter, dic.wasHardified(), dic.getLastEvaluation());
+
+        cell = row.createCell(++cellCounter);
+        cell.setCellValue(dic.getExam().getTextualIdentifier());
     }
 }

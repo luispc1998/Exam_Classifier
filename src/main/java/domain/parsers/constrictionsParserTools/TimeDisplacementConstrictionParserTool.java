@@ -18,24 +18,35 @@ public class TimeDisplacementConstrictionParserTool extends AbstractCosntriction
     public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
         Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
-        return new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),
+        UserConstriction uc = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),
                 dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
+        checkIfHard(uc, row, baseExcelColumn + 3);
+        return uc;
     }
+
+
 
     @Override
     public void writeConstriction(Constriction con, Row row, int baseExcelColumn) {
         TimeDisplacementConstriction tdc = (TimeDisplacementConstriction) con;
-        int cellCounter = -1;
-        Cell cell = row.createCell(baseExcelColumn + ++cellCounter);
+        int cellCounter = baseExcelColumn -1;
+        Cell cell = row.createCell(++cellCounter);
         cell.setCellValue(tdc.getFirst().getId());
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
+        cell = row.createCell(++cellCounter);
         cell.setCellValue(tdc.getSecond().getId());
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
+        cell = row.createCell(++cellCounter);
         cell.setCellValue(tdc.getDistanceInDays());
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
-        cell.setCellValue(tdc.getLastEvaluation());
+        cellCounter = writeCommonThings(row, cellCounter, tdc.wasHardified(), tdc.getLastEvaluation());
+
+        cell = row.createCell(++cellCounter);
+        cell.setCellValue(tdc.getFirst().getTextualIdentifier());
+
+        cell = row.createCell(++cellCounter);
+        cell.setCellValue(tdc.getSecond().getTextualIdentifier());
+
+
     }
 }

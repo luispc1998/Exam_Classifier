@@ -94,7 +94,7 @@ public class DayBannedConstriction extends AbstractUserConstriction {
     }
 
     @Override
-    public void hardify() {
+    public void specificHardify() {
         HardConstriction hConstriction = new HardifiedConstriction(this);
         exam.addHardConstriction(hConstriction);
     }

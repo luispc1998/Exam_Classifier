@@ -19,22 +19,30 @@ public class DayBannedConstrictionParserTool extends AbstractCosntrictionParserT
     @Override
     public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
-        return new DayBannedConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
+        UserConstriction uc = new DayBannedConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate());
+        checkIfHard(uc, row, baseExcelColumn + 2);
+        return uc;
     }
 
     @Override
     public void writeConstriction(Constriction con, Row row, int baseExcelColumn) {
         DayBannedConstriction dbc = (DayBannedConstriction) con;
-        int cellCounter = -1;
-        Cell cell = row.createCell(baseExcelColumn + ++cellCounter);
+        int cellCounter = baseExcelColumn -1;
+
+        Cell cell = row.createCell(++cellCounter);
         cell.setCellValue(dbc.getExam().getId());
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
+        cell = row.createCell(++cellCounter);
         cell.setCellValue(DateUtil.getExcelDate(Date.from(dbc.getDayBanned().atStartOfDay(ZoneId.systemDefault()).toInstant())));
 
-        cell = row.createCell(baseExcelColumn + ++cellCounter);
-        cell.setCellValue(dbc.getLastEvaluation());
+
+        cellCounter = writeCommonThings(row, cellCounter, dbc.wasHardified(), dbc.getLastEvaluation());
+
+        cell = row.createCell(++cellCounter);
+        cell.setCellValue(dbc.getExam().getTextualIdentifier());
     }
+
+
 }
