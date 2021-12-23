@@ -1,6 +1,9 @@
 # Time related configurations
 
-## Extra time to be added by default to the exams if no value provided
+## States if the defaultExtraTime will be used in the execution.
+defaultExtraTimeEnabled=False
+
+### Extra time to be added by default to the exams if no value provided
 defaultCleaningTimeMinutes=10
 
 ## Starting hour at which exams can be placed

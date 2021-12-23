@@ -57,6 +57,11 @@ public class DateTimeConfigurer {
     private Duration defaultExamExtraMinutes;
 
     /**
+     * States if the default extra time functionality is enabled.
+     */
+    private boolean defaultExtraTimeEnabled;
+
+    /**
      * Constructor for the class
      * @param dateTimeFilepath filepath to property files where the date and time configurations are stored.
      * @param inputDataFilepath filepath to the input excel, where the exams, constrictions and calendar are provided.
@@ -91,6 +96,7 @@ public class DateTimeConfigurer {
         this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
         this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
         this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
+        this.defaultExtraTimeEnabled = Boolean.parseBoolean(fileProperties.getProperty("defaultExtraTimeEnabled"));
     }
 
     /**
@@ -237,11 +243,14 @@ public class DateTimeConfigurer {
     }
 
     /**
-     * Returns the default extra time for the exams
-     * @return an extra Duration for the exams.
+     * Returns the default extra time for the exams if Extra time is enabled.
+     * @return an extra Duration for the exams if Extra time is enables, 0 otherwise.
      */
     public Duration getDefaultExamExtraMinutes() {
-        return defaultExamExtraMinutes;
+        if (defaultExtraTimeEnabled) {
+            return defaultExamExtraMinutes;
+        }
+        return Duration.ZERO;
     }
 
     /**
