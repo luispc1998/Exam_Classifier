@@ -75,19 +75,36 @@ public class NumericalComplexityPenalization implements WeakConstriction {
         return accumulator;
     }
 
-    private double accumulate(Integer key, Exam exam, Exam exam1) {
+    /**
+     * Provides the penalization value (fitness value) corresponding to the two exams passed
+     * as parameter considering the complexity.
+     *
+     * @param complexity Complexity of the exams.
+     * @param exam First exam.
+     * @param exam1 Second exam.
+     * @return Value of the penalization for the fitness corresponding to the closeness of the provided exams schedule.
+     */
+    private double accumulate(Integer complexity, Exam exam, Exam exam1) {
         if (exam.getDate() == null || exam1.getDate() == null) {
             return 0;
         }
         double distanceDays = Duration.between(exam.getDate().atStartOfDay(), exam1.getDate().atStartOfDay()).abs().toDays();
         if (distanceDays == 0) {
-            return Math.pow(key,2);
+            return Math.pow(complexity,2);
         }
         else{
-            return key/distanceDays;
+            return complexity/distanceDays;
         }
     }
 
+    /**
+     * Classifies the exams by their numerical complexity.
+     *
+     * <p>
+     * Numerical complexities of 0 are ignored.
+     *
+     * @return A HashMap with the complexities as keys, and a list of the exams with such complexity as value.
+     */
     private HashMap<Integer, List<Exam>> retrieveExamsByNC() {
         Set<Integer> cnValues = exams.stream().map(Exam::getCn).collect(Collectors.toSet());
         cnValues.remove(0);

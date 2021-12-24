@@ -113,7 +113,7 @@ public class Exam {
     /**
      * Round identifier to indicate if the round the exam belongs to.
      */
-    private final String roundId;
+    private String roundId;
     /**
      * Round partners ids of the exam if any.
      */
@@ -135,7 +135,7 @@ public class Exam {
      * @param id Unique integer among the exams that identifies it.
      * @param roundId Round identifier to indicate if the round the exam belongs to.
      */
-    private Exam(int course, int sem, String code,
+    public Exam(int course, int sem, String code,
                  String acronym, String subject, Integer order,
                  String contentType, String modalidad, Integer alumnos,
                  int cn, int id, String roundId) {
@@ -190,6 +190,8 @@ public class Exam {
         this.duration = Duration.ofMinutes(transformDuration(duration));
 
     }
+
+
 
     /**
      * Constructor for the class used for cloning instances.
@@ -564,5 +566,9 @@ public class Exam {
      */
     public String getTextualIdentifier() {
         return acronym + "-" + contentType;
+    }
+
+    public void setRound(String round) {
+        this.roundId = round;
     }
 }

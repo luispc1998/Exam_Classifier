@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This states for an exam an interval of dates in which the exam must be placed.
+ */
 public class DayIntervalConstriction extends AbstractUserConstriction {
 
     /**
@@ -19,7 +22,7 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
     /**
      * The dates in which {@code exam} can take place
      */
-    private final List<LocalDate> validDates;
+    private List<LocalDate> validDates;
 
     /**
      * {@link Exam} that should take place on {@code validDates}
@@ -60,11 +63,11 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
         this.exam = exam;
         this.intervalStart = intervalStart;
         this.intervalEnd = intervalEnd;
-        validDates = calendar.stream().filter((d) -> containedOnInterval(intervalStart, intervalEnd, d))
-                .collect(Collectors.toList());
+        //validDates = calendar.stream().filter((d) -> containedOnInterval(d))
+        //        .collect(Collectors.toList());
     }
 
-    public boolean containedOnInterval(LocalDate intervalStart, LocalDate intervalEnd, LocalDate testingDate) {
+    public boolean containedOnInterval(LocalDate testingDate) {
         return (testingDate.isAfter(intervalStart) && testingDate.isBefore(intervalEnd))
                 || testingDate.isEqual(intervalStart)
                 || testingDate.isEqual(intervalEnd);
@@ -77,7 +80,13 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
 
     @Override
     public boolean isFulfilled() {
-        return validDates.contains(exam.getDate());
+        if (exam.getDate() ==null){
+            setLastEvaluation(true);
+            return true;
+        }
+
+        return containedOnInterval(exam.getDate());
+        //return validDates.contains(exam.getDate());
     }
 
     @Override

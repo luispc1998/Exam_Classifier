@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
+//TODO, what to do with this?
 public class UnbalancedDaysPenalization implements WeakConstriction {
 
     /**

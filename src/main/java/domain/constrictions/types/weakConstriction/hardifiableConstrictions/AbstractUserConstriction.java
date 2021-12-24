@@ -43,7 +43,7 @@ public abstract class AbstractUserConstriction implements UserConstriction, Weak
 
     @Override
     public void checkConstriction(ConstrictionCounter counter) {
-        if (isFulfilled() || wasHardified()) {
+        if (wasHardified() || isFulfilled()) { // condition order is important, don't swap these!
             setLastEvaluation(true);
         }
         else {

@@ -67,23 +67,20 @@ public class ExamParser {
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando exámenes...");
 
             for (Row row : sheet) {
-                i++;
+
                 if (jumpLines > 0) {
-                    //System.out.println("Skipped line");
                     jumpLines--;
                     continue;
                 }
 
                 Exam exam = generateExam(row, i, dataHandler);
                 if (exam == null) {
-                    //System.out.println("Línea " + i + " saltada. No fue posible parsear el examen");
                     continue;
                 }
+                i++;
                 exams.add(exam);
 
             }
-
-            //System.out.println("Examenes creados: " + i);
 
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input excel file");
@@ -107,7 +104,6 @@ public class ExamParser {
         String round;
         try {
             //checkVitalRowData(row, i);
-            round = row.getCell(17).getStringCellValue();
             exam = new Exam(parseMandatoryNumberCell(row, 0),
                     parseMandatoryNumberCell(row, 1),
                     row.getCell(2).getStringCellValue(),
@@ -119,10 +115,11 @@ public class ExamParser {
                     parseNumberCell(row, 8),
                     row.getCell(9).getNumericCellValue(),
                     (int) row.getCell(15).getNumericCellValue(),
-                    parseMandatoryNumberCell(row, 16),
-                    round);
+                    parseMandatoryNumberCell(row, 16), null);
 
-            if (row.getCell(17).getStringCellValue() != null && ! row.getCell(17).getStringCellValue().isEmpty()) {
+            if (row.getCell(17) != null && ! row.getCell(17).getStringCellValue().isEmpty()) {
+                round = row.getCell(17).getStringCellValue();
+                exam.setRound(round);
                 if (! rounds.containsKey(row.getCell(17).getStringCellValue())){
                     rounds.put(round, new ArrayList<>());
                 }

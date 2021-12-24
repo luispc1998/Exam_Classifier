@@ -51,5 +51,11 @@ public interface ConstrictionParserTool {
      */
     String[] getHeaders();
 
+    /**
+     * Writes the constriction to excel format.
+     * @param con The constriction to be written.
+     * @param row The excel row in which the constriction will be written.
+     * @param baseExcelColumn The base excel column from which the data can be written.
+     */
     void writeConstriction(Constriction con, Row row, int baseExcelColumn);
 }

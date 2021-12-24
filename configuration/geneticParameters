@@ -1,10 +1,10 @@
 # Parameters to configure the genetic algorithm.
 
 ## Size of the population of individuals to be considered
-populationSize=1000
+populationSize=800
 
 ## Iterations that must be performed by the algorithm before ending
-iterations=350
+iterations=300
 
 ## Amount of iterations when the logger will note down the status of the algorithm
 loggingFreq=50

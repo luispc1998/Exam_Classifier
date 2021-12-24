@@ -78,11 +78,7 @@ public class ConstrictionParser {
         try (FileInputStream fis = new FileInputStream(filepath);
              Workbook workbook = new XSSFWorkbook(fis)
              ) {
-
             Sheet sheet = workbook.getSheetAt(1);
-
-            //Map<Integer, List<String>> data = new HashMap<>();
-
 
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando restricciones...");
 
@@ -104,8 +100,6 @@ public class ConstrictionParser {
                      track to be written at the end. Hardified constriction will not execute the logic.
                      */
                     constrictions.add(constriction);
-
-
                     i++;
                 }
 
@@ -267,29 +261,34 @@ public class ConstrictionParser {
 
         parserTool = new TimeDisplacementConstrictionParserTool();
         parserTool.setDescription("default Description");
-        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Calendar days distance", "Cumplida?"});
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Calendar days distance", "Hard?", "Cumplida?"});
         usedTools.put(TimeDisplacementConstriction.CONSTRICTION_ID, parserTool);
 
 
         parserTool = new SameDayConstrictionParserTool();
         parserTool.setDescription("default Description");
-        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Cumplida?"});
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
         usedTools.put(SameDayConstriction.CONSTRICTION_ID, parserTool);
 
         parserTool = new DifferentDayConstrictionParserTool();
         parserTool.setDescription("default Description");
-        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Cumplida?"});
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
         usedTools.put(DifferentDayConstriction.CONSTRICTION_ID, parserTool);
 
         parserTool = new OrderExamsConstrictionParserTool();
         parserTool.setDescription("default Description");
-        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Cumplida?"});
+        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
         usedTools.put(OrderExamsConstriction.CONSTRICTION_ID, parserTool);
 
         parserTool = new DayBannedConstrictionParserTool();
         parserTool.setDescription("default Description");
-        parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Cumplida?"});
+        parserTool.setHeaders(new String[] {"exam_id_1", "day_banned", "Hard?", "Cumplida?"});
         usedTools.put(DayBannedConstriction.CONSTRICTION_ID, parserTool);
+
+        parserTool = new DayIntervalConstrictionParserTool();
+        parserTool.setDescription("default Description");
+        parserTool.setHeaders(new String[] {"exam_id_1", "interval_start", "interval_end", "Hard?", "Cumplida?"});
+        usedTools.put(DayIntervalConstriction.CONSTRICTION_ID, parserTool);
 
     }
 

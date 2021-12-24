@@ -11,7 +11,8 @@ public class RandomGenerator {
 
     public static Random getGenerator(){
         if (generator == null){
-            generator = new Random(SEED);
+            //generator = new Random(SEED);
+            generator = new Random();
         }
         return generator;
     }

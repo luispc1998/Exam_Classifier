@@ -1,10 +1,7 @@
 package testSamplesGenerator;
 
 import domain.constrictions.Constriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.DayBannedConstriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.DifferentDayConstriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.SameDayConstriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.TimeDisplacementConstriction;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import geneticAlgorithm.output.ExcelWriter;
@@ -17,11 +14,18 @@ import java.util.*;
 
 public class SamplesGenerator {
 
+    // Configurations
     public static int idCounter = 0;
     public final static int optatives = 9;
-    private final static int repetitions = 50;
+    private final static int repetitions = 1;
+    private final static boolean hardsEnabled = true;
+
+    // End of configurations
+
+
 
     private final static ArrayList<Exam> result = new ArrayList<>();
+    private static ArrayList<Exam> freeExams;
     private final static Random generator = new Random();
     
     private final static HashMap<Duration, Double> examDurations = new HashMap<>();
@@ -37,7 +41,7 @@ public class SamplesGenerator {
 
 
     private final static List<ExamPair> sameDayPairs = new ArrayList<>();
-    private final static List<ExamPair> differentDayPairs = new ArrayList<>();
+    private final static List<ExamPair> orderedPairs = new ArrayList<>();
 
 
 
@@ -51,23 +55,31 @@ public class SamplesGenerator {
     }
 
     private static void initializeCalendar() {
-        long finalSize = repetitions * (optatives + 6 + 5);
+        long finalSize = repetitions * 17;
 
         LocalDate currentDate = LocalDate.now();
         calendar = new ArrayList<>();
         calendar.add(currentDate);
-        for (int i = 1; i < finalSize/4; i++) {
+        for (int i = 1; i < finalSize; i++) {
             currentDate = currentDate.plusDays(1);
             calendar.add(currentDate);
         }
     }
 
     private static void initializeConstrictionAmount() {
-        constrictionAmount.put("DB", result.size());
-        constrictionAmount.put("SD", result.size());
-        constrictionAmount.put("DD", result.size() / 2);
-        constrictionAmount.put("TD", result.size() / 2);
-        constrictionAmount.put("OE", result.size() / 2);
+
+        constrictionAmount.put("DB", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+        constrictionAmount.put("SD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+        constrictionAmount.put("DD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+        constrictionAmount.put("TD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+        constrictionAmount.put("OE", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+
+    }
+
+    private static int randomConstrictionNumber(int minimun, int maximum) {
+        Random generator = new Random();
+        return minimun + generator.nextInt(maximum-minimun);
+
     }
 
     private static void initializeExamExtraTimesProbabilities() {
@@ -92,10 +104,14 @@ public class SamplesGenerator {
         // Iterar la entrada
         initialer();
         for (int i = 0; i < repetitions; i++) {
-            for (int j = 1; j <= 3; j++) {
-                generateRandomExam(j, 1, "Teórico");
-                generateRandomExam(j, 2, "Práctico");
+
+            for (int k = 0; k < 3; k++) { // Cursos
+                for (int j = 1; j <= 10; j++) { // Asignaturas por curso a ojo
+                    generateRandomExam(j, 1, "Teórico");
+                    generateRandomExam(j, 2, "Práctico");
+                }
             }
+
             for (int j = 0; j < optatives; j++) {
                 generateRandomExam(0, 1, "Práctico");
             }
@@ -106,9 +122,12 @@ public class SamplesGenerator {
             generateRandomExam(4, 2, "Teórico");
         }
 
+        freeExams = new ArrayList<>(result);
+
         initializeCalendar();
         initializeConstrictionAmount();
         generateConstrictions();
+
 
         ExcelWriter.parseExamListToExcel("files/testFilesGenerated/", "test.xslx", 1, result,
                 constrictions, getDefaultCalendarTimeInterval(calendar));
@@ -131,10 +150,66 @@ public class SamplesGenerator {
         generateSameDays();
         generateDifferentDays();
         generateTimeDisplacements();
-        //generateOrders();
+        generateOrders();
+
+        constrictionAmount.put("DI", freeExams.size() / 2);
+        generateDayIntervals();
 
 
+    }
 
+    private static void generateDayIntervals() {
+        constrictions.put("DI", new ArrayList<>());
+
+        for (int i = 0; i < constrictionAmount.get("DI"); i++) {
+            Exam exam;
+            exam = freeExams.get(generator.nextInt(freeExams.size()));
+
+            int index = generator.nextInt(calendar.size()-1);
+            LocalDate start = calendar.get(index);
+            int additionIndex = generator.nextInt(calendar.size()-index);
+            LocalDate end = calendar.get(index + additionIndex);
+            DayIntervalConstriction diC = new DayIntervalConstriction(exam,start, end, calendar);
+            freeExams.remove(exam);
+
+            constrictions.get("DI").add(diC);
+            handleHards(diC);
+        }
+    }
+
+    private static void generateOrders() {
+        constrictions.put("OE", new ArrayList<>());
+
+        for (int i = 0; i < constrictionAmount.get("OE"); i++) {
+            Exam exam;
+            Exam exam2;
+            ExamPair exPair;
+            do {
+                exam = result.get(generator.nextInt(result.size()));
+                exam2 = exam;
+                while (exam.equals(exam2)) {
+                    exam2 = result.get(generator.nextInt(result.size()));
+                }
+                exPair = new ExamPair(exam, exam2);
+            }while (checkPairRegistered(exPair, sameDayPairs));
+
+            OrderExamsConstriction oeC;
+            if (checkPairRegistered(exPair, orderedPairs)) {
+                int registeredPairIndex = orderedPairs.indexOf(exPair);
+                ExamPair registeredPair = orderedPairs.get(registeredPairIndex);
+                oeC = new OrderExamsConstriction(registeredPair.getExam1(),
+                        registeredPair.getExam2());
+            }
+            else{
+                oeC = new OrderExamsConstriction(exam, exam2);
+            }
+
+            freeExams.remove(exam);
+            freeExams.remove(exam2);
+            orderedPairs.add(exPair);
+            constrictions.get("OE").add(oeC);
+            handleHards(oeC);
+        }
     }
 
     private static void generateTimeDisplacements() {
@@ -150,14 +225,16 @@ public class SamplesGenerator {
                     exam2 = result.get(generator.nextInt(result.size()));
                 }
                 exPair = new ExamPair(exam, exam2);
-            }while (checkPairRegistered(exPair, sameDayPairs) || checkPairRegistered(exPair, differentDayPairs));
+            }while (checkPairRegistered(exPair, sameDayPairs) || checkPairRegistered(exPair, orderedPairs));
 
 
             TimeDisplacementConstriction tdC = new TimeDisplacementConstriction(exam, exam2,
                     generator.nextInt(5), calendar);
-            differentDayPairs.add(exPair);
+            freeExams.remove(exam);
+            freeExams.remove(exam2);
+            orderedPairs.add(exPair);
             constrictions.get("TD").add(tdC);
-
+            handleHards(tdC);
         }
 
     }
@@ -178,6 +255,9 @@ public class SamplesGenerator {
             }while (checkPairRegistered(exPair, sameDayPairs));
 
             DifferentDayConstriction ddC = new DifferentDayConstriction(exam, exam2);
+            //freeExams.remove(exam);
+            //freeExams.remove(exam2);
+            handleHards(ddC);
             constrictions.get("DD").add(ddC);
 
         }
@@ -199,7 +279,10 @@ public class SamplesGenerator {
             }while (checkPairRegistered(exPair, sameDayPairs));
 
             SameDayConstriction sdC = new SameDayConstriction(exam, exam2);
+            freeExams.remove(exam);
+            freeExams.remove(exam2);
             constrictions.get("SD").add(sdC);
+            handleHards(sdC);
             sameDayPairs.add(exPair);
 
 
@@ -220,8 +303,20 @@ public class SamplesGenerator {
     private static void banRandomDayForRandomExam() {
         Exam exam = result.get(generator.nextInt(result.size()));
         LocalDate bannedDay = calendar.get(generator.nextInt(calendar.size()));
-        constrictions.get("DB").add(new DayBannedConstriction(exam, bannedDay));
+        UserConstriction uc = new DayBannedConstriction(exam, bannedDay);
+        constrictions.get("DB").add(uc);
+        handleHards(uc);
+        freeExams.remove(exam);
         
+    }
+
+    private static void handleHards(UserConstriction uc) {
+        if (hardsEnabled) {
+            Random generator = new Random();
+            if (generator.nextDouble() < 0.3) {
+                uc.hardify();
+            }
+        }
     }
 
     private static void generateRandomExam(int course, int semester, String content) {

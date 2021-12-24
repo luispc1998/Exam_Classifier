@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This is the parser for {@link domain.constrictions.types.weakConstriction.hardifiableConstrictions.DayIntervalConstriction}
+ * This is the parser for {@link DayIntervalConstriction}
  */
 public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParserTool {
 

@@ -26,55 +26,6 @@ import java.util.stream.Collectors;
 public class RoundsParser {
 
 
-    /**
-     * Parses the rounds and returns them.
-     * @param filepath The filepath to the rounds file
-     * @param exams The list of parsed exams
-     */
-    public static void parseRounds(String filepath, List<Exam> exams) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
-            String line;
-            int lineCounter = 0;
-            int createdRounds = 0;
-
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando tandas...");
-
-            while ((line = reader.readLine()) != null) {
-                lineCounter++;
-                ArrayList<Integer> ids = new ArrayList<>();
-                for (String idString : line.split(",")) {
-                    try {
-                        ids.add(Integer.parseInt(idString));
-                    } catch (NumberFormatException e) {
-                        ConsoleLogger.getConsoleLoggerInstance().logError("Could not fully parse Round on line: "
-                                + lineCounter + ". Got id: " + idString + ". Use int Ids. This id will be ignored.");
-                    }
-
-                }
-
-                List<Exam> round = exams.stream().filter((ex) -> ids.contains(ex.getId())).collect(Collectors.toList());
-                if (round.size() != ids.size()) {
-                    ConsoleLogger.getConsoleLoggerInstance().logError("Nonexistent ids found for round: " + lineCounter +
-                            ". Got round: " + ids + ". Ignoring round...");
-                    continue;
-                }
-
-                if (round.size() != 0) {
-                    setUpRound(round);
-                    createdRounds++;
-                }
-
-            }
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Tandas creadas: " + createdRounds);
-        } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not find Rounds configuration file");
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Could not parse Rounds configuration file");
-        }
-
-    }
-
-
     public static void createRoundIfNecessary(HashMap<String, List<Integer>> roundsMap, List<Exam> exams) {
         int roundCounter = 0;
         for(List<Integer> ids : roundsMap.values()) {
