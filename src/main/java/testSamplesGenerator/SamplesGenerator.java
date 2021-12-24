@@ -20,6 +20,8 @@ public class SamplesGenerator {
     private final static int repetitions = 1;
     private final static boolean hardsEnabled = true;
     private final static boolean extraTimeEnabled = false;
+    private final static int rounds_per_rep = 2;
+    private final static int max_round_size = 3;
     // End of configurations
 
 
@@ -30,6 +32,7 @@ public class SamplesGenerator {
     
     private final static HashMap<Duration, Double> examDurations = new HashMap<>();
     private final static HashMap<Duration, Double> examExtraTimes = new HashMap<>();
+    private final static HashMap<String, Integer> rounds = new HashMap<>();
     
     
     private final static HashMap<String, List<Constriction>> constrictions = new HashMap<>();
@@ -52,6 +55,38 @@ public class SamplesGenerator {
     public static void initialer() {
         initializeExamDurationProbabilities();
         initializeExamExtraTimesProbabilities();
+    }
+
+    private static void initializeRounds() {
+        Random generator = new Random();
+        for (int i = 0; i < repetitions * rounds_per_rep; i++) {
+            rounds.put(String.valueOf(i), 2 + generator.nextInt(max_round_size-2));
+        }
+
+        for (Map.Entry<String, Integer> entry :rounds.entrySet()) {
+            List<Exam> toBePaired = new ArrayList<>();
+            for (int i = 0; i < entry.getValue(); i++) {
+
+                Exam exam = result.get(generator.nextInt(result.size()));
+
+                while (exam.getRoundId() != null){
+                    exam = result.get(generator.nextInt(result.size()));
+                }
+
+                exam.setRoundId(entry.getKey());
+                toBePaired.add(exam);
+            }
+            pairExamsOnDay(toBePaired);
+        }
+    }
+
+    private static void pairExamsOnDay(List<Exam> toBePaired) {
+        for (int i = 0; i < toBePaired.size()-1; i++) {
+            for (int j = i; j < toBePaired.size(); j++) {
+                ExamPair exPair = new ExamPair(toBePaired.get(i), toBePaired.get(j));
+                sameDayPairs.add(exPair);
+            }
+        }
     }
 
     private static void initializeCalendar() {
@@ -129,6 +164,7 @@ public class SamplesGenerator {
 
         freeExams = new ArrayList<>(result);
 
+        initializeRounds();
         initializeCalendar();
         initializeConstrictionAmount();
         generateConstrictions();

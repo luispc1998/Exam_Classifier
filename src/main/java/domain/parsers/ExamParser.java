@@ -119,7 +119,7 @@ public class ExamParser {
 
             if (row.getCell(17) != null && ! row.getCell(17).getStringCellValue().isEmpty()) {
                 round = row.getCell(17).getStringCellValue();
-                exam.setRound(round);
+                exam.setRoundId(round);
                 if (! rounds.containsKey(row.getCell(17).getStringCellValue())){
                     rounds.put(round, new ArrayList<>());
                 }

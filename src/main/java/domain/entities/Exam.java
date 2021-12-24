@@ -568,7 +568,20 @@ public class Exam {
         return acronym + "-" + contentType;
     }
 
-    public void setRound(String round) {
-        this.roundId = round;
+
+    /**
+     * Sets the value of the roundId of the exam.
+     * @param roundId New value of the roundId of the exam.
+     */
+    public void setRoundId(String roundId) {
+        this.roundId = roundId;
+    }
+
+    /**
+     * Returns the round if of the exam.
+     * @return The round if of the exam.
+     */
+    public String getRoundId() {
+        return roundId;
     }
 }
