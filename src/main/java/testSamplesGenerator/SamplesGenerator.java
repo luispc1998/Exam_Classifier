@@ -19,7 +19,7 @@ public class SamplesGenerator {
     public final static int optatives = 9;
     private final static int repetitions = 1;
     private final static boolean hardsEnabled = true;
-
+    private final static boolean extraTimeEnabled = false;
     // End of configurations
 
 
@@ -83,9 +83,14 @@ public class SamplesGenerator {
     }
 
     private static void initializeExamExtraTimesProbabilities() {
-        examExtraTimes.put(Duration.ZERO, 0.3);
-        examExtraTimes.put(Duration.ofMinutes(10), 0.6);
-        examExtraTimes.put(Duration.ofMinutes(15), 0.1);
+        if (extraTimeEnabled) {
+            examExtraTimes.put(Duration.ZERO, 0.3);
+            examExtraTimes.put(Duration.ofMinutes(10), 0.6);
+            examExtraTimes.put(Duration.ofMinutes(15), 0.1);
+        }
+        else{
+            examExtraTimes.put(Duration.ZERO, 1.0);
+        }
     }
 
     private static void initializeExamDurationProbabilities() {
