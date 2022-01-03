@@ -21,14 +21,4 @@ public interface SelectionOperator {
      */
     Individual selection(List<Individual> population, FitnessFunction fitnessFunction);
 
-    /**
-     * Resets the object state in case it is needed.
-     */
-    void reset();
-
-    /**
-     * Returns the maximum number of pairs of individuals that this operator should be used for.
-     * @return The maximum number of pairs of individuals that this operator should be used for.
-     */
-    int maxPairs();
 }

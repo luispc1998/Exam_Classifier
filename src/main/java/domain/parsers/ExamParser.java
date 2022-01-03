@@ -44,14 +44,14 @@ public class ExamParser {
             "Tanda"
     };
 
-    private final static HashMap<String, List<Integer>> rounds = new HashMap<>();
+    private final HashMap<String, List<Integer>> rounds = new HashMap<>();
 
     /**
      * Parsing method of the exams
      * @param filepath The input Excel file
      * @return A {@code List} of parsed {@code Exam}
      */
-    public static List<Exam> parseExams(String filepath, DataHandler dataHandler) {
+    public List<Exam> parseExams(String filepath, DataHandler dataHandler) {
         List<Exam> exams = new ArrayList<>();
         int i = 0;
         try (FileInputStream fis = new FileInputStream(filepath);
@@ -99,7 +99,7 @@ public class ExamParser {
      * @param i The index of the row.
      * @return The {@code Exam object parsed}
      */
-    private static Exam generateExam(Row row, int i, DataHandler dataHandler) {
+    private  Exam generateExam(Row row, int i, DataHandler dataHandler) {
         Exam exam = null;
         String round;
         try {
@@ -161,7 +161,7 @@ public class ExamParser {
      * @param cell The cell to be checked.
      * @return The value of the cell. Null if no value or 0.
      */
-    private static Integer parseNumberCell(Row row, int cell) {
+    private Integer parseNumberCell(Row row, int cell) {
         if (row.getCell(cell) == null || row.getCell(cell).getNumericCellValue() == 0) {
             return null;
         }
@@ -175,7 +175,7 @@ public class ExamParser {
      * @param cell The cell to be checked.
      * @return The value of the cell. Null if no value or 0.
      */
-    private static Integer parseMandatoryNumberCell(Row row, int cell) {
+    private Integer parseMandatoryNumberCell(Row row, int cell) {
         if (row.getCell(cell) == null) {
             throw new IllegalArgumentException("Cannot omit cell: " + cell + " for an exam");
         }
@@ -188,7 +188,7 @@ public class ExamParser {
      * @param row The row of the exam
      * @return true if the exam was classified, false otherwise.
      */
-    private static boolean checkForAlreadyClassifiedExam(Row row) {
+    private boolean checkForAlreadyClassifiedExam(Row row) {
 
         if (row.getCell(10) != null && row.getCell(12) != null) {
             try {
@@ -208,7 +208,7 @@ public class ExamParser {
      * @param exams The exam schedule.
      * @param workbook The workbook where the exam scheduling must be written.
      */
-    public static void parseToExcel(List<Exam> exams, XSSFWorkbook workbook) {
+    public void parseToExcel(List<Exam> exams, XSSFWorkbook workbook) {
 
         XSSFSheet sheet = workbook.createSheet("Planificación");
 
@@ -263,7 +263,7 @@ public class ExamParser {
      * Writes the headers row for the excel file
      * @param row The row at which the Headers will be written.
      */
-    private static void writeHeaders(Row row) {
+    private void writeHeaders(Row row) {
         int cellCount = 0;
         for (String header : excelHeaders) {
             Cell cell = row.createCell(cellCount++);

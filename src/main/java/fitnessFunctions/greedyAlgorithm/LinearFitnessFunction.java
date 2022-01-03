@@ -41,7 +41,7 @@ public class LinearFitnessFunction implements FitnessFunction {
      * @param dataHandler Instance where the function will check the exam schedule and constrictions.
      */
     public LinearFitnessFunction(DataHandler dataHandler){
-        this.decoder = new ChromosomeDecoder();
+        this.decoder = new ChromosomeDecoder(dataHandler.getConfigurer());
         this.dataHandler = dataHandler;
     }
 

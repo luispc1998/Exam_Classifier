@@ -13,16 +13,18 @@ public class GeneticParameters {
     private final int loggingFrequency;
     private final double mutationProbability;
     private final int maxSchedulesToTake;
-    private double crossingProbability;
+    private final double crossingProbability;
+    private final int repairingDepth;
 
     private GeneticParameters(int maxIterations, int populationSize, int loggingFrequency, double mutationProbability,
-                             int maxSchedulesToTake, double crossingProbability) {
+                             int maxSchedulesToTake, double crossingProbability, int repairingDepth) {
         this.maxIterations = maxIterations;
         this.populationSize = populationSize;
         this.loggingFrequency = loggingFrequency;
         this.mutationProbability = mutationProbability;
         this.maxSchedulesToTake = maxSchedulesToTake;
         this.crossingProbability = crossingProbability;
+        this.repairingDepth = repairingDepth;
     }
 
     public int getMaxIterations() {
@@ -49,6 +51,10 @@ public class GeneticParameters {
         return crossingProbability;
     }
 
+    public int getRepairingAlgorithmDepth() {
+        return repairingDepth;
+    }
+
     public static GeneticParameters loadFromFile(String filePath) {
 
         Properties geneticProperties = new Properties();
@@ -61,7 +67,8 @@ public class GeneticParameters {
                     Integer.parseInt(geneticProperties.getProperty("loggingFreq")),
                     Double.parseDouble(geneticProperties.getProperty("mutationProb")),
                     Integer.parseInt(geneticProperties.getProperty("maxSchedulesToTake")),
-                    Double.parseDouble(geneticProperties.getProperty("crossingProb")));
+                    Double.parseDouble(geneticProperties.getProperty("crossingProb")),
+                    Integer.parseInt(geneticProperties.getProperty("repairingDepth")));
 
 
         } catch (FileNotFoundException e) {
@@ -70,6 +77,7 @@ public class GeneticParameters {
             throw new IllegalArgumentException("Could not parse properties in Genetic parameters configuration file");
         }
     }
+
 
 
 }

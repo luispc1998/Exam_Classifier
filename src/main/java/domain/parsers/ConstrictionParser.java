@@ -54,16 +54,14 @@ public class ConstrictionParser {
      */
     private static ConstrictionParserTool parserTool;
 
-
+    /**
+     * The tools that were used by the  parser.
+     *
+     * <p>
+     * Note that if the parser was not used to parse an input file before asking it to write an output it will load
+     * a default configuration.
+     */
     private static final HashMap<String, ConstrictionParserTool> usedTools = new HashMap<>();
-
-    public static void main(String[] args) {
-        Configurer conf = new Configurer("files");
-
-        DataHandler dataHandler = new DataHandler(conf);
-        parseConstrictions("files/pruebas/v6_sinFechas_2.xlsx", dataHandler);
-
-    }
 
     /**
      * Method to parse the {@code Constriction} objects from the excel.
@@ -71,7 +69,7 @@ public class ConstrictionParser {
      * @param dataHandler The current dataHandler instance being use
      * @return The {@code List} of {@code Constriction} parsed from the excel.
      */
-    public static List<WeakConstriction> parseConstrictions(String filepath, DataHandler dataHandler) {
+    public List<WeakConstriction> parseConstrictions(String filepath, DataHandler dataHandler) {
         List<WeakConstriction> constrictions = new ArrayList<>();
         int i = 0;
         //creating workbook instance that refers to .xls file
@@ -82,7 +80,6 @@ public class ConstrictionParser {
 
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando restricciones...");
 
-            List<String> hardConstrictionsId = dataHandler.getConfigurer().getHardConstrictionsIds();
             for (Row row : sheet) {
 
                 if (shouldBeJumped(row)) continue;
@@ -119,7 +116,7 @@ public class ConstrictionParser {
      * @param row The row that we are currently checking.
      * @return true if it should be jumped, false otherwise.
      */
-    private static boolean shouldBeJumped(Row row) {
+    private boolean shouldBeJumped(Row row) {
         if (jumpLines > 0 || row.getCell(baseExcelColumn) == null) {
             jumpLines--;
             return true;
@@ -130,7 +127,6 @@ public class ConstrictionParser {
         } catch (IllegalStateException e) {
             return false;
         }
-
     }
 
     /**
@@ -139,7 +135,7 @@ public class ConstrictionParser {
      * @param constrictionDescription The row with the constriction description
      * @param constrictionHeaders The row with the constriction headers
      */
-    private static void swapTool(Row constrictionIdRow, Row constrictionDescription, Row constrictionHeaders) {
+    private void swapTool(Row constrictionIdRow, Row constrictionDescription, Row constrictionHeaders) {
 
         switch (constrictionIdRow.getCell(baseExcelColumn).getStringCellValue()){
             case TimeDisplacementConstriction.CONSTRICTION_ID:
@@ -189,7 +185,16 @@ public class ConstrictionParser {
 
     }
 
-    private static String[] getHeaders(Row row, int[] indexes) {
+    /**
+     * Gets the headers of the provided type of constrictions.
+     *
+     * <p>
+     * It gets the headers of the specified row.
+     * @param row The row in which the headers are.
+     * @param indexes An array containing the cell indexes of the headers to take.
+     * @return An array with the extracted headers.
+     */
+    private String[] getHeaders(Row row, int[] indexes) {
         String[] result = new String[indexes.length];
         for (int i = 0; i < indexes.length; i++) {
             result[i] = row.getCell(indexes[i]).getStringCellValue();
@@ -203,7 +208,7 @@ public class ConstrictionParser {
      * @param dataHandler Current dataHandler.
      * @return true if it is needed to change the tool, false otherwise.
      */
-    private static boolean isAToolSwapNeeded(Cell cell, DataHandler dataHandler) {
+    private boolean isAToolSwapNeeded(Cell cell, DataHandler dataHandler) {
         try {
             String value = cell.getStringCellValue();
             return dataHandler.getConfigurer().existsConstrictionID(value);
@@ -213,7 +218,12 @@ public class ConstrictionParser {
         }
     }
 
-    public static void parseToExcel(HashMap<String, List<Constriction>> verifiedConstrictions, Workbook workbook) {
+    /**
+     * Writes the constriction data to the provided {@code Workbook}.
+     * @param verifiedConstrictions The list of constrictions to be written on the workbook.
+     * @param workbook The workbook in which the constrictions will be written.
+     */
+    public void parseToExcel(HashMap<String, List<Constriction>> verifiedConstrictions, Workbook workbook) {
 
             //creating workbook instance that refers to .xls file
             if (usedTools.size() == 0) {
@@ -257,7 +267,10 @@ public class ConstrictionParser {
 
     }
 
-    private static void loadDefaultTools() {
+    /**
+     * Default configuration for the Constriction parser instance.
+     */
+    private void loadDefaultTools() {
 
         parserTool = new TimeDisplacementConstrictionParserTool();
         parserTool.setDescription("default Description");

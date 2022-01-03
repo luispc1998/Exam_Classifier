@@ -4,6 +4,8 @@ import domain.constrictions.Constriction;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 import domain.entities.Exam;
 import domain.entities.Interval;
+import domain.parsers.ConstrictionParser;
+import domain.parsers.ExamParser;
 import geneticAlgorithm.output.ExcelWriter;
 
 import java.time.Duration;
@@ -19,7 +21,8 @@ public class SamplesGenerator {
     public final static int optatives = 9;
     private final static int repetitions = 1;
     private final static boolean hardsEnabled = true;
-    private final static boolean extraTimeEnabled = false;
+    private final static boolean extraTimeEnabled = true;
+    private final static boolean cnEnabled = true;
     private final static int rounds_per_rep = 2;
     private final static int max_round_size = 3;
     // End of configurations
@@ -32,6 +35,7 @@ public class SamplesGenerator {
     
     private final static HashMap<Duration, Double> examDurations = new HashMap<>();
     private final static HashMap<Duration, Double> examExtraTimes = new HashMap<>();
+    private final static HashMap<Integer, Double> numericalComplexities = new HashMap<>();
     private final static HashMap<String, Integer> rounds = new HashMap<>();
     
     
@@ -55,6 +59,7 @@ public class SamplesGenerator {
     public static void initialer() {
         initializeExamDurationProbabilities();
         initializeExamExtraTimesProbabilities();
+        initializeExamNumericalComplexity();
     }
 
     private static void initializeRounds() {
@@ -128,6 +133,18 @@ public class SamplesGenerator {
         }
     }
 
+    private static void initializeExamNumericalComplexity() {
+        if (cnEnabled) {
+            numericalComplexities.put(0, 0.7);
+            numericalComplexities.put(5, 0.15);
+            numericalComplexities.put(7, 0.1);
+            numericalComplexities.put(10, 0.05);
+        }
+        else{
+            numericalComplexities.put(0, 1.0);
+        }
+    }
+
     private static void initializeExamDurationProbabilities() {
         double divisor = 60.0;
         examDurations.put(Duration.ofMinutes(30), 9/divisor);
@@ -169,10 +186,47 @@ public class SamplesGenerator {
         initializeConstrictionAmount();
         generateConstrictions();
 
+        scheduleSomeExams();
 
-        ExcelWriter.parseExamListToExcel("files/testFilesGenerated/", "test.xslx", 1, result,
+
+        ExcelWriter excelWriter = new ExcelWriter(new ExamParser(), new ConstrictionParser());
+        excelWriter.parseExamListToExcel("files/testFilesGenerated/", "test.xslx", 1, result,
                 constrictions, getDefaultCalendarTimeInterval(calendar));
 
+
+    }
+
+    private static void scheduleSomeExams() {
+        List<Exam> scheduled = new ArrayList<>();
+        Random generator = new Random();
+        for (Exam exam: freeExams) {
+            while(! exam.isScheduled() || collisionDetected(scheduled, exam)){
+                LocalDate day = calendar.get(generator.nextInt(calendar.size()));
+                double prob = generator.nextDouble();
+                int initialHour;
+                if (prob < 0.5) {
+                     initialHour = 9 + generator.nextInt(3);
+                }
+                else{
+                     initialHour = 15 + generator.nextInt(3);
+                }
+                exam.setDate(day);
+                exam.setInitialHour(LocalTime.of(initialHour, 0));
+            }
+            scheduled.add(exam);
+        }
+    }
+
+    private static boolean collisionDetected(List<Exam> exams, Exam exam) {
+        for (Exam ex : exams) {
+            if (exam.willCollideWith(ex)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void randomScheduleExam(Exam exam) {
 
     }
 
@@ -371,13 +425,28 @@ public class SamplesGenerator {
     }
 
     private static int generateRandomNumericalComplexity() {
-        return 0;
+        return getIntegerFromHashMap(numericalComplexities);
+    }
+
+    private static Integer getIntegerFromHashMap(HashMap<Integer, Double> test) {
+        double p = Math.random();
+        double cumulativeProbability = 0.0;
+        Integer defResult = null;
+        for (Map.Entry<Integer, Double> item : test.entrySet()) {
+            cumulativeProbability += item.getValue();
+            defResult = item.getKey();
+            if (p <= cumulativeProbability) {
+                return item.getKey();
+            }
+        }
+        return defResult;
     }
 
     private static Duration generateRandomExtraTime() {
         return getDurationFromHashMap(examExtraTimes);
-
     }
+
+
 
     private static Duration getDurationFromHashMap(HashMap<Duration, Double> test) {
         double p = Math.random();

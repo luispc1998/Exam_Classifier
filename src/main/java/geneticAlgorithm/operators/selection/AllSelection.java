@@ -26,7 +26,7 @@ public class AllSelection implements SelectionOperator {
      */
     public AllSelection(int problemSize) {
         this.problemSize = problemSize;
-        reset();
+        indexPointer = -1;
     }
 
     /**
@@ -42,25 +42,20 @@ public class AllSelection implements SelectionOperator {
         return population.get(indexPointer);
     }
 
+    /**
+     * Checks that there is no inconsistency in the object state.
+     * @param size Size of the current population from which we are selecting.
+     * @throws IllegalStateException in case that the population size does not match {@code problemSize}.
+     */
     private void preValidation(int size) {
         if (problemSize != size) {
             throw new IllegalStateException("AllSelection is configured for problem size: " + problemSize +
                     ", but received: " + size);
         }
-        if (indexPointer >= problemSize){
-            throw new IllegalStateException("AllSelection operator index pointer (" + indexPointer
-                    + ") exceeded problem size (" + problemSize + ").");
+
+        if (indexPointer == problemSize) {
+            indexPointer = 0;
         }
     }
-
-    public void reset() {
-        indexPointer = -1;
-    }
-
-    @Override
-    public int maxPairs() {
-        return problemSize/2;
-    }
-
 
 }

@@ -33,6 +33,11 @@ public class PrettyTimetable {
         }
     }
 
+    /**
+     *
+     * @param dataHandler
+     * @param day
+     */
     private void orderDay(DataHandler dataHandler, LocalDate day) {
 
         List<Interval> validIntervals = dataHandler.getConfigurer().getDateTimeConfigurer().getValidIntervals(day);
@@ -57,6 +62,12 @@ public class PrettyTimetable {
         }
     }
 
+    /**
+     * Checks wether there is an exam on the {@code examsOnDay}.
+     * @param dataHandler The dataHandler instance with all the execution data.
+     * @param examsOnDay The list of exams to be checked.
+     * @return True if there was a preScheduled exam on the list, False otherwise.
+     */
     private boolean isThereFixedExam(DataHandler dataHandler, List<Exam> examsOnDay) {
         List<Exam> preScheduledExams = dataHandler.getPreScheduledExams();
         for(Exam exam: examsOnDay) {

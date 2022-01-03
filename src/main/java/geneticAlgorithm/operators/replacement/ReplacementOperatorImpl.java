@@ -32,8 +32,14 @@ public class ReplacementOperatorImpl implements ReplacementOperator {
 
 
         replacements = tmp.subList(0, prevGeneration.size());
+        prevGeneration.sort(Comparator.comparingDouble(c -> c.getFitnessScore(fitnessFunction)));
+        childs.sort(Comparator.comparingDouble(c -> c.getFitnessScore(fitnessFunction)));
 
-        return replacements;
+        for (int i = 0; i < 5; i++) {
+           childs.set(childs.size()-1-i, prevGeneration.get(i));
+        }
+        //childs.set(childs.size()-1, prevGeneration.get(0));
+        return childs;
     }
 
 

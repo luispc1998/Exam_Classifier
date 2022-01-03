@@ -1,5 +1,6 @@
 package fitnessFunctions.greedyAlgorithm;
 
+import configuration.Configurer;
 import configuration.DateTimeConfigurer;
 import domain.DataHandler;
 import domain.entities.Exam;
@@ -25,7 +26,12 @@ public class ChromosomeDecoder {
     /**
      * Limit depth of the repairing algorithm.
      */
-    private final static int LIMIT_DEPTH = 1;
+    private int limitDepth;
+
+
+    public ChromosomeDecoder(Configurer configurer) {
+        limitDepth = configurer.getGeneticParameters().getRepairingAlgorithmDepth();
+    }
 
     /**
      * Gets the exam list ordered as stated in the chromosome.
@@ -131,7 +137,7 @@ public class ChromosomeDecoder {
             }
         }
 
-        if (!scheduled && depth <= LIMIT_DEPTH) {
+        if (!scheduled && depth <= limitDepth) {
             List<Exam> candidates = dataHandler.getSwappableExamsOfOver(exam, viableDays);
 
             for (Exam examCandidate : candidates) {

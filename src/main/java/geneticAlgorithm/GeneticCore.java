@@ -85,7 +85,7 @@ public class GeneticCore {
         List<Individual> initialPopulation = Utils.generatePopulationOfSizeFromIndividual(popSize, individualPrime);
         population = new ArrayList<>(initialPopulation);
 
-        this.selectionOperator = new RouletteSelection(initialPopulation.size());
+        this.selectionOperator = new RouletteSelection();
         this.mutationOperator = new MutationSwap();
         this.crossingOperator = new OXCrosssingOperator();
         this.replacementOperator = new ReplacementOperatorImpl();
@@ -202,8 +202,7 @@ public class GeneticCore {
 
         List<Individual> newGenChilds = new ArrayList<>(population.size());
 
-        selectionOperator.reset();
-        for (int i = 0; i < selectionOperator.maxPairs(); i++) {
+        for (int i = 0; i < population.size(); i++) {
             Individual father = selectionOperator.selection(population, fitnessFunction);
             Individual mother = selectionOperator.selection(population, fitnessFunction);
 

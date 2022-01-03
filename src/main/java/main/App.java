@@ -2,11 +2,14 @@ package main;
 
 import configuration.Configurer;
 import domain.DataHandler;
+import domain.parsers.ConstrictionParser;
+import domain.parsers.ExamParser;
 import fitnessFunctions.FitnessFunction;
 import fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
+import geneticAlgorithm.output.ExcelWriter;
 import geneticAlgorithm.output.OutputHandler;
 
 import java.util.Comparator;
@@ -23,7 +26,9 @@ public class App {
 
 
         Configurer conf = new Configurer(args[0]);
-        DataHandler dataHandler = new DataHandler(conf);
+        ExamParser examParser = new ExamParser();
+        ConstrictionParser constrictionParser = new ConstrictionParser();
+        DataHandler dataHandler = new DataHandler(conf, examParser, constrictionParser);
 
 
         Enconder basicEncoder = new Enconder();
@@ -48,8 +53,9 @@ public class App {
 
         getBestSchedules(finalPopulation, outputIndividuals, conf.getGeneticParameters().getMaxSchedulesToTake());
 
-
-        OutputHandler outputHandler = new OutputHandler(outputIndividuals, dataHandler, outputFileName, genCore.getLogging());
+        ExcelWriter excelWriter = new ExcelWriter(examParser, constrictionParser);
+        OutputHandler outputHandler = new OutputHandler(outputIndividuals, dataHandler, outputFileName, genCore.getLogging(),
+                excelWriter);
 
         outputHandler.writeOutputFiles();
 

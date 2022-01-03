@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 /**
  * This handles all the data. That is the list of exams, the configurations, etc.
  *
+ * <p>
  * This is responsible to provide the logic to schedule the exam, as well to check the collisions. It holds the list
  * of {@code Exam} as well as the list of {@code Constriction}.
  */
@@ -57,18 +58,18 @@ public class DataHandler {
      * Constructor for the class
      * @param configurer Configurer that contains all the configurations options.
      */
-    public DataHandler(Configurer configurer) {
+    public DataHandler(Configurer configurer, ExamParser examParser, ConstrictionParser constrictionParser) {
 
         this.configurer = configurer;
         this.preScheduledExams = new HashSet<>();
         this.constrictions = new ArrayList<>();
 
         String inputDataFile = configurer.getFilePaths("inputFile");
-        this.exams = ExamParser.parseExams(inputDataFile, this);
+        this.exams = examParser.parseExams(inputDataFile, this);
         identifyScheduledExams();
 
         addConstrictions();
-        this.constrictions.addAll(ConstrictionParser.parseConstrictions(inputDataFile, this));
+        this.constrictions.addAll(constrictionParser.parseConstrictions(inputDataFile, this));
 
     }
 

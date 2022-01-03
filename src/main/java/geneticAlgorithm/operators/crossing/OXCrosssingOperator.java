@@ -108,6 +108,13 @@ public class OXCrosssingOperator implements CrossingOperator {
         return new Individual(newCromosome);
     }
 
+    /**
+     * Provides a generator.
+     *
+     * <p>
+     * This mehtod is useful in case of using a seed.
+     * @return A random object.
+     */
     public Random chooseGenerator() {
         if (this.generator == null){
             return RandomGenerator.getGenerator();

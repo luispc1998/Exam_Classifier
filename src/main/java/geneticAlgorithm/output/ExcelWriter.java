@@ -32,16 +32,31 @@ import java.util.*;
 public class ExcelWriter {
 
     /**
+     * Exam parser instance used in the execution.
+     */
+    private final ExamParser examParser;
+
+    /**
+     * Constriction parser instance used in the execution.
+     */
+    private final ConstrictionParser constrictionParser;
+
+    public ExcelWriter(ExamParser examParser, ConstrictionParser constrictionParser) {
+        this.constrictionParser = constrictionParser;
+        this.examParser = examParser;
+    }
+
+    /**
      * This writes the provided individuals to excel files. One per individual
      * @param outputIndividuals The {@code Individual} instances, that lead to the final scheduling to be outputted.
      * @param dataHandler The {@code DataHandler} instance over which the individuals will be decoded.
      * @param directory The output directory.
      * @param outputFileName The name prefix of the output file.
      */
-    public static void excelWrite(HashSet<Individual> outputIndividuals, DataHandler dataHandler,
+    public void excelWrite(HashSet<Individual> outputIndividuals, DataHandler dataHandler,
                                   String directory, String outputFileName) {
 
-        ChromosomeDecoder decoder = new ChromosomeDecoder();
+        ChromosomeDecoder decoder = new ChromosomeDecoder(dataHandler.getConfigurer());
         PrettyTimetable prettyTimetable = new PrettyTimetable();
 
 
@@ -74,11 +89,11 @@ public class ExcelWriter {
      * @param verifiedConstrictions The list of constrictions to be written
      * @param calendar The calendar of days to be written
      */
-    public static void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
+    public void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
             List<Constriction>> verifiedConstrictions, HashMap<LocalDate, Interval> calendar) {
         XSSFWorkbook workbook = new XSSFWorkbook();
-        ExamParser.parseToExcel(finalResult, workbook);
-        ConstrictionParser.parseToExcel(verifiedConstrictions, workbook);
+        examParser.parseToExcel(finalResult, workbook);
+        constrictionParser.parseToExcel(verifiedConstrictions, workbook);
         writeCalendar(workbook, calendar);
         String path = directory + outputFileName + "_" + counter + ".xlsx";
         try (FileOutputStream outputStream = new FileOutputStream(path)) {

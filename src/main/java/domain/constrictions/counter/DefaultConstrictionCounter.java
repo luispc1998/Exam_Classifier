@@ -3,6 +3,9 @@ package domain.constrictions.counter;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.*;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 
+/**
+ * This is a default implementation for {@code ConstrictionCounter}.
+ */
 public class DefaultConstrictionCounter implements ConstrictionCounter {
 
     private int timeDisplacementCounter;

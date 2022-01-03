@@ -1,6 +1,8 @@
 package geneticAlgorithm.output;
 
 import domain.DataHandler;
+import domain.parsers.ConstrictionParser;
+import domain.parsers.ExamParser;
 import geneticAlgorithm.Individual;
 import utils.ConsoleLogger;
 
@@ -19,21 +21,24 @@ public class OutputHandler {
     private final String outputFilename;
     private final String loggedData;
     private final DataHandler dataHandler;
+    private final ExcelWriter excelWriter;
 
-
-    public OutputHandler(HashSet<Individual> outputIndividuals, DataHandler dataHandler, String outputFileName, String logging) {
+    public OutputHandler(HashSet<Individual> outputIndividuals, DataHandler dataHandler, String outputFileName, String logging,
+                         ExcelWriter excelWriter) {
         this.outputDirectory = createOutputDirectory(dataHandler.getConfigurer().getFilePaths("outputBaseDirectory"));
         this.dataHandler = dataHandler;
         this.outputIndividuals = outputIndividuals;
         this.outputFilename = outputFileName;
         this.loggedData = logging;
+        this.excelWriter = excelWriter;
+
     }
 
     /**
      * Writes the output files, the excel and the log file.
      */
     public void writeOutputFiles()  {
-        ExcelWriter.excelWrite(outputIndividuals, dataHandler, outputDirectory, outputFilename);
+        excelWriter.excelWrite(outputIndividuals, dataHandler, outputDirectory, outputFilename);
         writeLogData();
         writeInputLogData();
     }

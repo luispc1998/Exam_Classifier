@@ -1,20 +1,22 @@
 # Parameters to configure the genetic algorithm.
 
-## Size of the population of individuals to be considered
-populationSize=800
+## Size of the population of individuals to be considered.
+populationSize=300
 
-## Iterations that must be performed by the algorithm before ending
-iterations=300
+## Iterations that must be performed by the algorithm before ending.
+iterations=3000
 
-## Amount of iterations when the logger will note down the status of the algorithm
+## Amount of iterations when the logger will note down the status of the algorithm.
 loggingFreq=50
 
-## Mutation probability of the algorithm
+## Mutation probability of the algorithm.
 mutationProb=0.15
 
-## Crossing probability of the algorithm
+## Crossing probability of the algorithm.
 crossingProb=1.0
 
 ## Desired maximum amount of different schedules to be retrieved at the end. 
 maxSchedulesToTake=3
 
+## Desired Max depth of the repairing algorithm.
+repairingDepth=1

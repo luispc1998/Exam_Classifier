@@ -13,17 +13,10 @@ import java.util.List;
 public class RouletteSelection implements SelectionOperator {
 
     /**
-     * Maximum number of times this selector should be called.
-     */
-    private final int maxPairs;
-
-
-    /**
      * Constructor for the class
-     * @param maxPairs Maximum number of times this selector should be called.
      */
-    public RouletteSelection(int maxPairs) {
-        this.maxPairs = maxPairs;
+    public RouletteSelection() {
+
     }
 
     /**
@@ -78,16 +71,5 @@ public class RouletteSelection implements SelectionOperator {
         //selected.incDescendants(); // Not sure if storing the descendants would be useful.
         return selected;
     }
-
-    @Override
-    public void reset(){
-
-    }
-
-    @Override
-    public int maxPairs() {
-        return maxPairs;
-    }
-
 
 }

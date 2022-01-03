@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
  */
 public class Exam {
 
-
-    //Optional
     /**
      * Extra time to be added at the end of the exam.
      */
@@ -346,6 +344,13 @@ public class Exam {
         return getInitialHour().plus(getDuration()).plus(getExtraTime());
     }
 
+    /**
+     * Returns the finishing hour without considering the extra time.
+     *
+     * <p>
+     * This is the hour that we will be written on the final schedule file.
+     * @return The finishing hour without considering the extra time.
+     */
     public LocalTime getFinishingHourWithoutExtraTime() {
         if (initialHour == null){
             return null;
@@ -583,5 +588,19 @@ public class Exam {
      */
     public String getRoundId() {
         return roundId;
+    }
+
+    /**
+     * Checks if a given scheduled exam collides with this exam.
+     *
+     * <p>
+     * This method uses the other implementation of {@code willCollideWith}, the other method whose signature
+     * only differs in the parameters.
+     *
+     * @param ex The exam thay may collide.
+     * @return True in case both exams collide, false otherwise.
+     */
+    public boolean willCollideWith(Exam ex) {
+        return willCollideWith(ex.getDate(), ex.getInitialHour(), ex.getChunkOfTime());
     }
 }
