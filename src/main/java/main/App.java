@@ -9,6 +9,7 @@ import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
+import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.output.ExcelWriter;
 import geneticAlgorithm.output.OutputHandler;
 import utils.ConsoleLogger;
@@ -58,7 +59,9 @@ public class App {
 
         Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
         FitnessFunction fn = new LinearFitnessFunction(dataHandler);
-        GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize());
+
+        GeneticOperators geneticOperators = new GeneticOperators();
+        GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize(), geneticOperators);
 
 
         Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),

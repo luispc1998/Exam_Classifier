@@ -2,12 +2,13 @@ package geneticAlgorithm;
 
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.logger.GeneticLogger;
+import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
 import geneticAlgorithm.operators.crossing.OXCrosssingOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.mutation.MutationSwap;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
-import geneticAlgorithm.operators.replacement.ReplacementOperatorImpl;
+import geneticAlgorithm.operators.replacement.ReplacementOperatorClassic;
 import geneticAlgorithm.operators.selection.RouletteSelection;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 import geneticAlgorithm.utils.Utils;
@@ -74,8 +75,9 @@ public class GeneticCore {
      * Constructor for the class
      * @param individualPrime First individual from which the initial population will be created.
      * @param popSize Size of the population to be handled by the algorithm.
+     * @param geneticOperators Operator configuration for the algorithm.
      */
-    public GeneticCore(Individual individualPrime, int popSize) {
+    public GeneticCore(Individual individualPrime, int popSize, GeneticOperators geneticOperators) {
         if (individualPrime.getChromosome().size() == 0) {
             throw new IllegalArgumentException("There are no exams ids to work with in the given individual.");
         }
@@ -85,10 +87,10 @@ public class GeneticCore {
         List<Individual> initialPopulation = Utils.generatePopulationOfSizeFromIndividual(popSize, individualPrime);
         population = new ArrayList<>(initialPopulation);
 
-        this.selectionOperator = new RouletteSelection();
-        this.mutationOperator = new MutationSwap();
-        this.crossingOperator = new OXCrosssingOperator();
-        this.replacementOperator = new ReplacementOperatorImpl();
+        this.selectionOperator = geneticOperators.getSelectionOperator();
+        this.mutationOperator = geneticOperators.getMutationOperator();
+        this.crossingOperator = geneticOperators.getCrossingOperator();
+        this.replacementOperator = geneticOperators.getReplacementOperator();
         this.logger = new GeneticLogger();
 
     }
