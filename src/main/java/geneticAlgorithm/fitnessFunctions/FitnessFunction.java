@@ -1,4 +1,4 @@
-package fitnessFunctions;
+package geneticAlgorithm.fitnessFunctions;
 
 import geneticAlgorithm.Individual;
 

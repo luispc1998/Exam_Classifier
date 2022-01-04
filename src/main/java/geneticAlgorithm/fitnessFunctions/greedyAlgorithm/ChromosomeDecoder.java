@@ -1,7 +1,7 @@
-package fitnessFunctions.greedyAlgorithm;
+package geneticAlgorithm.fitnessFunctions.greedyAlgorithm;
 
-import configuration.Configurer;
-import configuration.DateTimeConfigurer;
+import geneticAlgorithm.configuration.Configurer;
+import geneticAlgorithm.configuration.DateTimeConfigurer;
 import domain.DataHandler;
 import domain.entities.Exam;
 import domain.entities.Interval;
@@ -19,7 +19,7 @@ import java.util.*;
  * The decoding process takes into account the {@link domain.constrictions.types.hardConstriction.HardConstriction} that
  * each {@code Exam} has.
  *
- * @see fitnessFunctions.FitnessFunction
+ * @see geneticAlgorithm.fitnessFunctions.FitnessFunction
  */
 public class ChromosomeDecoder {
 

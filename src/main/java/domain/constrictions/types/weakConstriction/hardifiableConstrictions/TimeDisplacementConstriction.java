@@ -1,7 +1,7 @@
 package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 
-import configuration.DateTimeConfigurer;
+import geneticAlgorithm.configuration.DateTimeConfigurer;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.types.hardConstriction.HardConstriction;
 import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
@@ -15,7 +15,7 @@ import java.util.List;
  * being X a natural number.
  *
  * <p>
- * Note that X will be a number of positions in the calendar of {@link LocalDate} in {@link configuration.DateTimeConfigurer}.
+ * Note that X will be a number of positions in the calendar of {@link LocalDate} in {@link geneticAlgorithm.configuration.DateTimeConfigurer}.
  *
  * @see DateTimeConfigurer#getExamDates()
  */

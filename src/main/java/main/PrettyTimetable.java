@@ -34,9 +34,9 @@ public class PrettyTimetable {
     }
 
     /**
-     *
-     * @param dataHandler
-     * @param day
+     * Tries to round the hours of a day.
+     * @param dataHandler The instance containing all the data and configurations for the execution.
+     * @param day The day whose exam hours we want to round.
      */
     private void orderDay(DataHandler dataHandler, LocalDate day) {
 

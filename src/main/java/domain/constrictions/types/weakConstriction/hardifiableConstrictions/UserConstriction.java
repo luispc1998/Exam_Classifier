@@ -12,7 +12,7 @@ public interface UserConstriction extends WeakConstriction {
      *
      * <p>
      * This process implies the generation of a new instance of {@link domain.constrictions.types.hardConstriction.HardConstriction},
-     * and add it to the related exam or exams, so that the {@link fitnessFunctions.greedyAlgorithm.ChromosomeDecoder}
+     * and add it to the related exam or exams, so that the {@link geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder}
      * can take them into account while decoding.
      *
      * <p>

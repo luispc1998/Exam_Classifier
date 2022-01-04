@@ -1,4 +1,4 @@
-package configuration;
+package geneticAlgorithm.configuration;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

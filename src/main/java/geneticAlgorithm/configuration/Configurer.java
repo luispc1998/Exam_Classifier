@@ -1,4 +1,4 @@
-package configuration;
+package geneticAlgorithm.configuration;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,8 +9,8 @@ import java.util.Properties;
 /**
  * This groups all the configurations that the application may need.
  * <p>
- * This is in charge of reading the configuration files and make their data available
- * from the code. However due to the variety of configuration objects the responsibilities are
+ * This is in charge of reading the geneticAlgorithm.configuration files and make their data available
+ * from the code. However due to the variety of geneticAlgorithm.configuration objects the responsibilities are
  * spread out over other classes.
  *
  * @see DateTimeConfigurer
@@ -47,7 +47,7 @@ public class Configurer {
 
     /**
      * Constructor for the class
-     * @param filePathsFilepath path to a properties file which has the paths to the other configuration files
+     * @param filePathsFilepath path to a properties file which has the paths to the other geneticAlgorithm.configuration files
      */
     public Configurer(String filePathsFilepath) {
 
@@ -59,8 +59,8 @@ public class Configurer {
     }
 
     /**
-     * Loads from the provided file the properties containing the paths to all the other configuration files.
-     * @param filePathsFilepath path to a properties file containing the paths of the other configuration files.
+     * Loads from the provided file the properties containing the paths to all the other geneticAlgorithm.configuration files.
+     * @param filePathsFilepath path to a properties file containing the paths of the other geneticAlgorithm.configuration files.
      */
     private void loadFilePaths(String filePathsFilepath) {
         InputStream configStream;

@@ -17,19 +17,15 @@ import java.util.HashSet;
 public class OutputHandler {
 
     private final String outputDirectory;
-    private final HashSet<Individual> outputIndividuals;
     private final String outputFilename;
-    private final String loggedData;
     private final DataHandler dataHandler;
     private final ExcelWriter excelWriter;
 
-    public OutputHandler(HashSet<Individual> outputIndividuals, DataHandler dataHandler, String outputFileName, String logging,
+    public OutputHandler(DataHandler dataHandler, String outputFileName,
                          ExcelWriter excelWriter) {
         this.outputDirectory = createOutputDirectory(dataHandler.getConfigurer().getFilePaths("outputBaseDirectory"));
         this.dataHandler = dataHandler;
-        this.outputIndividuals = outputIndividuals;
         this.outputFilename = outputFileName;
-        this.loggedData = logging;
         this.excelWriter = excelWriter;
 
     }
@@ -37,19 +33,21 @@ public class OutputHandler {
     /**
      * Writes the output files, the excel and the log file.
      */
-    public void writeOutputFiles()  {
+    public void writeOutputFiles(HashSet<Individual> outputIndividuals, String loggedData)  {
         excelWriter.excelWrite(outputIndividuals, dataHandler, outputDirectory, outputFilename);
-        writeLogData();
-        writeInputLogData();
+        writeLogData(loggedData);
+        //writeInputLogData();
     }
 
 
-    private void writeInputLogData() {
+    public void writeInputLogData() {
         try (BufferedWriter bfWriterUncolored = new BufferedWriter(new FileWriter(outputDirectory + "inputUncoloredLog.txt"));
-             BufferedWriter bfWriterColored = new BufferedWriter(new FileWriter(outputDirectory + "inputColoredLog.txt"))){
+             BufferedWriter bfWriterColored = new BufferedWriter(new FileWriter(outputDirectory + "inputColoredLog.txt"));
+             BufferedWriter bfWriterErrorLog = new BufferedWriter(new FileWriter(outputDirectory + "errorLog.txt"))){
 
             bfWriterUncolored.write(ConsoleLogger.getConsoleLoggerInstance().getUncoloredMessages());
             bfWriterColored.write(ConsoleLogger.getConsoleLoggerInstance().getColoredMessages());
+            bfWriterErrorLog.write(ConsoleLogger.getConsoleLoggerInstance().getErrorManager().getFormattedString());
         }catch (IOException e) {
             ConsoleLogger.getConsoleLoggerInstance().logError("Could not write output files of initial logging.");
         }
@@ -60,7 +58,7 @@ public class OutputHandler {
     /**
      * Writes the genetic algorithm file.
      */
-    private void writeLogData() {
+    private void writeLogData(String loggedData) {
         String path = outputDirectory + "gLog.txt";
         try (BufferedWriter bfWriter = new BufferedWriter(new FileWriter(path))){
             bfWriter.write(loggedData);

@@ -1,7 +1,7 @@
 package geneticAlgorithm;
 
-import fitnessFunctions.FitnessFunction;
-import fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
+import geneticAlgorithm.fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 
 import java.util.ArrayList;
 import java.util.List;

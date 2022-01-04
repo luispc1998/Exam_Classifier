@@ -1,13 +1,13 @@
-package fitnessFunctions.greedyAlgorithm;
+package geneticAlgorithm.fitnessFunctions.greedyAlgorithm;
 
-import configuration.WeightConfigurer;
+import geneticAlgorithm.configuration.WeightConfigurer;
 import domain.DataHandler;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.DefaultConstrictionCounter;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.*;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
-import fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.Individual;
 
 

@@ -10,10 +10,13 @@ public class ConsoleLogger {
     private final StringBuilder uncoloredMessages;
     private final StringBuilder coloredMessages;
 
+    private final ErrorManager errorManager;
+
     private ConsoleLogger() {
         sc = new StringColorer();
         uncoloredMessages = new StringBuilder();
         coloredMessages = new StringBuilder();
+        errorManager = new ErrorManager();
     }
 
     public static ConsoleLogger getConsoleLoggerInstance(){
@@ -26,22 +29,24 @@ public class ConsoleLogger {
     public void logInfo(String msg) {
         String finalMessage = "[INFO] " + msg;
         //System.out.println(sc.colorBlue(finalMessage));
-        System.out.println(finalMessage);
+        //System.out.println(finalMessage);
         logMessage(finalMessage);
     }
 
     public void logWarning(String msg) {
         String finalMessage = "[WARN] " + msg;
         //System.out.println(sc.colorYellow(finalMessage));
-        System.out.println(finalMessage);
+        //System.out.println(finalMessage);
         logMessage(finalMessage);
+        errorManager.addWarning(finalMessage);
     }
 
     public void logError(String msg) {
         String finalMessage = "[ERROR] " + msg;
         //System.out.println(sc.colorRed(finalMessage));
-        System.out.println(finalMessage);
+        //System.out.println(finalMessage);
         logMessage(finalMessage);
+        errorManager.addError(finalMessage);
     }
 
     private void logMessage(String finalMessage) {
@@ -57,5 +62,9 @@ public class ConsoleLogger {
 
     public String getUncoloredMessages() {
         return uncoloredMessages.toString();
+    }
+
+    public ErrorManager getErrorManager() {
+        return errorManager;
     }
 }

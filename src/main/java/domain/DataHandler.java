@@ -1,6 +1,6 @@
 package domain;
 
-import configuration.Configurer;
+import geneticAlgorithm.configuration.Configurer;
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.DefaultConstrictionCounter;
@@ -14,7 +14,6 @@ import domain.entities.Exam;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
-import domain.parsers.RoundsParser;
 
 import java.time.Duration;
 import java.time.LocalDate;

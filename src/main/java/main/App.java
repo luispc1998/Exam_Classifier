@@ -1,21 +1,20 @@
 package main;
 
-import configuration.Configurer;
+import geneticAlgorithm.configuration.Configurer;
 import domain.DataHandler;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
-import fitnessFunctions.FitnessFunction;
-import fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
+import geneticAlgorithm.fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.output.ExcelWriter;
 import geneticAlgorithm.output.OutputHandler;
+import utils.ConsoleLogger;
+import utils.ErrorManager;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class App {
 
@@ -30,6 +29,29 @@ public class App {
         ConstrictionParser constrictionParser = new ConstrictionParser();
         DataHandler dataHandler = new DataHandler(conf, examParser, constrictionParser);
 
+        ExcelWriter excelWriter = new ExcelWriter(examParser, constrictionParser);
+        OutputHandler outputHandler = new OutputHandler(dataHandler, outputFileName, excelWriter);
+
+        outputHandler.writeInputLogData();
+
+        ErrorManager errorManager = ConsoleLogger.getConsoleLoggerInstance().getErrorManager();
+
+
+        if (errorManager.wasThereErrorsOrWarnigns()){
+            System.out.println("Se encontraron errores o avisos, por favor revise el archivo errorLog en la carpeta de salida.");
+            System.out.print("Introduzca '0' para abortar la ejecución o cualquier otro input para continuarla: ");
+            try (Scanner sc = new Scanner(System.in)) {
+                String input = sc.nextLine();
+                if (input.equals("0")) {
+                    System.out.println("La aplicación procederá a cerrarse.");
+                    System.exit(0);
+                }
+                else{
+                    System.out.println("La aplicación continuará con la ejecución...");
+                }
+            }
+
+        }
 
         Enconder basicEncoder = new Enconder();
 
@@ -53,11 +75,10 @@ public class App {
 
         getBestSchedules(finalPopulation, outputIndividuals, conf.getGeneticParameters().getMaxSchedulesToTake());
 
-        ExcelWriter excelWriter = new ExcelWriter(examParser, constrictionParser);
-        OutputHandler outputHandler = new OutputHandler(outputIndividuals, dataHandler, outputFileName, genCore.getLogging(),
-                excelWriter);
 
-        outputHandler.writeOutputFiles();
+
+
+        outputHandler.writeOutputFiles(outputIndividuals, genCore.getLogging());
 
 
     }

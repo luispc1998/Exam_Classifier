@@ -1,4 +1,4 @@
-package configuration;
+package geneticAlgorithm.configuration;
 
 import domain.entities.Interval;
 import org.apache.poi.ss.usermodel.Row;
@@ -84,9 +84,9 @@ public class DateTimeConfigurer {
             configStream = new FileInputStream(dateTimeFilepath);
             fileProperties.load(configStream);
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not find dates and times configuration file");
+            throw new IllegalArgumentException("Could not find dates and times geneticAlgorithm.configuration file");
         } catch (IOException e) {
-            throw new IllegalArgumentException("Could not parse properties in dates and times configuration file");
+            throw new IllegalArgumentException("Could not parse properties in dates and times geneticAlgorithm.configuration file");
         }
 
 

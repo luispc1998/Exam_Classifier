@@ -1,6 +1,6 @@
 package geneticAlgorithm.operators.selection;
 
-import fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.utils.Utils;
 import random.RandomGenerator;

@@ -7,7 +7,7 @@ import domain.entities.ExamDatesComparator;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
-import fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
+import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 import geneticAlgorithm.Individual;
 import main.PrettyTimetable;
 import org.apache.poi.ss.usermodel.Cell;

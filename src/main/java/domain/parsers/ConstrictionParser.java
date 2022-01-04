@@ -1,6 +1,5 @@
 package domain.parsers;
 
-import configuration.Configurer;
 import domain.DataHandler;
 import domain.constrictions.Constriction;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
@@ -59,7 +58,7 @@ public class ConstrictionParser {
      *
      * <p>
      * Note that if the parser was not used to parse an input file before asking it to write an output it will load
-     * a default configuration.
+     * a default geneticAlgorithm.configuration.
      */
     private static final HashMap<String, ConstrictionParserTool> usedTools = new HashMap<>();
 
@@ -268,7 +267,7 @@ public class ConstrictionParser {
     }
 
     /**
-     * Default configuration for the Constriction parser instance.
+     * Default geneticAlgorithm.configuration for the Constriction parser instance.
      */
     private void loadDefaultTools() {
 

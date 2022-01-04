@@ -6,7 +6,7 @@ import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 /**
  * This counts the times each type of constriction is not fulfilled.
  * <p>
- * Having the exact number of occurrences means that new {@link fitnessFunctions.FitnessFunction} implementations
+ * Having the exact number of occurrences means that new {@link geneticAlgorithm.fitnessFunctions.FitnessFunction} implementations
  * can have any kind of function that it is needed.
  * <p>
  * To implement this functionality, Visitor design pattern was followed.

@@ -1,6 +1,6 @@
 package geneticAlgorithm;
 
-import fitnessFunctions.FitnessFunction;
+import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.logger.GeneticLogger;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
 import geneticAlgorithm.operators.crossing.OXCrosssingOperator;

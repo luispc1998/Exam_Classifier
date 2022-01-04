@@ -1,4 +1,4 @@
-package configuration;
+package geneticAlgorithm.configuration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -72,9 +72,9 @@ public class GeneticParameters {
 
 
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not parse Genetic parameters configuration file");
+            throw new IllegalArgumentException("Could not parse Genetic parameters geneticAlgorithm.configuration file");
         } catch (IOException e) {
-            throw new IllegalArgumentException("Could not parse properties in Genetic parameters configuration file");
+            throw new IllegalArgumentException("Could not parse properties in Genetic parameters geneticAlgorithm.configuration file");
         }
     }
 

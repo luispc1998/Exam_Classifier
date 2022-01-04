@@ -1,4 +1,4 @@
-package configuration;
+package geneticAlgorithm.configuration;
 
 import utils.ConsoleLogger;
 
@@ -11,7 +11,7 @@ import java.util.Properties;
 
 /**
  * This is in charge of providing the weights of the {@link domain.constrictions.Constriction} for the
- * {@link fitnessFunctions.FitnessFunction}.
+ * {@link geneticAlgorithm.fitnessFunctions.FitnessFunction}.
  * <p>
  * It is also used to check the existence of {@link domain.constrictions.Constriction}, because
  * a given ID does not appear in {@code weights} as a key, then it won't be related to a constriction.
@@ -20,7 +20,7 @@ public class WeightConfigurer {
 
     /**
      * Hashmap where the keys are constriction ids, and the values their corresponding weights
-     * (coefficients) in the {@link fitnessFunctions.FitnessFunction}
+     * (coefficients) in the {@link geneticAlgorithm.fitnessFunctions.FitnessFunction}
      */
     final HashMap<String, Double> weights;
 

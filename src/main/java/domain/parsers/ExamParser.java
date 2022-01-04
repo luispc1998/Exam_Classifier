@@ -53,7 +53,7 @@ public class ExamParser {
      */
     public List<Exam> parseExams(String filepath, DataHandler dataHandler) {
         List<Exam> exams = new ArrayList<>();
-        int i = 0;
+        int i = -1;
         try (FileInputStream fis = new FileInputStream(filepath);
              Workbook workbook = new XSSFWorkbook(fis)
         ) {
@@ -67,7 +67,7 @@ public class ExamParser {
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando exámenes...");
 
             for (Row row : sheet) {
-
+                i++;
                 if (jumpLines > 0) {
                     jumpLines--;
                     continue;
@@ -77,7 +77,7 @@ public class ExamParser {
                 if (exam == null) {
                     continue;
                 }
-                i++;
+
                 exams.add(exam);
 
             }
