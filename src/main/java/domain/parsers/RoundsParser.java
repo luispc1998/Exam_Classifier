@@ -26,6 +26,14 @@ import java.util.stream.Collectors;
 public class RoundsParser {
 
 
+    /**
+     * Creates a round.
+     *
+     * <p>
+     * It does not create a round in case there is just one exam with an identifier.
+     * @param roundsMap A map containing the round identifiers as keys and a list of exam ids with that round id.
+     * @param exams Lista de exámenes.
+     */
     public static void createRoundIfNecessary(HashMap<String, List<Integer>> roundsMap, List<Exam> exams) {
         int roundCounter = 0;
         for(List<Integer> ids : roundsMap.values()) {

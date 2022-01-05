@@ -34,12 +34,6 @@ public class Configurer {
      */
     private DateTimeConfigurer dateTimeConfigurer;
 
-
-    /**
-     * List containins all the Constrictions IDs that should be considered hard.
-     */
-    private List<String> hardConstrictionsIds;
-
     /**
      * Genetic algorithm parameters.
      */
@@ -54,7 +48,6 @@ public class Configurer {
         loadFilePaths(filePathsFilepath);
         loadWeightConfigurer(filePaths.getProperty("weights"));
         loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), filePaths.getProperty("inputFile"));
-        loadHardRestrictions(filePaths.getProperty("hardConstrictions"));
         loadGeneticAlgorithmParameters(filePaths.getProperty("geneticConfiguration"));
     }
 
@@ -90,14 +83,6 @@ public class Configurer {
      */
     public GeneticParameters getGeneticParameters() {
         return geneticParameters;
-    }
-
-    /**
-     * Loads from the specified file the types of user constrictions that must be considered hard.
-     * @param hardConstrictionsFilepath The path to the file with the specified types of constrictions.
-     */
-    private void loadHardRestrictions(String hardConstrictionsFilepath) {
-        this.hardConstrictionsIds = Utils.parseHardConstrictionsId(hardConstrictionsFilepath);
     }
 
     /**
@@ -149,14 +134,6 @@ public class Configurer {
      */
     public boolean existsConstrictionID(String id) {
         return getWeightConfigurer().existsConstrictionID(id);
-    }
-
-    /**
-     * Returns the constrictions Ids that are configured as Hard for the execution of the algorithm.
-     * @return A list containing the Ids of the constrictions to be treated as hard.
-     */
-    public List<String> getHardConstrictionsIds() {
-        return hardConstrictionsIds;
     }
 
 

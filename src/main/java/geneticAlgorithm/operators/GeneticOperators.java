@@ -43,6 +43,9 @@ public class GeneticOperators {
      */
     private ReplacementOperator replacementOperator;
 
+    /**
+     * Default constructor of the class, providing a default configuration of operators.
+     */
     public GeneticOperators() {
         this.selectionOperator = new RouletteSelection();
         this.mutationOperator = new MutationSwap();
@@ -50,41 +53,52 @@ public class GeneticOperators {
         this.replacementOperator = new ReplacementOperatorClassic(5);
     }
 
+    /**
+     * Constructor fully parametrized.
+     * @param selectionOperator The selection operator.
+     * @param mutationOperator The mutation operator.
+     * @param crossingOperator The crossing operator.
+     * @param replacementOperator The replacement operator.
+     */
     public GeneticOperators(SelectionOperator selectionOperator, MutationOperator mutationOperator,
                             CrossingOperator crossingOperator, ReplacementOperator replacementOperator) {
 
+        this.selectionOperator = selectionOperator;
+        this.mutationOperator = mutationOperator;
+        this.crossingOperator = crossingOperator;
+        this.replacementOperator = replacementOperator;
     }
 
-
+    /**
+     * Returns the configured Selection operator.
+     * @return The configured Selection operator.
+     */
     public SelectionOperator getSelectionOperator() {
         return selectionOperator;
     }
 
-    public void setSelectionOperator(SelectionOperator selectionOperator) {
-        this.selectionOperator = selectionOperator;
-    }
-
+    /**
+     * Returns the configured Mutation operator.
+     * @return The configured Mutation operator.
+     */
     public MutationOperator getMutationOperator() {
         return mutationOperator;
     }
 
-    public void setMutationOperator(MutationOperator mutationOperator) {
-        this.mutationOperator = mutationOperator;
-    }
-
+    /**
+     * Returns the configured Crossing operator.
+     * @return The configured Crossing operator.
+     */
     public CrossingOperator getCrossingOperator() {
         return crossingOperator;
     }
 
-    public void setCrossingOperator(CrossingOperator crossingOperator) {
-        this.crossingOperator = crossingOperator;
-    }
-
+    /**
+     * Returns the configured Replacement operator.
+     * @return The configured Replacement operator.
+     */
     public ReplacementOperator getReplacementOperator() {
         return replacementOperator;
     }
 
-    public void setReplacementOperator(ReplacementOperator replacementOperator) {
-        this.replacementOperator = replacementOperator;
-    }
 }

@@ -2,6 +2,9 @@ package random;
 
 import java.util.Random;
 
+/**
+ * This is used to generate random objects.
+ */
 public class RandomGenerator {
 
     public final static int SEED = 0;

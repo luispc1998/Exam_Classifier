@@ -35,7 +35,6 @@ public class ReplacementOperatorClassic implements ReplacementOperator {
         prevGeneration.sort(Comparator.comparingDouble(c -> c.getFitnessScore(fitnessFunction)));
         children.sort(Comparator.comparingDouble(c -> c.getFitnessScore(fitnessFunction)));
 
-
         int limit = Math.min(eliteNumber, prevGeneration.size());
         for (int i = 0; i < limit; i++) {
            children.set(children.size()-1-i, prevGeneration.get(i));

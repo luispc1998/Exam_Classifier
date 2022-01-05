@@ -241,7 +241,6 @@ public class Exam {
      */
     private double transformToDuration(Duration duration) {
         return duration.toMinutes() / 60.0 / 24.0;
-        //return (long) (duration * 24 * 60);
     }
 
     /**

@@ -54,24 +54,6 @@ public class DayBannedConstriction extends AbstractUserConstriction {
     }
 
 
-    /*
-    @Override
-    public boolean isFulfilled(ConstrictionCounter counter) {
-        if (exam.getDate() ==null){
-            setLastEvaluation(true);
-            return true;
-        }
-
-        if (dayBanned.atStartOfDay().equals(exam.getDate().atStartOfDay())){
-            counter.count(this);
-            setLastEvaluation(false);
-            return false;
-        }
-        setLastEvaluation(true);
-        return true;
-    }
-*/
-
     @Override
     public String getConstrictionID() {
         return CONSTRICTION_ID;

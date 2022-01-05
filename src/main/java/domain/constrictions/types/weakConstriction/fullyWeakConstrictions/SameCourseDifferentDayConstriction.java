@@ -46,10 +46,6 @@ public class SameCourseDifferentDayConstriction implements WeakConstriction {
             occurrences += getExamsForCourse(exams, i);
         }
         counter.count(this);
-
-        //boolean result = occurrences == 0;
-        //occurrences = 0;
-        // setLastEvaluation(result);
     }
 
     /**

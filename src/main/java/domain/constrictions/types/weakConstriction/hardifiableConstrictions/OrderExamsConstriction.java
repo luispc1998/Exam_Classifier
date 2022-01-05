@@ -73,8 +73,6 @@ public class OrderExamsConstriction extends AbstractUserConstriction {
         second.addHardConstriction(hConstriction);
     }
 
-
-
     @Override
     public void countMe(ConstrictionCounter counter) {
         counter.count(this);

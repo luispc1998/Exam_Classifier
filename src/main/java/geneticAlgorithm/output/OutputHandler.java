@@ -93,7 +93,7 @@ public class OutputHandler {
 
         if (!theDir.exists()){
             if (!theDir.mkdirs()) {
-                throw new RuntimeException("The directory could not be created. Path: " + theDir);
+                throw new RuntimeException("No se ha podido crear el directorio de salida. Path: " + theDir);
             }
         }
 

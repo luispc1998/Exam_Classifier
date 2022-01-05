@@ -126,10 +126,7 @@ public class DateTimeConfigurer {
             }
 
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Fechas creadas: " + i);
-            //System.out.println("Fechas creadas: " + i);
 
-            //It is important to sort the dates. Later it will be assumed that they are sorted.
-            //examDates.sort(LocalDate::compareTo);
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input excel file");
         } catch (IOException e) {

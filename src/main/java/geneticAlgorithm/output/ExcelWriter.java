@@ -99,7 +99,7 @@ public class ExcelWriter {
         try (FileOutputStream outputStream = new FileOutputStream(path)) {
             workbook.write(outputStream);
         } catch (IOException e) {
-            throw new RuntimeException("Could not write output excel file on path: "
+            throw new RuntimeException("No se ha podido escribir el excel en directorio de salida: "
                     + "[" + path + "]");
         }
     }

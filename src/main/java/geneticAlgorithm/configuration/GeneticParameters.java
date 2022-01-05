@@ -6,14 +6,46 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * This represents all the parameters to configure the genetic algorithm.
+ */
 public class GeneticParameters {
 
+    /**
+     * Maximun number of iterations to be done by the algorithm.
+     */
     private final int maxIterations;
+
+    /**
+     * Population size to be considered by the algorithm.
+     */
     private final int populationSize;
+
+    /**
+     * Iterations waited by the genetic logger before writing an entry.
+     *
+     * @see geneticAlgorithm.logger.GeneticLogger
+     */
     private final int loggingFrequency;
+
+    /**
+     * Mutation probability to be considered by the algorithm.
+     */
     private final double mutationProbability;
+
+    /**
+     * Schedule number to be taken when finishing the execution.
+     */
     private final int maxSchedulesToTake;
+
+    /**
+     * Crossing probability to be considered by the algorithm.
+     */
     private final double crossingProbability;
+
+    /**
+     * Maximum depth of the tree of changes of the repairing algorithm.
+     */
     private final int repairingDepth;
 
     private GeneticParameters(int maxIterations, int populationSize, int loggingFrequency, double mutationProbability,
