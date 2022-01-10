@@ -44,7 +44,7 @@ public class App {
         boolean errorAsking = conf.getGeneticParameters().isErrorAsking();
 
         if (args[2] != null) {
-            statisticalDataGetter = new StatisticalDataGetter(args[2], Utils.createDirectoryBasedOnHour());
+            statisticalDataGetter = new StatisticalDataGetter(args[2], Utils.createDirectoryStringBasedOnHour());
         }
 
         for (int j = 1; j <= repetitions; j++) {

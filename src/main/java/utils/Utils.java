@@ -62,7 +62,7 @@ public class Utils {
      * Creates a directory based on the current date and hour.
      * @return A directory name based on the date and time.
      */
-    public static String createDirectoryBasedOnHour() {
+    public static String createDirectoryStringBasedOnHour() {
         LocalDate ld = LocalDate.now();
         LocalTime lt = LocalTime.now();
 

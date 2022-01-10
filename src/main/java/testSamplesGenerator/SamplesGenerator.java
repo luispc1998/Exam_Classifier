@@ -8,6 +8,7 @@ import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.output.ExcelWriter;
 import random.RandomGenerator;
+import utils.Utils;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -126,13 +127,34 @@ public class SamplesGenerator {
      */
     private final static List<ExamPair> orderedPairs = new ArrayList<>();
 
+    /**
+     * Base directory in which the intances will be generated.
+     */
+    private final static String outputBaseDirectory = "files/testFilesGenerated";
+
+    /**
+     * Instances base name without suffix.
+     */
+    private final static String fileBaseName = "test";
+
+    /**
+     * Number of instances to be generated simultaneously.
+     */
+    private final static int instancesNumberToGenerate = 10;
 
     /**
      * Just generates an instance according to the provided data.
      * @param args No args needed.
      */
     public static void main(String[] args) {
-        generator();
+        String subfolder = Utils.createDirectoryStringBasedOnHour();
+        String path = outputBaseDirectory + "/" + subfolder;
+        Utils.createDirectory(path);
+
+        for (int i = 0; i < instancesNumberToGenerate; i++) {
+            generator(path + "/", fileBaseName, i);
+        }
+
     }
 
     /**
@@ -271,7 +293,7 @@ public class SamplesGenerator {
     /**
      * Generates the instance.
      */
-    public static void generator() {
+    public static void generator(String directory, String filename, int counter) {
 
         // Iterar la entrada
         initialize();
@@ -305,7 +327,7 @@ public class SamplesGenerator {
 
 
         ExcelWriter excelWriter = new ExcelWriter(new ExamParser(), new ConstrictionParser());
-        excelWriter.parseExamListToExcel("files/testFilesGenerated/", "test.xslx", 1, result,
+        excelWriter.parseExamListToExcel(directory, filename, counter, result,
                 constrictions, getDefaultCalendarTimeInterval(calendar));
 
 
@@ -574,18 +596,24 @@ public class SamplesGenerator {
      * @param semester The semester of the exam.
      * @param content The content of the exam.
      */
-    private static void generateRandomExam(int course, int semester, String content) { //TODO
+    private static void generateRandomExam(int course, int semester, String content) {
         Exam exam = new Exam(course, semester, generateCode(),
                 generateAcronym(), generateSubject(), 1,
-                content, "presencial", generator.nextInt(90) + 40, generateRandomDuration().toMinutes(),
+                content, generateRandomModality(), generator.nextInt(90) + 40, generateRandomDuration().toMinutes(),
                 null, null, generateRandomExtraTime(), generateRandomNumericalComplexity(), idCounter, null);
         idCounter++;
         result.add(exam);
 
     }
 
-    private String generateRandomModality() {
-
+    private static String generateRandomModality() {
+        Random generator = RandomGenerator.getGenerator();
+        if (generator.nextDouble()< 0.15){
+            return "Entrega";
+        }
+        else{
+            return "Presencial";
+        }
     }
 
 

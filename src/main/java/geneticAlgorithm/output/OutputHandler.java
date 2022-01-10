@@ -113,7 +113,7 @@ public class OutputHandler {
 
         StringBuilder directoryBuilder = new StringBuilder();
         directoryBuilder.append(outputBaseDirectory);
-        directoryBuilder.append(Utils.createDirectoryBasedOnHour());
+        directoryBuilder.append(Utils.createDirectoryStringBasedOnHour());
 
         File theDir = new File(directoryBuilder.toString());
 
