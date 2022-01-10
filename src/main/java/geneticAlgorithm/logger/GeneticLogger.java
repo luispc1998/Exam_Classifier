@@ -13,18 +13,19 @@ public class GeneticLogger {
     private StringBuilder data;
 
     /**
+     * Fitness data to obtaing the graph.
+     */
+    private StringBuilder fitnessGraphData;
+
+    /**
      * Default constructor for the class
      */
     public GeneticLogger() {
-        resetLogger();
+        data = new StringBuilder();
+        fitnessGraphData = new StringBuilder();
     }
 
-    /**
-     * Resets the logger state, that is, removes all content from {@code data}.
-     */
-    public void resetLogger() {
-        data = new StringBuilder();
-    }
+
 
     /**
      * Adds a log string to {@code data}.
@@ -59,5 +60,25 @@ public class GeneticLogger {
      */
     public String getLoggedData() {
         return data.toString();
+    }
+
+    /**
+     * Adds a new line to the fitness graph data.
+     * @param genCounter Current generation.
+     * @param averageFitness Current mean fitness.
+     */
+    public void addAverageFitnessOnIt(int genCounter, double averageFitness) {
+        fitnessGraphData.append(genCounter);
+        fitnessGraphData.append(",");
+        fitnessGraphData.append(averageFitness);
+        fitnessGraphData.append("\n");
+    }
+
+    /**
+     * Returns the logged data to generate the fitness graph.
+     * @return The logged data to generate the fitness graph.
+     */
+    public String getFitnessGraphData() {
+        return fitnessGraphData.toString();
     }
 }

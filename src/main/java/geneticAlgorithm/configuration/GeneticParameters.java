@@ -48,8 +48,25 @@ public class GeneticParameters {
      */
     private final int repairingDepth;
 
+    /**
+     * Number of times the genetic algorithm must be repeated.
+     *
+     * <p>
+     * This is used for statistical purposes, normally it will be set to one.
+     */
+    private final int algorithmRepetitions;
+
+    /**
+     * States whether the application must stop and inform the user in case it detects warnings or errors in the inputs.
+     *
+     * <p>
+     * Normally it will be set to true, but it can be disabled for multiple executions in order to get statistics.
+     */
+    private final boolean errorAsking;
+
     private GeneticParameters(int maxIterations, int populationSize, int loggingFrequency, double mutationProbability,
-                             int maxSchedulesToTake, double crossingProbability, int repairingDepth) {
+                             int maxSchedulesToTake, double crossingProbability, int repairingDepth,
+                              int algorithmRepetitions, boolean errorAsking) {
         this.maxIterations = maxIterations;
         this.populationSize = populationSize;
         this.loggingFrequency = loggingFrequency;
@@ -57,6 +74,20 @@ public class GeneticParameters {
         this.maxSchedulesToTake = maxSchedulesToTake;
         this.crossingProbability = crossingProbability;
         this.repairingDepth = repairingDepth;
+        this.algorithmRepetitions = algorithmRepetitions;
+        this.errorAsking = errorAsking;
+    }
+
+    public int getRepairingDepth() {
+        return repairingDepth;
+    }
+
+    public int getAlgorithmRepetitions() {
+        return algorithmRepetitions;
+    }
+
+    public boolean isErrorAsking() {
+        return errorAsking;
     }
 
     public int getMaxIterations() {
@@ -100,7 +131,9 @@ public class GeneticParameters {
                     Double.parseDouble(geneticProperties.getProperty("mutationProb")),
                     Integer.parseInt(geneticProperties.getProperty("maxSchedulesToTake")),
                     Double.parseDouble(geneticProperties.getProperty("crossingProb")),
-                    Integer.parseInt(geneticProperties.getProperty("repairingDepth")));
+                    Integer.parseInt(geneticProperties.getProperty("repairingDepth")),
+                    Integer.parseInt(geneticProperties.getProperty("algorithmRepetitions")),
+                    Boolean.parseBoolean(geneticProperties.getProperty("inputWarningsStop")));
 
 
         } catch (FileNotFoundException e) {

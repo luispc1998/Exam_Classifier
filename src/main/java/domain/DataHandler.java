@@ -1,9 +1,7 @@
 package domain;
 
-import geneticAlgorithm.configuration.Configurer;
 import domain.constrictions.Constriction;
 import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.counter.DefaultConstrictionCounter;
 import domain.constrictions.types.hardConstriction.fullyHardConstrictions.IsolateCourseOnDayConstriction;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.NumericalComplexityPenalization;
@@ -14,6 +12,7 @@ import domain.entities.Exam;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
+import geneticAlgorithm.configuration.Configurer;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -87,7 +86,6 @@ public class DataHandler {
         addConstriction(new SameCourseDifferentDayConstriction(exams));
         addConstriction(new ProhibitedIntervalPenalization(exams, configurer));
         addConstriction(new NumericalComplexityPenalization(exams));
-        //addConstriction(new UnbalancedDaysPenalization(exams));
     }
 
     /**
@@ -181,8 +179,10 @@ public class DataHandler {
     public Exam checkCollisionOf(LocalDate currentDate, LocalTime currentHour, Duration chunkOfTime) {
         for (Exam exam: exams) {
             if (exam.isScheduled()){
-                if (exam.willCollideWith(currentDate,currentHour, chunkOfTime)){
-                    return exam;
+                if (configurer.getDateTimeConfigurer().areCollisionsEnabledFor(exam)) {
+                    if (exam.willCollideWith(currentDate, currentHour, chunkOfTime)) {
+                        return exam;
+                    }
                 }
             }
         }
@@ -237,11 +237,11 @@ public class DataHandler {
 
     /**
      * Recomputes the result of all the constrictions over the current schedule.
+     * @param counter The constriction counter instance that will be used for the checking of the weak constrictions.
      * @return A {@code HashMap} being the keys the constrictions ids, and the values a list of that type of constriction.
      */
-    public HashMap<String, List<Constriction>> verifyConstrictions() {
+    public HashMap<String, List<Constriction>> verifyConstrictions(ConstrictionCounter counter) {
         HashMap<String, List<Constriction>> verifiedConstrictions = new HashMap<>();
-        ConstrictionCounter counter = new DefaultConstrictionCounter();
 
         for (WeakConstriction cons: constrictions) {
             cons.checkConstriction(counter);

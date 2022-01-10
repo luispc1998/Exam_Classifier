@@ -602,4 +602,22 @@ public class Exam {
     public boolean willCollideWith(Exam ex) {
         return willCollideWith(ex.getDate(), ex.getInitialHour(), ex.getChunkOfTime());
     }
+
+
+    public boolean willCollideConsideringDeliveriesWith(LocalDate currentDate, LocalTime currentHour, Duration chunkOfTime) {
+        if (modality.equalsIgnoreCase("entrega")) {
+            return false;
+        }
+        else{
+            return willCollideWith(currentDate, currentHour, chunkOfTime);
+        }
+    }
+
+    /**
+     * Returns the modality of the exam.
+     * @return The modality of the exam.
+     */
+    public String getModality() {
+        return modality;
+    }
 }

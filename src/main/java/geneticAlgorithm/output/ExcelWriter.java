@@ -2,13 +2,15 @@ package geneticAlgorithm.output;
 
 import domain.DataHandler;
 import domain.constrictions.Constriction;
+import domain.constrictions.counter.ConstrictionCounter;
+import domain.constrictions.counter.DefaultConstrictionCounter;
 import domain.entities.Exam;
 import domain.entities.ExamDatesComparator;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
-import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 import geneticAlgorithm.Individual;
+import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 import main.PrettyTimetable;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -63,11 +65,12 @@ public class ExcelWriter {
 
         int counter = 0;
         for (Individual idv: outputIndividuals) {
+            dataHandler.resetScheduling();
             decoder.decodeNew(idv, dataHandler);
             prettyTimetable.orderScheduling(dataHandler);
             List<Exam> finalResult = dataHandler.getClonedSchedule();
-            HashMap<String, List<Constriction>> verifiedConstrictions = dataHandler.verifyConstrictions();
-            dataHandler.resetScheduling();
+            ConstrictionCounter constrictionCounter = new DefaultConstrictionCounter();
+            HashMap<String, List<Constriction>> verifiedConstrictions = dataHandler.verifyConstrictions(constrictionCounter);
             Comparator<Exam> examComparator = new ExamDatesComparator();
             finalResult.sort(examComparator);
             counter++;

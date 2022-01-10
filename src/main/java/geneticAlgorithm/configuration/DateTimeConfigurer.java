@@ -1,5 +1,6 @@
 package geneticAlgorithm.configuration;
 
+import domain.entities.Exam;
 import domain.entities.Interval;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,7 +17,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * This is in charge of managing the date and time configurations, such as the calendars,
@@ -62,6 +66,16 @@ public class DateTimeConfigurer {
     private boolean defaultExtraTimeEnabled;
 
     /**
+     * States if exams whose modality is "Entrega" provoke collisions on placement.
+     */
+    private boolean deliveryCollisionEnabled;
+
+    /**
+     * String id used in the exams at the excel to identify deliveries on the Modality field.
+     */
+    private String deliveryIdentifier;
+
+    /**
      * Constructor for the class
      * @param dateTimeFilepath filepath to property files where the date and time configurations are stored.
      * @param inputDataFilepath filepath to the input excel, where the exams, constrictions and calendar are provided.
@@ -97,6 +111,8 @@ public class DateTimeConfigurer {
         this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
         this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
         this.defaultExtraTimeEnabled = Boolean.parseBoolean(fileProperties.getProperty("defaultExtraTimeEnabled"));
+        this.deliveryCollisionEnabled = Boolean.parseBoolean(fileProperties.getProperty("deliveryCollisionEnabled"));
+        this.deliveryIdentifier = String.valueOf(fileProperties.get("deliveryIdentifier"));
     }
 
     /**
@@ -278,5 +294,12 @@ public class DateTimeConfigurer {
 
         result.add(new Interval(getDayInitialHour(day), getDayEndingHour(day)));
         return result;
+    }
+
+    public boolean areCollisionsEnabledFor(Exam exam) {
+        if (! deliveryCollisionEnabled){
+            return ! deliveryIdentifier.equalsIgnoreCase(exam.getModality());
+        }
+        return true;
     }
 }

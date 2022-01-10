@@ -7,7 +7,6 @@ import domain.entities.Exam;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This states for an exam an interval of dates in which the exam must be placed.

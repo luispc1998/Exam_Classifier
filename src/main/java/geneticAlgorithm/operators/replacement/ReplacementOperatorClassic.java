@@ -1,9 +1,8 @@
 package geneticAlgorithm.operators.replacement;
 
-import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.Individual;
+import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 

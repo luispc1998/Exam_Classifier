@@ -1,9 +1,9 @@
 package geneticAlgorithm.operators.selection;
 
-import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.utils.Utils;
+import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import random.RandomGenerator;
+import utils.Utils;
 
 import java.util.List;
 

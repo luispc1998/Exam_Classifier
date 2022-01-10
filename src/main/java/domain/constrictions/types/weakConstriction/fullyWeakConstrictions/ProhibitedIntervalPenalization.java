@@ -1,9 +1,9 @@
 package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
 
-import geneticAlgorithm.configuration.Configurer;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
 import domain.entities.Exam;
+import geneticAlgorithm.configuration.Configurer;
 
 import java.time.Duration;
 import java.util.List;

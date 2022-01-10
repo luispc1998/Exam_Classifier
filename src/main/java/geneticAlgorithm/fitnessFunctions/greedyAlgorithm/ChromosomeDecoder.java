@@ -1,11 +1,11 @@
 package geneticAlgorithm.fitnessFunctions.greedyAlgorithm;
 
-import geneticAlgorithm.configuration.Configurer;
-import geneticAlgorithm.configuration.DateTimeConfigurer;
 import domain.DataHandler;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import geneticAlgorithm.Individual;
+import geneticAlgorithm.configuration.Configurer;
+import geneticAlgorithm.configuration.DateTimeConfigurer;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -112,10 +112,11 @@ public class ChromosomeDecoder {
 
             Exam collidingExam = null;
             while (dateTimeConfigurer.isHourInProhibitedInterval(currentHour) ||
+                    collidingConditions(dataHandler, exam) &&
                     (collidingExam = dataHandler.checkCollisionOf(day, currentHour, exam.getChunkOfTime())) != null) {
 
 
-                if(collidingExam != null){
+                if(collidingConditions(dataHandler, exam) && collidingExam != null){
                     daysTimes.put(day, collidingExam.getFinishingHour());
                     currentHour = daysTimes.get(day);
                 }
@@ -130,12 +131,18 @@ public class ChromosomeDecoder {
 
             if (dateTimeConfigurer.isValidEndingHourFor(day, currentHour.plus(exam.getChunkOfTime()))){
                 dataHandler.schedule(exam, day, currentHour);
-                daysTimes.put(day, exam.getFinishingHour());
+                if (collidingConditions(dataHandler, exam)) {
+                    daysTimes.put(day, exam.getFinishingHour());
+                }
                 scheduled = true;
                 break;
             }
         }
 
+        // reparación
+        // Coger todos los exámenes móviles fechados esos días.
+        // Tienen que durar lo mismo o más.
+        // copia de daysTimes
         if (!scheduled && depth <= limitDepth) {
             List<Exam> candidates = dataHandler.getSwappableExamsOfOver(exam, viableDays);
 
@@ -160,13 +167,14 @@ public class ChromosomeDecoder {
                 }
 
             }
-            // reparación
-            // Coger todos los exámenes móviles fechados esos días.
-            // Tienen que durar lo mismo o más.
-            // copia de daysTimes
+
 
         }
         return scheduled;
+    }
+
+    private boolean collidingConditions(DataHandler dataHandler, Exam exam) {
+        return dataHandler.getConfigurer().getDateTimeConfigurer().areCollisionsEnabledFor(exam);
     }
 
     /**

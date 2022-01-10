@@ -17,3 +17,11 @@ beginningProhibitedIntervalHour=13:00
 
 ## Ending hour of the special interval used for lunch
 endProhibitedIntervalHour=15:00
+
+
+
+## States if the deliveries provoke collisions. (If disabled there will be deliveries at the same time as other exams.)
+deliveryCollisionEnabled=False
+
+## String identifier that the exams at the excel have when they are a delivery.
+deliveryIdentifier=Entrega

@@ -1,6 +1,5 @@
 package geneticAlgorithm.operators;
 
-import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
 import geneticAlgorithm.operators.crossing.OXCrosssingOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;

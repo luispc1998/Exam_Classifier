@@ -7,61 +7,146 @@ import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.output.ExcelWriter;
+import random.RandomGenerator;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-
+/**
+ * This generates instance of the problem according to the configurations specified by means of constants.
+ */
 public class SamplesGenerator {
 
     // Configurations
-    public static int idCounter = 0;
+    /**
+     * Number of optatives that the instance will have
+     */
     public final static int optatives = 9;
+
+    /**
+     * Number of times that the situation at the school will be repeated.
+     *
+     * If the school has a mean of 62 exams, and we set 2 as repetitions, then the instance will have 124 exams.
+     * The concrete formula is 74 * repetitions.
+     */
     private final static int repetitions = 1;
+
+    /**
+     * States if there will be hard constraints among the generated user constraints.
+     */
     private final static boolean hardsEnabled = true;
+
+    /**
+     * States if the extra time feature is enabled for the instance generation.
+     */
     private final static boolean extraTimeEnabled = true;
+
+    /**
+     * States if the numerical complexity feature is enabled for the instance generation.
+     */
     private final static boolean cnEnabled = true;
+
+    /**
+     * States the number of rounds per repetition.
+     */
     private final static int rounds_per_rep = 2;
+
+    /**
+     * States the maximum round size.
+     */
     private final static int max_round_size = 3;
     // End of configurations
 
+    /**
+     * Counter of the exams that will be assigned as a new id for a new exam.
+     */
+    public static int idCounter = 0;
 
-
+    /**
+     * The list containing the final exams of the instance.
+     */
     private final static ArrayList<Exam> result = new ArrayList<>();
+
+    /**
+     * A list which contains the exams that have no constraints associated to them.
+     */
     private static ArrayList<Exam> freeExams;
-    private final static Random generator = new Random();
-    
+
+    /**
+     * A random object,
+     */
+    private final static Random generator = RandomGenerator.getGenerator();
+
+    /**
+     * A HashMap containing as keys possible durations of the exams, and as values the probability of such a duration.
+     */
     private final static HashMap<Duration, Double> examDurations = new HashMap<>();
+
+    /**
+     * A HashMap containing as keys possible extra times of the exams, and as values the probability of such a duration.
+     */
     private final static HashMap<Duration, Double> examExtraTimes = new HashMap<>();
+
+    /**
+     * A HashMap containing as keys possible numerical complexities of the exams, and as values the probability of such a duration.
+     */
     private final static HashMap<Integer, Double> numericalComplexities = new HashMap<>();
+
+    /**
+     * A HashMap containing the rounds of the final instance, and as values the size of such round.
+     */
     private final static HashMap<String, Integer> rounds = new HashMap<>();
-    
-    
+
+    /**
+     * The final list of constrictions of the instance
+     */
     private final static HashMap<String, List<Constriction>> constrictions = new HashMap<>();
+
+    /**
+     * The final calendar of days of the instance.
+     */
     private static List<LocalDate> calendar;
 
+    /**
+     * A HashMap containing the constriction ids as keys, and as value of the number of such constriction type in the final
+     * instance.
+     */
     private final static HashMap<String, Integer> constrictionAmount = new HashMap<>();
 
 
-
-
+    /**
+     * Exam pairs that must take place on the same day.
+     */
     private final static List<ExamPair> sameDayPairs = new ArrayList<>();
+
+    /**
+     * Exam pair that must be on a certain order.
+     */
     private final static List<ExamPair> orderedPairs = new ArrayList<>();
 
 
-
+    /**
+     * Just generates an instance according to the provided data.
+     * @param args No args needed.
+     */
     public static void main(String[] args) {
         generator();
     }
 
-    public static void initialer() {
+    /**
+     * This method initializes some data structures.
+     */
+    public static void initialize() {
         initializeExamDurationProbabilities();
         initializeExamExtraTimesProbabilities();
         initializeExamNumericalComplexity();
     }
 
+    /**
+     * Generates the rounds ids and sizes and afterwards assigns them to the exam.
+     */
     private static void initializeRounds() {
         Random generator = new Random();
         for (int i = 0; i < repetitions * rounds_per_rep; i++) {
@@ -85,6 +170,10 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Pairs a list of exams on the same day. Generates each possible combination pair.
+     * @param toBePaired The list of exams to be paired.
+     */
     private static void pairExamsOnDay(List<Exam> toBePaired) {
         for (int i = 0; i < toBePaired.size()-1; i++) {
             for (int j = i; j < toBePaired.size(); j++) {
@@ -94,6 +183,13 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Initializes the calendar of days that the instance will have.
+     *
+     * <p>
+     * Taking into account real life problem instances, the average calendar size is 17, so the final calendar size
+     * will be 17 * {@code repetitions}.
+     */
     private static void initializeCalendar() {
         long finalSize = repetitions * 17;
 
@@ -106,22 +202,32 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Initializes how many constrictions per type will be.
+     */
     private static void initializeConstrictionAmount() {
-
         constrictionAmount.put("DB", randomConstrictionNumber(result.size() / 6, result.size() / 3));
         constrictionAmount.put("SD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
         constrictionAmount.put("DD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
         constrictionAmount.put("TD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
         constrictionAmount.put("OE", randomConstrictionNumber(result.size() / 6, result.size() / 3));
-
     }
 
+    /**
+     * Generates a random number considering the minimum and the maximum numbers provided.
+     * @param minimun The minimum number of instances.
+     * @param maximum The maximum number of instances.
+     * @return A number between {@code minimum} and {@code maximum}.
+     */
     private static int randomConstrictionNumber(int minimun, int maximum) {
         Random generator = new Random();
         return minimun + generator.nextInt(maximum-minimun);
 
     }
 
+    /**
+     * Initializes the possibilities and their probabilities of the extra times.
+     */
     private static void initializeExamExtraTimesProbabilities() {
         if (extraTimeEnabled) {
             examExtraTimes.put(Duration.ZERO, 0.3);
@@ -133,6 +239,9 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Initializes the possibilities and their probabilities of the numerical complexities.
+     */
     private static void initializeExamNumericalComplexity() {
         if (cnEnabled) {
             numericalComplexities.put(0, 0.7);
@@ -145,6 +254,9 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Initializes the possibilities and their probabilities of the exam durations.
+     */
     private static void initializeExamDurationProbabilities() {
         double divisor = 60.0;
         examDurations.put(Duration.ofMinutes(30), 9/divisor);
@@ -156,10 +268,13 @@ public class SamplesGenerator {
         examDurations.put(Duration.ofMinutes(210), 2/divisor);
     }
 
+    /**
+     * Generates the instance.
+     */
     public static void generator() {
 
         // Iterar la entrada
-        initialer();
+        initialize();
         for (int i = 0; i < repetitions; i++) {
 
             for (int k = 0; k < 3; k++) { // Cursos
@@ -196,6 +311,9 @@ public class SamplesGenerator {
 
     }
 
+    /**
+     * Gets some free exams and schedules them.
+     */
     private static void scheduleSomeExams() {
         List<Exam> scheduled = new ArrayList<>();
         Random generator = new Random();
@@ -217,6 +335,12 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Checks if a given exam collides with any of the exam in a given list.
+     * @param exams A list of exams
+     * @param exam The exam that we want to check if colliding with any of the list.
+     * @return True in case the exam collides with any of the ones in the list, False otherwise.
+     */
     private static boolean collisionDetected(List<Exam> exams, Exam exam) {
         for (Exam ex : exams) {
             if (exam.willCollideWith(ex)) {
@@ -226,10 +350,11 @@ public class SamplesGenerator {
         return false;
     }
 
-    private static void randomScheduleExam(Exam exam) {
-
-    }
-
+    /**
+     * Gets the hour interval of the days in the final instance
+     * @param dates The list of days of the final instance.
+     * @return The final calendar containing also the information about the time interval per each day.
+     */
     private static HashMap<LocalDate, Interval> getDefaultCalendarTimeInterval(List<LocalDate> dates) {
         HashMap<LocalDate, Interval> realCalendar = new HashMap<>();
         Interval defaultInterval = new Interval(LocalTime.of(9,0), LocalTime.of(21,0));
@@ -239,6 +364,9 @@ public class SamplesGenerator {
         return realCalendar;
     }
 
+    /**
+     * Generates the user constrictions.
+     */
     private static void generateConstrictions() {
 
         generateDaysBanned();
@@ -249,10 +377,11 @@ public class SamplesGenerator {
 
         constrictionAmount.put("DI", freeExams.size() / 2);
         generateDayIntervals();
-
-
     }
 
+    /**
+     * Generates the {@code DayIntervalConstriction} instances.
+     */
     private static void generateDayIntervals() {
         constrictions.put("DI", new ArrayList<>());
 
@@ -272,6 +401,9 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Generates the {@code OrderExamsConstriction} instances.
+     */
     private static void generateOrders() {
         constrictions.put("OE", new ArrayList<>());
 
@@ -307,6 +439,9 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Generates the {@code TimeDisplacementConstriction} instances.
+     */
     private static void generateTimeDisplacements() {
         constrictions.put("TD", new ArrayList<>());
         for (int i = 0; i < constrictionAmount.get("TD"); i++) {
@@ -334,6 +469,9 @@ public class SamplesGenerator {
 
     }
 
+    /**
+     * Generates the {@code DifferentDayConstriction} instances.
+     */
     private static void generateDifferentDays() {
         constrictions.put("DD", new ArrayList<>());
         for (int i = 0; i < constrictionAmount.get("DD"); i++) {
@@ -358,6 +496,9 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Generates the {@code SameDayConstriction} instances.
+     */
     private static void generateSameDays() {
         constrictions.put("SD", new ArrayList<>());
         for (int i = 0; i < constrictionAmount.get("SD"); i++) {
@@ -384,10 +525,16 @@ public class SamplesGenerator {
         }
     }
 
-    private static boolean checkPairRegistered(ExamPair exams, List<ExamPair> sameDayPairs) {
-        return sameDayPairs.contains(exams);
+    /**
+     * Checks if a {@code ExamPair} was registered on a list.
+     */
+    private static boolean checkPairRegistered(ExamPair exams, List<ExamPair> examPairList) {
+        return examPairList.contains(exams);
     }
 
+    /**
+     * Generates the {@code DayBannedConstriction} instances.
+     */
     private static void generateDaysBanned() {
         constrictions.put("DB", new ArrayList<>());
         for (int i = 0; i < constrictionAmount.get("DB"); i++) {
@@ -395,6 +542,9 @@ public class SamplesGenerator {
         }
     }
 
+    /**
+     * Bans a random calendar day for an exam.
+     */
     private static void banRandomDayForRandomExam() {
         Exam exam = result.get(generator.nextInt(result.size()));
         LocalDate bannedDay = calendar.get(generator.nextInt(calendar.size()));
@@ -405,6 +555,10 @@ public class SamplesGenerator {
         
     }
 
+    /**
+     * Randomly makes a constriction hard.
+     * @param uc The constriction that may be marked as hard.
+     */
     private static void handleHards(UserConstriction uc) {
         if (hardsEnabled) {
             Random generator = new Random();
@@ -414,7 +568,13 @@ public class SamplesGenerator {
         }
     }
 
-    private static void generateRandomExam(int course, int semester, String content) {
+    /**
+     * Generates an exam full of random data but the specified as parameter.
+     * @param course The course of the exam.
+     * @param semester The semester of the exam.
+     * @param content The content of the exam.
+     */
+    private static void generateRandomExam(int course, int semester, String content) { //TODO
         Exam exam = new Exam(course, semester, generateCode(),
                 generateAcronym(), generateSubject(), 1,
                 content, "presencial", generator.nextInt(90) + 40, generateRandomDuration().toMinutes(),
@@ -424,10 +584,24 @@ public class SamplesGenerator {
 
     }
 
+    private String generateRandomModality() {
+
+    }
+
+
+    /**
+     * Generates a random numerical complexity.
+     * @return A random numerical complexity.
+     */
     private static int generateRandomNumericalComplexity() {
         return getIntegerFromHashMap(numericalComplexities);
     }
 
+    /**
+     * Gets an integer key from as hashmap having on the values the probability of the key to be selected.
+     * @param test A hashmap with integers as keys and their probability to be selected as values.
+     * @return The integer key selected.
+     */
     private static Integer getIntegerFromHashMap(HashMap<Integer, Double> test) {
         double p = Math.random();
         double cumulativeProbability = 0.0;
@@ -442,12 +616,20 @@ public class SamplesGenerator {
         return defResult;
     }
 
+    /**
+     * Generates a random extra time.
+     * @return A random extra time.
+     */
     private static Duration generateRandomExtraTime() {
         return getDurationFromHashMap(examExtraTimes);
     }
 
 
-
+    /**
+     * Gets a duration key from as hashmap having on the values the probability of the key to be selected.
+     * @param test A hashmap with durations as keys and their probability to be selected as values.
+     * @return The duration key selected.
+     */
     private static Duration getDurationFromHashMap(HashMap<Duration, Double> test) {
         double p = Math.random();
         double cumulativeProbability = 0.0;
@@ -462,18 +644,34 @@ public class SamplesGenerator {
         return defResult;
     }
 
+    /**
+     * Generates a random exam duration.
+     * @return A random exam duration.
+     */
     private static Duration generateRandomDuration() {
         return getDurationFromHashMap(examDurations);
     }
 
+    /**
+     * Generates a random unique string for the subject field.
+     * @return A random unique string for the subject field.
+     */
     private static String generateSubject() {
         return "Subject:" + idCounter;
     }
 
+    /**
+     * Generates a random unique string for the acronym field.
+     * @return A random unique string for the acronym field.
+     */
     private static String generateAcronym() {
         return "Acro:" + idCounter;
     }
 
+    /**
+     * Generates a random unique string for the code field.
+     * @return A random unique string for the code field.
+     */
     private static String generateCode() {
         return "Code:" + idCounter;
     }

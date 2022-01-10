@@ -1,11 +1,11 @@
 package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 
-import geneticAlgorithm.configuration.DateTimeConfigurer;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.types.hardConstriction.HardConstriction;
 import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
 import domain.entities.Exam;
+import geneticAlgorithm.configuration.DateTimeConfigurer;
 
 import java.time.LocalDate;
 import java.util.List;

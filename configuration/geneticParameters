@@ -16,7 +16,13 @@ mutationProb=0.15
 crossingProb=1.0
 
 ## Desired maximum amount of different schedules to be retrieved at the end. 
-maxSchedulesToTake=3
+maxSchedulesToTake=1
 
 ## Desired Max depth of the repairing algorithm.
-repairingDepth=1
+repairingDepth=2
+
+## Specifies if the application must stop when detecting warnings on the parsing.
+inputWarningsStop=false
+
+## Specifies if the number of times the algorithm must be executed (used for statistical purposes)
+algorithmRepetitions=10
