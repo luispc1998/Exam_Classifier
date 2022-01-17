@@ -220,11 +220,11 @@ public class DataHandler {
 
     /**
      * Returns an exam by index.
-     * @param index The index of the exam to be returned.
+     * @param examId The index of the exam to be returned.
      * @return The {@code Exam} object at the given index in {@code exams}.
      */
-    public Exam getExam(Integer index) {
-        return exams.get(index);
+    public Exam getExamById(Integer examId) {
+        return exams.stream().filter((ex) -> ex.getId() == examId).findFirst().get();
     }
 
     /**
