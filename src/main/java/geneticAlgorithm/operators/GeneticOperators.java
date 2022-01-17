@@ -6,6 +6,7 @@ import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.mutation.MutationSwap;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
 import geneticAlgorithm.operators.replacement.ReplacementOperatorClassic;
+import geneticAlgorithm.operators.replacement.ReplacementOperatorFitnessBiased;
 import geneticAlgorithm.operators.selection.RouletteSelection;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 
@@ -45,11 +46,12 @@ public class GeneticOperators {
     /**
      * Default constructor of the class, providing a default configuration of operators.
      */
-    public GeneticOperators() {
+    public GeneticOperators(int populationSize) {
         this.selectionOperator = new RouletteSelection();
         this.mutationOperator = new MutationSwap();
         this.crossingOperator = new OXCrosssingOperator();
-        this.replacementOperator = new ReplacementOperatorClassic(5);
+        //this.replacementOperator = new ReplacementOperatorFitnessBiased();
+        this.replacementOperator = new ReplacementOperatorClassic(populationSize/25);
     }
 
     /**
