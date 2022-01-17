@@ -279,7 +279,7 @@ public class DataHandler {
      */
     public List<Exam> getSwappableExamsOfOver(Exam notScheduledExam, Set<LocalDate> days) {
         List<Exam> candidates = new ArrayList<>();
-        for (Exam exam: exams) {
+        for (Exam exam: getPreUnscheduledExams()) {
             if (days.contains(exam.getDate()) &&
                 exam.getChunkOfTime().toMinutes() >= notScheduledExam.getChunkOfTime().toMinutes()) {
                 candidates.add(exam);
