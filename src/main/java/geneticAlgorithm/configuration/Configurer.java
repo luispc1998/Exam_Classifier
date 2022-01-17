@@ -40,15 +40,32 @@ public class Configurer {
     private GeneticParameters geneticParameters;
 
     /**
+     * Folder that will contain all the data, configurations and outputs for the execution.
+     */
+    private final String statisticalFolder;
+    /**
      * Constructor for the class
      * @param filePathsFilepath path to a properties file which has the paths to the other geneticAlgorithm.configuration files
      */
     public Configurer(String filePathsFilepath) {
+        this(filePathsFilepath, "");
+    }
 
+    /**
+     * Constructor for the class used for statistical purposes.
+     * @param filePathsFilepath to a properties file which has the paths to the other configuration files.
+     * <p> Does not include the statistical folder in the path.
+     * @param statisticalFolder Statistical folder of the execution.
+     * <p>
+     * The statistical folder is just a directory with the data and configuration of one of the testing executions.
+     */
+    public Configurer( String filePathsFilepath, String statisticalFolder) {
+        this.statisticalFolder = statisticalFolder + "/";
         loadFilePaths(filePathsFilepath);
-        loadWeightConfigurer(filePaths.getProperty("weights"));
-        loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), filePaths.getProperty("inputFile"));
-        loadGeneticAlgorithmParameters(filePaths.getProperty("geneticConfiguration"));
+        loadWeightConfigurer(filePaths.getProperty("weights"), statisticalFolder);
+        loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), statisticalFolder,
+                filePaths.getProperty("inputFile"));
+        loadGeneticAlgorithmParameters(filePaths.getProperty("geneticConfiguration"), statisticalFolder);
     }
 
     /**
@@ -72,9 +89,10 @@ public class Configurer {
     /**
      * Loads the parameters of the genetic algorithm.
      * @param geneticConfiguration The file where the parameters are specified.
+     * @param statisticalFolder Statistical folder of the execution.
      */
-    private void loadGeneticAlgorithmParameters(String geneticConfiguration) {
-        this.geneticParameters = GeneticParameters.loadFromFile(geneticConfiguration);
+    private void loadGeneticAlgorithmParameters( String geneticConfiguration, String statisticalFolder) {
+        this.geneticParameters = GeneticParameters.loadFromFile(statisticalFolder + geneticConfiguration);
     }
 
     /**
@@ -88,18 +106,20 @@ public class Configurer {
     /**
      * Creates a new instance of the WeightConfigurer.
      * @param weightsFile filepath to the properties file where the weights for the constrictions are declared
+     * @param statisticalFolder Statistical folder of the execution.
      */
-    private void loadWeightConfigurer(String weightsFile) {
-        this.weigthConfigurer = new WeightConfigurer(weightsFile);
+    private void loadWeightConfigurer(String weightsFile, String statisticalFolder) {
+        this.weigthConfigurer = new WeightConfigurer(statisticalFolder + weightsFile);
     }
 
     /**
      * Creates a new instance of the DateTimeConfigurer
      * @param dateTimeFilepath filepath to the properties file where the date and times configurations are declared.
+     * @param statisticalFolder Statistical folder of the execution.
      * @param inputDataFilepath filepath to the input excel file where the exams, constrictions, and calendar are declared.
      */
-    private void loadDateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) {
-        this.dateTimeConfigurer = new DateTimeConfigurer(dateTimeFilepath, inputDataFilepath);
+    private void loadDateTimeConfigurer( String dateTimeFilepath, String statisticalFolder, String inputDataFilepath) {
+        this.dateTimeConfigurer = new DateTimeConfigurer(statisticalFolder + dateTimeFilepath, inputDataFilepath);
     }
 
     /**
@@ -136,7 +156,15 @@ public class Configurer {
         return getWeightConfigurer().existsConstrictionID(id);
     }
 
-
+    /**
+     * Changes the actual input file path for the passed as parameter.
+     * @param inputFile New path to the input file.
+     */
+    public void swapInputFile(String inputFile) {
+        filePaths.put("inputFile", inputFile);
+        loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), statisticalFolder,
+                filePaths.getProperty("inputFile"));
+    }
 }
 
 
