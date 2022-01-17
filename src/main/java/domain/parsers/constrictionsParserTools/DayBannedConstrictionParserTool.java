@@ -18,7 +18,7 @@ import java.util.Date;
 public class DayBannedConstrictionParserTool extends AbstractCosntrictionParserTool {
     @Override
     public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
-        Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
+        Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
         UserConstriction uc = new DayBannedConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate());

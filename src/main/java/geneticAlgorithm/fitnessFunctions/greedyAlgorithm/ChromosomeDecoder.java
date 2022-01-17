@@ -43,7 +43,7 @@ public class ChromosomeDecoder {
         List<Exam> exams = new ArrayList<>();
 
         for (Integer index: chromosome) {
-            exams.add(dataHandler.getExam(index));
+            exams.add(dataHandler.getExamById(index));
         }
 
         return exams;

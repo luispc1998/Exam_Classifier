@@ -23,7 +23,8 @@ public class Enconder {
     public Individual encodeListExams(DataHandler dataHandler){
         List<Integer> indexes = new ArrayList<>();
         for (Exam exam: dataHandler.getPreUnscheduledExams()) {
-                indexes.add(dataHandler.getIndexOfExam(exam));
+                //indexes.add(dataHandler.getIndexOfExam(exam));
+                indexes.add(exam.getId());
         }
         return new Individual(indexes);
     }

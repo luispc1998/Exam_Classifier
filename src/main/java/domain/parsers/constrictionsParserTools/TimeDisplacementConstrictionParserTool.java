@@ -16,8 +16,8 @@ public class TimeDisplacementConstrictionParserTool extends AbstractCosntriction
 
     @Override
     public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
-        Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
-        Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
+        Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
+        Exam exam2 = dataHandler.getExamById((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
         UserConstriction uc = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),
                 dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
         checkIfHard(uc, row, baseExcelColumn + 3);

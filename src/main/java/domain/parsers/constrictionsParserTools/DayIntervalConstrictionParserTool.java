@@ -22,7 +22,7 @@ public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParse
     @Override
     public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         List<LocalDate> calendar = dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates();
-        Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
+        Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
         UserConstriction uc = new DayIntervalConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate(), row.getCell(baseExcelColumn+2).getDateCellValue()

@@ -14,8 +14,8 @@ import org.apache.poi.ss.usermodel.Row;
 public class OrderExamsConstrictionParserTool extends AbstractCosntrictionParserTool {
     @Override
     public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
-        Exam exam1 = dataHandler.getExam((int) row.getCell(baseExcelColumn).getNumericCellValue());
-        Exam exam2 = dataHandler.getExam((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
+        Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
+        Exam exam2 = dataHandler.getExamById((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
         UserConstriction uc = new OrderExamsConstriction(exam1, exam2);
         checkIfHard(uc, row, baseExcelColumn + 2);
         return uc;
