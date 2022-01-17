@@ -11,6 +11,7 @@ import geneticAlgorithm.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
 import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
+import geneticAlgorithm.logger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.output.ExcelWriter;
 import geneticAlgorithm.output.OutputHandler;
@@ -32,7 +33,6 @@ public class App {
 
         String outputFileName = args[1];
         StatisticalDataGetter statisticalDataGetter = null;
-
 
 
         Configurer conf = new Configurer(args[0]);
@@ -80,8 +80,10 @@ public class App {
             Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
             FitnessFunction fn = new LinearFitnessFunction(dataHandler);
 
-            GeneticOperators geneticOperators = new GeneticOperators();
-            GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize(), geneticOperators);
+            GeneticOperators geneticOperators = new GeneticOperators(conf.getGeneticParameters().getPopulationSize());
+            GeneticLogger logger = new GeneticLogger();
+            GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize(),
+                    geneticOperators, logger);
 
 
             Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),

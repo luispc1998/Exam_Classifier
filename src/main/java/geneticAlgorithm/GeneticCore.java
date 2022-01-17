@@ -73,8 +73,9 @@ public class GeneticCore {
      * @param individualPrime First individual from which the initial population will be created.
      * @param popSize Size of the population to be handled by the algorithm.
      * @param geneticOperators Operator configuration for the algorithm.
+     * @param geneticLogger The Genetic Logger for the algorithm
      */
-    public GeneticCore(Individual individualPrime, int popSize, GeneticOperators geneticOperators) {
+    public GeneticCore(Individual individualPrime, int popSize, GeneticOperators geneticOperators, GeneticLogger geneticLogger) {
         if (individualPrime.getChromosome().size() == 0) {
             throw new IllegalArgumentException("There are no exams ids to work with in the given individual.");
         }
@@ -88,7 +89,7 @@ public class GeneticCore {
         this.mutationOperator = geneticOperators.getMutationOperator();
         this.crossingOperator = geneticOperators.getCrossingOperator();
         this.replacementOperator = geneticOperators.getReplacementOperator();
-        this.logger = new GeneticLogger();
+        this.logger = geneticLogger;
 
     }
 
@@ -117,7 +118,7 @@ public class GeneticCore {
 
         System.out.println(bestIndividual);
 
-        logger.log(genCounter, bestIndividual, averageFitness);
+        logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
 
 
         try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
@@ -132,7 +133,7 @@ public class GeneticCore {
                 logger.addAverageFitnessOnIt(genCounter, averageFitness);
 
                 if (genCounter % loggingFrequency == 0) {
-                    logger.log(genCounter, bestIndividual, averageFitness);
+                    logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
                 }
 
                 pb.step();
@@ -201,7 +202,7 @@ public class GeneticCore {
 
         List<Individual> newGenChilds = new ArrayList<>(population.size());
 
-        for (int i = 0; i < population.size(); i++) {
+        while (newGenChilds.size() != population.size()) {
             Individual father = selectionOperator.selection(population, fitnessFunction);
             Individual mother = selectionOperator.selection(population, fitnessFunction);
 

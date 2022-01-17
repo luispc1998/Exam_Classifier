@@ -60,12 +60,12 @@ public class Configurer {
      * The statistical folder is just a directory with the data and configuration of one of the testing executions.
      */
     public Configurer( String filePathsFilepath, String statisticalFolder) {
-        this.statisticalFolder = statisticalFolder + "/";
+        this.statisticalFolder = statisticalFolder.isEmpty() ? "" : statisticalFolder + "/";
         loadFilePaths(filePathsFilepath);
-        loadWeightConfigurer(filePaths.getProperty("weights"), statisticalFolder);
-        loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), statisticalFolder,
+        loadWeightConfigurer(filePaths.getProperty("weights"), this.statisticalFolder);
+        loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), this.statisticalFolder,
                 filePaths.getProperty("inputFile"));
-        loadGeneticAlgorithmParameters(filePaths.getProperty("geneticConfiguration"), statisticalFolder);
+        loadGeneticAlgorithmParameters(filePaths.getProperty("geneticConfiguration"), this.statisticalFolder);
     }
 
     /**
@@ -164,6 +164,15 @@ public class Configurer {
         filePaths.put("inputFile", inputFile);
         loadDateTimeConfigurer(filePaths.getProperty("dateTimes"), statisticalFolder,
                 filePaths.getProperty("inputFile"));
+    }
+
+    /**
+     * Changes the actual statistic file path for the passed as parameter.
+     * @param statisticDirectory New path to the statistic file.
+     */
+    public void swapStatisticDirectory(String statisticDirectory) {
+        filePaths.put("statisticsBaseDirectory", statisticDirectory);
+
     }
 }
 
