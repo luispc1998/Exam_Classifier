@@ -1,6 +1,7 @@
 # Input files
-inputFile2=files/pruebas/v6_sF_numericalComplexity.xlsx
-inputFile=files/testFilesGenerated/test.xslx_1.xlsx
+inputFile4=files/pruebas/v6_sF_numericalComplexity.xlsx
+inputFile=files/testFilesGenerated/20220117_1056/test_0.xlsx
+inputFile2=files/testFilesGenerated/test.xslx_1.xlsx
 inputFileOld=files/output/2021127_1111/test_4.xlsx
 
 # Output geneticAlgorithm.configuration
@@ -13,6 +14,3 @@ geneticConfiguration=configuration/geneticParameters
 dateTimes=configuration/dateTime
 weights=configuration/weights
 
-## Regular files
-hardConstrictions=configuration/hardConstrictions
-rounds=configuration/rounds

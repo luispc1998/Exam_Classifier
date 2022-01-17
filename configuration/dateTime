@@ -6,12 +6,6 @@ defaultExtraTimeEnabled=False
 ### Extra time to be added by default to the exams if no value provided
 defaultCleaningTimeMinutes=10
 
-## Starting hour at which exams can be placed
-initialDayHour=09:00:00
-
-## Ending hour at which all exams of the day must have finished
-endDayHour=21:00:00
-
 ## Starting hour of the special interval used for lunch
 beginningProhibitedIntervalHour=13:00
 
@@ -21,7 +15,7 @@ endProhibitedIntervalHour=15:00
 
 
 ## States if the deliveries provoke collisions. (If disabled there will be deliveries at the same time as other exams.)
-deliveryCollisionEnabled=False
+deliveryCollisionEnabled=True
 
 ## String identifier that the exams at the excel have when they are a delivery.
 deliveryIdentifier=Entrega

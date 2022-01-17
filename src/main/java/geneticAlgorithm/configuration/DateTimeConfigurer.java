@@ -35,15 +35,6 @@ public class DateTimeConfigurer {
      * A list with all the possible dates where the exams can take place.
      */
     private final HashMap<LocalDate, Interval> examDates;
-    /**
-     * First starting hour which an exam can have. It is not possible for a exam to start before this hour.
-     */
-    private LocalTime dayInitialHour;
-
-    /**
-     * Final ending which an exam can have. It is not possible for a exam to end after this hour.
-     */
-    private LocalTime dayEndingHour;
 
     /**
      * Initial hour for a prohibited interval where the exams cannot start.
@@ -103,10 +94,6 @@ public class DateTimeConfigurer {
             throw new IllegalArgumentException("Could not parse properties in dates and times geneticAlgorithm.configuration file");
         }
 
-
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
-        this.dayInitialHour = LocalTime.parse(fileProperties.getProperty("initialDayHour"), formatter);
-        this.dayEndingHour = LocalTime.parse(fileProperties.getProperty("endDayHour"), formatter);
         this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
         this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
         this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
