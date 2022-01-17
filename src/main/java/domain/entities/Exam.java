@@ -368,8 +368,9 @@ public class Exam {
         if (isScheduled()){
             LocalTime endingCurrentTime = currentHour.plus(chunkOfTime);
             return getDate().atStartOfDay().equals(currentDate.atStartOfDay()) &&
-                    ( currentHour.isAfter(initialHour) && currentHour.isBefore(getFinishingHour()) ||
-                            endingCurrentTime.isAfter(initialHour) && endingCurrentTime.isBefore(getFinishingHour()));
+                    (currentHour.equals(initialHour) || (currentHour.isAfter(initialHour)  ) && currentHour.isBefore(getFinishingHour())
+                            ||
+                    endingCurrentTime.isAfter(initialHour) && (endingCurrentTime.isBefore(getFinishingHour()) || endingCurrentTime.equals(getFinishingHour())));
         }
         else{
             return false;
