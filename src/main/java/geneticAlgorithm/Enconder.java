@@ -21,12 +21,12 @@ public class Enconder {
      * @return An individual with the positions of the exams in the list.
      */
     public Individual encodeListExams(DataHandler dataHandler){
-        List<Integer> indexes = new ArrayList<>();
+        List<Integer> examIds = new ArrayList<>();
         for (Exam exam: dataHandler.getPreUnscheduledExams()) {
                 //indexes.add(dataHandler.getIndexOfExam(exam));
-                indexes.add(exam.getId());
+                examIds.add(exam.getId());
         }
-        return new Individual(indexes);
+        return new Individual(examIds);
     }
 
 

@@ -65,22 +65,21 @@ public class ExcelWriter {
 
         int counter = 0;
         for (Individual idv: outputIndividuals) {
-            dataHandler.resetScheduling();
-            decoder.decodeNew(idv, dataHandler);
-            prettyTimetable.orderScheduling(dataHandler);
-            List<Exam> finalResult = dataHandler.getClonedSchedule();
-            ConstrictionCounter constrictionCounter = new DefaultConstrictionCounter();
-            HashMap<String, List<Constriction>> verifiedConstrictions = dataHandler.verifyConstrictions(constrictionCounter);
-            Comparator<Exam> examComparator = new ExamDatesComparator();
-            finalResult.sort(examComparator);
-            counter++;
-
-
-            parseExamListToExcel(directory, outputFileName, counter, finalResult,
-                    verifiedConstrictions, dataHandler.getConfigurer().getDateTimeConfigurer().getExamDatesWithTimes());
+            writeIndividualToExcel(dataHandler, directory, outputFileName, decoder, prettyTimetable, counter++, idv);
         }
+    }
 
-
+    public void writeIndividualToExcel(DataHandler dataHandler, String directory, String outputFileName, ChromosomeDecoder decoder, PrettyTimetable prettyTimetable, int counter, Individual idv) {
+        dataHandler.resetScheduling();
+        decoder.decodeNew(idv, dataHandler);
+        prettyTimetable.orderScheduling(dataHandler);
+        List<Exam> finalResult = dataHandler.getClonedSchedule();
+        ConstrictionCounter constrictionCounter = new DefaultConstrictionCounter();
+        HashMap<String, List<Constriction>> verifiedConstrictions = dataHandler.verifyConstrictions(constrictionCounter);
+        Comparator<Exam> examComparator = new ExamDatesComparator();
+        finalResult.sort(examComparator);
+        parseExamListToExcel(directory, outputFileName, counter, finalResult,
+                verifiedConstrictions, dataHandler.getConfigurer().getDateTimeConfigurer().getExamDatesWithTimes());
     }
 
     /**

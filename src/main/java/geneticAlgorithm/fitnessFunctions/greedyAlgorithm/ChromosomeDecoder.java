@@ -42,8 +42,8 @@ public class ChromosomeDecoder {
     public List<Exam> getExamsOrderedForChromosome(List<Integer> chromosome, DataHandler dataHandler){
         List<Exam> exams = new ArrayList<>();
 
-        for (Integer index: chromosome) {
-            exams.add(dataHandler.getExamById(index));
+        for (Integer examId: chromosome) {
+            exams.add(dataHandler.getExamById(examId));
         }
 
         return exams;
