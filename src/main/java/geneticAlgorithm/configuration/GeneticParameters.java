@@ -19,7 +19,7 @@ public class GeneticParameters {
     /**
      * Population size to be considered by the algorithm.
      */
-    private final int populationSize;
+    private int populationSize;
 
     /**
      * Iterations waited by the genetic logger before writing an entry.
@@ -31,7 +31,7 @@ public class GeneticParameters {
     /**
      * Mutation probability to be considered by the algorithm.
      */
-    private final double mutationProbability;
+    private double mutationProbability;
 
     /**
      * Schedule number to be taken when finishing the execution.
@@ -41,12 +41,12 @@ public class GeneticParameters {
     /**
      * Crossing probability to be considered by the algorithm.
      */
-    private final double crossingProbability;
+    private double crossingProbability;
 
     /**
      * Maximum depth of the tree of changes of the repairing algorithm.
      */
-    private final int repairingDepth;
+    private int repairingDepth;
 
     /**
      * Number of times the genetic algorithm must be repeated.
@@ -144,5 +144,19 @@ public class GeneticParameters {
     }
 
 
+    public void setPopulationSize(int populationSize) {
+        this.populationSize = populationSize;
+    }
 
+    public void setMutationProb(double mutationProb) {
+        this.mutationProbability = mutationProb;
+    }
+
+    public void setCrossingProb(double crossingProb) {
+        this.crossingProbability = crossingProb;
+    }
+
+    public void setRepairingDepth(int repairingDepth) {
+        this.repairingDepth = repairingDepth;
+    }
 }

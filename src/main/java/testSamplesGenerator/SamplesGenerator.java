@@ -141,7 +141,7 @@ public class SamplesGenerator {
     /**
      * Instances base name without suffix.
      */
-    private final static String fileBaseName = "test";
+    private final static String fileBaseName = "default_scenario";
 
     /**
      * Number of instances to be generated simultaneously.
