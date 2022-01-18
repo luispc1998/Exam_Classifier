@@ -143,7 +143,7 @@ public class ChromosomeDecoder {
         // Coger todos los exámenes móviles fechados esos días.
         // Tienen que durar lo mismo o más.
         // copia de daysTimes
-        if (!scheduled && depth <= limitDepth) {
+        if (!scheduled && depth < limitDepth) {
             List<Exam> candidates = dataHandler.getSwappableExamsOfOver(exam, viableDays);
 
             for (Exam examCandidate : candidates) {
