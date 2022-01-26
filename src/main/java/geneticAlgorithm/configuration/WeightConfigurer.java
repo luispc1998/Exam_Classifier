@@ -80,4 +80,34 @@ public class WeightConfigurer {
     public boolean existsConstrictionID(String id){
         return weights.containsKey(id);
     }
+
+
+    /**
+     * Changes the current value for all the {@link domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction} weights.
+     * @param userConstraintsWeight New value for the weight of all the User Constrictions.
+     */
+    public void setUserConstraintsWeight(double userConstraintsWeight) {
+        weights.put("DB", userConstraintsWeight);
+        weights.put("TD", userConstraintsWeight);
+        weights.put("SD", userConstraintsWeight);
+        weights.put("DD", userConstraintsWeight);
+        weights.put("OE", userConstraintsWeight);
+        weights.put("DI", userConstraintsWeight);
+    }
+
+    /**
+     * Changes the current value for the {@link domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization} weight.
+     * @param prohibitedIntervalWeight New value for the weight of the Prohibited Interval Penalization.
+     */
+    public void setProhibitedIntervalWeight(double prohibitedIntervalWeight) {
+        weights.put("PIP", prohibitedIntervalWeight);
+    }
+
+    /**
+     * Changes the current value for the {@link domain.constrictions.types.weakConstriction.fullyWeakConstrictions.NumericalComplexityPenalization} weight.
+     * @param numericalComplexityWeight New value for the weight of the Numerical Complexity Penalization.
+     */
+    public void setNumericalComplexityWeight(double numericalComplexityWeight) {
+        weights.put("NCP", numericalComplexityWeight);
+    }
 }

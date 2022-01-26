@@ -1,6 +1,6 @@
 package main;
 
-import dataGetter.StatisticalDataGetter;
+import utils.dataGetter.StatisticalDataGetter;
 import domain.DataHandler;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
@@ -9,8 +9,8 @@ import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
-import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
-import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
+import greedyAlgorithm.ChromosomeDecoder;
+import geneticAlgorithm.fitnessFunctions.LinearFitnessFunction;
 import geneticAlgorithm.logger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.output.ExcelWriter;
@@ -30,6 +30,7 @@ import java.util.Scanner;
 public class App {
 
     public static void main(String[] args) {
+
 
         String outputFileName = args[1];
         StatisticalDataGetter statisticalDataGetter = null;
@@ -88,8 +89,7 @@ public class App {
 
             Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
                     conf.getGeneticParameters().getCrossingProbability(), fn,
-                    conf.getGeneticParameters().getMaxIterations(), conf.getGeneticParameters().getLoggingFrequency(),
-                    statisticalDataGetter);
+                    conf.getGeneticParameters().getMaxIterations(), conf.getGeneticParameters().getLoggingFrequency());
 
 
             List<Individual> finalPopulation = genCore.getPopulation();

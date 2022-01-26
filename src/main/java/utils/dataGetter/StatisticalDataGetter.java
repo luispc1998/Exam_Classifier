@@ -1,16 +1,18 @@
-package dataGetter;
+package utils.dataGetter;
 
 import domain.DataHandler;
 import domain.constrictions.counter.ConstrictionCounter;
 import domain.constrictions.counter.DefaultConstrictionCounter;
+import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
+import greedyAlgorithm.ChromosomeDecoder;
 import main.PrettyTimetable;
 import utils.Utils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * This gets the values needed to compute how good a solution is and writes them into a file.
@@ -26,6 +28,8 @@ public class StatisticalDataGetter {
      * Subdirectory created for the algorithm files.
      */
     private String subDirectory;
+    private int weakConstrictions;
+    private int constrictions;
 
     /**
      * Default constructor for the class
@@ -35,6 +39,9 @@ public class StatisticalDataGetter {
     public StatisticalDataGetter(String statisticsFileName, String subDirectory) {
         this.statisticsFileName = statisticsFileName;
         this.subDirectory = subDirectory;
+
+        weakConstrictions = 0;
+        constrictions = 0;
     }
 
 
@@ -73,6 +80,10 @@ public class StatisticalDataGetter {
                 "," +
                 unfulfilledConstrictionCounter +
                 "," +
+                String.format(Locale.UK, "%.2f",unfulfilledConstrictionCounter / (double) weakConstrictions) +
+                "," +
+                String.format(Locale.UK, "%.2f",unfulfilledConstrictionCounter / (double) constrictions) +
+                "," +
                 minutesOnProhibitedInterval +
                 "\n";
         writeToFile(dataHandler.getConfigurer().getFilePaths("statisticsBaseDirectory") + "/" + subDirectory,
@@ -85,7 +96,7 @@ public class StatisticalDataGetter {
      * @param dataToWrite The String to write into the file.
      */
     private void writeToFile(String statisticsBaseDirectory, String dataToWrite) {
-        String path = statisticsBaseDirectory + "/" + statisticsFileName;
+        String path = statisticsBaseDirectory + "/" + statisticsFileName + ".csv";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
             bw.write(dataToWrite);
         } catch (IOException e) {
@@ -94,7 +105,22 @@ public class StatisticalDataGetter {
 
     }
 
+    /**
+     * Increments the constrictions counters {@code constrictions} and {@code weakConstrictions}
+     * @param constriction The constriction that will increment the counters.
+     */
+    public void countConstriction(UserConstriction constriction) {
+        if (! constriction.wasHardified()) {
+            this.weakConstrictions++;
+        }
+        this.constrictions++;
+    }
 
-
-
+    /**
+     * Sets {@code constrictions} and {@code weakConstrictions} to 0.
+     */
+    public void resetConstrictionCounter() {
+        this.weakConstrictions = 0;
+        this.constrictions = 0;
+    }
 }

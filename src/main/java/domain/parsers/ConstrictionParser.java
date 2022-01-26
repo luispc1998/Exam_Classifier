@@ -1,5 +1,6 @@
 package domain.parsers;
 
+import utils.dataGetter.StatisticalDataGetter;
 import domain.DataHandler;
 import domain.constrictions.Constriction;
 import domain.constrictions.types.weakConstriction.WeakConstriction;
@@ -62,6 +63,18 @@ public class ConstrictionParser {
      */
     private static final HashMap<String, ConstrictionParserTool> usedTools = new HashMap<>();
 
+    private StatisticalDataGetter statisticalDataGetter;
+    /**
+     * Default constructor for the class.
+     */
+    public ConstrictionParser(){}
+
+    public ConstrictionParser(StatisticalDataGetter statisticalDataGetter) {
+        this();
+        this.statisticalDataGetter = statisticalDataGetter;
+        statisticalDataGetter.resetConstrictionCounter();
+    }
+
     /**
      * Method to parse the {@code Constriction} objects from the excel.
      * @param filepath The input data excel filepath.
@@ -95,6 +108,9 @@ public class ConstrictionParser {
                      Even hard constrictions need to be added, because these is the general
                      track to be written at the end. Hardified constriction will not execute the logic.
                      */
+                    if (statisticalDataGetter != null){
+                        statisticalDataGetter.countConstriction(constriction);
+                    }
                     constrictions.add(constriction);
                     i++;
                 }

@@ -7,7 +7,7 @@ import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.output.ExcelWriter;
-import random.RandomGenerator;
+import utils.random.RandomGenerator;
 import utils.Utils;
 
 import java.time.Duration;
@@ -141,7 +141,7 @@ public class SamplesGenerator {
     /**
      * Instances base name without suffix.
      */
-    private final static String fileBaseName = "default_scenario";
+    private final static String fileBaseName = "hard_scenario";
 
     /**
      * Number of instances to be generated simultaneously.
@@ -236,11 +236,11 @@ public class SamplesGenerator {
      */
     private static void initializeConstrictionAmount() {
         constrictionAmount = new HashMap<>();
-        constrictionAmount.put("DB", randomConstrictionNumber(result.size() / 6, result.size() / 3)/2);
-        constrictionAmount.put("SD", randomConstrictionNumber(result.size() / 6, result.size() / 3)/2);
-        constrictionAmount.put("DD", randomConstrictionNumber(result.size() / 6, result.size() / 3)/2);
-        constrictionAmount.put("TD", randomConstrictionNumber(result.size() / 6, result.size() / 3)/2);
-        constrictionAmount.put("OE", randomConstrictionNumber(result.size() / 6, result.size() / 3)/2);
+        constrictionAmount.put("DB", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+        constrictionAmount.put("SD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+        constrictionAmount.put("DD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+        constrictionAmount.put("TD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+        constrictionAmount.put("OE", randomConstrictionNumber(result.size() / 6, result.size() / 3));
     }
 
     /**
@@ -420,7 +420,7 @@ public class SamplesGenerator {
         generateTimeDisplacements();
         generateOrders();
 
-        constrictionAmount.put("DI", Math.min(randomConstrictionNumber(result.size() / 6, result.size() / 3)/2,
+        constrictionAmount.put("DI", Math.min(randomConstrictionNumber(result.size() / 6, result.size() / 3),
                 freeExams.size() / 2));
         generateDayIntervals();
     }

@@ -2,16 +2,12 @@ package geneticAlgorithm.logger;
 
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
-import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.LinearFitnessFunction;
 import utils.Utils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This logs the current state of the genetic algorithm over the generations.
@@ -23,18 +19,12 @@ public class GeneticLogger {
      */
     private StringBuilder data;
 
-    /**
-     * Fitness data to obtaing the graph.
-     */
-    private StringBuilder fitnessGraphData;
-
-    private HashMap<Integer, List<Double>> fitnessGraphDataMap;
+    private HashMap<Integer, List<FitnessGraphDto>> fitnessGraphDataMap;
     /**
      * Default constructor for the class
      */
     public GeneticLogger() {
         data = new StringBuilder();
-        fitnessGraphData = new StringBuilder();
         fitnessGraphDataMap = new HashMap<>();
     }
 
@@ -79,21 +69,16 @@ public class GeneticLogger {
     /**
      * Adds a new line to the fitness graph data.
      * @param genCounter Current generation.
+     * @param bestFitness Current best fitness.
      * @param averageFitness Current mean fitness.
+     * @param executionSeconds How much time has taken the algorithm to reach this point.
      */
-    public void addAverageFitnessOnIt(int genCounter, double averageFitness) {
-        /*
-        fitnessGraphData.append(genCounter);
-        fitnessGraphData.append(",");
-        fitnessGraphData.append(averageFitness);
-        fitnessGraphData.append("\n");
-
-         */
+    public void addAverageFitnessOnIt(int genCounter, double bestFitness, double averageFitness, long executionSeconds) {
 
         if (!fitnessGraphDataMap.containsKey(genCounter)){
             fitnessGraphDataMap.put(genCounter, new ArrayList<>());
         }
-        fitnessGraphDataMap.get(genCounter).add(averageFitness);
+        fitnessGraphDataMap.get(genCounter).add(new FitnessGraphDto(bestFitness, averageFitness, executionSeconds));
     }
 
     /**
@@ -102,12 +87,17 @@ public class GeneticLogger {
      */
     public String getFitnessGraphData() {
         List<double[]> values = new ArrayList<>();
-        for (Map.Entry<Integer, List<Double>> entry : fitnessGraphDataMap.entrySet()) {
-            double accumulator = 0;
-            for (Double value: entry.getValue()) {
-                accumulator+=value;
+        for (Map.Entry<Integer, List<FitnessGraphDto>> entry : fitnessGraphDataMap.entrySet()) {
+            double bestFitnessAccumulator = 0;
+            double avgFitnessAccumulator = 0;
+            double secondsFitnessAccumulator = 0;
+            for (FitnessGraphDto value: entry.getValue()) {
+                bestFitnessAccumulator += value.getBestFitness();
+                avgFitnessAccumulator += value.getAverageFitness();
+                secondsFitnessAccumulator += value.getSeconds();
             }
-               values.add(new double[] {entry.getKey(), accumulator/entry.getValue().size()});
+               values.add(new double[] {entry.getKey(), bestFitnessAccumulator/entry.getValue().size(),
+               avgFitnessAccumulator/entry.getValue().size(), secondsFitnessAccumulator/entry.getValue().size()});
         }
 
         StringBuilder sb = new StringBuilder();
@@ -115,7 +105,11 @@ public class GeneticLogger {
         for (double[] pair : values) {
             sb.append(pair[0]);
             sb.append(",");
-            sb.append(pair[1]);
+            sb.append(String.format(Locale.UK, "%.2f",pair[1]));
+            sb.append(",");
+            sb.append(String.format(Locale.UK, "%.2f",pair[2]));
+            sb.append(",");
+            sb.append(String.format(Locale.UK, "%.2f",pair[3]));
             sb.append("\n");
         }
 
@@ -135,4 +129,5 @@ public class GeneticLogger {
             e.printStackTrace();
         }
     }
+
 }

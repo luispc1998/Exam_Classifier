@@ -62,8 +62,6 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
         this.exam = exam;
         this.intervalStart = intervalStart;
         this.intervalEnd = intervalEnd;
-        //validDates = calendar.stream().filter((d) -> containedOnInterval(d))
-        //        .collect(Collectors.toList());
     }
 
     public boolean containedOnInterval(LocalDate testingDate) {

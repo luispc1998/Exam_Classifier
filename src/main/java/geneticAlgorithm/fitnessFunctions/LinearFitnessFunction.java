@@ -1,4 +1,4 @@
-package geneticAlgorithm.fitnessFunctions.greedyAlgorithm;
+package geneticAlgorithm.fitnessFunctions;
 
 import domain.DataHandler;
 import domain.constrictions.counter.ConstrictionCounter;
@@ -8,7 +8,7 @@ import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.*;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.configuration.WeightConfigurer;
-import geneticAlgorithm.fitnessFunctions.FitnessFunction;
+import greedyAlgorithm.ChromosomeDecoder;
 
 
 /**

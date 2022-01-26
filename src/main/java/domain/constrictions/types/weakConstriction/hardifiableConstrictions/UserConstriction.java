@@ -1,6 +1,7 @@
 package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
 
 import domain.constrictions.types.weakConstriction.WeakConstriction;
+import greedyAlgorithm.ChromosomeDecoder;
 
 /**
  * User constrictions that can be specified as hard or weak.
@@ -12,7 +13,7 @@ public interface UserConstriction extends WeakConstriction {
      *
      * <p>
      * This process implies the generation of a new instance of {@link domain.constrictions.types.hardConstriction.HardConstriction},
-     * and add it to the related exam or exams, so that the {@link geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder}
+     * and add it to the related exam or exams, so that the {@link ChromosomeDecoder}
      * can take them into account while decoding.
      *
      * <p>

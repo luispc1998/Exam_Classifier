@@ -1,6 +1,5 @@
 package geneticAlgorithm;
 
-import dataGetter.StatisticalDataGetter;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.logger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
@@ -9,7 +8,7 @@ import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 import me.tongfei.progressbar.ProgressBar;
-import random.RandomGenerator;
+import utils.random.RandomGenerator;
 import utils.Utils;
 
 import java.util.ArrayList;
@@ -102,8 +101,9 @@ public class GeneticCore {
      * @return The best individual
      */
     public Individual geneticAlgorithm(double mutationProbability, double crossingProbability, FitnessFunction fitnessFunction, int maxIterations,
-                                       int loggingFrequency, StatisticalDataGetter statisticalDataGetter) {
+                                       int loggingFrequency) {
 
+        long initialTime = System.currentTimeMillis();
         // Coger al mejor individuo y hacer la media del fitness para estudiar convergencia.
         int genCounter = 0;
 
@@ -111,12 +111,17 @@ public class GeneticCore {
         Individual bestIndividual = getBestIndividual(fitnessFunction);
         double averageFitness = averageFitness(fitnessFunction);
 
-        logger.addAverageFitnessOnIt(genCounter, averageFitness);
+        logger.addAverageFitnessOnIt(genCounter, bestIndividual.getFitnessScore(fitnessFunction), averageFitness,
+                (System.currentTimeMillis() - initialTime)/1000);
+
+
         System.out.println("\n" + "Gen: " + genCounter
                 + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
                 + ", Avg Fitness: " + averageFitness);
+         System.out.println(bestIndividual);
 
-        System.out.println(bestIndividual);
+
+
 
         logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
 
@@ -130,7 +135,8 @@ public class GeneticCore {
                 bestIndividual = getBestIndividual(fitnessFunction);
                 averageFitness = averageFitness(fitnessFunction);
 
-                logger.addAverageFitnessOnIt(genCounter, averageFitness);
+                logger.addAverageFitnessOnIt(genCounter, bestIndividual.getFitnessScore(fitnessFunction), averageFitness,
+                        (System.currentTimeMillis() - initialTime)/1000);
 
                 if (genCounter % loggingFrequency == 0) {
                     logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
@@ -140,11 +146,14 @@ public class GeneticCore {
                 pb.setExtraMessage("BF: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction)) +
                         ", AF: " + String.format("%.2f",averageFitness));
             }
+
             System.out.println("\n" + "[Gen: " + genCounter
                     + ", Best Fitness: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction))
                     + ", Avg Fitness: " + String.format("%.2f",averageFitness) + "]");
 
             System.out.println(bestIndividual);
+
+
 
         }
             return bestIndividual;

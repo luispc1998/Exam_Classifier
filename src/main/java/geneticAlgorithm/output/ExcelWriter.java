@@ -10,7 +10,7 @@ import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.fitnessFunctions.greedyAlgorithm.ChromosomeDecoder;
+import greedyAlgorithm.ChromosomeDecoder;
 import main.PrettyTimetable;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;

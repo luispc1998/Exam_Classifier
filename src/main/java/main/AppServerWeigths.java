@@ -21,14 +21,14 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * This is the main class used for tuning the values of the genetic parameters. It is prepared to be run by script.
+ * This is the main class used for tuning the weights of the fitness function. It is prepared to be run by script.
  *
  * <p>
  * Note that for performance issues it will advisable to comment all the console printing statements in {@code GeneticCore}.
  *
- * @see geneticAlgorithm.configuration.GeneticParameters
+ * @see geneticAlgorithm.configuration.WeightConfigurer
  */
-public class AppServer {
+public class AppServerWeigths {
 
     public static void main(String[] args) {
 
@@ -37,12 +37,12 @@ public class AppServer {
         //String outputFileName = args[1];
         StatisticalDataGetter statisticalDataGetter;
 
-        int populationSize = Integer.parseInt(args[0]);
-        double mutationProb = Double.parseDouble(args[1]);
-        double crossingProb = Double.parseDouble(args[2]);
-        int repairingDepth = Integer.parseInt(args[3]);
-        String folderName = generateFolderName(populationSize, mutationProb, crossingProb, repairingDepth);
-        folderName = "results/" + folderName;
+        int userConstraintsWeight = Integer.parseInt(args[0]);
+        double prohibitedIntervalWeight = Double.parseDouble(args[1]);
+        double numericalComplexityWeight = Double.parseDouble(args[2]);
+
+        String folderName = generateFolderName(userConstraintsWeight, prohibitedIntervalWeight, numericalComplexityWeight);
+        folderName = "weightsResults/" + folderName;
         Utils.createDirectory(folderName);
 
         // Parsing extra file with input files.
@@ -51,10 +51,9 @@ public class AppServer {
         String filesFile = "defaultConfiguration/filesFile";
         Configurer conf = new Configurer(filesFile);
 
-        conf.getGeneticParameters().setPopulationSize(populationSize);
-        conf.getGeneticParameters().setMutationProb(mutationProb);
-        conf.getGeneticParameters().setCrossingProb(crossingProb);
-        conf.getGeneticParameters().setRepairingDepth(repairingDepth);
+        conf.getWeightConfigurer().setUserConstraintsWeight(userConstraintsWeight);
+        conf.getWeightConfigurer().setProhibitedIntervalWeight(prohibitedIntervalWeight);
+        conf.getWeightConfigurer().setNumericalComplexityWeight(numericalComplexityWeight);
 
         //Set the right input file in the configurer!
         GeneticLogger logger = new GeneticLogger();
@@ -120,11 +119,11 @@ public class AppServer {
 
     }
 
-    private static String generateFolderName(double populationSize, double mutationProb, double
-            crossingProb, double repairingDepth) {
+    private static String generateFolderName(double userConstraintsWeight, double prohibitedIntervalWeight, double
+            numericalComplexityWeight) {
 
-        return populationSize + "pop_" + String.format(Locale.UK, "%.2f",mutationProb) + "mut_"
-                + String.format(Locale.UK, "%.1f", crossingProb) + "cross_" + repairingDepth + "depth";
+        return userConstraintsWeight + "uc_" + String.format(Locale.UK, "%.2f",prohibitedIntervalWeight) + "pi_"
+                + String.format(Locale.UK, "%.1f", numericalComplexityWeight) + "nc";
     }
 
     private static String getInstanceFilename(String instance) {

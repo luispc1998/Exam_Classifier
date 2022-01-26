@@ -1,4 +1,4 @@
-package geneticAlgorithm.fitnessFunctions.greedyAlgorithm;
+package greedyAlgorithm;
 
 import domain.DataHandler;
 import domain.entities.Exam;

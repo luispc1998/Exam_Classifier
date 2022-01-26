@@ -1,7 +1,7 @@
 package geneticAlgorithm.operators.mutation;
 
 import geneticAlgorithm.Individual;
-import random.RandomGenerator;
+import utils.random.RandomGenerator;
 
 import java.util.List;
 import java.util.Random;

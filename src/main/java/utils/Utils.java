@@ -1,7 +1,7 @@
 package utils;
 
 import geneticAlgorithm.Individual;
-import random.RandomGenerator;
+import utils.random.RandomGenerator;
 
 import java.io.File;
 import java.time.LocalDate;
