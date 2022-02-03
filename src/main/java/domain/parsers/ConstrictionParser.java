@@ -1,5 +1,6 @@
 package domain.parsers;
 
+import geneticAlgorithm.configuration.Configurer;
 import utils.dataGetter.StatisticalDataGetter;
 import domain.DataHandler;
 import domain.constrictions.Constriction;
@@ -38,14 +39,14 @@ public class ConstrictionParser {
      *
      * It is needed in case all the tables are not stuck to the first column.
      */
-    private final static int baseExcelColumn = 1;
+    private int baseExcelColumn = 0;
 
     /**
      * Attribute to state which is the first row of the excel.
      *
      * It is needed in case all the tables are not stuck to the first row.
      */
-    private final static int baseExcelRow = 1;
+    private int baseExcelRow = 0;
 
     /**
      * Current {@code ConstrictionParserTool} being in use.
@@ -69,9 +70,11 @@ public class ConstrictionParser {
      */
     public ConstrictionParser(){}
 
-    public ConstrictionParser(StatisticalDataGetter statisticalDataGetter) {
+    public ConstrictionParser(Configurer conf, StatisticalDataGetter statisticalDataGetter) {
         this();
         this.statisticalDataGetter = statisticalDataGetter;
+        this.baseExcelColumn = conf.getExcelConfigurer().getExcelConstraintBaseColumn();
+        this.baseExcelRow = conf.getExcelConfigurer().getExcelConstraintBaseRow();
         statisticalDataGetter.resetConstrictionCounter();
     }
 

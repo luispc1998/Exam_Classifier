@@ -70,23 +70,34 @@ public class ExamParser {
             Map<Integer, List<String>> data = new HashMap<>();
 
             int jumpLines = 1;
+            boolean foundHeaderRow = false;
 
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando exámenes...");
 
             for (Row row : sheet) {
-                i++;
-                if (jumpLines > 0) {
-                    jumpLines--;
-                    continue;
+                if (! foundHeaderRow) {
+                    foundHeaderRow = isHeaderRow(row);
+                }
+                if (foundHeaderRow) {
+                    i++;
+                    if (jumpLines > 0) {
+                        jumpLines--;
+                        continue;
+                    }
+
+                    Exam exam = generateExam(row, configurer);
+                    if (exam == null) {
+                        continue;
+                    }
+
+                    exams.add(exam);
                 }
 
-                Exam exam = generateExam(row, configurer);
-                if (exam == null) {
-                    continue;
-                }
-
-                exams.add(exam);
-
+            }
+            if (! foundHeaderRow){
+                throw new IllegalStateException("Could not find headers row in input excel file. " +
+                        "Check that the configuration headers are the same as " +
+                        "the excel ones.");
             }
 
         } catch (FileNotFoundException e) {
@@ -98,6 +109,15 @@ public class ExamParser {
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + i);
         RoundsParser.createRoundIfNecessary(rounds, exams);
         return exams;
+    }
+
+    private boolean isHeaderRow(Row row) {
+        if (row.getCell(0) == null || !row.getCell(0).getCellTypeEnum().equals(CellType.STRING)){
+            return false;
+        }
+        else{
+            return row.getCell(0).getStringCellValue().equals(excelHeaders[0]);
+        }
     }
 
 
@@ -147,6 +167,9 @@ public class ExamParser {
 
         } catch (IllegalArgumentException e) {
             ConsoleLogger.getConsoleLoggerInstance().logWarning(e.getMessage() + " Skipping...");
+        } catch (IllegalStateException e) {
+            ConsoleLogger.getConsoleLoggerInstance().logWarning("Cannot parse exam. Check value types on the cells. "
+                    + "[Line: " + row.getRowNum() + "] Skipping...");
         } catch (Exception e){
             ConsoleLogger.getConsoleLoggerInstance().logWarning("Unknown error raised when creating exam "
                     + "[Line: " + row.getRowNum() + "] Skipping...");

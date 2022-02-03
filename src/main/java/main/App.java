@@ -50,7 +50,7 @@ public class App {
 
         if (args[2] != null) {
             statisticalDataGetter = new StatisticalDataGetter(args[2], Utils.createDirectoryStringBasedOnHour());
-            constrictionParser = new ConstrictionParser(statisticalDataGetter);
+            constrictionParser = new ConstrictionParser(conf, statisticalDataGetter);
         }
         else {
             constrictionParser = new ConstrictionParser();

@@ -1,0 +1,10 @@
+# This file contains some configurations for parsing the input excel file.
+
+# This is the first header of the exam tab. It will use to recognize where the exam list properly start, as well to identify the headers row.
+examFirstHeader=Curso
+
+# States in which line the constraints will be written in the output file.
+constraintsFirstRow=1
+
+# States how many empty columns are on the left of the constraints tables in the constraints tab.
+constraintsFirstCol=1
