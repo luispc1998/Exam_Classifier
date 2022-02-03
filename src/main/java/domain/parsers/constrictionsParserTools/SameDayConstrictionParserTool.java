@@ -7,17 +7,20 @@ import domain.constrictions.types.weakConstriction.hardifiableConstrictions.User
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import utils.Utils;
 
 /**
  * This is the parser for {@link SameDayConstriction}
  */
 public class SameDayConstrictionParserTool extends AbstractCosntrictionParserTool {
     @Override
-    public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler){
+    public UserConstriction specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler){
+        Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2},
+                "Error creating Same Day Constraint.");
         Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
         Exam exam2 = dataHandler.getExamById((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
         UserConstriction uc = new SameDayConstriction(exam1, exam2);
-        checkIfHard(uc, row, baseExcelColumn + 2);
+        checkIfMustBeHard(uc, row, baseExcelColumn + 2);
         return uc;
     }
 

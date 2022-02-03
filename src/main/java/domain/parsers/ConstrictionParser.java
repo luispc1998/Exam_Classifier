@@ -104,15 +104,17 @@ public class ConstrictionParser {
 
                     UserConstriction constriction = parserTool.parseConstriction(row, baseExcelColumn, dataHandler);
 
+                    if (constriction != null) {
                     /*
                      Even hard constrictions need to be added, because these is the general
                      track to be written at the end. Hardified constriction will not execute the logic.
                      */
-                    if (statisticalDataGetter != null){
-                        statisticalDataGetter.countConstriction(constriction);
+                        if (statisticalDataGetter != null) {
+                            statisticalDataGetter.countConstriction(constriction);
+                        }
+                        constrictions.add(constriction);
+                        i++;
                     }
-                    constrictions.add(constriction);
-                    i++;
                 }
 
             }

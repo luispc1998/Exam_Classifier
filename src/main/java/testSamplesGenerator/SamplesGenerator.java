@@ -42,12 +42,12 @@ public class SamplesGenerator {
     /**
      * States if the extra time feature is enabled for the instance generation.
      */
-    private final static boolean extraTimeEnabled = false;
+    private final static boolean extraTimeEnabled = true;
 
     /**
      * States if the numerical complexity feature is enabled for the instance generation.
      */
-    private final static boolean cnEnabled = false;
+    private final static boolean cnEnabled = true;
 
     /**
      * States the number of rounds per repetition.
@@ -141,12 +141,12 @@ public class SamplesGenerator {
     /**
      * Instances base name without suffix.
      */
-    private final static String fileBaseName = "hard_scenario";
+    private final static String fileBaseName = "complex_scenario";
 
     /**
      * Number of instances to be generated simultaneously.
      */
-    private final static int instancesNumberToGenerate = 10;
+    private final static int instancesNumberToGenerate = 30;
 
     /**
      * Just generates an instance according to the provided data.

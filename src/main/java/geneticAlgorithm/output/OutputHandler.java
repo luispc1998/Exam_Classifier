@@ -39,9 +39,9 @@ public class OutputHandler {
      * @param outputFileName The name of the output excel file.
      * @param excelWriter The {@code ExcelWriter} to be used when writing the output.
      */
-    public OutputHandler(DataHandler dataHandler, String outputFileName,
+    public OutputHandler(DataHandler dataHandler, String outputFileName, String outputDirectory,
                          ExcelWriter excelWriter) {
-        this.outputDirectory = createOutputDirectory(dataHandler.getConfigurer().getFilePaths("outputBaseDirectory"));
+        this.outputDirectory = outputDirectory;
         this.dataHandler = dataHandler;
         this.outputFilename = outputFileName;
         this.excelWriter = excelWriter;
@@ -58,21 +58,7 @@ public class OutputHandler {
         //writeInputLogData();
     }
 
-    /**
-     * Writes the logs of the input loading.
-     */
-    public void writeInputLogData() {
-        try (BufferedWriter bfWriterUncolored = new BufferedWriter(new FileWriter(outputDirectory + "inputUncoloredLog.txt"));
-             BufferedWriter bfWriterColored = new BufferedWriter(new FileWriter(outputDirectory + "inputColoredLog.txt"));
-             BufferedWriter bfWriterErrorLog = new BufferedWriter(new FileWriter(outputDirectory + "errorLog.txt"))){
 
-            bfWriterUncolored.write(ConsoleLogger.getConsoleLoggerInstance().getUncoloredMessages());
-            bfWriterColored.write(ConsoleLogger.getConsoleLoggerInstance().getColoredMessages());
-            bfWriterErrorLog.write(ConsoleLogger.getConsoleLoggerInstance().getErrorManager().getFormattedString());
-        }catch (IOException e) {
-            ConsoleLogger.getConsoleLoggerInstance().logError("Could not write output files of initial logging.");
-        }
-    }
 
     /**
      * Writes to a cvs file the evolution of the mean fitness during the execution.
@@ -102,29 +88,7 @@ public class OutputHandler {
 
     }
 
-    /**
-     * Creates the output directory for each execution of the program.
-     * @param outputBaseDirectory The base directory path in which the outputs of the program will be saved.
-     * @return The path of the generated directory in which the results of the program execution will be written.
-     */
-    public String createOutputDirectory(String outputBaseDirectory) {
 
-
-
-        StringBuilder directoryBuilder = new StringBuilder();
-        directoryBuilder.append(outputBaseDirectory);
-        directoryBuilder.append(Utils.createDirectoryStringBasedOnHour());
-
-        File theDir = new File(directoryBuilder.toString());
-
-        if (!theDir.exists()){
-            if (!theDir.mkdirs()) {
-                throw new RuntimeException("No se ha podido crear el directorio de salida. Path: " + theDir);
-            }
-        }
-
-        return directoryBuilder + "/";
-    }
 
 
 

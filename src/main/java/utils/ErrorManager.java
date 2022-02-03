@@ -9,23 +9,32 @@ public class ErrorManager {
     private List<String> errors;
     private List<String> warnings;
 
+    private boolean pendingErrors;
+
     public ErrorManager() {
         errors = new ArrayList<>();
         warnings = new ArrayList<>();
+        pendingErrors = false;
     }
 
 
 
     public void addError(String error) {
         errors.add(error);
+        pendingErrors = true;
     }
 
     public void addWarning(String warning) {
         warnings.add(warning);
+        pendingErrors = true;
+    }
+
+    public void markPendingErrorsAsShowed() {
+        pendingErrors = false;
     }
 
     public boolean wasThereErrorsOrWarnigns() {
-        return errors.size()>0 || warnings.size()>0;
+        return pendingErrors;
     }
 
     public String getFormattedString() {

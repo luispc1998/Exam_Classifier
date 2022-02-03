@@ -1,8 +1,14 @@
 package domain.parsers.constrictionsParserTools;
 
+import domain.DataHandler;
 import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import utils.ConsoleLogger;
+import utils.Utils;
+
+import java.util.NoSuchElementException;
 
 /**
  * This is just to group some common functionality to all of the ConstrictionParserTools.
@@ -39,11 +45,28 @@ public abstract class AbstractCosntrictionParserTool implements ConstrictionPars
         return headers;
     }
 
-    protected void checkIfHard(UserConstriction uc, Row row, int i) {
+    protected void checkIfMustBeHard(UserConstriction uc, Row row, int i) {
+        Utils.checkCellValueIsPresent(row, i, "Cannot omit cell: " + i + "on row: " + row.getRowNum() );
         if (row.getCell(i).getBooleanCellValue()) {
             uc.hardify();
         }
     }
+
+
+
+    @Override
+    public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+        try {
+            return specificParseConstriction(row, baseExcelColumn, dataHandler);
+        } catch (IllegalArgumentException e) {
+            ConsoleLogger.getConsoleLoggerInstance().logError(e.getMessage() + " Skipping...");
+        } catch (NoSuchElementException e) {
+            ConsoleLogger.getConsoleLoggerInstance().logError("Error creating constraint. [Line: " + row.getRowNum() + "] Wrong exam id. Skipping..." );
+        }
+        return null;
+    }
+
+    public abstract UserConstriction specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
 
     /**
      * Generalizes the writing of common fields to all constrictions

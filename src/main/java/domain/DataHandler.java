@@ -56,14 +56,14 @@ public class DataHandler {
      * Constructor for the class
      * @param configurer Configurer that contains all the configurations options.
      */
-    public DataHandler(Configurer configurer, ExamParser examParser, ConstrictionParser constrictionParser) {
+    public DataHandler(Configurer configurer, List<Exam> exams, ConstrictionParser constrictionParser) {
 
         this.configurer = configurer;
         this.preScheduledExams = new HashSet<>();
         this.constrictions = new ArrayList<>();
 
         String inputDataFile = configurer.getFilePaths("inputFile");
-        this.exams = examParser.parseExams(inputDataFile, this);
+        this.exams = new ArrayList<>(exams);
         identifyScheduledExams();
 
         addConstrictions();

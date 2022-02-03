@@ -1,6 +1,8 @@
 package utils;
 
 import geneticAlgorithm.Individual;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
 import utils.random.RandomGenerator;
 
 import java.io.File;
@@ -121,4 +123,63 @@ public class Utils {
         }
         return false;
     }
+
+
+    /**
+     * Creates the output directory for each execution of the program.
+     * @param outputBaseDirectory The base directory path in which the outputs of the program will be saved.
+     * @return The path of the generated directory in which the results of the program execution will be written.
+     */
+    public static String createOutputDirectory(String outputBaseDirectory) {
+
+
+        StringBuilder directoryBuilder = new StringBuilder();
+        directoryBuilder.append(outputBaseDirectory);
+        directoryBuilder.append(Utils.createDirectoryStringBasedOnHour());
+
+        File theDir = new File(directoryBuilder.toString());
+
+        if (!theDir.exists()){
+            if (!theDir.mkdirs()) {
+                throw new RuntimeException("No se ha podido crear el directorio de salida. Path: " + theDir);
+            }
+        }
+
+        return directoryBuilder + "/";
+    }
+
+    public static void checkCellValueIsPresent(Row row, int i, String errorMessage) {
+        if (row.getCell(i) == null || row.getCell(i).getCellTypeEnum().equals(CellType.BLANK)){
+            throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
+    public static void checkCellValuesArePresent(Row row, int[] cells, String initialErrorMessage) {
+        List<Integer> notPresent = new ArrayList<>();
+        for (Integer i: cells) {
+            if (row.getCell(i) == null || row.getCell(i).getCellTypeEnum().equals(CellType.BLANK)){
+                notPresent.add(i);
+            }
+        }
+        if (notPresent.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(initialErrorMessage);
+            sb.append(" [Line: ");
+            sb.append(row.getRowNum());
+            sb.append("]");
+            sb.append(" Cannot omit values for cells: ");
+            sb.append("[");
+            sb.append(notPresent.get(0));
+            for (int i = 1; i < notPresent.size(); i++) {
+                sb.append(", ");
+                sb.append(notPresent.get(i));
+            }
+            sb.append("]");
+
+            throw new IllegalArgumentException(sb.toString());
+        }
+
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package main;
 
+import domain.entities.Exam;
 import utils.dataGetter.StatisticalDataGetter;
 import domain.DataHandler;
 import domain.parsers.ConstrictionParser;
@@ -77,7 +78,8 @@ public class AppServer {
             for (int j = 1; j <= repetitions; j++) {
                 // Iteration start
                 ConstrictionParser constrictionParser = new ConstrictionParser(statisticalDataGetter);
-                DataHandler dataHandler = new DataHandler(conf, examParser, constrictionParser);
+                List<Exam> exams = examParser.parseExams(conf.getFilePaths("inputFile"), conf);
+                DataHandler dataHandler = new DataHandler(conf, exams, constrictionParser);
 
                 Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
                 FitnessFunction fn = new LinearFitnessFunction(dataHandler);

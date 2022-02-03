@@ -1,15 +1,15 @@
 # suppress inspection "UnusedProperty" for whole file
 
 # Weights of the weak constrictions. (Coefficients in the fitness function)
-DB=100
-TD=100
-SD=100
-DD=100
-OE=100
-DI=100
+DB=60
+TD=60
+SD=60
+DD=60
+OE=60
+DI=60
 
 PIP=3
-NCP=2
+NCP=2.5
 
 
 

@@ -123,6 +123,8 @@ public class GeneticCore {
 
 
 
+
+
         logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
 
 
@@ -152,6 +154,8 @@ public class GeneticCore {
                     + ", Avg Fitness: " + String.format("%.2f",averageFitness) + "]");
 
             System.out.println(bestIndividual);
+
+
 
 
 

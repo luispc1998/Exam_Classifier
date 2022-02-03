@@ -8,7 +8,7 @@ populationSize=500
 mutationProb=0.2
 
 ## Crossing probability of the algorithm. 1 0.9 0.8
-crossingProb=1.0
+crossingProb=0.9
 
 ## Desired Max depth of the repairing algorithm. 2 3
 repairingDepth=3
@@ -27,7 +27,7 @@ algorithmRepetitions=1
 maxSchedulesToTake=1
 
 ## Specifies if the application must stop when detecting warnings on the parsing.
-inputWarningsStop=false
+inputWarningsStop=true
 
 ## Amount of iterations when the logger will note down the status of the algorithm.
 loggingFreq=50

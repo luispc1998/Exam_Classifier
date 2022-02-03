@@ -2,10 +2,12 @@ package domain.parsers;
 
 import domain.DataHandler;
 import domain.entities.Exam;
+import geneticAlgorithm.configuration.Configurer;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import utils.ConsoleLogger;
+import utils.Utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -44,21 +46,26 @@ public class ExamParser {
             "Tanda"
     };
 
+    private final static int[] mandatoryColumns = {
+            0, 1, 7, 9, 16
+    };
+
     private final HashMap<String, List<Integer>> rounds = new HashMap<>();
 
     /**
-     * Parsing method of the exams
-     * @param filepath The input Excel file
+     * Parsing method of the exams.
+     * @param filepath The input Excel file.
+     * @param configurer The configurer of the algorithm.
      * @return A {@code List} of parsed {@code Exam}
      */
-    public List<Exam> parseExams(String filepath, DataHandler dataHandler) {
+    public List<Exam> parseExams(String filepath, Configurer configurer) {
         List<Exam> exams = new ArrayList<>();
         int i = -1;
         try (FileInputStream fis = new FileInputStream(filepath);
              Workbook workbook = new XSSFWorkbook(fis)
         ) {
 
-            Sheet sheet = workbook.getSheet("Planificación");
+            Sheet sheet = workbook.getSheetAt(0);
 
             Map<Integer, List<String>> data = new HashMap<>();
 
@@ -73,7 +80,7 @@ public class ExamParser {
                     continue;
                 }
 
-                Exam exam = generateExam(row, i, dataHandler);
+                Exam exam = generateExam(row, configurer);
                 if (exam == null) {
                     continue;
                 }
@@ -93,19 +100,16 @@ public class ExamParser {
         return exams;
     }
 
-    /**
-     * Generates an exam based of a row.
-     * @param row The row with the exm data.
-     * @param i The index of the row.
-     * @return The {@code Exam object parsed}
-     */
-    private  Exam generateExam(Row row, int i, DataHandler dataHandler) {
+
+    private  Exam generateExam(Row row, Configurer configurer) {
         Exam exam = null;
         String round;
         try {
             //checkVitalRowData(row, i);
-            exam = new Exam(parseMandatoryNumberCell(row, 0),
-                    parseMandatoryNumberCell(row, 1),
+            Utils.checkCellValuesArePresent(row, mandatoryColumns,
+                    "Error creating exam.");
+            exam = new Exam(parseNumberCell(row, 0),
+                    parseNumberCell(row, 1),
                     row.getCell(2).getStringCellValue(),
                     row.getCell(3).getStringCellValue(),
                     row.getCell(4).getStringCellValue(),
@@ -115,7 +119,8 @@ public class ExamParser {
                     parseNumberCell(row, 8),
                     row.getCell(9).getNumericCellValue(),
                     (int) row.getCell(15).getNumericCellValue(),
-                    parseMandatoryNumberCell(row, 16), null);
+                    parseMandatoryNumberCell(row, 16),
+                    null);
 
             if (row.getCell(17) != null && ! row.getCell(17).getStringCellValue().isEmpty()) {
                 round = row.getCell(17).getStringCellValue();
@@ -135,18 +140,17 @@ public class ExamParser {
                 exam.setExtraTimeFromExcel(row.getCell(14).getNumericCellValue());
             }
             else {
-                exam.setExtraTime(dataHandler.getConfigurer().getDateTimeConfigurer().getDefaultExamExtraMinutes());
+                exam.setExtraTime(configurer.getDateTimeConfigurer().getDefaultExamExtraMinutes());
             }
 
 
 
         } catch (IllegalArgumentException e) {
-            ConsoleLogger.getConsoleLoggerInstance().logWarning(e.getMessage() + " [Line: " + i + "] Skipping...");
+            ConsoleLogger.getConsoleLoggerInstance().logWarning(e.getMessage() + " Skipping...");
         } catch (Exception e){
             ConsoleLogger.getConsoleLoggerInstance().logWarning("Unknown error raised when creating exam "
-                    + "[Line: " + i + "] Skipping...");
+                    + "[Line: " + row.getRowNum() + "] Skipping...");
 
-            //System.out.println("Unknown error raised when creating exam from line: " + i);
         }
 
         return exam;
@@ -162,10 +166,6 @@ public class ExamParser {
      * @return The value of the cell. Null if no value or 0.
      */
     private Integer parseNumberCell(Row row, int cell) {
-        if (row.getCell(cell) == null || row.getCell(cell).getNumericCellValue() == 0) {
-            return null;
-        }
-
         return Double.valueOf(row.getCell(cell).getNumericCellValue()).intValue();
     }
 
@@ -179,7 +179,9 @@ public class ExamParser {
         if (row.getCell(cell) == null) {
             throw new IllegalArgumentException("Cannot omit cell: " + cell + " for an exam");
         }
-
+        if (row.getCell(cell).getCellTypeEnum().equals(CellType.BLANK)) {
+            throw new IllegalArgumentException("Cannot omit cell: " + cell + " for an exam");
+        }
         return Double.valueOf(row.getCell(cell).getNumericCellValue()).intValue();
     }
 
@@ -190,7 +192,8 @@ public class ExamParser {
      */
     private boolean checkForAlreadyClassifiedExam(Row row) {
 
-        if (row.getCell(10) != null && row.getCell(12) != null) {
+        if (row.getCell(10) != null && !row.getCell(10).getCellTypeEnum().equals(CellType.BLANK)
+            &&  row.getCell(12) != null && !row.getCell(12).getCellTypeEnum().equals(CellType.BLANK)) {
             try {
                 return !row.getCell(10).getDateCellValue().toString().equals("") && row.getCell(12).getNumericCellValue() != 0;
             } catch (Exception e){

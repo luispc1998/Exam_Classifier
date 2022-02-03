@@ -8,6 +8,7 @@ import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
+import utils.Utils;
 
 import java.time.ZoneId;
 import java.util.Date;
@@ -17,12 +18,14 @@ import java.util.Date;
  */
 public class DayBannedConstrictionParserTool extends AbstractCosntrictionParserTool {
     @Override
-    public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstriction specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+        Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2},
+                "Error creating Day Banned Constraint.");
         Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
         UserConstriction uc = new DayBannedConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate());
-        checkIfHard(uc, row, baseExcelColumn + 2);
+        checkIfMustBeHard(uc, row, baseExcelColumn + 2);
         return uc;
     }
 

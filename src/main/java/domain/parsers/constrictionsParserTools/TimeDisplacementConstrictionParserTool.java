@@ -7,6 +7,7 @@ import domain.constrictions.types.weakConstriction.hardifiableConstrictions.User
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import utils.Utils;
 
 /**
  * This is the parser for {@link TimeDisplacementConstriction}
@@ -15,12 +16,14 @@ public class TimeDisplacementConstrictionParserTool extends AbstractCosntriction
 
 
     @Override
-    public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstriction specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+        Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2},
+                "Error creating Time Displacement Constraint.");
         Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
         Exam exam2 = dataHandler.getExamById((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
         UserConstriction uc = new TimeDisplacementConstriction(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),
                 dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
-        checkIfHard(uc, row, baseExcelColumn + 3);
+        checkIfMustBeHard(uc, row, baseExcelColumn + 3);
         return uc;
     }
 

@@ -1,5 +1,9 @@
 package utils;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class ConsoleLogger {
 
 
@@ -67,4 +71,22 @@ public class ConsoleLogger {
     public ErrorManager getErrorManager() {
         return errorManager;
     }
+
+
+    /**
+     * Writes the logs of the input loading.
+     */
+    public void writeInputLogData(String outputDirectory) {
+        try (BufferedWriter bfWriterUncolored = new BufferedWriter(new FileWriter(outputDirectory + "inputUncoloredLog.txt"));
+             BufferedWriter bfWriterColored = new BufferedWriter(new FileWriter(outputDirectory + "inputColoredLog.txt"));
+             BufferedWriter bfWriterErrorLog = new BufferedWriter(new FileWriter(outputDirectory + "errorLog.txt"))){
+
+            bfWriterUncolored.write(ConsoleLogger.getConsoleLoggerInstance().getUncoloredMessages());
+            bfWriterColored.write(ConsoleLogger.getConsoleLoggerInstance().getColoredMessages());
+            bfWriterErrorLog.write(ConsoleLogger.getConsoleLoggerInstance().getErrorManager().getFormattedString());
+        }catch (IOException e) {
+            ConsoleLogger.getConsoleLoggerInstance().logError("Could not write output files of initial logging.");
+        }
+    }
+
 }

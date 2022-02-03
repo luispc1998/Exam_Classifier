@@ -8,6 +8,7 @@ import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
+import utils.Utils;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -20,7 +21,9 @@ import java.util.List;
 public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParserTool {
 
     @Override
-    public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstriction specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+        Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2, baseExcelColumn + 3},
+                "Error creating Day Interval Constraint.");
         List<LocalDate> calendar = dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates();
         Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
         UserConstriction uc = new DayIntervalConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
@@ -28,7 +31,7 @@ public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParse
                 .toLocalDate(), row.getCell(baseExcelColumn+2).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate(), calendar);
-        checkIfHard(uc, row, baseExcelColumn + 3);
+        checkIfMustBeHard(uc, row, baseExcelColumn + 3);
         return uc;
     }
 
