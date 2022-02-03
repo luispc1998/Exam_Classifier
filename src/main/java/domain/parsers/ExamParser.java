@@ -1,6 +1,5 @@
 package domain.parsers;
 
-import domain.DataHandler;
 import domain.entities.Exam;
 import geneticAlgorithm.configuration.Configurer;
 import org.apache.poi.ss.usermodel.*;
@@ -166,12 +165,12 @@ public class ExamParser {
 
 
         } catch (IllegalArgumentException e) {
-            ConsoleLogger.getConsoleLoggerInstance().logWarning(e.getMessage() + " Skipping...");
+            ConsoleLogger.getConsoleLoggerInstance().logError(e.getMessage() + " Skipping...");
         } catch (IllegalStateException e) {
-            ConsoleLogger.getConsoleLoggerInstance().logWarning("Cannot parse exam. Check value types on the cells. "
+            ConsoleLogger.getConsoleLoggerInstance().logError("Cannot parse exam. Check value types on the cells. "
                     + "[Line: " + row.getRowNum() + "] Skipping...");
         } catch (Exception e){
-            ConsoleLogger.getConsoleLoggerInstance().logWarning("Unknown error raised when creating exam "
+            ConsoleLogger.getConsoleLoggerInstance().logError("Unknown error raised when creating exam "
                     + "[Line: " + row.getRowNum() + "] Skipping...");
 
         }

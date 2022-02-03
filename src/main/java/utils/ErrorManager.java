@@ -6,57 +6,50 @@ import java.util.List;
 public class ErrorManager {
 
 
-    private List<String> errors;
-    private List<String> warnings;
+    private List<String> showedErrors;
+    private List<String> notShowedErrors;
 
-    private boolean pendingErrors;
 
     public ErrorManager() {
-        errors = new ArrayList<>();
-        warnings = new ArrayList<>();
-        pendingErrors = false;
+        showedErrors = new ArrayList<>();
+        notShowedErrors = new ArrayList<>();
     }
 
 
-
-    public void addError(String error) {
-        errors.add(error);
-        pendingErrors = true;
-    }
-
-    public void addWarning(String warning) {
-        warnings.add(warning);
-        pendingErrors = true;
+    public void addError(String warning) {
+        notShowedErrors.add(warning);
     }
 
     public void markPendingErrorsAsShowed() {
-        pendingErrors = false;
+        showedErrors.addAll(notShowedErrors);
+        notShowedErrors = new ArrayList<>();
     }
 
     public boolean wasThereErrorsOrWarnigns() {
-        return pendingErrors;
+        return notShowedErrors.size() > 0;
     }
 
     public String getFormattedString() {
         StringBuilder output = new StringBuilder();
-        if (errors.size() > 0) {
-            output.append("---ERRORS---\n\n");
-            for (String error : errors) {
+        if (notShowedErrors.size() > 0) {
+            output.append("---NEW ERRORS---\n\n");
+            for (String error : notShowedErrors) {
                 output.append("\t");
                 output.append(error);
                 output.append("\n");
             }
         }
 
-        if (warnings.size() > 0) {
-            output.append("---WARNINGS---\n\n");
-            for (String warning : warnings) {
+        if (showedErrors.size() > 0) {
+            output.append("\n");
+            output.append("---ALREADY ACCEPTED ERRORS---\n\n");
+            for (String warning : showedErrors) {
                 output.append("\t");
                 output.append(warning);
                 output.append("\n");
             }
         }
-
+        markPendingErrorsAsShowed();
         return output.toString();
     }
 }

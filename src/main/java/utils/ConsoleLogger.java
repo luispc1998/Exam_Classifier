@@ -37,21 +37,15 @@ public class ConsoleLogger {
         logMessage(finalMessage);
     }
 
-    public void logWarning(String msg) {
-        String finalMessage = "[WARN] " + msg;
-        //System.out.println(sc.colorYellow(finalMessage));
-        //System.out.println(finalMessage);
-        logMessage(finalMessage);
-        errorManager.addWarning(finalMessage);
-    }
-
     public void logError(String msg) {
         String finalMessage = "[ERROR] " + msg;
-        //System.out.println(sc.colorRed(finalMessage));
+        //System.out.println(sc.colorYellow(finalMessage));
         //System.out.println(finalMessage);
         logMessage(finalMessage);
         errorManager.addError(finalMessage);
     }
+
+
 
     private void logMessage(String finalMessage) {
         uncoloredMessages.append(finalMessage);
