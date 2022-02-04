@@ -1,9 +1,9 @@
 package utils.dataGetter;
 
 import domain.DataHandler;
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.counter.DefaultConstrictionCounter;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.counter.DefaultConstrictionCounter;
+import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 import geneticAlgorithm.Individual;
 import greedyAlgorithm.ChromosomeDecoder;
 import main.PrettyTimetable;
@@ -109,7 +109,7 @@ public class StatisticalDataGetter {
      * Increments the constrictions counters {@code constrictions} and {@code weakConstrictions}
      * @param constriction The constriction that will increment the counters.
      */
-    public void countConstriction(UserConstriction constriction) {
+    public void countConstriction(UserConstraint constriction) {
         if (! constriction.wasHardified()) {
             this.weakConstrictions++;
         }

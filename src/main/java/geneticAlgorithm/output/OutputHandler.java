@@ -2,11 +2,8 @@ package geneticAlgorithm.output;
 
 import domain.DataHandler;
 import geneticAlgorithm.Individual;
-import utils.ConsoleLogger;
-import utils.Utils;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;

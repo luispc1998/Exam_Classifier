@@ -1,6 +1,6 @@
-package domain.constrictions.types.hardConstriction;
+package domain.constraints.types.hardConstraints;
 
-import domain.constrictions.Constriction;
+import domain.constraints.Constraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ import java.util.Set;
  * available days (initially the whole calendar). The output of the first call will be the input of the second call, and
  * so far so forth. Finally the set of days in which the hard constrictions of the exam allow it to be placed will be obtained.
  */
-public interface HardConstriction extends Constriction {
+public interface HardConstraint extends Constraint {
 
     /**
      * Filters a list of days. Returning another list with days that meet the constriction.

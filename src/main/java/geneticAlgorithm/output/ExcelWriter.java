@@ -1,9 +1,9 @@
 package geneticAlgorithm.output;
 
 import domain.DataHandler;
-import domain.constrictions.Constriction;
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.counter.DefaultConstrictionCounter;
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.counter.DefaultConstrictionCounter;
 import domain.entities.Exam;
 import domain.entities.ExamDatesComparator;
 import domain.entities.Interval;
@@ -75,7 +75,7 @@ public class ExcelWriter {
         prettyTimetable.orderScheduling(dataHandler);
         List<Exam> finalResult = dataHandler.getClonedSchedule();
         ConstrictionCounter constrictionCounter = new DefaultConstrictionCounter();
-        HashMap<String, List<Constriction>> verifiedConstrictions = dataHandler.verifyConstrictions(constrictionCounter);
+        HashMap<String, List<Constraint>> verifiedConstrictions = dataHandler.verifyConstrictions(constrictionCounter);
         Comparator<Exam> examComparator = new ExamDatesComparator();
         finalResult.sort(examComparator);
         parseExamListToExcel(directory, outputFileName, counter, finalResult,
@@ -92,7 +92,7 @@ public class ExcelWriter {
      * @param calendar The calendar of days to be written
      */
     public void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
-            List<Constriction>> verifiedConstrictions, HashMap<LocalDate, Interval> calendar) {
+            List<Constraint>> verifiedConstrictions, HashMap<LocalDate, Interval> calendar) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         examParser.parseToExcel(finalResult, workbook);
         constrictionParser.parseToExcel(verifiedConstrictions, workbook);

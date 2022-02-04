@@ -1,17 +1,16 @@
 package domain;
 
-import domain.constrictions.Constriction;
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.fullyHardConstrictions.IsolateCourseOnDayConstriction;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.NumericalComplexityPenalization;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.SameCourseDifferentDayConstriction;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.UnclassifiedExamsConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.hardConstraints.fullyHardConstraints.IsolateCourseOnDayConstraint;
+import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.types.softConstrictions.fullySoftConstraints.NumericalComplexityPenalization;
+import domain.constraints.types.softConstrictions.fullySoftConstraints.ProhibitedIntervalPenalization;
+import domain.constraints.types.softConstrictions.fullySoftConstraints.SameCourseDifferentDayConstraint;
+import domain.constraints.types.softConstrictions.fullySoftConstraints.UnclassifiedExamsConstraint;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
-import domain.parsers.ExamParser;
 import geneticAlgorithm.configuration.Configurer;
 
 import java.time.Duration;
@@ -49,7 +48,7 @@ public class DataHandler {
     /**
      * List of {@code Constriction} to be considered.
      */
-    private final List<WeakConstriction> constrictions;
+    private final List<WeakConstraint> constrictions;
 
 
     /**
@@ -78,12 +77,12 @@ public class DataHandler {
 
         //Hard
         for (Exam exam: exams) {
-            exam.addHardConstriction(new IsolateCourseOnDayConstriction(exam));
+            exam.addHardConstriction(new IsolateCourseOnDayConstraint(exam));
         }
 
         //Weak
-        addConstriction(new UnclassifiedExamsConstriction(exams));
-        addConstriction(new SameCourseDifferentDayConstriction(exams));
+        addConstriction(new UnclassifiedExamsConstraint(exams));
+        addConstriction(new SameCourseDifferentDayConstraint(exams));
         addConstriction(new ProhibitedIntervalPenalization(exams, configurer));
         addConstriction(new NumericalComplexityPenalization(exams));
     }
@@ -110,7 +109,7 @@ public class DataHandler {
             }
         }
 
-        IsolateCourseOnDayConstriction.resetAvailabilities(configurer.getDateTimeConfigurer().getExamDates(),
+        IsolateCourseOnDayConstraint.resetAvailabilities(configurer.getDateTimeConfigurer().getExamDates(),
                 getPreScheduledExams());
 
     }
@@ -164,7 +163,7 @@ public class DataHandler {
      * Returns the list of {@code WeakConstriction}.
      * @return The list of {@code WeakConstriction}.
      */
-    public List<WeakConstriction> getConstrictions() {
+    public List<WeakConstraint> getConstrictions() {
         return new ArrayList<>(constrictions);
     }
 
@@ -197,7 +196,7 @@ public class DataHandler {
      */
     public void schedule(Exam exam, LocalDate currentDate, LocalTime currentHour) {
         exam.scheduleFor(currentDate, currentHour);
-        IsolateCourseOnDayConstriction.addCourseToDate(currentDate, exam);
+        IsolateCourseOnDayConstraint.addCourseToDate(currentDate, exam);
     }
 
     /**
@@ -207,7 +206,7 @@ public class DataHandler {
      */
     public void unSchedule(Exam exam, LocalDate currentDate) {
         exam.scheduleFor(null, null);
-        IsolateCourseOnDayConstriction.removeCourseFromDate(currentDate, exam);
+        IsolateCourseOnDayConstraint.removeCourseFromDate(currentDate, exam);
     }
 
     /**
@@ -231,7 +230,7 @@ public class DataHandler {
      * Adds a {@code WeakConstriction}.
      * @param constriction The {@code WeakConstriction} to be added.
      */
-    public void addConstriction(WeakConstriction constriction) {
+    public void addConstriction(WeakConstraint constriction) {
         constrictions.add(constriction);
     }
 
@@ -240,10 +239,10 @@ public class DataHandler {
      * @param counter The constriction counter instance that will be used for the checking of the weak constrictions.
      * @return A {@code HashMap} being the keys the constrictions ids, and the values a list of that type of constriction.
      */
-    public HashMap<String, List<Constriction>> verifyConstrictions(ConstrictionCounter counter) {
-        HashMap<String, List<Constriction>> verifiedConstrictions = new HashMap<>();
+    public HashMap<String, List<Constraint>> verifyConstrictions(ConstrictionCounter counter) {
+        HashMap<String, List<Constraint>> verifiedConstrictions = new HashMap<>();
 
-        for (WeakConstriction cons: constrictions) {
+        for (WeakConstraint cons: constrictions) {
             cons.checkConstriction(counter);
             if (! verifiedConstrictions.containsKey(cons.getConstrictionID())) {
                 verifiedConstrictions.put(cons.getConstrictionID(), new ArrayList<>());

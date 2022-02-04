@@ -1,9 +1,9 @@
 package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
-import domain.constrictions.Constriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.DayBannedConstriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.types.softConstrictions.userConstraints.DayBannedConstraint;
+import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -14,15 +14,15 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- * This is the parser for {@link DayBannedConstriction}
+ * This is the parser for {@link DayBannedConstraint}
  */
 public class DayBannedConstrictionParserTool extends AbstractCosntrictionParserTool {
     @Override
-    public UserConstriction specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2},
                 "Error creating Day Banned Constraint.");
         Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
-        UserConstriction uc = new DayBannedConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
+        UserConstraint uc = new DayBannedConstraint(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate());
         checkIfMustBeHard(uc, row, baseExcelColumn + 2);
@@ -30,8 +30,8 @@ public class DayBannedConstrictionParserTool extends AbstractCosntrictionParserT
     }
 
     @Override
-    public void writeConstriction(Constriction con, Row row, int baseExcelColumn) {
-        DayBannedConstriction dbc = (DayBannedConstriction) con;
+    public void writeConstriction(Constraint con, Row row, int baseExcelColumn) {
+        DayBannedConstraint dbc = (DayBannedConstraint) con;
         int cellCounter = baseExcelColumn -1;
 
         Cell cell = row.createCell(++cellCounter);

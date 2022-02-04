@@ -1,7 +1,7 @@
-package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
+package domain.constraints.types.softConstrictions.fullySoftConstraints;
 
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.softConstrictions.WeakConstraint;
 import domain.entities.Exam;
 import geneticAlgorithm.configuration.Configurer;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * By using it the algorithm prioritizes schedules/solutions which have less high duration exams on the mornings, leaving
  * them for the afternoon. It's specially effective when having not too much hard constrictions.
  */
-public class ProhibitedIntervalPenalization implements WeakConstriction {
+public class ProhibitedIntervalPenalization implements WeakConstraint {
 
     /**
      * Constriction id of this type of {@code Constriction}.

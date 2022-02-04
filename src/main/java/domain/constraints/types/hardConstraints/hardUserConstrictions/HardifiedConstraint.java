@@ -1,20 +1,20 @@
-package domain.constrictions.types.hardConstriction.hardifiedConstrictions;
+package domain.constraints.types.hardConstraints.hardUserConstrictions;
 
-import domain.constrictions.types.hardConstriction.AbstractHardConstriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
+import domain.constraints.types.hardConstraints.AbstractHardConstraint;
+import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 
-public class HardifiedConstriction extends AbstractHardConstriction {
+public class HardifiedConstraint extends AbstractHardConstraint {
 
     /**
      * {@code UserConstriction} instance to get the constriction logic by composition.
      */
-    private final UserConstriction userConstriction;
+    private final UserConstraint userConstriction;
 
     /**
      * Default constructor for the class.
      * @param userConstriction Object from which the data of the constriction will be obtained by composition.
      */
-    public HardifiedConstriction(UserConstriction userConstriction) {
+    public HardifiedConstraint(UserConstraint userConstriction) {
         this.userConstriction = userConstriction;
     }
 

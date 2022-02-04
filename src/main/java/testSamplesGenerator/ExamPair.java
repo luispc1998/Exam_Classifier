@@ -1,5 +1,6 @@
 package testSamplesGenerator;
 
+import domain.constraints.types.softConstrictions.userConstraints.DifferentDayConstraint;
 import domain.entities.Exam;
 
 /**
@@ -7,7 +8,7 @@ import domain.entities.Exam;
  *
  * <p>
  * Used to check wether possible to create other new constrictions among exams. For instance if exam A and exam B are
- * said to be on the same day, then when creating instance of {@link domain.constrictions.types.weakConstriction.hardifiableConstrictions.DifferentDayConstriction}
+ * said to be on the same day, then when creating instance of {@link DifferentDayConstraint}
  * those two won't be put together.
  */
 public class ExamPair {

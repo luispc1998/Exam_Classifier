@@ -1,7 +1,8 @@
-package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
+package domain.constraints.types.softConstrictions.fullySoftConstraints;
 
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.softConstrictions.WeakConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -13,10 +14,10 @@ import java.util.Set;
 /**
  * This represents a constriction that states that the same course exams should take place on different days.
  */
-public class SameCourseDifferentDayConstriction implements WeakConstriction {
+public class SameCourseDifferentDayConstraint implements WeakConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     * Constriction with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "SCDD";
 
@@ -34,7 +35,7 @@ public class SameCourseDifferentDayConstriction implements WeakConstriction {
      * Contructor for the class.
      * @param exams List of {@link Exam} to check the schedule.
      */
-    public SameCourseDifferentDayConstriction(List<Exam> exams) {
+    public SameCourseDifferentDayConstraint(List<Exam> exams) {
         this.exams = exams;
         occurrences = -1;
     }

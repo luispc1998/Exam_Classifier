@@ -1,6 +1,6 @@
 package domain.parsers;
 
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.SameDayConstriction;
+import domain.constraints.types.softConstrictions.userConstraints.SameDayConstraint;
 import domain.entities.Exam;
 import utils.ConsoleLogger;
 
@@ -51,7 +51,7 @@ public class RoundsParser {
         for (int i = 0; i < round.size(); i++) {
             round.get(i).addRound(round);
             for (int j = i+1; j < round.size(); j++) {
-                SameDayConstriction sameDayConstriction = new SameDayConstriction(round.get(i), round.get(j));
+                SameDayConstraint sameDayConstriction = new SameDayConstraint(round.get(i), round.get(j));
                 sameDayConstriction.hardify();
             }
         }

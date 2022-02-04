@@ -1,9 +1,10 @@
-package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
+package domain.constraints.types.softConstrictions.userConstraints;
 
 
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.HardConstriction;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.hardConstraints.HardConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstrictions.HardifiedConstraint;
 import domain.entities.Exam;
 import geneticAlgorithm.configuration.DateTimeConfigurer;
 
@@ -19,10 +20,10 @@ import java.util.List;
  *
  * @see DateTimeConfigurer#getExamDates()
  */
-public class TimeDisplacementConstriction extends AbstractUserConstriction {
+public class TimeDisplacementConstraint extends AbstractUserConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     * Constriction with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "TD";
 
@@ -53,7 +54,7 @@ public class TimeDisplacementConstriction extends AbstractUserConstriction {
      * @param distanceInDays Days that must be between {@code first} and {@code second}.
      * @param calendar The calendar of possible dates. It is assumed that it is sorted.
      */
-    public TimeDisplacementConstriction(Exam first, Exam second, long distanceInDays, List<LocalDate> calendar) {
+    public TimeDisplacementConstraint(Exam first, Exam second, long distanceInDays, List<LocalDate> calendar) {
         this.first = first;
         this.second = second;
         this.distanceInDays = distanceInDays;
@@ -109,7 +110,7 @@ public class TimeDisplacementConstriction extends AbstractUserConstriction {
 
     @Override
     public void specificHardify() {
-        HardConstriction hConstriction = new HardifiedConstriction(this);
+        HardConstraint hConstriction = new HardifiedConstraint(this);
         first.addHardConstriction(hConstriction);
         second.addHardConstriction(hConstriction);
     }

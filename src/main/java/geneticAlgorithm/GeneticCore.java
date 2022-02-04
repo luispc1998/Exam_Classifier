@@ -8,8 +8,8 @@ import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 import me.tongfei.progressbar.ProgressBar;
-import utils.random.RandomGenerator;
 import utils.Utils;
+import utils.random.RandomGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

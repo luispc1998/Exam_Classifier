@@ -1,18 +1,18 @@
 package domain.parsers;
 
-import geneticAlgorithm.configuration.Configurer;
-import utils.dataGetter.StatisticalDataGetter;
 import domain.DataHandler;
-import domain.constrictions.Constriction;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
+import domain.constraints.Constraint;
+import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.types.softConstrictions.userConstraints.*;
 import domain.parsers.constrictionsParserTools.*;
+import geneticAlgorithm.configuration.Configurer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import utils.ConsoleLogger;
+import utils.dataGetter.StatisticalDataGetter;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -84,8 +84,8 @@ public class ConstrictionParser {
      * @param dataHandler The current dataHandler instance being use
      * @return The {@code List} of {@code Constriction} parsed from the excel.
      */
-    public List<WeakConstriction> parseConstrictions(String filepath, DataHandler dataHandler) {
-        List<WeakConstriction> constrictions = new ArrayList<>();
+    public List<WeakConstraint> parseConstrictions(String filepath, DataHandler dataHandler) {
+        List<WeakConstraint> constrictions = new ArrayList<>();
         int i = 0;
         //creating workbook instance that refers to .xls file
         try (FileInputStream fis = new FileInputStream(filepath);
@@ -105,7 +105,7 @@ public class ConstrictionParser {
                 }
                 else{
 
-                    UserConstriction constriction = parserTool.parseConstriction(row, baseExcelColumn, dataHandler);
+                    UserConstraint constriction = parserTool.parseConstriction(row, baseExcelColumn, dataHandler);
 
                     if (constriction != null) {
                     /*
@@ -158,47 +158,47 @@ public class ConstrictionParser {
     private void swapTool(Row constrictionIdRow, Row constrictionDescription, Row constrictionHeaders) {
 
         switch (constrictionIdRow.getCell(baseExcelColumn).getStringCellValue()){
-            case TimeDisplacementConstriction.CONSTRICTION_ID:
+            case TimeDisplacementConstraint.CONSTRICTION_ID:
                 parserTool = new TimeDisplacementConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3, baseExcelColumn + 4}));
-                usedTools.put(TimeDisplacementConstriction.CONSTRICTION_ID, parserTool);
+                usedTools.put(TimeDisplacementConstraint.CONSTRICTION_ID, parserTool);
                 break;
-            case SameDayConstriction.CONSTRICTION_ID:
+            case SameDayConstraint.CONSTRICTION_ID:
                 parserTool = new SameDayConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3}));
-                usedTools.put(SameDayConstriction.CONSTRICTION_ID, parserTool);
+                usedTools.put(SameDayConstraint.CONSTRICTION_ID, parserTool);
                 break;
-            case DifferentDayConstriction.CONSTRICTION_ID:
+            case DifferentDayConstraint.CONSTRICTION_ID:
                 parserTool = new DifferentDayConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3}));
-                usedTools.put(DifferentDayConstriction.CONSTRICTION_ID, parserTool);
+                usedTools.put(DifferentDayConstraint.CONSTRICTION_ID, parserTool);
                 break;
-            case OrderExamsConstriction.CONSTRICTION_ID:
+            case OrderExamsConstraint.CONSTRICTION_ID:
                 parserTool = new OrderExamsConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3}));
-                usedTools.put(OrderExamsConstriction.CONSTRICTION_ID, parserTool);
+                usedTools.put(OrderExamsConstraint.CONSTRICTION_ID, parserTool);
                 break;
-            case DayBannedConstriction.CONSTRICTION_ID:
+            case DayBannedConstraint.CONSTRICTION_ID:
                 parserTool = new DayBannedConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3}));
-                usedTools.put(DayBannedConstriction.CONSTRICTION_ID, parserTool);
+                usedTools.put(DayBannedConstraint.CONSTRICTION_ID, parserTool);
                 break;
-            case DayIntervalConstriction.CONSTRICTION_ID:
+            case DayIntervalConstraint.CONSTRICTION_ID:
                 parserTool = new DayIntervalConstrictionParserTool();
                 parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
                 parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3, baseExcelColumn + 4}));
-                usedTools.put(DayIntervalConstriction.CONSTRICTION_ID, parserTool);
+                usedTools.put(DayIntervalConstraint.CONSTRICTION_ID, parserTool);
                 break;
 
         }
@@ -243,7 +243,7 @@ public class ConstrictionParser {
      * @param verifiedConstrictions The list of constrictions to be written on the workbook.
      * @param workbook The workbook in which the constrictions will be written.
      */
-    public void parseToExcel(HashMap<String, List<Constriction>> verifiedConstrictions, Workbook workbook) {
+    public void parseToExcel(HashMap<String, List<Constraint>> verifiedConstrictions, Workbook workbook) {
 
             //creating workbook instance that refers to .xls file
             if (usedTools.size() == 0) {
@@ -252,7 +252,7 @@ public class ConstrictionParser {
             Sheet sheet = workbook.createSheet("Restricciones");
             int rowCount = 0;
 
-            for(Map.Entry<String, List<Constriction>> entry: verifiedConstrictions.entrySet()) {
+            for(Map.Entry<String, List<Constraint>> entry: verifiedConstrictions.entrySet()) {
                 if (usedTools.get(entry.getKey()) == null ){
                     continue;
                 }
@@ -277,7 +277,7 @@ public class ConstrictionParser {
 
                 // Write data of the constrictions
 
-                for (Constriction con: entry.getValue()) {
+                for (Constraint con: entry.getValue()) {
                     row = sheet.createRow(baseExcelRow + ++rowCount);
                     parserTool.writeConstriction(con, row, baseExcelColumn);
                 }
@@ -295,33 +295,33 @@ public class ConstrictionParser {
         parserTool = new TimeDisplacementConstrictionParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Calendar days distance", "Hard?", "Cumplida?"});
-        usedTools.put(TimeDisplacementConstriction.CONSTRICTION_ID, parserTool);
+        usedTools.put(TimeDisplacementConstraint.CONSTRICTION_ID, parserTool);
 
 
         parserTool = new SameDayConstrictionParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
-        usedTools.put(SameDayConstriction.CONSTRICTION_ID, parserTool);
+        usedTools.put(SameDayConstraint.CONSTRICTION_ID, parserTool);
 
         parserTool = new DifferentDayConstrictionParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
-        usedTools.put(DifferentDayConstriction.CONSTRICTION_ID, parserTool);
+        usedTools.put(DifferentDayConstraint.CONSTRICTION_ID, parserTool);
 
         parserTool = new OrderExamsConstrictionParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
-        usedTools.put(OrderExamsConstriction.CONSTRICTION_ID, parserTool);
+        usedTools.put(OrderExamsConstraint.CONSTRICTION_ID, parserTool);
 
         parserTool = new DayBannedConstrictionParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "day_banned", "Hard?", "Cumplida?"});
-        usedTools.put(DayBannedConstriction.CONSTRICTION_ID, parserTool);
+        usedTools.put(DayBannedConstraint.CONSTRICTION_ID, parserTool);
 
         parserTool = new DayIntervalConstrictionParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "interval_start", "interval_end", "Hard?", "Cumplida?"});
-        usedTools.put(DayIntervalConstriction.CONSTRICTION_ID, parserTool);
+        usedTools.put(DayIntervalConstraint.CONSTRICTION_ID, parserTool);
 
     }
 

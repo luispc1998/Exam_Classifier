@@ -1,19 +1,19 @@
-package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
+package domain.constraints.types.softConstrictions.fullySoftConstraints;
 
-import domain.constrictions.Constriction;
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.softConstrictions.WeakConstraint;
 import domain.entities.Exam;
 
 import java.util.List;
 
 /**
- * This {@link Constriction} penalizes schedules by the number of unclassified {@link Exam}.
+ * This {@link Constraint} penalizes schedules by the number of unclassified {@link Exam}.
  */
-public class UnclassifiedExamsConstriction implements WeakConstriction {
+public class UnclassifiedExamsConstraint implements WeakConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     * Constriction with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "UE";
 
@@ -27,7 +27,7 @@ public class UnclassifiedExamsConstriction implements WeakConstriction {
      * Constructor for the class
      * @param exams List of {@link Exam} to check the schedule.
      */
-    public UnclassifiedExamsConstriction(List<Exam> exams) {
+    public UnclassifiedExamsConstraint(List<Exam> exams) {
         this.exams = exams;
     }
 

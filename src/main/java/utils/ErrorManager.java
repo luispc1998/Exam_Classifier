@@ -25,7 +25,7 @@ public class ErrorManager {
         notShowedErrors = new ArrayList<>();
     }
 
-    public boolean wasThereErrorsOrWarnigns() {
+    public boolean wasThereErrorsOrWarnings() {
         return notShowedErrors.size() > 0;
     }
 

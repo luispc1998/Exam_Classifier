@@ -1,27 +1,29 @@
-package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
+package domain.constraints.types.softConstrictions.userConstraints;
 
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.HardConstriction;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
+
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.hardConstraints.HardConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstrictions.HardifiedConstraint;
 import domain.entities.Exam;
 
 /**
- * This states for two exams that they cannot take place on the same day.
+ * This will represent for a list of exams, that they must take place on the same day.
  */
-public class DifferentDayConstriction extends AbstractUserConstriction {
+public class SameDayConstraint extends AbstractUserConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     * Constriction with the identifier for this type of {@link Constraint}.
      */
-    public final static String CONSTRICTION_ID = "DD";
+    public final static String CONSTRICTION_ID= "SD";
 
-    /**
-     * {@link Exam} that cannot take place on the same date as {@code second}
+     /**
+     * {@link Exam} that must take place on the same date as {@code second}
      */
     private final Exam first;
 
     /**
-     * {@link Exam} that cannot take place on the same date as {@code first}
+     * {@link Exam} that must take place on the same date as {@code first}
      */
     private final Exam second;
 
@@ -30,26 +32,21 @@ public class DifferentDayConstriction extends AbstractUserConstriction {
      * @param first one of the exams
      * @param second the other exam
      */
-    public DifferentDayConstriction(Exam first, Exam second){
+    public SameDayConstraint(Exam first, Exam second){
         this.first = first;
         this.second = second;
     }
 
     @Override
     public boolean isFulfilled() {
+        // Case that this is hard. The restriction is fulfilled if one of the exams is not placed.
         if (first.getDate() ==null || second.getDate() ==null) {
             setLastEvaluation(true);
             return true;
         }
 
-        return ! first.getDate().equals(second.getDate());
+        return first.getDate().equals(second.getDate());
     }
-
-    @Override
-    public void countMe(ConstrictionCounter counter) {
-        counter.count(this);
-    }
-
 
     @Override
     public String getConstrictionID() {
@@ -80,9 +77,14 @@ public class DifferentDayConstriction extends AbstractUserConstriction {
 
     @Override
     public void specificHardify() {
-        HardConstriction hConstriction = new HardifiedConstriction(this);
+        HardConstraint hConstriction = new HardifiedConstraint(this);
         first.addHardConstriction(hConstriction);
         second.addHardConstriction(hConstriction);
+    }
+
+    @Override
+    public void countMe(ConstrictionCounter counter) {
+        counter.count(this);
     }
 
 }

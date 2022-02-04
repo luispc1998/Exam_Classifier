@@ -1,13 +1,15 @@
-package domain.constrictions.types.hardConstriction.fullyHardConstrictions;
+package domain.constraints.types.hardConstraints.fullyHardConstraints;
 
-import domain.constrictions.types.hardConstriction.AbstractHardConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.types.hardConstraints.AbstractHardConstraint;
+import domain.constraints.types.hardConstraints.HardConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
 import java.util.*;
 
 /**
- * This {@link domain.constrictions.Constriction} is a {@link domain.constrictions.types.hardConstriction.HardConstriction}
+ * This {@link Constraint} is a {@link HardConstraint}
  * ensures that there is no more than one exam of each course on a day.
  *
  * <p>
@@ -16,7 +18,7 @@ import java.util.*;
  * it was found that there is no other possibility for the given exam than that given day, this hard constriction will also
  * check of the semester of the scheduled same course exam is the same as the exam that we want to classify.
  */
-public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
+public class IsolateCourseOnDayConstraint extends AbstractHardConstraint {
 
     /**
      * Constriction id of this type of {@code Constriction}.
@@ -51,7 +53,7 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
      * Default constructor for the class.
      * @param exam The exam to which this {@code HardConstriction} instance is linked.
      */
-    public IsolateCourseOnDayConstriction(Exam exam) {
+    public IsolateCourseOnDayConstraint(Exam exam) {
         this.exam = exam;
     }
 
@@ -92,7 +94,7 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
      * @param examToRemove The exam that was unscheduled.
      */
     public static void removeCourseFromDate(LocalDate date, Exam examToRemove) {
-        availabilities.get(date).remove(Integer.valueOf(examToRemove.getCourse()));
+        availabilities.get(date).remove(examToRemove.getCourse());
         availabilitiesRelaxed.get(date).remove(examToRemove);
     }
 
@@ -100,7 +102,7 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
     public boolean isFulfilled() {
         if (exam.getDate() != null) {
             for (Exam ex: availabilitiesRelaxed.get(exam.getDate())) {
-                if (ex.getCourse() == exam.getCourse() && ! ex.getRoundPartners().contains(exam.getId())){
+                if (ex.getCourse().equals(exam.getCourse()) && ! ex.getRoundPartners().contains(exam.getId())){
                     return false;
                 }
             }
@@ -152,7 +154,7 @@ public class IsolateCourseOnDayConstriction extends AbstractHardConstriction {
     private boolean isFulfilledRelaxed() {
         if (exam.getDate() != null) {
             for (Exam examScheduled : availabilitiesRelaxed.get(exam.getDate())) {
-                if (examScheduled.getCourse() == exam.getCourse() &&
+                if (examScheduled.getCourse().equals(exam.getCourse()) &&
                         examScheduled.getSemester() == exam.getSemester()) {
                     return false;
                 }

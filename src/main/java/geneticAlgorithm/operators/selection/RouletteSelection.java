@@ -2,8 +2,8 @@ package geneticAlgorithm.operators.selection;
 
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
-import utils.random.RandomGenerator;
 import utils.Utils;
+import utils.random.RandomGenerator;
 
 import java.util.List;
 

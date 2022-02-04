@@ -1,11 +1,11 @@
 package geneticAlgorithm.fitnessFunctions;
 
 import domain.DataHandler;
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.counter.DefaultConstrictionCounter;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.*;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.counter.DefaultConstrictionCounter;
+import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.types.softConstrictions.fullySoftConstraints.*;
+import domain.constraints.types.softConstrictions.userConstraints.*;
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.configuration.WeightConfigurer;
 import greedyAlgorithm.ChromosomeDecoder;
@@ -55,7 +55,7 @@ public class LinearFitnessFunction implements FitnessFunction {
 
         //Count constrictions
         ConstrictionCounter counter = new DefaultConstrictionCounter();
-        for (WeakConstriction constriction: dataHandler.getConstrictions()) {
+        for (WeakConstraint constriction: dataHandler.getConstrictions()) {
                 constriction.checkConstriction(counter);
         }
 
@@ -72,19 +72,19 @@ public class LinearFitnessFunction implements FitnessFunction {
         WeightConfigurer wc = dataHandler.getConfigurer().getWeightConfigurer();
 
         return counter.getCountOfTimeDisplacementConstriction()
-                        * wc.getConstrictionWeight(TimeDisplacementConstriction.CONSTRICTION_ID) +
+                        * wc.getConstrictionWeight(TimeDisplacementConstraint.CONSTRICTION_ID) +
                 counter.getCountOfDaysBannedConstriction()
-                        * wc.getConstrictionWeight(DayBannedConstriction.CONSTRICTION_ID) +
+                        * wc.getConstrictionWeight(DayBannedConstraint.CONSTRICTION_ID) +
                 counter.getCountOfSameDayConstriction()
-                        * wc.getConstrictionWeight(SameDayConstriction.CONSTRICTION_ID) +
+                        * wc.getConstrictionWeight(SameDayConstraint.CONSTRICTION_ID) +
                 counter.getCountOfUnclassifiedExamsConstriction()
-                        * wc.getConstrictionWeight(UnclassifiedExamsConstriction.CONSTRICTION_ID) +
+                        * wc.getConstrictionWeight(UnclassifiedExamsConstraint.CONSTRICTION_ID) +
                 counter.getCountOfDifferentDayConstriction()
-                        * wc.getConstrictionWeight(DifferentDayConstriction.CONSTRICTION_ID) +
+                        * wc.getConstrictionWeight(DifferentDayConstraint.CONSTRICTION_ID) +
                 counter.getCountOrderExamsConstriction()
-                        * wc.getConstrictionWeight(OrderExamsConstriction.CONSTRICTION_ID) +
+                        * wc.getConstrictionWeight(OrderExamsConstraint.CONSTRICTION_ID) +
                 counter.getCountSameCourseDifferentDayConstriction()
-                        * wc.getConstrictionWeight(SameCourseDifferentDayConstriction.CONSTRICTION_ID) +
+                        * wc.getConstrictionWeight(SameCourseDifferentDayConstraint.CONSTRICTION_ID) +
                 counter.getCountProhibitedIntervalPenalization()
                         * wc.getConstrictionWeight(ProhibitedIntervalPenalization.CONSTRICTION_ID) +
                 counter.getCountUnbalancedDaysPenalization()
@@ -92,7 +92,7 @@ public class LinearFitnessFunction implements FitnessFunction {
                 counter.getNumericalComplexityPenalization()
                         * wc.getConstrictionWeight(NumericalComplexityPenalization.CONSTRICTION_ID) +
                 counter.getDayIntervalConstrictionCounter()
-                        * wc.getConstrictionWeight(DayIntervalConstriction.CONSTRICTION_ID);
+                        * wc.getConstrictionWeight(DayIntervalConstraint.CONSTRICTION_ID);
 
     }
 }

@@ -1,8 +1,9 @@
-package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
+package domain.constraints.types.softConstrictions.userConstraints;
 
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.HardConstriction;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.hardConstraints.HardConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstrictions.HardifiedConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -11,10 +12,10 @@ import java.util.List;
 /**
  * This states for an exam an interval of dates in which the exam must be placed.
  */
-public class DayIntervalConstriction extends AbstractUserConstriction {
+public class DayIntervalConstraint extends AbstractUserConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     * Constriction with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "DI";
 
@@ -51,8 +52,8 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
      * @param intervalEnd Last date of the interval in which the exam can take place.
      * @param calendar Calendar of available dates to place exams.
      */
-    public DayIntervalConstriction(Exam exam, LocalDate intervalStart,
-                                   LocalDate intervalEnd, List<LocalDate> calendar) {
+    public DayIntervalConstraint(Exam exam, LocalDate intervalStart,
+                                 LocalDate intervalEnd, List<LocalDate> calendar) {
 
         if (intervalEnd.isBefore(intervalStart)){
             throw new IllegalArgumentException("Day interval constriction for exam: " + exam.getId() +
@@ -117,7 +118,7 @@ public class DayIntervalConstriction extends AbstractUserConstriction {
 
     @Override
     public void specificHardify() {
-        HardConstriction hConstriction = new HardifiedConstriction(this);
+        HardConstraint hConstriction = new HardifiedConstraint(this);
         exam.addHardConstriction(hConstriction);
     }
 }

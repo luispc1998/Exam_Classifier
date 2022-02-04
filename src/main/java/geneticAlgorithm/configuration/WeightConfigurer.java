@@ -1,5 +1,7 @@
 package geneticAlgorithm.configuration;
 
+import domain.constraints.Constraint;
+import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 import utils.ConsoleLogger;
 
 import java.io.FileInputStream;
@@ -10,10 +12,10 @@ import java.util.HashMap;
 import java.util.Properties;
 
 /**
- * This is in charge of providing the weights of the {@link domain.constrictions.Constriction} for the
+ * This is in charge of providing the weights of the {@link Constraint} for the
  * {@link geneticAlgorithm.fitnessFunctions.FitnessFunction}.
  * <p>
- * It is also used to check the existence of {@link domain.constrictions.Constriction}, because
+ * It is also used to check the existence of {@link Constraint}, because
  * a given ID does not appear in {@code weights} as a key, then it won't be related to a constriction.
  */
 public class WeightConfigurer {
@@ -83,7 +85,7 @@ public class WeightConfigurer {
 
 
     /**
-     * Changes the current value for all the {@link domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction} weights.
+     * Changes the current value for all the {@link UserConstraint} weights.
      * @param userConstraintsWeight New value for the weight of all the User Constrictions.
      */
     public void setUserConstraintsWeight(double userConstraintsWeight) {
@@ -96,7 +98,7 @@ public class WeightConfigurer {
     }
 
     /**
-     * Changes the current value for the {@link domain.constrictions.types.weakConstriction.fullyWeakConstrictions.ProhibitedIntervalPenalization} weight.
+     * Changes the current value for the {@link domain.constraints.types.softConstrictions.fullySoftConstraints.ProhibitedIntervalPenalization} weight.
      * @param prohibitedIntervalWeight New value for the weight of the Prohibited Interval Penalization.
      */
     public void setProhibitedIntervalWeight(double prohibitedIntervalWeight) {
@@ -104,7 +106,7 @@ public class WeightConfigurer {
     }
 
     /**
-     * Changes the current value for the {@link domain.constrictions.types.weakConstriction.fullyWeakConstrictions.NumericalComplexityPenalization} weight.
+     * Changes the current value for the {@link domain.constraints.types.softConstrictions.fullySoftConstraints.NumericalComplexityPenalization} weight.
      * @param numericalComplexityWeight New value for the weight of the Numerical Complexity Penalization.
      */
     public void setNumericalComplexityWeight(double numericalComplexityWeight) {

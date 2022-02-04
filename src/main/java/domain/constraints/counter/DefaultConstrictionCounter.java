@@ -1,7 +1,7 @@
-package domain.constrictions.counter;
+package domain.constraints.counter;
 
-import domain.constrictions.types.weakConstriction.fullyWeakConstrictions.*;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
+import domain.constraints.types.softConstrictions.fullySoftConstraints.*;
+import domain.constraints.types.softConstrictions.userConstraints.*;
 
 /**
  * This is a default implementation for {@code ConstrictionCounter}.
@@ -21,37 +21,37 @@ public class DefaultConstrictionCounter implements ConstrictionCounter {
     private int dayIntervalConstrictionCounter;
 
     @Override
-    public void count(TimeDisplacementConstriction timeDisplacementConstriction) {
+    public void count(TimeDisplacementConstraint timeDisplacementConstriction) {
         timeDisplacementCounter++;
     }
 
     @Override
-    public void count(DayBannedConstriction dayBannedConstriction) {
+    public void count(DayBannedConstraint dayBannedConstriction) {
         daysBannedCounter++;
     }
 
     @Override
-    public void count(SameDayConstriction sameDayConstriction) {
+    public void count(SameDayConstraint sameDayConstriction) {
         sameDayCounter++;
     }
 
     @Override
-    public void count(UnclassifiedExamsConstriction unclassifiedExamsConstriction) {
+    public void count(UnclassifiedExamsConstraint unclassifiedExamsConstriction) {
         unclassifiedExamsCounter++;
     }
 
     @Override
-    public void count(DifferentDayConstriction differentDayConstriction) {
+    public void count(DifferentDayConstraint differentDayConstriction) {
         differentDayCounter++;
     }
 
     @Override
-    public void count(OrderExamsConstriction orderExamsConstriction) {
+    public void count(OrderExamsConstraint orderExamsConstriction) {
         orderExamsCounter++;
     }
 
     @Override
-    public void count(SameCourseDifferentDayConstriction sameCourseDifferentDayConstriction) {
+    public void count(SameCourseDifferentDayConstraint sameCourseDifferentDayConstriction) {
         sameCourseDifferentDayCounter = sameCourseDifferentDayConstriction.getOccurrences();
     }
 
@@ -71,7 +71,7 @@ public class DefaultConstrictionCounter implements ConstrictionCounter {
     }
 
     @Override
-    public void count(DayIntervalConstriction dayIntervalConstriction) {
+    public void count(DayIntervalConstraint dayIntervalConstriction) {
         dayIntervalConstrictionCounter++;
     }
 

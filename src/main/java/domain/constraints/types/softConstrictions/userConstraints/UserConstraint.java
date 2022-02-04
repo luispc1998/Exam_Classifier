@@ -1,18 +1,19 @@
-package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
+package domain.constraints.types.softConstrictions.userConstraints;
 
-import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constraints.types.hardConstraints.HardConstraint;
+import domain.constraints.types.softConstrictions.WeakConstraint;
 import greedyAlgorithm.ChromosomeDecoder;
 
 /**
  * User constrictions that can be specified as hard or weak.
  */
-public interface UserConstriction extends WeakConstriction {
+public interface UserConstraint extends WeakConstraint {
 
     /**
      * Makes the constriction hard.
      *
      * <p>
-     * This process implies the generation of a new instance of {@link domain.constrictions.types.hardConstriction.HardConstriction},
+     * This process implies the generation of a new instance of {@link HardConstraint},
      * and add it to the related exam or exams, so that the {@link ChromosomeDecoder}
      * can take them into account while decoding.
      *

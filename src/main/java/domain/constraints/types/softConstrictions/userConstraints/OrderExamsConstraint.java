@@ -1,17 +1,18 @@
-package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
+package domain.constraints.types.softConstrictions.userConstraints;
 
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.hardConstriction.HardConstriction;
-import domain.constrictions.types.hardConstriction.hardifiedConstrictions.HardifiedConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.hardConstraints.HardConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstrictions.HardifiedConstraint;
 import domain.entities.Exam;
 
 /**
  * This states for two exams that one of them must be after the other.
  */
-public class OrderExamsConstriction extends AbstractUserConstriction {
+public class OrderExamsConstraint extends AbstractUserConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link domain.constrictions.Constriction}.
+     * Constriction with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "OE";
 
@@ -30,7 +31,7 @@ public class OrderExamsConstriction extends AbstractUserConstriction {
      * @param first the {@link Exam} that must be first.
      * @param second the {@link Exam} that must be second.
      */
-    public OrderExamsConstriction(Exam first, Exam second){
+    public OrderExamsConstraint(Exam first, Exam second){
         this.first = first;
         this.second = second;
     }
@@ -68,7 +69,7 @@ public class OrderExamsConstriction extends AbstractUserConstriction {
 
     @Override
     public void specificHardify() {
-        HardConstriction hConstriction = new HardifiedConstriction(this);
+        HardConstraint hConstriction = new HardifiedConstraint(this);
         first.addHardConstriction(hConstriction);
         second.addHardConstriction(hConstriction);
     }

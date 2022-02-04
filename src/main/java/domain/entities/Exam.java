@@ -1,6 +1,6 @@
 package domain.entities;
 
-import domain.constrictions.types.hardConstriction.HardConstriction;
+import domain.constraints.types.hardConstraints.HardConstraint;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -106,7 +106,7 @@ public class Exam {
     /**
      * List of {@code HardConstriction} that must be considered when scheduling the exam.
      */
-    private final List<HardConstriction> hardConstrictions;
+    private final List<HardConstraint> hardConstrictions;
 
     /**
      * Round identifier to indicate if the round the exam belongs to.
@@ -502,7 +502,7 @@ public class Exam {
      * Adds a hard constriction related with this exam that must be considered when scheduling it.
      * @param hardConstriction The hard constriction to be considered.
      */
-    public void addHardConstriction(HardConstriction hardConstriction) {
+    public void addHardConstriction(HardConstraint hardConstriction) {
         this.hardConstrictions.add(hardConstriction);
     }
 
@@ -512,7 +512,7 @@ public class Exam {
      * @return A subset of {@code days} where the exam can be placed.
      */
     public Set<LocalDate> getViableDays(Set<LocalDate> days) {
-        for (HardConstriction hardConstriction: hardConstrictions) {
+        for (HardConstraint hardConstriction: hardConstrictions) {
             days = hardConstriction.filterViableDays(days, this);
         }
         return days;

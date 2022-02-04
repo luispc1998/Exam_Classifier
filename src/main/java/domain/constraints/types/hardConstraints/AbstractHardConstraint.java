@@ -1,4 +1,4 @@
-package domain.constrictions.types.hardConstriction;
+package domain.constraints.types.hardConstraints;
 
 import domain.entities.Exam;
 
@@ -10,7 +10,7 @@ import java.util.Set;
  * This provides a default implementation of the {@code filterViableDays} days method, allowing the inheritors to just
  * implement the necessary constriction logic.
  */
-public abstract class AbstractHardConstriction implements HardConstriction {
+public abstract class AbstractHardConstraint implements HardConstraint {
 
     @Override
     public Set<LocalDate> filterViableDays(Set<LocalDate> days, Exam examToCheck) {

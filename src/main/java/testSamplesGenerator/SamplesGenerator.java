@@ -1,14 +1,14 @@
 package testSamplesGenerator;
 
-import domain.constrictions.Constriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.*;
+import domain.constraints.Constraint;
+import domain.constraints.types.softConstrictions.userConstraints.*;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.output.ExcelWriter;
-import utils.random.RandomGenerator;
 import utils.Utils;
+import utils.random.RandomGenerator;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -109,7 +109,7 @@ public class SamplesGenerator {
     /**
      * The final list of constrictions of the instance
      */
-    private static HashMap<String, List<Constriction>> constrictions = new HashMap<>();
+    private static HashMap<String, List<Constraint>> constrictions = new HashMap<>();
 
     /**
      * The final calendar of days of the instance.
@@ -439,7 +439,7 @@ public class SamplesGenerator {
             LocalDate start = calendar.get(index);
             int additionIndex = generator.nextInt(calendar.size()-index);
             LocalDate end = calendar.get(index + additionIndex);
-            DayIntervalConstriction diC = new DayIntervalConstriction(exam,start, end, calendar);
+            DayIntervalConstraint diC = new DayIntervalConstraint(exam,start, end, calendar);
             freeExams.remove(exam);
 
             constrictions.get("DI").add(diC);
@@ -466,15 +466,15 @@ public class SamplesGenerator {
                 exPair = new ExamPair(exam, exam2);
             }while (checkPairRegistered(exPair, sameDayPairs));
 
-            OrderExamsConstriction oeC;
+            OrderExamsConstraint oeC;
             if (checkPairRegistered(exPair, orderedPairs)) {
                 int registeredPairIndex = orderedPairs.indexOf(exPair);
                 ExamPair registeredPair = orderedPairs.get(registeredPairIndex);
-                oeC = new OrderExamsConstriction(registeredPair.getExam1(),
+                oeC = new OrderExamsConstraint(registeredPair.getExam1(),
                         registeredPair.getExam2());
             }
             else{
-                oeC = new OrderExamsConstriction(exam, exam2);
+                oeC = new OrderExamsConstraint(exam, exam2);
             }
 
             freeExams.remove(exam);
@@ -504,7 +504,7 @@ public class SamplesGenerator {
             }while (checkPairRegistered(exPair, sameDayPairs) || checkPairRegistered(exPair, orderedPairs));
 
 
-            TimeDisplacementConstriction tdC = new TimeDisplacementConstriction(exam, exam2,
+            TimeDisplacementConstraint tdC = new TimeDisplacementConstraint(exam, exam2,
                     generator.nextInt(5), calendar);
             freeExams.remove(exam);
             freeExams.remove(exam2);
@@ -533,7 +533,7 @@ public class SamplesGenerator {
                 exPair = new ExamPair(exam, exam2);
             }while (checkPairRegistered(exPair, sameDayPairs));
 
-            DifferentDayConstriction ddC = new DifferentDayConstriction(exam, exam2);
+            DifferentDayConstraint ddC = new DifferentDayConstraint(exam, exam2);
             //freeExams.remove(exam);
             //freeExams.remove(exam2);
             handleHards(ddC);
@@ -560,7 +560,7 @@ public class SamplesGenerator {
                 exPair = new ExamPair(exam, exam2);
             }while (checkPairRegistered(exPair, sameDayPairs));
 
-            SameDayConstriction sdC = new SameDayConstriction(exam, exam2);
+            SameDayConstraint sdC = new SameDayConstraint(exam, exam2);
             freeExams.remove(exam);
             freeExams.remove(exam2);
             constrictions.get("SD").add(sdC);
@@ -594,7 +594,7 @@ public class SamplesGenerator {
     private static void banRandomDayForRandomExam() {
         Exam exam = result.get(generator.nextInt(result.size()));
         LocalDate bannedDay = calendar.get(generator.nextInt(calendar.size()));
-        UserConstriction uc = new DayBannedConstriction(exam, bannedDay);
+        UserConstraint uc = new DayBannedConstraint(exam, bannedDay);
         constrictions.get("DB").add(uc);
         handleHards(uc);
         freeExams.remove(exam);
@@ -605,7 +605,7 @@ public class SamplesGenerator {
      * Randomly makes a constriction hard.
      * @param uc The constriction that may be marked as hard.
      */
-    private static void handleHards(UserConstriction uc) {
+    private static void handleHards(UserConstraint uc) {
         if (hardsEnabled) {
             Random generator = new Random();
             if (generator.nextDouble() < 0.3) {

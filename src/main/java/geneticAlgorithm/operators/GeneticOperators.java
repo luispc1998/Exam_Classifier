@@ -6,7 +6,6 @@ import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.mutation.MutationSwap;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
 import geneticAlgorithm.operators.replacement.ReplacementOperatorClassic;
-import geneticAlgorithm.operators.replacement.ReplacementOperatorFitnessBiased;
 import geneticAlgorithm.operators.selection.RouletteSelection;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 

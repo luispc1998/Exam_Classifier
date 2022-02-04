@@ -1,9 +1,7 @@
 package main;
 
-import domain.constrictions.Constriction;
-import domain.entities.Exam;
-import utils.dataGetter.StatisticalDataGetter;
 import domain.DataHandler;
+import domain.entities.Exam;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Enconder;
@@ -11,15 +9,16 @@ import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
-import greedyAlgorithm.ChromosomeDecoder;
 import geneticAlgorithm.fitnessFunctions.LinearFitnessFunction;
 import geneticAlgorithm.logger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.output.ExcelWriter;
 import geneticAlgorithm.output.OutputHandler;
+import greedyAlgorithm.ChromosomeDecoder;
 import utils.ConsoleLogger;
 import utils.ErrorManager;
 import utils.Utils;
+import utils.dataGetter.StatisticalDataGetter;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -68,7 +67,7 @@ public class App {
 
             ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
 
-            if (errorAsking && errorManager.wasThereErrorsOrWarnigns()) {
+            if (errorAsking && errorManager.wasThereErrorsOrWarnings()) {
                 System.out.println("Se encontraron errores durante la generación de exámenes, por favor revise el archivo errorLog en la carpeta de salida.");
                 stoppingInputRequest();
                 errorManager.markPendingErrorsAsShowed();
@@ -80,7 +79,7 @@ public class App {
 
             ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
 
-            if (errorAsking && errorManager.wasThereErrorsOrWarnigns()) {
+            if (errorAsking && errorManager.wasThereErrorsOrWarnings()) {
                 System.out.println("Se encontraron errores o avisos, por favor revise el archivo errorLog en la carpeta de salida.");
                 stoppingInputRequest();
             }

@@ -1,7 +1,7 @@
-package domain.constrictions.types.weakConstriction.hardifiableConstrictions;
+package domain.constraints.types.softConstrictions.userConstraints;
 
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.softConstrictions.WeakConstraint;
 
 /**
  * Default implementation of {@code checkConstriction} method, and implementation of the logic to hold the result of the
@@ -12,7 +12,7 @@ import domain.constrictions.types.weakConstriction.WeakConstriction;
  * logic, and the call to {@code ConstrictionCounter}, as is requested in the abstract methods {@code isFulfilled} and
  * {@code countMe}.
  */
-public abstract class AbstractUserConstriction implements UserConstriction, WeakConstriction {
+public abstract class AbstractUserConstraint implements UserConstraint, WeakConstraint {
 
     /**
      * Stores the value of the last evaluation of isFulfilled.

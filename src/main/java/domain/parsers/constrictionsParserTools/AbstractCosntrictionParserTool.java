@@ -1,9 +1,8 @@
 package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
+import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import utils.ConsoleLogger;
 import utils.Utils;
@@ -45,7 +44,7 @@ public abstract class AbstractCosntrictionParserTool implements ConstrictionPars
         return headers;
     }
 
-    protected void checkIfMustBeHard(UserConstriction uc, Row row, int i) {
+    protected void checkIfMustBeHard(UserConstraint uc, Row row, int i) {
         Utils.checkCellValueIsPresent(row, i, "Cannot omit cell: " + i + "on row: " + row.getRowNum() );
         if (row.getCell(i).getBooleanCellValue()) {
             uc.hardify();
@@ -55,7 +54,7 @@ public abstract class AbstractCosntrictionParserTool implements ConstrictionPars
 
 
     @Override
-    public UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         try {
             return specificParseConstriction(row, baseExcelColumn, dataHandler);
         } catch (IllegalArgumentException e) {
@@ -66,7 +65,7 @@ public abstract class AbstractCosntrictionParserTool implements ConstrictionPars
         return null;
     }
 
-    public abstract UserConstriction specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
+    public abstract UserConstraint specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
 
     /**
      * Generalizes the writing of common fields to all constrictions

@@ -1,7 +1,7 @@
-package domain.constrictions.types.weakConstriction;
+package domain.constraints.types.softConstrictions;
 
-import domain.constrictions.Constriction;
-import domain.constrictions.counter.ConstrictionCounter;
+import domain.constraints.Constraint;
+import domain.constraints.counter.ConstrictionCounter;
 
 /**
  * This type of constriction are evaluated at the end of the individual decoding, and they are the ones that will determine
@@ -10,7 +10,7 @@ import domain.constrictions.counter.ConstrictionCounter;
  * @see geneticAlgorithm.Individual
  * @see geneticAlgorithm.fitnessFunctions.FitnessFunction
  */
-public interface WeakConstriction extends Constriction {
+public interface WeakConstraint extends Constraint {
 
     /**
      * Evaluates the constrictions and increments its type counter if necessary.

@@ -1,18 +1,18 @@
 package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
-import domain.constrictions.Constriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 import org.apache.poi.ss.usermodel.Row;
 
 /**
- * This interface represents all the creation methods of the different {@link Constriction} when
+ * This interface represents all the creation methods of the different {@link Constraint} when
  * parsing.
  *
  * <p>
  * This is a State design pattern over the {@link domain.parsers.ConstrictionParser}, so that when
- * finding a new set of {@link Constriction} in the excel, the parser can swap (if needed) the creation method to
- * the one needed for that type of {@link Constriction}
+ * finding a new set of {@link Constraint} in the excel, the parser can swap (if needed) the creation method to
+ * the one needed for that type of {@link Constraint}
  *
  * @see domain.parsers.ConstrictionParser
  */
@@ -25,7 +25,7 @@ public interface ConstrictionParserTool {
      * @param dataHandler The {@code DataHandler} from which the created constrictions will retrieve data.
      * @return A new {@code Constriction} parsed from {@code row}.
      */
-    UserConstriction parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
+    UserConstraint parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
 
     /**
      * Sets the description of this constriction in the excel.
@@ -57,5 +57,5 @@ public interface ConstrictionParserTool {
      * @param row The excel row in which the constriction will be written.
      * @param baseExcelColumn The base excel column from which the data can be written.
      */
-    void writeConstriction(Constriction con, Row row, int baseExcelColumn);
+    void writeConstriction(Constraint con, Row row, int baseExcelColumn);
 }

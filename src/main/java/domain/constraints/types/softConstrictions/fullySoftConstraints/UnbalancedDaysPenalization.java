@@ -1,7 +1,7 @@
-package domain.constrictions.types.weakConstriction.fullyWeakConstrictions;
+package domain.constraints.types.softConstrictions.fullySoftConstraints;
 
-import domain.constrictions.counter.ConstrictionCounter;
-import domain.constrictions.types.weakConstriction.WeakConstriction;
+import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.types.softConstrictions.WeakConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 //TODO, what to do with this?
-public class UnbalancedDaysPenalization implements WeakConstriction {
+public class UnbalancedDaysPenalization implements WeakConstraint {
 
     /**
      * Constriction id of this type of {@code Constriction}.

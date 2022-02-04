@@ -1,8 +1,7 @@
 package main;
 
-import domain.entities.Exam;
-import utils.dataGetter.StatisticalDataGetter;
 import domain.DataHandler;
+import domain.entities.Exam;
 import domain.parsers.ConstrictionParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Enconder;
@@ -10,11 +9,12 @@ import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
-import greedyAlgorithm.ChromosomeDecoder;
 import geneticAlgorithm.fitnessFunctions.LinearFitnessFunction;
 import geneticAlgorithm.logger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
+import greedyAlgorithm.ChromosomeDecoder;
 import utils.Utils;
+import utils.dataGetter.StatisticalDataGetter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

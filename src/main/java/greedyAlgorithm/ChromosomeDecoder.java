@@ -1,6 +1,7 @@
 package greedyAlgorithm;
 
 import domain.DataHandler;
+import domain.constraints.types.hardConstraints.HardConstraint;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import geneticAlgorithm.Individual;
@@ -16,7 +17,7 @@ import java.util.*;
  * stored at {@code DataHandler}.
  *
  * <p>
- * The decoding process takes into account the {@link domain.constrictions.types.hardConstriction.HardConstriction} that
+ * The decoding process takes into account the {@link HardConstraint} that
  * each {@code Exam} has.
  *
  * @see geneticAlgorithm.fitnessFunctions.FitnessFunction

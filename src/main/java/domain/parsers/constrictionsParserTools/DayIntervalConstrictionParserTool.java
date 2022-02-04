@@ -1,9 +1,9 @@
 package domain.parsers.constrictionsParserTools;
 
 import domain.DataHandler;
-import domain.constrictions.Constriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.DayIntervalConstriction;
-import domain.constrictions.types.weakConstriction.hardifiableConstrictions.UserConstriction;
+import domain.constraints.Constraint;
+import domain.constraints.types.softConstrictions.userConstraints.DayIntervalConstraint;
+import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -16,17 +16,17 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This is the parser for {@link DayIntervalConstriction}
+ * This is the parser for {@link DayIntervalConstraint}
  */
 public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParserTool {
 
     @Override
-    public UserConstriction specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2, baseExcelColumn + 3},
                 "Error creating Day Interval Constraint.");
         List<LocalDate> calendar = dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates();
         Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
-        UserConstriction uc = new DayIntervalConstriction(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
+        UserConstraint uc = new DayIntervalConstraint(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate(), row.getCell(baseExcelColumn+2).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
@@ -36,8 +36,8 @@ public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParse
     }
 
     @Override
-    public void writeConstriction(Constriction con, Row row, int baseExcelColumn) {
-        DayIntervalConstriction dic = (DayIntervalConstriction) con;
+    public void writeConstriction(Constraint con, Row row, int baseExcelColumn) {
+        DayIntervalConstraint dic = (DayIntervalConstraint) con;
         int cellCounter = baseExcelColumn -1;
         Cell cell = row.createCell(++cellCounter);
         cell.setCellValue(dic.getExam().getId());
