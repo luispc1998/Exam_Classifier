@@ -1,4 +1,4 @@
-package geneticAlgorithm.logger;
+package logger.dataGetter.fitnessLogger;
 
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;

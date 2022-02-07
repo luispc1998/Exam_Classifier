@@ -1,9 +1,9 @@
 package domain;
 
 import domain.constraints.Constraint;
-import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.fullyHardConstraints.IsolateCourseOnDayConstraint;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 import domain.constraints.types.softConstrictions.fullySoftConstraints.NumericalComplexityPenalization;
 import domain.constraints.types.softConstrictions.fullySoftConstraints.ProhibitedIntervalPenalization;
 import domain.constraints.types.softConstrictions.fullySoftConstraints.SameCourseDifferentDayConstraint;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  *
  * <p>
  * This is responsible to provide the logic to schedule the exam, as well to check the collisions. It holds the list
- * of {@code Exam} as well as the list of {@code Constriction}.
+ * of {@code Exam} as well as the list of {@code SoftConstraints}.
  */
 public class DataHandler {
 
@@ -46,9 +46,9 @@ public class DataHandler {
     private final Set<Integer> preScheduledExams;
 
     /**
-     * List of {@code Constriction} to be considered.
+     * List of {@code SoftConstraints} to be considered.
      */
-    private final List<WeakConstraint> constrictions;
+    private final List<SoftConstraints> constraints;
 
 
     /**
@@ -59,21 +59,21 @@ public class DataHandler {
 
         this.configurer = configurer;
         this.preScheduledExams = new HashSet<>();
-        this.constrictions = new ArrayList<>();
+        this.constraints = new ArrayList<>();
 
         String inputDataFile = configurer.getFilePaths("inputFile");
         this.exams = new ArrayList<>(exams);
         identifyScheduledExams();
 
-        addConstrictions();
-        this.constrictions.addAll(constrictionParser.parseConstrictions(inputDataFile, this));
+        addConstraints();
+        this.constraints.addAll(constrictionParser.parseConstrictions(inputDataFile, this));
 
     }
 
     /**
-     * Adds all the default constrictions.
+     * Adds all the default constraints.
      */
-    private void addConstrictions() {
+    private void addConstraints() {
 
         //Hard
         for (Exam exam: exams) {
@@ -111,7 +111,6 @@ public class DataHandler {
 
         IsolateCourseOnDayConstraint.resetAvailabilities(configurer.getDateTimeConfigurer().getExamDates(),
                 getPreScheduledExams());
-
     }
 
     /**
@@ -163,8 +162,8 @@ public class DataHandler {
      * Returns the list of {@code WeakConstriction}.
      * @return The list of {@code WeakConstriction}.
      */
-    public List<WeakConstraint> getConstrictions() {
-        return new ArrayList<>(constrictions);
+    public List<SoftConstraints> getConstraints() {
+        return new ArrayList<>(constraints);
     }
 
 
@@ -230,8 +229,8 @@ public class DataHandler {
      * Adds a {@code WeakConstriction}.
      * @param constriction The {@code WeakConstriction} to be added.
      */
-    public void addConstriction(WeakConstraint constriction) {
-        constrictions.add(constriction);
+    public void addConstriction(SoftConstraints constriction) {
+        constraints.add(constriction);
     }
 
     /**
@@ -239,10 +238,10 @@ public class DataHandler {
      * @param counter The constriction counter instance that will be used for the checking of the weak constrictions.
      * @return A {@code HashMap} being the keys the constrictions ids, and the values a list of that type of constriction.
      */
-    public HashMap<String, List<Constraint>> verifyConstrictions(ConstrictionCounter counter) {
+    public HashMap<String, List<Constraint>> verifyConstraints(ConstraintCounter counter) {
         HashMap<String, List<Constraint>> verifiedConstrictions = new HashMap<>();
 
-        for (WeakConstraint cons: constrictions) {
+        for (SoftConstraints cons: constraints) {
             cons.checkConstriction(counter);
             if (! verifiedConstrictions.containsKey(cons.getConstrictionID())) {
                 verifiedConstrictions.put(cons.getConstrictionID(), new ArrayList<>());

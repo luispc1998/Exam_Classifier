@@ -2,7 +2,7 @@ package domain.parsers;
 
 import domain.DataHandler;
 import domain.constraints.Constraint;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 import domain.constraints.types.softConstrictions.userConstraints.*;
 import domain.parsers.constrictionsParserTools.*;
 import geneticAlgorithm.configuration.Configurer;
@@ -11,8 +11,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import utils.ConsoleLogger;
-import utils.dataGetter.StatisticalDataGetter;
+import logger.ConsoleLogger;
+import logger.dataGetter.StatisticalDataGetter;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -84,8 +84,8 @@ public class ConstrictionParser {
      * @param dataHandler The current dataHandler instance being use
      * @return The {@code List} of {@code Constriction} parsed from the excel.
      */
-    public List<WeakConstraint> parseConstrictions(String filepath, DataHandler dataHandler) {
-        List<WeakConstraint> constrictions = new ArrayList<>();
+    public List<SoftConstraints> parseConstrictions(String filepath, DataHandler dataHandler) {
+        List<SoftConstraints> constrictions = new ArrayList<>();
         int i = 0;
         //creating workbook instance that refers to .xls file
         try (FileInputStream fis = new FileInputStream(filepath);
@@ -124,7 +124,7 @@ public class ConstrictionParser {
 
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input excel file");
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             throw new IllegalArgumentException("Could not parse input excel file");
         }
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Restricciones creadas: " + i);

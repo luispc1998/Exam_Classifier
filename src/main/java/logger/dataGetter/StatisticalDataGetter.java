@@ -1,8 +1,8 @@
-package utils.dataGetter;
+package logger.dataGetter;
 
 import domain.DataHandler;
-import domain.constraints.counter.ConstrictionCounter;
-import domain.constraints.counter.DefaultConstrictionCounter;
+import domain.constraints.counter.ConstraintCounter;
+import domain.constraints.counter.DefaultConstraintCounter;
 import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 import geneticAlgorithm.Individual;
 import greedyAlgorithm.ChromosomeDecoder;
@@ -57,24 +57,24 @@ public class StatisticalDataGetter {
 
         dataHandler.resetScheduling();
 
-        decoder.decodeNew(finalOne, dataHandler);
+        decoder.decode(finalOne, dataHandler);
         PrettyTimetable prettyTimetable = new PrettyTimetable();
         prettyTimetable.orderScheduling(dataHandler);
-        ConstrictionCounter constrictionCounter = new DefaultConstrictionCounter();
-        dataHandler.verifyConstrictions(constrictionCounter);
+        ConstraintCounter constraintCounter = new DefaultConstraintCounter();
+        dataHandler.verifyConstraints(constraintCounter);
 
 
-        int unplacedExams = constrictionCounter.getCountOfUnclassifiedExamsConstriction();
+        int unplacedExams = constraintCounter.getCountOfUnclassifiedExamsConstriction();
 
         int unfulfilledConstrictionCounter = 0;
-        unfulfilledConstrictionCounter += constrictionCounter.getDayIntervalConstrictionCounter();
-        unfulfilledConstrictionCounter += constrictionCounter.getCountOfTimeDisplacementConstriction();
-        unfulfilledConstrictionCounter += constrictionCounter.getCountOfDifferentDayConstriction();
-        unfulfilledConstrictionCounter += constrictionCounter.getCountOrderExamsConstriction();
-        unfulfilledConstrictionCounter += constrictionCounter.getCountOfDaysBannedConstriction();
-        unfulfilledConstrictionCounter += constrictionCounter.getCountOfSameDayConstriction();
+        unfulfilledConstrictionCounter += constraintCounter.getDayIntervalConstrictionCounter();
+        unfulfilledConstrictionCounter += constraintCounter.getCountOfTimeDisplacementConstriction();
+        unfulfilledConstrictionCounter += constraintCounter.getCountOfDifferentDayConstriction();
+        unfulfilledConstrictionCounter += constraintCounter.getCountOrderExamsConstriction();
+        unfulfilledConstrictionCounter += constraintCounter.getCountOfDaysBannedConstriction();
+        unfulfilledConstrictionCounter += constraintCounter.getCountOfSameDayConstriction();
 
-        long minutesOnProhibitedInterval = constrictionCounter.getCountProhibitedIntervalPenalization();
+        long minutesOnProhibitedInterval = constraintCounter.getCountProhibitedIntervalPenalization();
 
         String sb = unplacedExams +
                 "," +
@@ -86,7 +86,7 @@ public class StatisticalDataGetter {
                 "," +
                 minutesOnProhibitedInterval +
                 "\n";
-        writeToFile(dataHandler.getConfigurer().getFilePaths("statisticsBaseDirectory") + "/" + subDirectory,
+        writeStatisticsToFile(dataHandler.getConfigurer().getFilePaths("statisticsBaseDirectory") + "/" + subDirectory,
                 sb);
     }
 
@@ -95,7 +95,7 @@ public class StatisticalDataGetter {
      * @param statisticsBaseDirectory The directory in which the file will be.
      * @param dataToWrite The String to write into the file.
      */
-    private void writeToFile(String statisticsBaseDirectory, String dataToWrite) {
+    private void writeStatisticsToFile(String statisticsBaseDirectory, String dataToWrite) {
         String path = statisticsBaseDirectory + "/" + statisticsFileName + ".csv";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
             bw.write(dataToWrite);

@@ -1,7 +1,7 @@
 package domain.constraints.types.softConstrictions.fullySoftConstraints;
 
-import domain.constraints.counter.ConstrictionCounter;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.counter.ConstraintCounter;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 //TODO, what to do with this?
-public class UnbalancedDaysPenalization implements WeakConstraint {
+public class UnbalancedDaysPenalization implements SoftConstraints {
 
     /**
      * Constriction id of this type of {@code Constriction}.
@@ -34,7 +34,7 @@ public class UnbalancedDaysPenalization implements WeakConstraint {
     }
 
     @Override
-    public void checkConstriction(ConstrictionCounter counter) {
+    public void checkConstriction(ConstraintCounter counter) {
 
         HashMap<LocalDate, Long> schedule = new HashMap<>();
         for (Exam exam: exams) {

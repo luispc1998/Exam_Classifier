@@ -40,7 +40,7 @@ public class ChromosomeDecoder {
      * @param dataHandler The {@code DataHandler} instance.
      * @return The list of {@code Exam} to schedule ordered as stated in {@code chromosome}.
      */
-    public List<Exam> getExamsOrderedForChromosome(List<Integer> chromosome, DataHandler dataHandler){
+    private List<Exam> getExamsOrderedForChromosome(List<Integer> chromosome, DataHandler dataHandler){
         List<Exam> exams = new ArrayList<>();
 
         for (Integer examId: chromosome) {
@@ -69,10 +69,9 @@ public class ChromosomeDecoder {
      * @param individual The {@code Individual} to be decoded.
      * @param dataHandler The {@code DataHandler} instance over which the individual will be decoded.
      */
-    public void decodeNew(Individual individual, DataHandler dataHandler){
+    public void decode(Individual individual, DataHandler dataHandler){
 
         DateTimeConfigurer dateTimeConfigurer = dataHandler.getConfigurer().getDateTimeConfigurer();
-
 
         // Times for the days.
         HashMap<LocalDate, LocalTime> daysTimes = initializeDays(dateTimeConfigurer);

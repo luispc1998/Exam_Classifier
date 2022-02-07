@@ -5,7 +5,7 @@ import geneticAlgorithm.configuration.Configurer;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import utils.ConsoleLogger;
+import logger.ConsoleLogger;
 import utils.Utils;
 
 import java.io.FileInputStream;
@@ -101,7 +101,7 @@ public class ExamParser {
 
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input excel file");
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             throw new IllegalArgumentException("Could not parse input excel file");
         }
 

@@ -1,4 +1,4 @@
-package geneticAlgorithm.logger;
+package logger.dataGetter.fitnessLogger;
 
 /**
  * This groups and stores the data that can be used to plot a fitness graph for a generation of the problem.

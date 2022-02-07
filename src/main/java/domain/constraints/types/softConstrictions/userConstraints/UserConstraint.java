@@ -1,13 +1,13 @@
 package domain.constraints.types.softConstrictions.userConstraints;
 
 import domain.constraints.types.hardConstraints.HardConstraint;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 import greedyAlgorithm.ChromosomeDecoder;
 
 /**
  * User constrictions that can be specified as hard or weak.
  */
-public interface UserConstraint extends WeakConstraint {
+public interface UserConstraint extends SoftConstraints {
 
     /**
      * Makes the constriction hard.

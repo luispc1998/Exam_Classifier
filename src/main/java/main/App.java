@@ -10,15 +10,15 @@ import geneticAlgorithm.Individual;
 import geneticAlgorithm.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.fitnessFunctions.LinearFitnessFunction;
-import geneticAlgorithm.logger.GeneticLogger;
+import logger.dataGetter.fitnessLogger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.output.ExcelWriter;
 import geneticAlgorithm.output.OutputHandler;
 import greedyAlgorithm.ChromosomeDecoder;
-import utils.ConsoleLogger;
-import utils.ErrorManager;
+import logger.ConsoleLogger;
+import logger.ErrorManager;
 import utils.Utils;
-import utils.dataGetter.StatisticalDataGetter;
+import logger.dataGetter.StatisticalDataGetter;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -34,7 +34,18 @@ public class App {
 
     public static void main(String[] args) {
 
+        try {
+            applicationCode(args);
+        } catch (RuntimeException e) {
+            System.out.println("Fatal error on the application.");
+            System.out.println("Cause: " + e.getMessage());
+            System.out.println("Application will end its execution.");
+        }
 
+
+    }
+
+    private static void applicationCode(String[] args) {
         String outputFileName = args[1];
         StatisticalDataGetter statisticalDataGetter = null;
 
@@ -65,22 +76,23 @@ public class App {
             List<Exam> exams = examParser.parseExams(conf.getFilePaths("inputFile"), conf);
             String outputDirectory = Utils.createOutputDirectory(conf.getFilePaths("outputBaseDirectory"));
 
-            ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
+
 
             if (errorAsking && errorManager.wasThereErrorsOrWarnings()) {
                 System.out.println("Se encontraron errores durante la generación de exámenes, por favor revise el archivo errorLog en la carpeta de salida.");
+                ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
                 stoppingInputRequest();
-                errorManager.markPendingErrorsAsShowed();
             }
 
             DataHandler dataHandler = new DataHandler(conf, exams, constrictionParser);
             ExcelWriter excelWriter = new ExcelWriter(examParser, constrictionParser);
             OutputHandler outputHandler = new OutputHandler(dataHandler, outputFileName, outputDirectory, excelWriter);
 
-            ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
+
 
             if (errorAsking && errorManager.wasThereErrorsOrWarnings()) {
                 System.out.println("Se encontraron errores o avisos, por favor revise el archivo errorLog en la carpeta de salida.");
+                ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
                 stoppingInputRequest();
             }
 
@@ -113,9 +125,6 @@ public class App {
             }
             outputHandler.writeOutputFiles(outputIndividuals, genCore.getLogging(), genCore.getFitnessGraphData());
         }
-
-
-
     }
 
     private static void stoppingInputRequest() {

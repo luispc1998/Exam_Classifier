@@ -13,7 +13,7 @@ import domain.constraints.types.softConstrictions.userConstraints.*;
  * To implement this functionality, Visitor design pattern was followed.
  *
  */
-public interface ConstrictionCounter {
+public interface ConstraintCounter {
 
     /**
      * Increments the value of the counter for {@link TimeDisplacementConstraint}

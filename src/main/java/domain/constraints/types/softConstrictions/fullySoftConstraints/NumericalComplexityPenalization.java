@@ -1,7 +1,7 @@
 package domain.constraints.types.softConstrictions.fullySoftConstraints;
 
-import domain.constraints.counter.ConstrictionCounter;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.counter.ConstraintCounter;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 import domain.entities.Exam;
 
 import java.time.Duration;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * weak constriction will penalize the fact that these two exams are near in the calendar, the nearer the more penalization.
  * This makes that the algorithm solutions tend to be more spreaded in terms of complexity.
  */
-public class NumericalComplexityPenalization implements WeakConstraint {
+public class NumericalComplexityPenalization implements SoftConstraints {
 
     /**
      * Constriction id of this type of {@code Constriction}.
@@ -50,7 +50,7 @@ public class NumericalComplexityPenalization implements WeakConstraint {
     }
 
     @Override
-    public void checkConstriction(ConstrictionCounter counter) {
+    public void checkConstriction(ConstraintCounter counter) {
         HashMap<Integer, List<Exam>> examsOrderedByComplexity = retrieveExamsByNC();
 
         accumulator = 0;

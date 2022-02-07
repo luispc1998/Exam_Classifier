@@ -4,7 +4,7 @@ import domain.DataHandler;
 import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import utils.ConsoleLogger;
+import logger.ConsoleLogger;
 import utils.Utils;
 
 import java.util.NoSuchElementException;
@@ -60,7 +60,7 @@ public abstract class AbstractCosntrictionParserTool implements ConstrictionPars
         } catch (IllegalArgumentException e) {
             ConsoleLogger.getConsoleLoggerInstance().logError(e.getMessage() + " Skipping...");
         } catch (NoSuchElementException e) {
-            ConsoleLogger.getConsoleLoggerInstance().logError("Error creating constraint. [Line: " + row.getRowNum() + "] Wrong exam id. Skipping..." );
+            ConsoleLogger.getConsoleLoggerInstance().logError("Error creating user constraint. [Line: " + row.getRowNum() + "] Wrong exam id. Skipping..." );
         }
         return null;
     }

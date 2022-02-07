@@ -6,7 +6,7 @@ import domain.constraints.types.softConstrictions.userConstraints.*;
 /**
  * This is a default implementation for {@code ConstrictionCounter}.
  */
-public class DefaultConstrictionCounter implements ConstrictionCounter {
+public class DefaultConstraintCounter implements ConstraintCounter {
 
     private int timeDisplacementCounter;
     private int daysBannedCounter;

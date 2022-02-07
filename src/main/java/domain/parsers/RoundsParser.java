@@ -2,7 +2,7 @@ package domain.parsers;
 
 import domain.constraints.types.softConstrictions.userConstraints.SameDayConstraint;
 import domain.entities.Exam;
-import utils.ConsoleLogger;
+import logger.ConsoleLogger;
 
 import java.util.HashMap;
 import java.util.List;

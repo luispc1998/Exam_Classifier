@@ -1,9 +1,9 @@
 package geneticAlgorithm.fitnessFunctions;
 
 import domain.DataHandler;
-import domain.constraints.counter.ConstrictionCounter;
-import domain.constraints.counter.DefaultConstrictionCounter;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.counter.ConstraintCounter;
+import domain.constraints.counter.DefaultConstraintCounter;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 import domain.constraints.types.softConstrictions.fullySoftConstraints.*;
 import domain.constraints.types.softConstrictions.userConstraints.*;
 import geneticAlgorithm.Individual;
@@ -51,11 +51,11 @@ public class LinearFitnessFunction implements FitnessFunction {
         dataHandler.resetScheduling();
 
         // Deconde the cromosome
-        decoder.decodeNew(a, dataHandler);
+        decoder.decode(a, dataHandler);
 
         //Count constrictions
-        ConstrictionCounter counter = new DefaultConstrictionCounter();
-        for (WeakConstraint constriction: dataHandler.getConstrictions()) {
+        ConstraintCounter counter = new DefaultConstraintCounter();
+        for (SoftConstraints constriction: dataHandler.getConstraints()) {
                 constriction.checkConstriction(counter);
         }
 
@@ -68,7 +68,7 @@ public class LinearFitnessFunction implements FitnessFunction {
      * @param counter Object with the count of how many times each constriction type was ons satisfied.
      * @return the final fitness value.
      */
-    private double formula(ConstrictionCounter counter) {
+    private double formula(ConstraintCounter counter) {
         WeightConfigurer wc = dataHandler.getConfigurer().getWeightConfigurer();
 
         return counter.getCountOfTimeDisplacementConstriction()
@@ -87,8 +87,6 @@ public class LinearFitnessFunction implements FitnessFunction {
                         * wc.getConstrictionWeight(SameCourseDifferentDayConstraint.CONSTRICTION_ID) +
                 counter.getCountProhibitedIntervalPenalization()
                         * wc.getConstrictionWeight(ProhibitedIntervalPenalization.CONSTRICTION_ID) +
-                counter.getCountUnbalancedDaysPenalization()
-                        * wc.getConstrictionWeight(UnbalancedDaysPenalization.CONSTRICTION_ID) +
                 counter.getNumericalComplexityPenalization()
                         * wc.getConstrictionWeight(NumericalComplexityPenalization.CONSTRICTION_ID) +
                 counter.getDayIntervalConstrictionCounter()

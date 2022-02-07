@@ -1,9 +1,13 @@
 package geneticAlgorithm.configuration;
 
+import logger.dataGetter.fitnessLogger.GeneticLogger;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -24,7 +28,7 @@ public class GeneticParameters {
     /**
      * Iterations waited by the genetic logger before writing an entry.
      *
-     * @see geneticAlgorithm.logger.GeneticLogger
+     * @see GeneticLogger
      */
     private final int loggingFrequency;
 
@@ -136,6 +140,11 @@ public class GeneticParameters {
                     Boolean.parseBoolean(geneticProperties.getProperty("inputWarningsStop")));
 
 
+        } catch (NullPointerException e) {
+            String[] neededProperties = {"iterations", "populationSize", "loggingFreq", "mutationProb",
+                "maxSchedulesToTake", "crossingProb", "repairingDepth", "algorithmRepetitions", "inputWarningsStop"};
+            throw new IllegalArgumentException("Missing properties in genetic parameters configuration file.\n" +
+                    "The following properties are mandatory: " + Arrays.toString(neededProperties));
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not parse Genetic parameters geneticAlgorithm.configuration file");
         } catch (IOException e) {

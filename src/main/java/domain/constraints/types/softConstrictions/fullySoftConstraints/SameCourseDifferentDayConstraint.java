@@ -1,8 +1,8 @@
 package domain.constraints.types.softConstrictions.fullySoftConstraints;
 
 import domain.constraints.Constraint;
-import domain.constraints.counter.ConstrictionCounter;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.counter.ConstraintCounter;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * This represents a constriction that states that the same course exams should take place on different days.
  */
-public class SameCourseDifferentDayConstraint implements WeakConstraint {
+public class SameCourseDifferentDayConstraint implements SoftConstraints {
 
     /**
      * Constriction with the identifier for this type of {@link Constraint}.
@@ -41,7 +41,7 @@ public class SameCourseDifferentDayConstraint implements WeakConstraint {
     }
 
     @Override
-    public void checkConstriction(ConstrictionCounter counter) {
+    public void checkConstriction(ConstraintCounter counter) {
         occurrences = 0;
         for (int i = 1; i < 5; i++) {
             occurrences += getExamsForCourse(exams, i);

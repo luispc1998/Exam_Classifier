@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import utils.ConsoleLogger;
+import logger.ConsoleLogger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,10 +16,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * This is in charge of managing the date and time configurations, such as the calendars,
@@ -92,13 +89,19 @@ public class DateTimeConfigurer {
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not parse properties in dates and times configuration file");
         }
-
-        this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
-        this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
-        this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
-        this.defaultExtraTimeEnabled = Boolean.parseBoolean(fileProperties.getProperty("defaultExtraTimeEnabled"));
-        this.deliveryCollisionEnabled = Boolean.parseBoolean(fileProperties.getProperty("deliveryCollisionEnabled"));
-        this.deliveryIdentifier = String.valueOf(fileProperties.get("deliveryIdentifier"));
+        try {
+            this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
+            this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
+            this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
+            this.defaultExtraTimeEnabled = Boolean.parseBoolean(fileProperties.getProperty("defaultExtraTimeEnabled"));
+            this.deliveryCollisionEnabled = Boolean.parseBoolean(fileProperties.getProperty("deliveryCollisionEnabled"));
+            this.deliveryIdentifier = String.valueOf(fileProperties.get("deliveryIdentifier"));
+        } catch (NullPointerException e) {
+            String[] neededProperties = {"beginningProhibitedIntervalHour", "endProhibitedIntervalHour", "defaultCleaningTimeMinutes", "mutationProb",
+                    "defaultExtraTimeEnabled", "deliveryCollisionEnabled", "deliveryIdentifier"};
+            throw new IllegalArgumentException("Missing properties in date and time configuration file.\n" +
+                    "The following properties are mandatory: " + Arrays.toString(neededProperties));
+        }
     }
 
     /**
@@ -131,7 +134,7 @@ public class DateTimeConfigurer {
 
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input excel file");
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             throw new IllegalArgumentException("Could not parse input excel file");
         }
 

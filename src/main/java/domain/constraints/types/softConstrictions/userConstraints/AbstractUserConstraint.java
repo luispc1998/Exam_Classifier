@@ -1,7 +1,7 @@
 package domain.constraints.types.softConstrictions.userConstraints;
 
-import domain.constraints.counter.ConstrictionCounter;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.counter.ConstraintCounter;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 
 /**
  * Default implementation of {@code checkConstriction} method, and implementation of the logic to hold the result of the
@@ -12,7 +12,7 @@ import domain.constraints.types.softConstrictions.WeakConstraint;
  * logic, and the call to {@code ConstrictionCounter}, as is requested in the abstract methods {@code isFulfilled} and
  * {@code countMe}.
  */
-public abstract class AbstractUserConstraint implements UserConstraint, WeakConstraint {
+public abstract class AbstractUserConstraint implements UserConstraint, SoftConstraints {
 
     /**
      * Stores the value of the last evaluation of isFulfilled.
@@ -42,7 +42,7 @@ public abstract class AbstractUserConstraint implements UserConstraint, WeakCons
 
 
     @Override
-    public void checkConstriction(ConstrictionCounter counter) {
+    public void checkConstriction(ConstraintCounter counter) {
         if (wasHardified() || isFulfilled()) { // condition order is important, don't swap these!
             setLastEvaluation(true);
         }
@@ -72,9 +72,9 @@ public abstract class AbstractUserConstraint implements UserConstraint, WeakCons
      * Do the necessary logic and calls the {@code ConstrictionCounter}.
      * @param counter The counter that the constriction will call to provide the data.
      *
-     * @see ConstrictionCounter
+     * @see ConstraintCounter
      */
-    public abstract void countMe(ConstrictionCounter counter);
+    public abstract void countMe(ConstraintCounter counter);
 
 
     @Override

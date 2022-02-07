@@ -2,8 +2,8 @@ package geneticAlgorithm.output;
 
 import domain.DataHandler;
 import domain.constraints.Constraint;
-import domain.constraints.counter.ConstrictionCounter;
-import domain.constraints.counter.DefaultConstrictionCounter;
+import domain.constraints.counter.ConstraintCounter;
+import domain.constraints.counter.DefaultConstraintCounter;
 import domain.entities.Exam;
 import domain.entities.ExamDatesComparator;
 import domain.entities.Interval;
@@ -71,11 +71,11 @@ public class ExcelWriter {
 
     public void writeIndividualToExcel(DataHandler dataHandler, String directory, String outputFileName, ChromosomeDecoder decoder, PrettyTimetable prettyTimetable, int counter, Individual idv) {
         dataHandler.resetScheduling();
-        decoder.decodeNew(idv, dataHandler);
+        decoder.decode(idv, dataHandler);
         prettyTimetable.orderScheduling(dataHandler);
         List<Exam> finalResult = dataHandler.getClonedSchedule();
-        ConstrictionCounter constrictionCounter = new DefaultConstrictionCounter();
-        HashMap<String, List<Constraint>> verifiedConstrictions = dataHandler.verifyConstrictions(constrictionCounter);
+        ConstraintCounter constraintCounter = new DefaultConstraintCounter();
+        HashMap<String, List<Constraint>> verifiedConstrictions = dataHandler.verifyConstraints(constraintCounter);
         Comparator<Exam> examComparator = new ExamDatesComparator();
         finalResult.sort(examComparator);
         parseExamListToExcel(directory, outputFileName, counter, finalResult,

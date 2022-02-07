@@ -10,11 +10,11 @@ import geneticAlgorithm.Individual;
 import geneticAlgorithm.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.fitnessFunctions.LinearFitnessFunction;
-import geneticAlgorithm.logger.GeneticLogger;
+import logger.dataGetter.fitnessLogger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import greedyAlgorithm.ChromosomeDecoder;
 import utils.Utils;
-import utils.dataGetter.StatisticalDataGetter;
+import logger.dataGetter.StatisticalDataGetter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

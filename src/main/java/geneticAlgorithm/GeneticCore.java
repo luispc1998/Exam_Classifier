@@ -1,7 +1,7 @@
 package geneticAlgorithm;
 
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
-import geneticAlgorithm.logger.GeneticLogger;
+import logger.dataGetter.fitnessLogger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;

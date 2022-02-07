@@ -1,8 +1,8 @@
 package domain.constraints.types.softConstrictions.fullySoftConstraints;
 
 import domain.constraints.Constraint;
-import domain.constraints.counter.ConstrictionCounter;
-import domain.constraints.types.softConstrictions.WeakConstraint;
+import domain.constraints.counter.ConstraintCounter;
+import domain.constraints.types.softConstrictions.SoftConstraints;
 import domain.entities.Exam;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * This {@link Constraint} penalizes schedules by the number of unclassified {@link Exam}.
  */
-public class UnclassifiedExamsConstraint implements WeakConstraint {
+public class UnclassifiedExamsConstraint implements SoftConstraints {
 
     /**
      * Constriction with the identifier for this type of {@link Constraint}.
@@ -32,7 +32,7 @@ public class UnclassifiedExamsConstraint implements WeakConstraint {
     }
 
     @Override
-    public void checkConstriction(ConstrictionCounter counter) {
+    public void checkConstriction(ConstraintCounter counter) {
         for (Exam exam: exams) {
             if (! exam.isScheduled()){
                 counter.count(this);

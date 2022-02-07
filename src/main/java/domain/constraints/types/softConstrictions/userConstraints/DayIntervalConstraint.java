@@ -1,7 +1,7 @@
 package domain.constraints.types.softConstrictions.userConstraints;
 
 import domain.constraints.Constraint;
-import domain.constraints.counter.ConstrictionCounter;
+import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.HardConstraint;
 import domain.constraints.types.hardConstraints.hardUserConstrictions.HardifiedConstraint;
 import domain.entities.Exam;
@@ -88,7 +88,7 @@ public class DayIntervalConstraint extends AbstractUserConstraint {
     }
 
     @Override
-    public void countMe(ConstrictionCounter counter) {
+    public void countMe(ConstraintCounter counter) {
         counter.count(this);
     }
 

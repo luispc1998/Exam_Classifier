@@ -2,12 +2,13 @@ package geneticAlgorithm.configuration;
 
 import domain.constraints.Constraint;
 import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
-import utils.ConsoleLogger;
+import logger.ConsoleLogger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -50,10 +51,16 @@ public class WeightConfigurer {
         // p.load(getClass().getClassLoader().getResourceAsStream(weightFilepath));
 
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando pesos fitness...");
-
-        for (String key: weigthProperties.stringPropertyNames()) {
+        String[] neededProperties = {"DB", "TD", "SD", "DD",
+                "OE", "DI", "PIP", "NCP", "UE", "SCDD"};
+        for (String key: neededProperties) {
             try {
                 weights.put(key, Double.parseDouble(weigthProperties.getProperty(key)));
+            } catch (NullPointerException e) {
+
+                throw new IllegalArgumentException("Missing properties in weights configuration file.\n" +
+                        "The following properties are mandatory: " + Arrays.toString(neededProperties));
+
             } catch (NumberFormatException e) {
                 ConsoleLogger.getConsoleLoggerInstance().logError("Could not get weigth for cosntriction of ID: "
                         + key + ". Got value: "

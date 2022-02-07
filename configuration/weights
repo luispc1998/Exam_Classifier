@@ -3,7 +3,7 @@
 # Weights of the weak constrictions. (Coefficients in the fitness function)
 DB=60
 TD=60
-SD=60
+SD=60ty
 DD=60
 OE=60
 DI=60
@@ -15,5 +15,5 @@ NCP=2.5
 
 
 UE=1000000
-UDP=0.001
+# UDP=0.001 #Not used, provided really bad results.
 SCDD=0.1
