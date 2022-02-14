@@ -1,7 +1,7 @@
-package domain.parsers.constrictionsParserTools;
+package domain.parsers.constraintsParserTools;
 
 import domain.DataHandler;
-import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
+import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import logger.ConsoleLogger;
@@ -10,17 +10,17 @@ import utils.Utils;
 import java.util.NoSuchElementException;
 
 /**
- * This is just to group some common functionality to all of the ConstrictionParserTools.
+ * This is just to group some common functionality to all of the ConstraintParserTools.
  */
-public abstract class AbstractCosntrictionParserTool implements ConstrictionParserTool {
+public abstract class AbstractConstraintParserTool implements ConstraintParserTool {
 
     /**
-     * Description for the type of Constriction in the excel.
+     * Description for the type of Constraint in the excel.
      */
     private String description;
 
     /**
-     * Headers for the type of Constriction in the excel.
+     * Headers for the type of Constraint in the excel.
      */
     private String[] headers;
 
@@ -54,9 +54,9 @@ public abstract class AbstractCosntrictionParserTool implements ConstrictionPars
 
 
     @Override
-    public UserConstraint parseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint parseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler) {
         try {
-            return specificParseConstriction(row, baseExcelColumn, dataHandler);
+            return specificParseConstraint(row, baseExcelColumn, dataHandler);
         } catch (IllegalArgumentException e) {
             ConsoleLogger.getConsoleLoggerInstance().logError(e.getMessage() + " Skipping...");
         } catch (NoSuchElementException e) {
@@ -65,14 +65,14 @@ public abstract class AbstractCosntrictionParserTool implements ConstrictionPars
         return null;
     }
 
-    public abstract UserConstraint specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler);
+    public abstract UserConstraint specificParseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler);
 
     /**
-     * Generalizes the writing of common fields to all constrictions
+     * Generalizes the writing of common fields to all constraints
      * @param row The row in which the cells will be
      * @param cellCounter The last cell index that was written.
-     * @param hard Whether the constriction was considered hard or not
-     * @param lastEvaluation Whether the constriction was met or not.
+     * @param hard Whether the constraint was considered hard or not
+     * @param lastEvaluation Whether the constraint was met or not.
      * @return The last cell index that was written.
      */
     public int writeCommonThings(Row row, int cellCounter, boolean hard, boolean lastEvaluation) {

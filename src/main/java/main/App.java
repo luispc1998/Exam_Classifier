@@ -2,7 +2,7 @@ package main;
 
 import domain.DataHandler;
 import domain.entities.Exam;
-import domain.parsers.ConstrictionParser;
+import domain.parsers.ConstraintParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
@@ -52,7 +52,7 @@ public class App {
 
         Configurer conf = new Configurer(args[0]);
         ExamParser examParser = new ExamParser();
-        ConstrictionParser constrictionParser;
+        ConstraintParser constraintParser;
         Enconder basicEncoder = new Enconder();
 
         int repetitions = conf.getGeneticParameters().getAlgorithmRepetitions();
@@ -60,10 +60,10 @@ public class App {
 
         if (args[2] != null) {
             statisticalDataGetter = new StatisticalDataGetter(args[2], Utils.createDirectoryStringBasedOnHour());
-            constrictionParser = new ConstrictionParser(conf, statisticalDataGetter);
+            constraintParser = new ConstraintParser(conf, statisticalDataGetter);
         }
         else {
-            constrictionParser = new ConstrictionParser();
+            constraintParser = new ConstraintParser();
         }
 
         for (int j = 1; j <= repetitions; j++) {
@@ -84,8 +84,8 @@ public class App {
                 stoppingInputRequest();
             }
 
-            DataHandler dataHandler = new DataHandler(conf, exams, constrictionParser);
-            ExcelWriter excelWriter = new ExcelWriter(examParser, constrictionParser);
+            DataHandler dataHandler = new DataHandler(conf, exams, constraintParser);
+            ExcelWriter excelWriter = new ExcelWriter(examParser, constraintParser);
             OutputHandler outputHandler = new OutputHandler(dataHandler, outputFileName, outputDirectory, excelWriter);
 
 
@@ -108,7 +108,7 @@ public class App {
 
             Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
                     conf.getGeneticParameters().getCrossingProbability(), fn,
-                    conf.getGeneticParameters().getMaxIterations(), conf.getGeneticParameters().getLoggingFrequency());
+                    conf.getGeneticParameters().getGenerations(), conf.getGeneticParameters().getLoggingFrequency());
 
 
             List<Individual> finalPopulation = genCore.getPopulation();

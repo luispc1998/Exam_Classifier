@@ -65,7 +65,7 @@ public class DateTimeConfigurer {
     /**
      * Constructor for the class
      * @param dateTimeFilepath filepath to property files where the date and time configurations are stored.
-     * @param inputDataFilepath filepath to the input excel, where the exams, constrictions and calendar are provided.
+     * @param inputDataFilepath filepath to the input excel, where the exams, constraints and calendar are provided.
      */
     public DateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) {
         this.examDates = new HashMap<>();
@@ -106,7 +106,7 @@ public class DateTimeConfigurer {
 
     /**
      * Parses the dates from the input Excel file
-     * @param inputDataFilepath filepath to the input excel, where the exams, constrictions and calendar are provided.
+     * @param inputDataFilepath filepath to the input excel, where the exams, constraints and calendar are provided.
      */
     private void parseDates(String inputDataFilepath) {
 

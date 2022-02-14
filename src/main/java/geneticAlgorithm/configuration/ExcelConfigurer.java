@@ -11,7 +11,7 @@ import java.util.Properties;
  * This class is in charge of parsing the properties file associated with the excel.
  *
  * <p>
- * There should be specified the headers of the exam, as well as the initial row and columns to read and parse constrictions.
+ * There should be specified the headers of the exam, as well as the initial row and columns to read and parse constraints.
  */
 
 public class ExcelConfigurer {

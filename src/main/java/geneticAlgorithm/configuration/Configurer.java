@@ -111,7 +111,7 @@ public class Configurer {
 
     /**
      * Creates a new instance of the WeightConfigurer.
-     * @param weightsFile filepath to the properties file where the weights for the constrictions are declared
+     * @param weightsFile filepath to the properties file where the weights for the constraints are declared
      */
     private void loadWeightConfigurer(String weightsFile) {
         this.weigthConfigurer = new WeightConfigurer(weightsFile);
@@ -120,7 +120,7 @@ public class Configurer {
     /**
      * Creates a new instance of the DateTimeConfigurer
      * @param dateTimeFilepath filepath to the properties file where the date and times configurations are declared.
-     * @param inputDataFilepath filepath to the input excel file where the exams, constrictions, and calendar are declared.
+     * @param inputDataFilepath filepath to the input excel file where the exams, constraints, and calendar are declared.
      */
     private void loadDateTimeConfigurer( String dateTimeFilepath,  String inputDataFilepath) {
         this.dateTimeConfigurer = new DateTimeConfigurer(dateTimeFilepath, inputDataFilepath);
@@ -168,12 +168,12 @@ public class Configurer {
     }
 
     /**
-     * Checks with the {@code WeightConfigurer} whether a constriction id exists or not.
-     * @param id The constriction id to be checked.
+     * Checks with the {@code WeightConfigurer} whether a constraint id exists or not.
+     * @param id The constraint id to be checked.
      * @return true in case it exists, false otherwise.
      */
-    public boolean existsConstrictionID(String id) {
-        return getWeightConfigurer().existsConstrictionID(id);
+    public boolean existsConstraintID(String id) {
+        return getWeightConfigurer().existsConstraintID(id);
     }
 
     /**

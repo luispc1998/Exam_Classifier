@@ -1,9 +1,9 @@
-package domain.parsers.constrictionsParserTools;
+package domain.parsers.constraintsParserTools;
 
 import domain.DataHandler;
 import domain.constraints.Constraint;
-import domain.constraints.types.softConstrictions.userConstraints.SameDayConstraint;
-import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
+import domain.constraints.types.softConstraints.userConstraints.SameDayConstraint;
+import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,9 +12,9 @@ import utils.Utils;
 /**
  * This is the parser for {@link SameDayConstraint}
  */
-public class SameDayConstrictionParserTool extends AbstractCosntrictionParserTool {
+public class SameDayConstraintParserTool extends AbstractConstraintParserTool {
     @Override
-    public UserConstraint specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler){
+    public UserConstraint specificParseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler){
         Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2},
                 "Error creating Same Day Constraint.");
         Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
@@ -25,7 +25,7 @@ public class SameDayConstrictionParserTool extends AbstractCosntrictionParserToo
     }
 
     @Override
-    public void writeConstriction(Constraint con, Row row, int baseExcelColumn) {
+    public void writeConstraint(Constraint con, Row row, int baseExcelColumn) {
         SameDayConstraint sdc = (SameDayConstraint) con;
         int cellCounter = baseExcelColumn -1;
         Cell cell = row.createCell(++cellCounter);

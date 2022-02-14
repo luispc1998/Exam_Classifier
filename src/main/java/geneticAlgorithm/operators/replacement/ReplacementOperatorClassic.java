@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This implementation takes mainly the children, but will consider an specified on constriction number of elite individuals
+ * This implementation takes mainly the children, but will consider an specified on constraint number of elite individuals
  * from the previous one, that will substitute the worst fitness individuals in the new one.
  */
 public class ReplacementOperatorClassic implements ReplacementOperator {

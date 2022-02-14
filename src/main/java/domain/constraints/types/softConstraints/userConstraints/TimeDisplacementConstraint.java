@@ -1,10 +1,10 @@
-package domain.constraints.types.softConstrictions.userConstraints;
+package domain.constraints.types.softConstraints.userConstraints;
 
 
 import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.HardConstraint;
-import domain.constraints.types.hardConstraints.hardUserConstrictions.HardifiedConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedConstraint;
 import domain.entities.Exam;
 import geneticAlgorithm.configuration.DateTimeConfigurer;
 
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * This class represents the constriction by which two exams must have at least X number of days between their dates,
+ * This class represents the constraint by which two exams must have at least X number of days between their dates,
  * being X a natural number.
  *
  * <p>
@@ -23,7 +23,7 @@ import java.util.List;
 public class TimeDisplacementConstraint extends AbstractUserConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "TD";
 
@@ -80,7 +80,7 @@ public class TimeDisplacementConstraint extends AbstractUserConstraint {
     }
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return CONSTRICTION_ID;
     }
 
@@ -110,8 +110,8 @@ public class TimeDisplacementConstraint extends AbstractUserConstraint {
 
     @Override
     public void specificHardify() {
-        HardConstraint hConstriction = new HardifiedConstraint(this);
-        first.addHardConstriction(hConstriction);
-        second.addHardConstriction(hConstriction);
+        HardConstraint hConstraint = new HardifiedConstraint(this);
+        first.addHardConstraint(hConstraint);
+        second.addHardConstraint(hConstraint);
     }
 }

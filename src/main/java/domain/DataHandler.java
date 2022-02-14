@@ -3,14 +3,14 @@ package domain;
 import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.fullyHardConstraints.IsolateCourseOnDayConstraint;
-import domain.constraints.types.softConstrictions.SoftConstraints;
-import domain.constraints.types.softConstrictions.fullySoftConstraints.NumericalComplexityPenalization;
-import domain.constraints.types.softConstrictions.fullySoftConstraints.ProhibitedIntervalPenalization;
-import domain.constraints.types.softConstrictions.fullySoftConstraints.SameCourseDifferentDayConstraint;
-import domain.constraints.types.softConstrictions.fullySoftConstraints.UnclassifiedExamsConstraint;
+import domain.constraints.types.softConstraints.SoftConstraints;
+import domain.constraints.types.softConstraints.fullySoftConstraints.NumericalComplexityPenalization;
+import domain.constraints.types.softConstraints.fullySoftConstraints.ProhibitedIntervalPenalization;
+import domain.constraints.types.softConstraints.fullySoftConstraints.SameCourseDifferentDayConstraint;
+import domain.constraints.types.softConstraints.fullySoftConstraints.UnclassifiedExamsConstraint;
 import domain.entities.Exam;
 import domain.entities.Interval;
-import domain.parsers.ConstrictionParser;
+import domain.parsers.ConstraintParser;
 import geneticAlgorithm.configuration.Configurer;
 
 import java.time.Duration;
@@ -55,7 +55,7 @@ public class DataHandler {
      * Constructor for the class
      * @param configurer Configurer that contains all the configurations options.
      */
-    public DataHandler(Configurer configurer, List<Exam> exams, ConstrictionParser constrictionParser) {
+    public DataHandler(Configurer configurer, List<Exam> exams, ConstraintParser constraintParser) {
 
         this.configurer = configurer;
         this.preScheduledExams = new HashSet<>();
@@ -66,7 +66,7 @@ public class DataHandler {
         identifyScheduledExams();
 
         addConstraints();
-        this.constraints.addAll(constrictionParser.parseConstrictions(inputDataFile, this));
+        this.constraints.addAll(constraintParser.parseConstraints(inputDataFile, this));
 
     }
 
@@ -77,14 +77,14 @@ public class DataHandler {
 
         //Hard
         for (Exam exam: exams) {
-            exam.addHardConstriction(new IsolateCourseOnDayConstraint(exam));
+            exam.addHardConstraint(new IsolateCourseOnDayConstraint(exam));
         }
 
         //Weak
-        addConstriction(new UnclassifiedExamsConstraint(exams));
-        addConstriction(new SameCourseDifferentDayConstraint(exams));
-        addConstriction(new ProhibitedIntervalPenalization(exams, configurer));
-        addConstriction(new NumericalComplexityPenalization(exams));
+        addConstraint(new UnclassifiedExamsConstraint(exams));
+        addConstraint(new SameCourseDifferentDayConstraint(exams));
+        addConstraint(new ProhibitedIntervalPenalization(exams, configurer));
+        addConstraint(new NumericalComplexityPenalization(exams));
     }
 
     /**
@@ -159,8 +159,8 @@ public class DataHandler {
     }
 
     /**
-     * Returns the list of {@code WeakConstriction}.
-     * @return The list of {@code WeakConstriction}.
+     * Returns the list of {@code WeakConstraint}.
+     * @return The list of {@code WeakConstraint}.
      */
     public List<SoftConstraints> getConstraints() {
         return new ArrayList<>(constraints);
@@ -226,30 +226,30 @@ public class DataHandler {
     }
 
     /**
-     * Adds a {@code WeakConstriction}.
-     * @param constriction The {@code WeakConstriction} to be added.
+     * Adds a {@code WeakConstraint}.
+     * @param constraint The {@code WeakConstraint} to be added.
      */
-    public void addConstriction(SoftConstraints constriction) {
-        constraints.add(constriction);
+    public void addConstraint(SoftConstraints constraint) {
+        constraints.add(constraint);
     }
 
     /**
-     * Recomputes the result of all the constrictions over the current schedule.
-     * @param counter The constriction counter instance that will be used for the checking of the weak constrictions.
-     * @return A {@code HashMap} being the keys the constrictions ids, and the values a list of that type of constriction.
+     * Recomputes the result of all the constraints over the current schedule.
+     * @param counter The constraint counter instance that will be used for the checking of the weak constraints.
+     * @return A {@code HashMap} being the keys the constraints ids, and the values a list of that type of constraint.
      */
     public HashMap<String, List<Constraint>> verifyConstraints(ConstraintCounter counter) {
-        HashMap<String, List<Constraint>> verifiedConstrictions = new HashMap<>();
+        HashMap<String, List<Constraint>> verifiedConstraints = new HashMap<>();
 
         for (SoftConstraints cons: constraints) {
-            cons.checkConstriction(counter);
-            if (! verifiedConstrictions.containsKey(cons.getConstrictionID())) {
-                verifiedConstrictions.put(cons.getConstrictionID(), new ArrayList<>());
+            cons.checkConstraint(counter);
+            if (! verifiedConstraints.containsKey(cons.getConstraintID())) {
+                verifiedConstraints.put(cons.getConstraintID(), new ArrayList<>());
             }
-            verifiedConstrictions.get(cons.getConstrictionID()).add(cons);
+            verifiedConstraints.get(cons.getConstraintID()).add(cons);
         }
 
-        return verifiedConstrictions;
+        return verifiedConstraints;
     }
 
     /**

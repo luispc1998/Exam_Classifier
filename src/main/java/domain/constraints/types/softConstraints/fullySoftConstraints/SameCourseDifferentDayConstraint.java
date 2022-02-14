@@ -1,8 +1,8 @@
-package domain.constraints.types.softConstrictions.fullySoftConstraints;
+package domain.constraints.types.softConstraints.fullySoftConstraints;
 
 import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstrictions.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraints;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This represents a constriction that states that the same course exams should take place on different days.
+ * This represents a constraint that states that the same course exams should take place on different days.
  */
 public class SameCourseDifferentDayConstraint implements SoftConstraints {
 
     /**
-     * Constriction with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "SCDD";
 
@@ -41,7 +41,7 @@ public class SameCourseDifferentDayConstraint implements SoftConstraints {
     }
 
     @Override
-    public void checkConstriction(ConstraintCounter counter) {
+    public void checkConstraint(ConstraintCounter counter) {
         occurrences = 0;
         for (int i = 1; i < 5; i++) {
             occurrences += getExamsForCourse(exams, i);
@@ -68,17 +68,17 @@ public class SameCourseDifferentDayConstraint implements SoftConstraints {
     }
 
     /**
-     * Returns how many times the constriction was detected over the schedule.
+     * Returns how many times the constraint was detected over the schedule.
      * @return the number of times the cosntriction was detected
-     * @throws IllegalStateException in case {@code checkConstriction} was nos called first.
+     * @throws IllegalStateException in case {@code checkConstraint} was nos called first.
      */
     public int getOccurrences() {
-        if (occurrences == -1) throw new IllegalStateException("It is need to call checkConstriction at least once before calling this method..");
+        if (occurrences == -1) throw new IllegalStateException("It is need to call checkConstraint at least once before calling this method..");
         return occurrences;
     }
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return CONSTRICTION_ID;
     }
 }

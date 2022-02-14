@@ -1,9 +1,9 @@
-package domain.parsers.constrictionsParserTools;
+package domain.parsers.constraintsParserTools;
 
 import domain.DataHandler;
 import domain.constraints.Constraint;
-import domain.constraints.types.softConstrictions.userConstraints.OrderExamsConstraint;
-import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
+import domain.constraints.types.softConstraints.userConstraints.OrderExamsConstraint;
+import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,9 +12,9 @@ import utils.Utils;
 /**
  * This is the parser for {@link OrderExamsConstraint}
  */
-public class OrderExamsConstrictionParserTool extends AbstractCosntrictionParserTool {
+public class OrderExamsConstraintParserTool extends AbstractConstraintParserTool {
     @Override
-    public UserConstraint specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint specificParseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2},
                 "Error creating Order Exam Constraint.");
         Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
@@ -25,7 +25,7 @@ public class OrderExamsConstrictionParserTool extends AbstractCosntrictionParser
     }
 
     @Override
-    public void writeConstriction(Constraint con, Row row, int baseExcelColumn) {
+    public void writeConstraint(Constraint con, Row row, int baseExcelColumn) {
         OrderExamsConstraint oec = (OrderExamsConstraint) con;
         int cellCounter = baseExcelColumn -1;
         Cell cell = row.createCell(++cellCounter);

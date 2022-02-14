@@ -1,7 +1,7 @@
-package domain.constraints.types.softConstrictions.fullySoftConstraints;
+package domain.constraints.types.softConstraints.fullySoftConstraints;
 
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstrictions.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraints;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ import java.util.List;
 public class UnbalancedDaysPenalization implements SoftConstraints {
 
     /**
-     * Constriction id of this type of {@code Constriction}.
+     * Constraint id of this type of {@code Constraint}.
      */
     public final static String CONSTRICTION_ID = "PIP";
 
@@ -29,12 +29,12 @@ public class UnbalancedDaysPenalization implements SoftConstraints {
     }
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return CONSTRICTION_ID;
     }
 
     @Override
-    public void checkConstriction(ConstraintCounter counter) {
+    public void checkConstraint(ConstraintCounter counter) {
 
         HashMap<LocalDate, Long> schedule = new HashMap<>();
         for (Exam exam: exams) {

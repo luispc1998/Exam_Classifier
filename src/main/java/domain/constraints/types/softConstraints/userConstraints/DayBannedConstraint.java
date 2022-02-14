@@ -1,9 +1,9 @@
-package domain.constraints.types.softConstrictions.userConstraints;
+package domain.constraints.types.softConstraints.userConstraints;
 
 import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.HardConstraint;
-import domain.constraints.types.hardConstraints.hardUserConstrictions.HardifiedConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class DayBannedConstraint extends AbstractUserConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "DB";
 
@@ -56,13 +56,13 @@ public class DayBannedConstraint extends AbstractUserConstraint {
 
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return CONSTRICTION_ID;
     }
 
     /**
-     * Returns the {@code Exam} that has the constriction.
-     * @return The {@code Exam} that has the constriction.
+     * Returns the {@code Exam} that has the constraint.
+     * @return The {@code Exam} that has the constraint.
      */
     public Exam getExam() {
         return exam;
@@ -78,8 +78,8 @@ public class DayBannedConstraint extends AbstractUserConstraint {
 
     @Override
     public void specificHardify() {
-        HardConstraint hConstriction = new HardifiedConstraint(this);
-        exam.addHardConstriction(hConstriction);
+        HardConstraint hConstraint = new HardifiedConstraint(this);
+        exam.addHardConstraint(hConstraint);
     }
 
 }

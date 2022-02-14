@@ -61,9 +61,9 @@ public class OXCrosssingOperator implements CrossingOperator {
         }
         //Generate two random positions
         Random generator = chooseGenerator();
-        int cromosomeLength = aCromosome.size();
-        int lowerLimit = generator.nextInt(cromosomeLength);
-        int upperLimit = generator.nextInt(cromosomeLength);
+        int chromosomeLength = aCromosome.size();
+        int lowerLimit = generator.nextInt(chromosomeLength);
+        int upperLimit = generator.nextInt(chromosomeLength);
         
         //Reorder limits
         if (lowerLimit > upperLimit) {
@@ -82,7 +82,7 @@ public class OXCrosssingOperator implements CrossingOperator {
 
         int currentPos = 0;
         int cIndex = 0;
-        while (cIndex < cromosomeLength && currentPos<cromosomeLength) {
+        while (cIndex < chromosomeLength && currentPos<chromosomeLength) {
             // Check if we must ignore value
             if (usedValues.contains(bCromosome.get(cIndex))){
                 cIndex++;
@@ -93,7 +93,7 @@ public class OXCrosssingOperator implements CrossingOperator {
             if (currentPos == lowerLimit)
                 currentPos = upperLimit+1;
 
-            if (currentPos == cromosomeLength)
+            if (currentPos == chromosomeLength)
                 break;
 
             //Place number in actual pointer

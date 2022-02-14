@@ -2,9 +2,9 @@ package domain.parsers;
 
 import domain.DataHandler;
 import domain.constraints.Constraint;
-import domain.constraints.types.softConstrictions.SoftConstraints;
-import domain.constraints.types.softConstrictions.userConstraints.*;
-import domain.parsers.constrictionsParserTools.*;
+import domain.constraints.types.softConstraints.SoftConstraints;
+import domain.constraints.types.softConstraints.userConstraints.*;
+import domain.parsers.constraintsParserTools.*;
 import geneticAlgorithm.configuration.Configurer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This parses from the input excel file the constrictions stated by the user.
+ * This parses from the input excel file the constraints stated by the user.
  */
-public class ConstrictionParser {
+public class ConstraintParser {
 
     /**
      * Dinamic counter that states if lines should be jumped.
@@ -49,11 +49,11 @@ public class ConstrictionParser {
     private int baseExcelRow = 0;
 
     /**
-     * Current {@code ConstrictionParserTool} being in use.
+     * Current {@code ConstraintParserTool} being in use.
      *
-     * @see ConstrictionParserTool
+     * @see ConstraintParserTool
      */
-    private static ConstrictionParserTool parserTool;
+    private static ConstraintParserTool parserTool;
 
     /**
      * The tools that were used by the  parser.
@@ -62,30 +62,30 @@ public class ConstrictionParser {
      * Note that if the parser was not used to parse an input file before asking it to write an output it will load
      * a default geneticAlgorithm.configuration.
      */
-    private static final HashMap<String, ConstrictionParserTool> usedTools = new HashMap<>();
+    private static final HashMap<String, ConstraintParserTool> usedTools = new HashMap<>();
 
     private StatisticalDataGetter statisticalDataGetter;
     /**
      * Default constructor for the class.
      */
-    public ConstrictionParser(){}
+    public ConstraintParser(){}
 
-    public ConstrictionParser(Configurer conf, StatisticalDataGetter statisticalDataGetter) {
+    public ConstraintParser(Configurer conf, StatisticalDataGetter statisticalDataGetter) {
         this();
         this.statisticalDataGetter = statisticalDataGetter;
         this.baseExcelColumn = conf.getExcelConfigurer().getExcelConstraintBaseColumn();
         this.baseExcelRow = conf.getExcelConfigurer().getExcelConstraintBaseRow();
-        statisticalDataGetter.resetConstrictionCounter();
+        statisticalDataGetter.resetConstraintCounter();
     }
 
     /**
-     * Method to parse the {@code Constriction} objects from the excel.
+     * Method to parse the {@code Constraint} objects from the excel.
      * @param filepath The input data excel filepath.
      * @param dataHandler The current dataHandler instance being use
-     * @return The {@code List} of {@code Constriction} parsed from the excel.
+     * @return The {@code List} of {@code Constraint} parsed from the excel.
      */
-    public List<SoftConstraints> parseConstrictions(String filepath, DataHandler dataHandler) {
-        List<SoftConstraints> constrictions = new ArrayList<>();
+    public List<SoftConstraints> parseConstraints(String filepath, DataHandler dataHandler) {
+        List<SoftConstraints> constraints = new ArrayList<>();
         int i = 0;
         //creating workbook instance that refers to .xls file
         try (FileInputStream fis = new FileInputStream(filepath);
@@ -105,17 +105,17 @@ public class ConstrictionParser {
                 }
                 else{
 
-                    UserConstraint constriction = parserTool.parseConstriction(row, baseExcelColumn, dataHandler);
+                    UserConstraint constraint = parserTool.parseConstraint(row, baseExcelColumn, dataHandler);
 
-                    if (constriction != null) {
+                    if (constraint != null) {
                     /*
-                     Even hard constrictions need to be added, because these is the general
-                     track to be written at the end. Hardified constriction will not execute the logic.
+                     Even hard constraints need to be added, because these is the general
+                     track to be written at the end. Hardified constraint will not execute the logic.
                      */
                         if (statisticalDataGetter != null) {
-                            statisticalDataGetter.countConstriction(constriction);
+                            statisticalDataGetter.countConstraint(constraint);
                         }
-                        constrictions.add(constriction);
+                        constraints.add(constraint);
                         i++;
                     }
                 }
@@ -128,7 +128,7 @@ public class ConstrictionParser {
             throw new IllegalArgumentException("Could not parse input excel file");
         }
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Restricciones creadas: " + i);
-        return constrictions;
+        return constraints;
     }
 
     /**
@@ -151,52 +151,52 @@ public class ConstrictionParser {
 
     /**
      * Method to change the parsing type of Cosntriction when detecting it on the Excel.
-     * @param constrictionIdRow The row with the constriction data
-     * @param constrictionDescription The row with the constriction description
-     * @param constrictionHeaders The row with the constriction headers
+     * @param constraintIdRow The row with the constraint data
+     * @param constraintDescription The row with the constraint description
+     * @param constraintHeaders The row with the constraint headers
      */
-    private void swapTool(Row constrictionIdRow, Row constrictionDescription, Row constrictionHeaders) {
+    private void swapTool(Row constraintIdRow, Row constraintDescription, Row constraintHeaders) {
 
-        switch (constrictionIdRow.getCell(baseExcelColumn).getStringCellValue()){
+        switch (constraintIdRow.getCell(baseExcelColumn).getStringCellValue()){
             case TimeDisplacementConstraint.CONSTRICTION_ID:
-                parserTool = new TimeDisplacementConstrictionParserTool();
-                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                parserTool = new TimeDisplacementConstraintParserTool();
+                parserTool.setDescription(constraintDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constraintHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3, baseExcelColumn + 4}));
                 usedTools.put(TimeDisplacementConstraint.CONSTRICTION_ID, parserTool);
                 break;
             case SameDayConstraint.CONSTRICTION_ID:
-                parserTool = new SameDayConstrictionParserTool();
-                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                parserTool = new SameDayConstraintParserTool();
+                parserTool.setDescription(constraintDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constraintHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(SameDayConstraint.CONSTRICTION_ID, parserTool);
                 break;
             case DifferentDayConstraint.CONSTRICTION_ID:
-                parserTool = new DifferentDayConstrictionParserTool();
-                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                parserTool = new DifferentDayConstraintParserTool();
+                parserTool.setDescription(constraintDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constraintHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(DifferentDayConstraint.CONSTRICTION_ID, parserTool);
                 break;
             case OrderExamsConstraint.CONSTRICTION_ID:
-                parserTool = new OrderExamsConstrictionParserTool();
-                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                parserTool = new OrderExamsConstraintParserTool();
+                parserTool.setDescription(constraintDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constraintHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(OrderExamsConstraint.CONSTRICTION_ID, parserTool);
                 break;
             case DayBannedConstraint.CONSTRICTION_ID:
-                parserTool = new DayBannedConstrictionParserTool();
-                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                parserTool = new DayBannedConstraintParserTool();
+                parserTool.setDescription(constraintDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constraintHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3}));
                 usedTools.put(DayBannedConstraint.CONSTRICTION_ID, parserTool);
                 break;
             case DayIntervalConstraint.CONSTRICTION_ID:
-                parserTool = new DayIntervalConstrictionParserTool();
-                parserTool.setDescription(constrictionDescription.getCell(baseExcelColumn).getStringCellValue());
-                parserTool.setHeaders(getHeaders(constrictionHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
+                parserTool = new DayIntervalConstraintParserTool();
+                parserTool.setDescription(constraintDescription.getCell(baseExcelColumn).getStringCellValue());
+                parserTool.setHeaders(getHeaders(constraintHeaders, new int[]{baseExcelColumn, baseExcelColumn + 1
                         , baseExcelColumn + 2, baseExcelColumn + 3, baseExcelColumn + 4}));
                 usedTools.put(DayIntervalConstraint.CONSTRICTION_ID, parserTool);
                 break;
@@ -206,7 +206,7 @@ public class ConstrictionParser {
     }
 
     /**
-     * Gets the headers of the provided type of constrictions.
+     * Gets the headers of the provided type of constraints.
      *
      * <p>
      * It gets the headers of the specified row.
@@ -223,7 +223,7 @@ public class ConstrictionParser {
     }
 
     /**
-     * Checks whether it is needed to change the {@code ConstrictionParserTool}.
+     * Checks whether it is needed to change the {@code ConstraintParserTool}.
      * @param cell Excel cell.
      * @param dataHandler Current dataHandler.
      * @return true if it is needed to change the tool, false otherwise.
@@ -231,7 +231,7 @@ public class ConstrictionParser {
     private boolean isAToolSwapNeeded(Cell cell, DataHandler dataHandler) {
         try {
             String value = cell.getStringCellValue();
-            return dataHandler.getConfigurer().existsConstrictionID(value);
+            return dataHandler.getConfigurer().existsConstraintID(value);
 
         } catch (RuntimeException e){
             return false;
@@ -239,11 +239,11 @@ public class ConstrictionParser {
     }
 
     /**
-     * Writes the constriction data to the provided {@code Workbook}.
-     * @param verifiedConstrictions The list of constrictions to be written on the workbook.
-     * @param workbook The workbook in which the constrictions will be written.
+     * Writes the constraint data to the provided {@code Workbook}.
+     * @param verifiedConstraints The list of constraints to be written on the workbook.
+     * @param workbook The workbook in which the constraints will be written.
      */
-    public void parseToExcel(HashMap<String, List<Constraint>> verifiedConstrictions, Workbook workbook) {
+    public void parseToExcel(HashMap<String, List<Constraint>> verifiedConstraints, Workbook workbook) {
 
             //creating workbook instance that refers to .xls file
             if (usedTools.size() == 0) {
@@ -252,7 +252,7 @@ public class ConstrictionParser {
             Sheet sheet = workbook.createSheet("Restricciones");
             int rowCount = 0;
 
-            for(Map.Entry<String, List<Constraint>> entry: verifiedConstrictions.entrySet()) {
+            for(Map.Entry<String, List<Constraint>> entry: verifiedConstraints.entrySet()) {
                 if (usedTools.get(entry.getKey()) == null ){
                     continue;
                 }
@@ -275,11 +275,11 @@ public class ConstrictionParser {
                     cell.setCellValue(header);
                 }
 
-                // Write data of the constrictions
+                // Write data of the constraints
 
                 for (Constraint con: entry.getValue()) {
                     row = sheet.createRow(baseExcelRow + ++rowCount);
-                    parserTool.writeConstriction(con, row, baseExcelColumn);
+                    parserTool.writeConstraint(con, row, baseExcelColumn);
                 }
 
                 ++rowCount;
@@ -288,37 +288,37 @@ public class ConstrictionParser {
     }
 
     /**
-     * Default geneticAlgorithm.configuration for the Constriction parser instance.
+     * Default geneticAlgorithm.configuration for the Constraint parser instance.
      */
     private void loadDefaultTools() {
 
-        parserTool = new TimeDisplacementConstrictionParserTool();
+        parserTool = new TimeDisplacementConstraintParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Calendar days distance", "Hard?", "Cumplida?"});
         usedTools.put(TimeDisplacementConstraint.CONSTRICTION_ID, parserTool);
 
 
-        parserTool = new SameDayConstrictionParserTool();
+        parserTool = new SameDayConstraintParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
         usedTools.put(SameDayConstraint.CONSTRICTION_ID, parserTool);
 
-        parserTool = new DifferentDayConstrictionParserTool();
+        parserTool = new DifferentDayConstraintParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
         usedTools.put(DifferentDayConstraint.CONSTRICTION_ID, parserTool);
 
-        parserTool = new OrderExamsConstrictionParserTool();
+        parserTool = new OrderExamsConstraintParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "exam_id_2", "Hard?", "Cumplida?"});
         usedTools.put(OrderExamsConstraint.CONSTRICTION_ID, parserTool);
 
-        parserTool = new DayBannedConstrictionParserTool();
+        parserTool = new DayBannedConstraintParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "day_banned", "Hard?", "Cumplida?"});
         usedTools.put(DayBannedConstraint.CONSTRICTION_ID, parserTool);
 
-        parserTool = new DayIntervalConstrictionParserTool();
+        parserTool = new DayIntervalConstraintParserTool();
         parserTool.setDescription("default Description");
         parserTool.setHeaders(new String[] {"exam_id_1", "interval_start", "interval_end", "Hard?", "Cumplida?"});
         usedTools.put(DayIntervalConstraint.CONSTRICTION_ID, parserTool);

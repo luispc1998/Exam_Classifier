@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * {@code date}, {@code initialHour}, {@code duration}, {@code extraTime} and {@code getFinishingHour}
  *
  * <p>
- * Other data such as {@code id} and {@code cn} is needed to check for constrictions.
+ * Other data such as {@code id} and {@code cn} is needed to check for constraints.
  */
 public class Exam {
 
@@ -104,9 +104,9 @@ public class Exam {
 
 
     /**
-     * List of {@code HardConstriction} that must be considered when scheduling the exam.
+     * List of {@code HardConstraint} that must be considered when scheduling the exam.
      */
-    private final List<HardConstraint> hardConstrictions;
+    private final List<HardConstraint> hardConstraints;
 
     /**
      * Round identifier to indicate if the round the exam belongs to.
@@ -150,7 +150,7 @@ public class Exam {
         this.cn = cn;
         this.id = id;
         this.extraTime = Duration.ofMinutes(0);
-        this.hardConstrictions = new ArrayList<>();
+        this.hardConstraints = new ArrayList<>();
         this.roundPartners = new ArrayList<>();
         this.roundId = roundId;
     }
@@ -499,21 +499,21 @@ public class Exam {
 
 
     /**
-     * Adds a hard constriction related with this exam that must be considered when scheduling it.
-     * @param hardConstriction The hard constriction to be considered.
+     * Adds a hard constraint related with this exam that must be considered when scheduling it.
+     * @param hardConstraint The hard constraint to be considered.
      */
-    public void addHardConstriction(HardConstraint hardConstriction) {
-        this.hardConstrictions.add(hardConstriction);
+    public void addHardConstraint(HardConstraint hardConstraint) {
+        this.hardConstraints.add(hardConstraint);
     }
 
     /**
-     * Provides the set of days in which the exam can be placed according to its {@code HardConstriction}.
+     * Provides the set of days in which the exam can be placed according to its {@code HardConstraint}.
      * @param days The set of available days to place the exam in.
      * @return A subset of {@code days} where the exam can be placed.
      */
     public Set<LocalDate> getViableDays(Set<LocalDate> days) {
-        for (HardConstraint hardConstriction: hardConstrictions) {
-            days = hardConstriction.filterViableDays(days, this);
+        for (HardConstraint hardConstraint: hardConstraints) {
+            days = hardConstraint.filterViableDays(days, this);
         }
         return days;
     }

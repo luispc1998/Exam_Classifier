@@ -1,15 +1,15 @@
-package domain.constraints.types.softConstrictions.userConstraints;
+package domain.constraints.types.softConstraints.userConstraints;
 
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstrictions.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraints;
 
 /**
- * Default implementation of {@code checkConstriction} method, and implementation of the logic to hold the result of the
+ * Default implementation of {@code checkConstraint} method, and implementation of the logic to hold the result of the
  * last evaluation.
  *
  * <p>
- * By having a default implementation of {@code checkConstriction} the inheritors just need to implement the constriction
- * logic, and the call to {@code ConstrictionCounter}, as is requested in the abstract methods {@code isFulfilled} and
+ * By having a default implementation of {@code checkConstraint} the inheritors just need to implement the constraint
+ * logic, and the call to {@code ConstraintCounter}, as is requested in the abstract methods {@code isFulfilled} and
  * {@code countMe}.
  */
 public abstract class AbstractUserConstraint implements UserConstraint, SoftConstraints {
@@ -22,16 +22,16 @@ public abstract class AbstractUserConstraint implements UserConstraint, SoftCons
     private boolean lastEvaluation;
 
     /**
-     * Indicates if theh current constriction was marked as hard.
+     * Indicates if theh current constraint was marked as hard.
      */
     private boolean hardified;
 
     /**
-     * States that the constriction was hardified.
+     * States that the constraint was hardified.
      */
     protected void setHardified() {
         if (hardified){
-            throw new IllegalStateException("Cannot hardify same Constriction twice");
+            throw new IllegalStateException("Cannot hardify same Constraint twice");
         }
         hardified = true;
     }
@@ -42,7 +42,7 @@ public abstract class AbstractUserConstraint implements UserConstraint, SoftCons
 
 
     @Override
-    public void checkConstriction(ConstraintCounter counter) {
+    public void checkConstraint(ConstraintCounter counter) {
         if (wasHardified() || isFulfilled()) { // condition order is important, don't swap these!
             setLastEvaluation(true);
         }
@@ -69,8 +69,8 @@ public abstract class AbstractUserConstraint implements UserConstraint, SoftCons
 
 
     /**
-     * Do the necessary logic and calls the {@code ConstrictionCounter}.
-     * @param counter The counter that the constriction will call to provide the data.
+     * Do the necessary logic and calls the {@code ConstraintCounter}.
+     * @param counter The counter that the constraint will call to provide the data.
      *
      * @see ConstraintCounter
      */

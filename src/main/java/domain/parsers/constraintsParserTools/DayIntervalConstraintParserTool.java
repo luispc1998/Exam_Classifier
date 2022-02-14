@@ -1,9 +1,9 @@
-package domain.parsers.constrictionsParserTools;
+package domain.parsers.constraintsParserTools;
 
 import domain.DataHandler;
 import domain.constraints.Constraint;
-import domain.constraints.types.softConstrictions.userConstraints.DayIntervalConstraint;
-import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
+import domain.constraints.types.softConstraints.userConstraints.DayIntervalConstraint;
+import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import domain.entities.Exam;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -18,10 +18,10 @@ import java.util.List;
 /**
  * This is the parser for {@link DayIntervalConstraint}
  */
-public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParserTool {
+public class DayIntervalConstraintParserTool extends AbstractConstraintParserTool {
 
     @Override
-    public UserConstraint specificParseConstriction(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint specificParseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler) {
         Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2, baseExcelColumn + 3},
                 "Error creating Day Interval Constraint.");
         List<LocalDate> calendar = dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates();
@@ -36,7 +36,7 @@ public class DayIntervalConstrictionParserTool extends AbstractCosntrictionParse
     }
 
     @Override
-    public void writeConstriction(Constraint con, Row row, int baseExcelColumn) {
+    public void writeConstraint(Constraint con, Row row, int baseExcelColumn) {
         DayIntervalConstraint dic = (DayIntervalConstraint) con;
         int cellCounter = baseExcelColumn -1;
         Cell cell = row.createCell(++cellCounter);

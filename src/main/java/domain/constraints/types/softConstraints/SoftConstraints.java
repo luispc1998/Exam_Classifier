@@ -1,10 +1,10 @@
-package domain.constraints.types.softConstrictions;
+package domain.constraints.types.softConstraints;
 
 import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 
 /**
- * This type of constriction are evaluated at the end of the individual decoding, and they are the ones that will determine
+ * This type of constraint are evaluated at the end of the individual decoding, and they are the ones that will determine
  * the fitness of a given {@link geneticAlgorithm.Individual} by means of the {@link geneticAlgorithm.fitnessFunctions.FitnessFunction}.
  *
  * @see geneticAlgorithm.Individual
@@ -13,13 +13,13 @@ import domain.constraints.counter.ConstraintCounter;
 public interface SoftConstraints extends Constraint {
 
     /**
-     * Evaluates the constrictions and increments its type counter if necessary.
+     * Evaluates the constrains and increments its type counter if necessary.
      *
      * <p>
-     * This method may update states depending on the result of the evaluation for later checks on the constriction.
+     * This method may update states depending on the result of the evaluation for later checks on the constraint.
      * @param counter the {@link ConstraintCounter} object that is doing the counting.
      */
-    void checkConstriction(ConstraintCounter counter);
+    void checkConstraint(ConstraintCounter counter);
 
 
 

@@ -2,7 +2,7 @@ package main;
 
 import domain.DataHandler;
 import domain.entities.Exam;
-import domain.parsers.ConstrictionParser;
+import domain.parsers.ConstraintParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
@@ -76,9 +76,9 @@ public class AppServerWeigths {
 
             for (int j = 1; j <= repetitions; j++) {
                 // Iteration start
-                ConstrictionParser constrictionParser = new ConstrictionParser(conf, statisticalDataGetter);
+                ConstraintParser constraintParser = new ConstraintParser(conf, statisticalDataGetter);
                 List<Exam> exams = examParser.parseExams(conf.getFilePaths("inputFile"), conf);
-                DataHandler dataHandler = new DataHandler(conf, exams, constrictionParser);
+                DataHandler dataHandler = new DataHandler(conf, exams, constraintParser);
 
                 Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
                 FitnessFunction fn = new LinearFitnessFunction(dataHandler);
@@ -90,7 +90,7 @@ public class AppServerWeigths {
 
                 Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
                         conf.getGeneticParameters().getCrossingProbability(), fn,
-                        conf.getGeneticParameters().getMaxIterations(), conf.getGeneticParameters().getLoggingFrequency());
+                        conf.getGeneticParameters().getGenerations(), conf.getGeneticParameters().getLoggingFrequency());
 
 
 

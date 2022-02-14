@@ -1,7 +1,7 @@
-package domain.constraints.types.softConstrictions.fullySoftConstraints;
+package domain.constraints.types.softConstraints.fullySoftConstraints;
 
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstrictions.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraints;
 import domain.entities.Exam;
 
 import java.time.Duration;
@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
  *
  * <p>
  * Consider two exams of complexity 10, such as could be "Cálculo" and "Diseño de Lenguajes de Programación". This
- * weak constriction will penalize the fact that these two exams are near in the calendar, the nearer the more penalization.
+ * weak constraint will penalize the fact that these two exams are near in the calendar, the nearer the more penalization.
  * This makes that the algorithm solutions tend to be more spreaded in terms of complexity.
  */
 public class NumericalComplexityPenalization implements SoftConstraints {
 
     /**
-     * Constriction id of this type of {@code Constriction}.
+     * Constraint id of this type of {@code Constraint}.
      */
     public final static String CONSTRICTION_ID = "NCP";
 
@@ -45,12 +45,12 @@ public class NumericalComplexityPenalization implements SoftConstraints {
     }
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return CONSTRICTION_ID;
     }
 
     @Override
-    public void checkConstriction(ConstraintCounter counter) {
+    public void checkConstraint(ConstraintCounter counter) {
         HashMap<Integer, List<Exam>> examsOrderedByComplexity = retrieveExamsByNC();
 
         accumulator = 0;

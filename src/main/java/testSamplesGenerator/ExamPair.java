@@ -1,13 +1,13 @@
 package testSamplesGenerator;
 
-import domain.constraints.types.softConstrictions.userConstraints.DifferentDayConstraint;
+import domain.constraints.types.softConstraints.userConstraints.DifferentDayConstraint;
 import domain.entities.Exam;
 
 /**
  * This represents a pair of exams.
  *
  * <p>
- * Used to check wether possible to create other new constrictions among exams. For instance if exam A and exam B are
+ * Used to check wether possible to create other new constraints among exams. For instance if exam A and exam B are
  * said to be on the same day, then when creating instance of {@link DifferentDayConstraint}
  * those two won't be put together.
  */

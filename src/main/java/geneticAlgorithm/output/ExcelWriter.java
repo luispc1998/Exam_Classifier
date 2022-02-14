@@ -7,7 +7,7 @@ import domain.constraints.counter.DefaultConstraintCounter;
 import domain.entities.Exam;
 import domain.entities.ExamDatesComparator;
 import domain.entities.Interval;
-import domain.parsers.ConstrictionParser;
+import domain.parsers.ConstraintParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Individual;
 import greedyAlgorithm.ChromosomeDecoder;
@@ -28,7 +28,7 @@ import java.util.*;
  * This writes the final individuals to excel format.
  *
  * <p>
- * It provides the final scheduling as well as the user constrictions specifying if they were fulfilled or not
+ * It provides the final scheduling as well as the user constraints specifying if they were fulfilled or not
  * in the provided scheduling.
  */
 public class ExcelWriter {
@@ -39,12 +39,12 @@ public class ExcelWriter {
     private final ExamParser examParser;
 
     /**
-     * Constriction parser instance used in the execution.
+     * Constraint parser instance used in the execution.
      */
-    private final ConstrictionParser constrictionParser;
+    private final ConstraintParser constraintParser;
 
-    public ExcelWriter(ExamParser examParser, ConstrictionParser constrictionParser) {
-        this.constrictionParser = constrictionParser;
+    public ExcelWriter(ExamParser examParser, ConstraintParser constraintParser) {
+        this.constraintParser = constraintParser;
         this.examParser = examParser;
     }
 
@@ -75,11 +75,11 @@ public class ExcelWriter {
         prettyTimetable.orderScheduling(dataHandler);
         List<Exam> finalResult = dataHandler.getClonedSchedule();
         ConstraintCounter constraintCounter = new DefaultConstraintCounter();
-        HashMap<String, List<Constraint>> verifiedConstrictions = dataHandler.verifyConstraints(constraintCounter);
+        HashMap<String, List<Constraint>> verifiedConstraints = dataHandler.verifyConstraints(constraintCounter);
         Comparator<Exam> examComparator = new ExamDatesComparator();
         finalResult.sort(examComparator);
         parseExamListToExcel(directory, outputFileName, counter, finalResult,
-                verifiedConstrictions, dataHandler.getConfigurer().getDateTimeConfigurer().getExamDatesWithTimes());
+                verifiedConstraints, dataHandler.getConfigurer().getDateTimeConfigurer().getExamDatesWithTimes());
     }
 
     /**
@@ -88,14 +88,14 @@ public class ExcelWriter {
      * @param outputFileName The name of the outputFile
      * @param counter A counter for the suffix.
      * @param finalResult The List of exams to be written
-     * @param verifiedConstrictions The list of constrictions to be written
+     * @param verifiedConstraints The list of constraints to be written
      * @param calendar The calendar of days to be written
      */
     public void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
-            List<Constraint>> verifiedConstrictions, HashMap<LocalDate, Interval> calendar) {
+            List<Constraint>> verifiedConstraints, HashMap<LocalDate, Interval> calendar) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         examParser.parseToExcel(finalResult, workbook);
-        constrictionParser.parseToExcel(verifiedConstrictions, workbook);
+        constraintParser.parseToExcel(verifiedConstraints, workbook);
         writeCalendar(workbook, calendar);
         String path = directory + outputFileName + "_" + counter + ".xlsx";
         try (FileOutputStream outputStream = new FileOutputStream(path)) {

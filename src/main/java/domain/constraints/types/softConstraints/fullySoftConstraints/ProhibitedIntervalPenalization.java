@@ -1,7 +1,7 @@
-package domain.constraints.types.softConstrictions.fullySoftConstraints;
+package domain.constraints.types.softConstraints.fullySoftConstraints;
 
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstrictions.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraints;
 import domain.entities.Exam;
 import geneticAlgorithm.configuration.Configurer;
 
@@ -13,12 +13,12 @@ import java.util.List;
  *
  * <p>
  * By using it the algorithm prioritizes schedules/solutions which have less high duration exams on the mornings, leaving
- * them for the afternoon. It's specially effective when having not too much hard constrictions.
+ * them for the afternoon. It's specially effective when having not too much hard constraints.
  */
 public class ProhibitedIntervalPenalization implements SoftConstraints {
 
     /**
-     * Constriction id of this type of {@code Constriction}.
+     * Constraint id of this type of {@code Constraint}.
      */
     public final static String CONSTRICTION_ID = "PIP";
 
@@ -52,12 +52,12 @@ public class ProhibitedIntervalPenalization implements SoftConstraints {
 
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return CONSTRICTION_ID;
     }
 
     @Override
-    public void checkConstriction(ConstraintCounter counter) {
+    public void checkConstraint(ConstraintCounter counter) {
         minutes = 0;
         dur = Duration.ZERO;
         for (Exam exam: exams) {
@@ -99,7 +99,7 @@ public class ProhibitedIntervalPenalization implements SoftConstraints {
      * @return the number of minutes used in the prohibited interval by all the exams.
      */
     public long getMinutes() {
-        if (minutes == -1) throw new IllegalStateException("It is need to call checkConstriction at least once before calling this method..");
+        if (minutes == -1) throw new IllegalStateException("It is need to call checkConstraint at least once before calling this method..");
         return dur.toMinutes();
     }
 }

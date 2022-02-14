@@ -1,7 +1,7 @@
 package geneticAlgorithm.configuration;
 
 import domain.constraints.Constraint;
-import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
+import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import logger.ConsoleLogger;
 
 import java.io.FileInputStream;
@@ -17,19 +17,19 @@ import java.util.Properties;
  * {@link geneticAlgorithm.fitnessFunctions.FitnessFunction}.
  * <p>
  * It is also used to check the existence of {@link Constraint}, because
- * a given ID does not appear in {@code weights} as a key, then it won't be related to a constriction.
+ * a given ID does not appear in {@code weights} as a key, then it won't be related to a constraint.
  */
 public class WeightConfigurer {
 
     /**
-     * Hashmap where the keys are constriction ids, and the values their corresponding weights
+     * Hashmap where the keys are constraint ids, and the values their corresponding weights
      * (coefficients) in the {@link geneticAlgorithm.fitnessFunctions.FitnessFunction}
      */
     final HashMap<String, Double> weights;
 
     /**
      * Constructor for the class
-     * @param weightFilepath filepath to the properties file where the constriction weights are provided.
+     * @param weightFilepath filepath to the properties file where the constraint weights are provided.
      */
     public WeightConfigurer(String weightFilepath) {
         weights = new HashMap<>();
@@ -43,7 +43,7 @@ public class WeightConfigurer {
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find file with constrinction weigths");
         } catch (IOException e) {
-            throw new IllegalArgumentException("Could not parse properties in constriction weights file");
+            throw new IllegalArgumentException("Could not parse properties in constraint weights file");
         }
 
 
@@ -73,11 +73,11 @@ public class WeightConfigurer {
     }
 
     /**
-     * Returns the weight of a given constriction id.
-     * @param constrinctionID The constriction id whose weight is wanted to be returned.
-     * @return the corresponding weight to the constriction id provided as parameter.
+     * Returns the weight of a given constraint id.
+     * @param constrinctionID The constraint id whose weight is wanted to be returned.
+     * @return the corresponding weight to the constraint id provided as parameter.
      */
-    public double getConstrictionWeight(String constrinctionID){
+    public double getConstraintWeight(String constrinctionID){
         return weights.get(constrinctionID);
     }
 
@@ -86,14 +86,14 @@ public class WeightConfigurer {
      * @param id the id to be checked
      * @return true if it is a key in the map, false otherwise.
      */
-    public boolean existsConstrictionID(String id){
+    public boolean existsConstraintID(String id){
         return weights.containsKey(id);
     }
 
 
     /**
      * Changes the current value for all the {@link UserConstraint} weights.
-     * @param userConstraintsWeight New value for the weight of all the User Constrictions.
+     * @param userConstraintsWeight New value for the weight of all the User Constraints.
      */
     public void setUserConstraintsWeight(double userConstraintsWeight) {
         weights.put("DB", userConstraintsWeight);
@@ -105,7 +105,7 @@ public class WeightConfigurer {
     }
 
     /**
-     * Changes the current value for the {@link domain.constraints.types.softConstrictions.fullySoftConstraints.ProhibitedIntervalPenalization} weight.
+     * Changes the current value for the {@link domain.constraints.types.softConstraints.fullySoftConstraints.ProhibitedIntervalPenalization} weight.
      * @param prohibitedIntervalWeight New value for the weight of the Prohibited Interval Penalization.
      */
     public void setProhibitedIntervalWeight(double prohibitedIntervalWeight) {
@@ -113,7 +113,7 @@ public class WeightConfigurer {
     }
 
     /**
-     * Changes the current value for the {@link domain.constraints.types.softConstrictions.fullySoftConstraints.NumericalComplexityPenalization} weight.
+     * Changes the current value for the {@link domain.constraints.types.softConstraints.fullySoftConstraints.NumericalComplexityPenalization} weight.
      * @param numericalComplexityWeight New value for the weight of the Numerical Complexity Penalization.
      */
     public void setNumericalComplexityWeight(double numericalComplexityWeight) {

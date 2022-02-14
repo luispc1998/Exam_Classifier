@@ -1,11 +1,11 @@
 package domain.constraints.counter;
 
 import domain.constraints.Constraint;
-import domain.constraints.types.softConstrictions.fullySoftConstraints.*;
-import domain.constraints.types.softConstrictions.userConstraints.*;
+import domain.constraints.types.softConstraints.fullySoftConstraints.*;
+import domain.constraints.types.softConstraints.userConstraints.*;
 
 /**
- * This counts the times each type of constriction is not fulfilled.
+ * This counts the times each type of constraint is not fulfilled.
  * <p>
  * Having the exact number of occurrences means that new {@link geneticAlgorithm.fitnessFunctions.FitnessFunction} implementations
  * can have any kind of function that it is needed.
@@ -17,52 +17,52 @@ public interface ConstraintCounter {
 
     /**
      * Increments the value of the counter for {@link TimeDisplacementConstraint}
-     * @param timeDisplacementConstriction the {@link Constraint}
+     * @param timeDisplacementConstraint the {@link Constraint}
      *                                     whose condition was not fulfilled.
      */
-    void count(TimeDisplacementConstraint timeDisplacementConstriction);
+    void count(TimeDisplacementConstraint timeDisplacementConstraint);
 
     /**
      * Increments the value of the counter for {@link DayBannedConstraint}
-     * @param daysBannedConstriction the {@link Constraint}
+     * @param daysBannedConstraint the {@link Constraint}
      *                                     whose condition was not fulfilled.
      */
-    void count(DayBannedConstraint daysBannedConstriction);
+    void count(DayBannedConstraint daysBannedConstraint);
 
     /**
      * Increments the value of the counter for {@link SameDayConstraint}
-     * @param sameDayConstriction the {@link Constraint}
+     * @param sameDayConstraint the {@link Constraint}
      *                               whose condition was not fulfilled.
      */
-    void count(SameDayConstraint sameDayConstriction);
+    void count(SameDayConstraint sameDayConstraint);
 
     /**
      * Increments the value of the counter for {@link UnclassifiedExamsConstraint}
-     * @param unclassifiedExamsConstriction the {@link Constraint}
+     * @param unclassifiedExamsConstraint the {@link Constraint}
      *                                    whose condition was not fulfilled.
      */
-    void count(UnclassifiedExamsConstraint unclassifiedExamsConstriction);
+    void count(UnclassifiedExamsConstraint unclassifiedExamsConstraint);
 
     /**
      * Increments the value of the counter for {@link DifferentDayConstraint}
-     * @param differentDayConstriction the {@link Constraint}
+     * @param differentDayConstraint the {@link Constraint}
      *                                    whose condition was not fulfilled.
      */
-    void count(DifferentDayConstraint differentDayConstriction);
+    void count(DifferentDayConstraint differentDayConstraint);
 
     /**
      * Increments the value of the counter for {@link OrderExamsConstraint}
-     * @param orderExamsConstriction the {@link Constraint}
+     * @param orderExamsConstraint the {@link Constraint}
      *                                       whose condition was not fulfilled.
      */
-    void count(OrderExamsConstraint orderExamsConstriction);
+    void count(OrderExamsConstraint orderExamsConstraint);
 
     /**
      * Increments the value of the counter for {@link SameCourseDifferentDayConstraint}
-     * @param sameCourseDifferentDayConstriction the {@link Constraint}
+     * @param sameCourseDifferentDayConstraint the {@link Constraint}
      *                                        whose condition was not fulfilled.
      */
-    void count(SameCourseDifferentDayConstraint sameCourseDifferentDayConstriction);
+    void count(SameCourseDifferentDayConstraint sameCourseDifferentDayConstraint);
 
     /**
      * Increments the value of the counter for {@link ProhibitedIntervalPenalization}
@@ -87,52 +87,52 @@ public interface ConstraintCounter {
 
     /**
      * Increments the value of the counter for {@link DayIntervalConstraint}
-     * @param dayIntervalConstriction the {@link Constraint}
+     * @param dayIntervalConstraint the {@link domain.constraints.Constraint}
      *                                       whose condition was not fulfilled.
      */
-    void count(DayIntervalConstraint dayIntervalConstriction);
+    void count(DayIntervalConstraint dayIntervalConstraint);
 
     /**
      * Returns the current counter for {@link TimeDisplacementConstraint}
      * @return the current counter for {@link TimeDisplacementConstraint}
      */
-    int getCountOfTimeDisplacementConstriction();
+    int getCountOfTimeDisplacementConstraint();
 
     /**
      * Returns the current counter for {@link DayBannedConstraint}
      * @return the current counter for {@link DayBannedConstraint}
      */
-    int getCountOfDaysBannedConstriction();
+    int getCountOfDaysBannedConstraint();
 
     /**
      * Returns the current counter for {@link SameDayConstraint}
      * @return the current counter for {@link SameDayConstraint}
      */
-    int getCountOfSameDayConstriction();
+    int getCountOfSameDayConstraint();
 
     /**
      * Returns the current counter for {@link UnclassifiedExamsConstraint}
      * @return the current counter for {@link UnclassifiedExamsConstraint}
      */
-    int getCountOfUnclassifiedExamsConstriction();
+    int getCountOfUnclassifiedExamsConstraint();
 
     /**
      * Returns the current counter for {@link DifferentDayConstraint}
      * @return the current counter for {@link DifferentDayConstraint}
      */
-    int getCountOfDifferentDayConstriction();
+    int getCountOfDifferentDayConstraint();
 
     /**
      * Returns the current counter for {@link OrderExamsConstraint}
      * @return the current counter for {@link OrderExamsConstraint}
      */
-    int getCountOrderExamsConstriction();
+    int getCountOrderExamsConstraint();
 
     /**
      * Returns the current counter for {@link SameCourseDifferentDayConstraint}
      * @return the current counter for {@link SameCourseDifferentDayConstraint}
      */
-    int getCountSameCourseDifferentDayConstriction();
+    int getCountSameCourseDifferentDayConstraint();
 
     /**
      * Returns the current counter for {@link ProhibitedIntervalPenalization}
@@ -157,6 +157,6 @@ public interface ConstraintCounter {
      * Returns the current counter for {@link DayIntervalConstraint}
      * @return the current counter for {@link DayIntervalConstraint}
      */
-    int getDayIntervalConstrictionCounter();
+    int getCountDayIntervalConstraint();
 
 }

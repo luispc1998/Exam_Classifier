@@ -15,13 +15,13 @@ import java.util.*;
  * <p>
  * If no other possibility can be found, this restriction can be relaxed to "no more than one exam of a course an semester
  * for a day". For instance, if the condition was not relaxed there could be just an exam on a day of course 2, but if
- * it was found that there is no other possibility for the given exam than that given day, this hard constriction will also
+ * it was found that there is no other possibility for the given exam than that given day, this hard constraint will also
  * check of the semester of the scheduled same course exam is the same as the exam that we want to classify.
  */
 public class IsolateCourseOnDayConstraint extends AbstractHardConstraint {
 
     /**
-     * Constriction id of this type of {@code Constriction}.
+     * Constraint id of this type of {@code Constraint}.
      */
     public final static String CONSTRICTION_ID = "ICD";
 
@@ -45,13 +45,13 @@ public class IsolateCourseOnDayConstraint extends AbstractHardConstraint {
     private static Hashtable<LocalDate, List<Exam>> availabilitiesRelaxed;
 
     /**
-     * The exam to which this {@code HardConstriction} instance is linked.
+     * The exam to which this {@code HardConstraint} instance is linked.
      */
     private final Exam exam;
 
     /**
      * Default constructor for the class.
-     * @param exam The exam to which this {@code HardConstriction} instance is linked.
+     * @param exam The exam to which this {@code HardConstraint} instance is linked.
      */
     public IsolateCourseOnDayConstraint(Exam exam) {
         this.exam = exam;
@@ -113,7 +113,7 @@ public class IsolateCourseOnDayConstraint extends AbstractHardConstraint {
     }
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return null;
     }
 
@@ -128,7 +128,7 @@ public class IsolateCourseOnDayConstraint extends AbstractHardConstraint {
     }
 
     /**
-     * Gives the set of days that this hard constriction allows the exam to be placed in.
+     * Gives the set of days that this hard constraint allows the exam to be placed in.
      * @param days The current set of available days.
      * @param examToCheck The exam that is evaluated.
      * @return A subset of {@code days} in whichthe exam can be placed.

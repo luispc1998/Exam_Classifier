@@ -115,11 +115,12 @@ public class GeneticCore {
                 (System.currentTimeMillis() - initialTime)/1000);
 
 
+        /*
         System.out.println("\n" + "Gen: " + genCounter
                 + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
                 + ", Avg Fitness: " + averageFitness);
          System.out.println(bestIndividual);
-
+         */
 
 
 
@@ -128,7 +129,7 @@ public class GeneticCore {
         logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
 
 
-        try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
+        //try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
             while (genCounter < maxIterations) { //limit by iterations, limit by finnding a solution.
 
                 population = computeNewGeneration(fitnessFunction, mutationProbability, crossingProbability);
@@ -143,10 +144,10 @@ public class GeneticCore {
                 if (genCounter % loggingFrequency == 0) {
                     logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
                 }
-
-                pb.step();
-                pb.setExtraMessage("BF: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction)) +
-                        ", AF: " + String.format("%.2f",averageFitness));
+/*
+               // pb.step();
+               // pb.setExtraMessage("BF: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction)) +
+               //         ", AF: " + String.format("%.2f",averageFitness));
             }
 
             System.out.println("\n" + "[Gen: " + genCounter
@@ -155,10 +156,7 @@ public class GeneticCore {
 
             System.out.println(bestIndividual);
 
-
-
-
-
+             */
         }
             return bestIndividual;
     }

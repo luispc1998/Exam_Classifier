@@ -1,9 +1,9 @@
-package domain.constraints.types.softConstrictions.userConstraints;
+package domain.constraints.types.softConstraints.userConstraints;
 
 import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.HardConstraint;
-import domain.constraints.types.hardConstraints.hardUserConstrictions.HardifiedConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import java.util.List;
 public class DayIntervalConstraint extends AbstractUserConstraint {
 
     /**
-     * Constriction with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "DI";
 
@@ -56,7 +56,7 @@ public class DayIntervalConstraint extends AbstractUserConstraint {
                                  LocalDate intervalEnd, List<LocalDate> calendar) {
 
         if (intervalEnd.isBefore(intervalStart)){
-            throw new IllegalArgumentException("Day interval constriction for exam: " + exam.getId() +
+            throw new IllegalArgumentException("Day interval constraint for exam: " + exam.getId() +
                     " found interval ending date to be before than the starting date");
         }
 
@@ -72,7 +72,7 @@ public class DayIntervalConstraint extends AbstractUserConstraint {
     }
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return CONSTRICTION_ID;
     }
 
@@ -93,8 +93,8 @@ public class DayIntervalConstraint extends AbstractUserConstraint {
     }
 
     /**
-     * Returns the {@code Exam} that has the constriction.
-     * @return The {@code Exam} that has the constriction.
+     * Returns the {@code Exam} that has the constraint.
+     * @return The {@code Exam} that has the constraint.
      */
     public Exam getExam() {
         return exam;
@@ -118,7 +118,7 @@ public class DayIntervalConstraint extends AbstractUserConstraint {
 
     @Override
     public void specificHardify() {
-        HardConstraint hConstriction = new HardifiedConstraint(this);
-        exam.addHardConstriction(hConstriction);
+        HardConstraint hConstraint = new HardifiedConstraint(this);
+        exam.addHardConstraint(hConstraint);
     }
 }

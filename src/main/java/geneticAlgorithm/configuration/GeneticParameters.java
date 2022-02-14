@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -18,7 +17,7 @@ public class GeneticParameters {
     /**
      * Maximun number of iterations to be done by the algorithm.
      */
-    private final int maxIterations;
+    private int generations;
 
     /**
      * Population size to be considered by the algorithm.
@@ -68,10 +67,10 @@ public class GeneticParameters {
      */
     private final boolean errorAsking;
 
-    private GeneticParameters(int maxIterations, int populationSize, int loggingFrequency, double mutationProbability,
-                             int maxSchedulesToTake, double crossingProbability, int repairingDepth,
+    private GeneticParameters(int generations, int populationSize, int loggingFrequency, double mutationProbability,
+                              int maxSchedulesToTake, double crossingProbability, int repairingDepth,
                               int algorithmRepetitions, boolean errorAsking) {
-        this.maxIterations = maxIterations;
+        this.generations = generations;
         this.populationSize = populationSize;
         this.loggingFrequency = loggingFrequency;
         this.mutationProbability = mutationProbability;
@@ -94,8 +93,8 @@ public class GeneticParameters {
         return errorAsking;
     }
 
-    public int getMaxIterations() {
-        return maxIterations;
+    public int getGenerations() {
+        return generations;
     }
 
     public int getPopulationSize() {
@@ -129,7 +128,7 @@ public class GeneticParameters {
 
             geneticProperties.load(configStream);
 
-            return new GeneticParameters(Integer.parseInt(geneticProperties.getProperty("iterations")),
+            return new GeneticParameters(Integer.parseInt(geneticProperties.getProperty("generations")),
                     Integer.parseInt(geneticProperties.getProperty("populationSize")),
                     Integer.parseInt(geneticProperties.getProperty("loggingFreq")),
                     Double.parseDouble(geneticProperties.getProperty("mutationProb")),
@@ -141,7 +140,7 @@ public class GeneticParameters {
 
 
         } catch (NullPointerException e) {
-            String[] neededProperties = {"iterations", "populationSize", "loggingFreq", "mutationProb",
+            String[] neededProperties = {"generations", "populationSize", "loggingFreq", "mutationProb",
                 "maxSchedulesToTake", "crossingProb", "repairingDepth", "algorithmRepetitions", "inputWarningsStop"};
             throw new IllegalArgumentException("Missing properties in genetic parameters configuration file.\n" +
                     "The following properties are mandatory: " + Arrays.toString(neededProperties));
@@ -167,5 +166,9 @@ public class GeneticParameters {
 
     public void setRepairingDepth(int repairingDepth) {
         this.repairingDepth = repairingDepth;
+    }
+
+    public void setGenerations(int generations) {
+        this.generations = generations;
     }
 }

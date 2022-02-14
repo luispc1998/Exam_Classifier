@@ -18,10 +18,10 @@ repairingDepth=3
 
 
 ## Iterations that must be performed by the algorithm before ending.
-iterations=1500
+generations=1500
 
 ## Specifies if the number of times the algorithm must be executed (used for statistical purposes)
-algorithmRepetitions=1
+algorithmRepetitions=10
 
 ## Desired maximum amount of different schedules to be retrieved at the end. 
 maxSchedulesToTake=1

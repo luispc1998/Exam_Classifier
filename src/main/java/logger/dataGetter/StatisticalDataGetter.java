@@ -3,7 +3,7 @@ package logger.dataGetter;
 import domain.DataHandler;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.counter.DefaultConstraintCounter;
-import domain.constraints.types.softConstrictions.userConstraints.UserConstraint;
+import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import geneticAlgorithm.Individual;
 import greedyAlgorithm.ChromosomeDecoder;
 import main.PrettyTimetable;
@@ -28,8 +28,8 @@ public class StatisticalDataGetter {
      * Subdirectory created for the algorithm files.
      */
     private String subDirectory;
-    private int weakConstrictions;
-    private int constrictions;
+    private int weakConstraints;
+    private int constraints;
 
     /**
      * Default constructor for the class
@@ -40,8 +40,8 @@ public class StatisticalDataGetter {
         this.statisticsFileName = statisticsFileName;
         this.subDirectory = subDirectory;
 
-        weakConstrictions = 0;
-        constrictions = 0;
+        weakConstraints = 0;
+        constraints = 0;
     }
 
 
@@ -64,25 +64,25 @@ public class StatisticalDataGetter {
         dataHandler.verifyConstraints(constraintCounter);
 
 
-        int unplacedExams = constraintCounter.getCountOfUnclassifiedExamsConstriction();
+        int unplacedExams = constraintCounter.getCountOfUnclassifiedExamsConstraint();
 
-        int unfulfilledConstrictionCounter = 0;
-        unfulfilledConstrictionCounter += constraintCounter.getDayIntervalConstrictionCounter();
-        unfulfilledConstrictionCounter += constraintCounter.getCountOfTimeDisplacementConstriction();
-        unfulfilledConstrictionCounter += constraintCounter.getCountOfDifferentDayConstriction();
-        unfulfilledConstrictionCounter += constraintCounter.getCountOrderExamsConstriction();
-        unfulfilledConstrictionCounter += constraintCounter.getCountOfDaysBannedConstriction();
-        unfulfilledConstrictionCounter += constraintCounter.getCountOfSameDayConstriction();
+        int unfulfilledConstraintCounter = 0;
+        unfulfilledConstraintCounter += constraintCounter.getCountDayIntervalConstraint();
+        unfulfilledConstraintCounter += constraintCounter.getCountOfTimeDisplacementConstraint();
+        unfulfilledConstraintCounter += constraintCounter.getCountOfDifferentDayConstraint();
+        unfulfilledConstraintCounter += constraintCounter.getCountOrderExamsConstraint();
+        unfulfilledConstraintCounter += constraintCounter.getCountOfDaysBannedConstraint();
+        unfulfilledConstraintCounter += constraintCounter.getCountOfSameDayConstraint();
 
         long minutesOnProhibitedInterval = constraintCounter.getCountProhibitedIntervalPenalization();
 
         String sb = unplacedExams +
                 "," +
-                unfulfilledConstrictionCounter +
+                unfulfilledConstraintCounter +
                 "," +
-                String.format(Locale.UK, "%.2f",unfulfilledConstrictionCounter / (double) weakConstrictions) +
+                String.format(Locale.UK, "%.2f",unfulfilledConstraintCounter / (double) weakConstraints) +
                 "," +
-                String.format(Locale.UK, "%.2f",unfulfilledConstrictionCounter / (double) constrictions) +
+                String.format(Locale.UK, "%.2f",unfulfilledConstraintCounter / (double) constraints) +
                 "," +
                 minutesOnProhibitedInterval +
                 "\n";
@@ -106,21 +106,21 @@ public class StatisticalDataGetter {
     }
 
     /**
-     * Increments the constrictions counters {@code constrictions} and {@code weakConstrictions}
-     * @param constriction The constriction that will increment the counters.
+     * Increments the constraints counters {@code constraints} and {@code weakConstraints}
+     * @param constraint The constraint that will increment the counters.
      */
-    public void countConstriction(UserConstraint constriction) {
-        if (! constriction.wasHardified()) {
-            this.weakConstrictions++;
+    public void countConstraint(UserConstraint constraint) {
+        if (! constraint.wasHardified()) {
+            this.weakConstraints++;
         }
-        this.constrictions++;
+        this.constraints++;
     }
 
     /**
-     * Sets {@code constrictions} and {@code weakConstrictions} to 0.
+     * Sets {@code constraints} and {@code weakConstraints} to 0.
      */
-    public void resetConstrictionCounter() {
-        this.weakConstrictions = 0;
-        this.constrictions = 0;
+    public void resetConstraintCounter() {
+        this.weakConstraints = 0;
+        this.constraints = 0;
     }
 }

@@ -1,10 +1,10 @@
 package testSamplesGenerator;
 
 import domain.constraints.Constraint;
-import domain.constraints.types.softConstrictions.userConstraints.*;
+import domain.constraints.types.softConstraints.userConstraints.*;
 import domain.entities.Exam;
 import domain.entities.Interval;
-import domain.parsers.ConstrictionParser;
+import domain.parsers.ConstraintParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.output.ExcelWriter;
 import utils.Utils;
@@ -107,9 +107,9 @@ public class SamplesGenerator {
     private static HashMap<String, Integer> rounds = new HashMap<>();
 
     /**
-     * The final list of constrictions of the instance
+     * The final list of constraints of the instance
      */
-    private static HashMap<String, List<Constraint>> constrictions = new HashMap<>();
+    private static HashMap<String, List<Constraint>> constraints = new HashMap<>();
 
     /**
      * The final calendar of days of the instance.
@@ -117,10 +117,10 @@ public class SamplesGenerator {
     private static List<LocalDate> calendar;
 
     /**
-     * A HashMap containing the constriction ids as keys, and as value of the number of such constriction type in the final
+     * A HashMap containing the constraint ids as keys, and as value of the number of such constraint type in the final
      * instance.
      */
-    private static HashMap<String, Integer> constrictionAmount = new HashMap<>();
+    private static HashMap<String, Integer> constraintAmount = new HashMap<>();
 
 
     /**
@@ -232,15 +232,15 @@ public class SamplesGenerator {
     }
 
     /**
-     * Initializes how many constrictions per type will be.
+     * Initializes how many constraints per type will be.
      */
-    private static void initializeConstrictionAmount() {
-        constrictionAmount = new HashMap<>();
-        constrictionAmount.put("DB", randomConstrictionNumber(result.size() / 6, result.size() / 3));
-        constrictionAmount.put("SD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
-        constrictionAmount.put("DD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
-        constrictionAmount.put("TD", randomConstrictionNumber(result.size() / 6, result.size() / 3));
-        constrictionAmount.put("OE", randomConstrictionNumber(result.size() / 6, result.size() / 3));
+    private static void initializeConstraintAmount() {
+        constraintAmount = new HashMap<>();
+        constraintAmount.put("DB", randomConstraintNumber(result.size() / 6, result.size() / 3));
+        constraintAmount.put("SD", randomConstraintNumber(result.size() / 6, result.size() / 3));
+        constraintAmount.put("DD", randomConstraintNumber(result.size() / 6, result.size() / 3));
+        constraintAmount.put("TD", randomConstraintNumber(result.size() / 6, result.size() / 3));
+        constraintAmount.put("OE", randomConstraintNumber(result.size() / 6, result.size() / 3));
     }
 
     /**
@@ -249,7 +249,7 @@ public class SamplesGenerator {
      * @param maximum The maximum number of instances.
      * @return A number between {@code minimum} and {@code maximum}.
      */
-    private static int randomConstrictionNumber(int minimun, int maximum) {
+    private static int randomConstraintNumber(int minimun, int maximum) {
         Random generator = new Random();
         return minimun + generator.nextInt(maximum-minimun);
 
@@ -332,15 +332,15 @@ public class SamplesGenerator {
 
         initializeRounds();
         initializeCalendar();
-        initializeConstrictionAmount();
-        generateConstrictions();
+        initializeConstraintAmount();
+        generateConstraints();
 
         scheduleSomeExams();
 
 
-        ExcelWriter excelWriter = new ExcelWriter(new ExamParser(), new ConstrictionParser());
+        ExcelWriter excelWriter = new ExcelWriter(new ExamParser(), new ConstraintParser());
         excelWriter.parseExamListToExcel(directory, filename, counter, result,
-                constrictions, getDefaultCalendarTimeInterval(calendar));
+                constraints, getDefaultCalendarTimeInterval(calendar));
 
 
     }
@@ -352,7 +352,7 @@ public class SamplesGenerator {
         sameDayPairs = new ArrayList<>();
         orderedPairs = new ArrayList<>();
         result = new ArrayList<>();
-        constrictions = new HashMap<>();
+        constraints = new HashMap<>();
     }
 
     /**
@@ -410,9 +410,9 @@ public class SamplesGenerator {
     }
 
     /**
-     * Generates the user constrictions.
+     * Generates the user constraints.
      */
-    private static void generateConstrictions() {
+    private static void generateConstraints() {
 
         generateDaysBanned();
         generateSameDays();
@@ -420,18 +420,18 @@ public class SamplesGenerator {
         generateTimeDisplacements();
         generateOrders();
 
-        constrictionAmount.put("DI", Math.min(randomConstrictionNumber(result.size() / 6, result.size() / 3),
+        constraintAmount.put("DI", Math.min(randomConstraintNumber(result.size() / 6, result.size() / 3),
                 freeExams.size() / 2));
         generateDayIntervals();
     }
 
     /**
-     * Generates the {@code DayIntervalConstriction} instances.
+     * Generates the {@code DayIntervalConstraint} instances.
      */
     private static void generateDayIntervals() {
-        constrictions.put("DI", new ArrayList<>());
+        constraints.put("DI", new ArrayList<>());
 
-        for (int i = 0; i < constrictionAmount.get("DI"); i++) {
+        for (int i = 0; i < constraintAmount.get("DI"); i++) {
             Exam exam;
             exam = freeExams.get(generator.nextInt(freeExams.size()));
 
@@ -442,18 +442,18 @@ public class SamplesGenerator {
             DayIntervalConstraint diC = new DayIntervalConstraint(exam,start, end, calendar);
             freeExams.remove(exam);
 
-            constrictions.get("DI").add(diC);
+            constraints.get("DI").add(diC);
             handleHards(diC);
         }
     }
 
     /**
-     * Generates the {@code OrderExamsConstriction} instances.
+     * Generates the {@code OrderExamsConstraint} instances.
      */
     private static void generateOrders() {
-        constrictions.put("OE", new ArrayList<>());
+        constraints.put("OE", new ArrayList<>());
 
-        for (int i = 0; i < constrictionAmount.get("OE"); i++) {
+        for (int i = 0; i < constraintAmount.get("OE"); i++) {
             Exam exam;
             Exam exam2;
             ExamPair exPair;
@@ -480,17 +480,17 @@ public class SamplesGenerator {
             freeExams.remove(exam);
             freeExams.remove(exam2);
             orderedPairs.add(exPair);
-            constrictions.get("OE").add(oeC);
+            constraints.get("OE").add(oeC);
             handleHards(oeC);
         }
     }
 
     /**
-     * Generates the {@code TimeDisplacementConstriction} instances.
+     * Generates the {@code TimeDisplacementConstraint} instances.
      */
     private static void generateTimeDisplacements() {
-        constrictions.put("TD", new ArrayList<>());
-        for (int i = 0; i < constrictionAmount.get("TD"); i++) {
+        constraints.put("TD", new ArrayList<>());
+        for (int i = 0; i < constraintAmount.get("TD"); i++) {
             Exam exam;
             Exam exam2;
             ExamPair exPair;
@@ -509,18 +509,18 @@ public class SamplesGenerator {
             freeExams.remove(exam);
             freeExams.remove(exam2);
             orderedPairs.add(exPair);
-            constrictions.get("TD").add(tdC);
+            constraints.get("TD").add(tdC);
             handleHards(tdC);
         }
 
     }
 
     /**
-     * Generates the {@code DifferentDayConstriction} instances.
+     * Generates the {@code DifferentDayConstraint} instances.
      */
     private static void generateDifferentDays() {
-        constrictions.put("DD", new ArrayList<>());
-        for (int i = 0; i < constrictionAmount.get("DD"); i++) {
+        constraints.put("DD", new ArrayList<>());
+        for (int i = 0; i < constraintAmount.get("DD"); i++) {
             Exam exam;
             Exam exam2;
             ExamPair exPair;
@@ -537,17 +537,17 @@ public class SamplesGenerator {
             //freeExams.remove(exam);
             //freeExams.remove(exam2);
             handleHards(ddC);
-            constrictions.get("DD").add(ddC);
+            constraints.get("DD").add(ddC);
 
         }
     }
 
     /**
-     * Generates the {@code SameDayConstriction} instances.
+     * Generates the {@code SameDayConstraint} instances.
      */
     private static void generateSameDays() {
-        constrictions.put("SD", new ArrayList<>());
-        for (int i = 0; i < constrictionAmount.get("SD"); i++) {
+        constraints.put("SD", new ArrayList<>());
+        for (int i = 0; i < constraintAmount.get("SD"); i++) {
             Exam exam;
             Exam exam2;
             ExamPair exPair;
@@ -563,7 +563,7 @@ public class SamplesGenerator {
             SameDayConstraint sdC = new SameDayConstraint(exam, exam2);
             freeExams.remove(exam);
             freeExams.remove(exam2);
-            constrictions.get("SD").add(sdC);
+            constraints.get("SD").add(sdC);
             handleHards(sdC);
             sameDayPairs.add(exPair);
 
@@ -579,11 +579,11 @@ public class SamplesGenerator {
     }
 
     /**
-     * Generates the {@code DayBannedConstriction} instances.
+     * Generates the {@code DayBannedConstraint} instances.
      */
     private static void generateDaysBanned() {
-        constrictions.put("DB", new ArrayList<>());
-        for (int i = 0; i < constrictionAmount.get("DB"); i++) {
+        constraints.put("DB", new ArrayList<>());
+        for (int i = 0; i < constraintAmount.get("DB"); i++) {
             banRandomDayForRandomExam();
         }
     }
@@ -595,15 +595,15 @@ public class SamplesGenerator {
         Exam exam = result.get(generator.nextInt(result.size()));
         LocalDate bannedDay = calendar.get(generator.nextInt(calendar.size()));
         UserConstraint uc = new DayBannedConstraint(exam, bannedDay);
-        constrictions.get("DB").add(uc);
+        constraints.get("DB").add(uc);
         handleHards(uc);
         freeExams.remove(exam);
         
     }
 
     /**
-     * Randomly makes a constriction hard.
-     * @param uc The constriction that may be marked as hard.
+     * Randomly makes a constraint hard.
+     * @param uc The constraint that may be marked as hard.
      */
     private static void handleHards(UserConstraint uc) {
         if (hardsEnabled) {

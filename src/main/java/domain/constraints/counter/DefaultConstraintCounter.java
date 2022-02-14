@@ -1,10 +1,10 @@
 package domain.constraints.counter;
 
-import domain.constraints.types.softConstrictions.fullySoftConstraints.*;
-import domain.constraints.types.softConstrictions.userConstraints.*;
+import domain.constraints.types.softConstraints.fullySoftConstraints.*;
+import domain.constraints.types.softConstraints.userConstraints.*;
 
 /**
- * This is a default implementation for {@code ConstrictionCounter}.
+ * This is a default implementation for {@code ConstraintCounter}.
  */
 public class DefaultConstraintCounter implements ConstraintCounter {
 
@@ -18,41 +18,41 @@ public class DefaultConstraintCounter implements ConstraintCounter {
     private long prohibitedIntervalPenalizationCounter;
     private long unbalancedDaysPenalizationCounter;
     private double numericalComplexityPenalizationCounter;
-    private int dayIntervalConstrictionCounter;
+    private int dayIntervalCounter;
 
     @Override
-    public void count(TimeDisplacementConstraint timeDisplacementConstriction) {
+    public void count(TimeDisplacementConstraint timeDisplacementConstraint) {
         timeDisplacementCounter++;
     }
 
     @Override
-    public void count(DayBannedConstraint dayBannedConstriction) {
+    public void count(DayBannedConstraint daysBannedConstraint) {
         daysBannedCounter++;
     }
 
     @Override
-    public void count(SameDayConstraint sameDayConstriction) {
+    public void count(SameDayConstraint sameDayConstraint) {
         sameDayCounter++;
     }
 
     @Override
-    public void count(UnclassifiedExamsConstraint unclassifiedExamsConstriction) {
+    public void count(UnclassifiedExamsConstraint unclassifiedExamsConstraint) {
         unclassifiedExamsCounter++;
     }
 
     @Override
-    public void count(DifferentDayConstraint differentDayConstriction) {
+    public void count(DifferentDayConstraint differentDayConstraint) {
         differentDayCounter++;
     }
 
     @Override
-    public void count(OrderExamsConstraint orderExamsConstriction) {
+    public void count(OrderExamsConstraint orderExamsConstraint) {
         orderExamsCounter++;
     }
 
     @Override
-    public void count(SameCourseDifferentDayConstraint sameCourseDifferentDayConstriction) {
-        sameCourseDifferentDayCounter = sameCourseDifferentDayConstriction.getOccurrences();
+    public void count(SameCourseDifferentDayConstraint sameCourseDifferentDayConstraint) {
+        sameCourseDifferentDayCounter = sameCourseDifferentDayConstraint.getOccurrences();
     }
 
     @Override
@@ -71,42 +71,42 @@ public class DefaultConstraintCounter implements ConstraintCounter {
     }
 
     @Override
-    public void count(DayIntervalConstraint dayIntervalConstriction) {
-        dayIntervalConstrictionCounter++;
+    public void count(DayIntervalConstraint dayIntervalConstraint) {
+        dayIntervalCounter++;
     }
 
     @Override
-    public int getCountOfTimeDisplacementConstriction() {
+    public int getCountOfTimeDisplacementConstraint() {
         return timeDisplacementCounter;
     }
 
     @Override
-    public int getCountOfDaysBannedConstriction() {
+    public int getCountOfDaysBannedConstraint() {
         return daysBannedCounter;
     }
 
     @Override
-    public int getCountOfSameDayConstriction() {
+    public int getCountOfSameDayConstraint() {
         return sameDayCounter;
     }
 
     @Override
-    public int getCountOfUnclassifiedExamsConstriction() {
+    public int getCountOfUnclassifiedExamsConstraint() {
         return unclassifiedExamsCounter;
     }
 
     @Override
-    public int getCountOfDifferentDayConstriction() {
+    public int getCountOfDifferentDayConstraint() {
         return differentDayCounter;
     }
 
     @Override
-    public int getCountOrderExamsConstriction() {
+    public int getCountOrderExamsConstraint() {
         return orderExamsCounter;
     }
 
     @Override
-    public int getCountSameCourseDifferentDayConstriction() {
+    public int getCountSameCourseDifferentDayConstraint() {
         return sameCourseDifferentDayCounter;
     }
 
@@ -126,7 +126,7 @@ public class DefaultConstraintCounter implements ConstraintCounter {
     }
 
     @Override
-    public int getDayIntervalConstrictionCounter() {
-        return dayIntervalConstrictionCounter;
+    public int getCountDayIntervalConstraint() {
+        return dayIntervalCounter;
     }
 }

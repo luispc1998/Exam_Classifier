@@ -1,8 +1,8 @@
-package domain.constraints.types.softConstrictions.fullySoftConstraints;
+package domain.constraints.types.softConstraints.fullySoftConstraints;
 
 import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstrictions.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraints;
 import domain.entities.Exam;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class UnclassifiedExamsConstraint implements SoftConstraints {
 
     /**
-     * Constriction with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of {@link Constraint}.
      */
     public final static String CONSTRICTION_ID = "UE";
 
@@ -32,7 +32,7 @@ public class UnclassifiedExamsConstraint implements SoftConstraints {
     }
 
     @Override
-    public void checkConstriction(ConstraintCounter counter) {
+    public void checkConstraint(ConstraintCounter counter) {
         for (Exam exam: exams) {
             if (! exam.isScheduled()){
                 counter.count(this);
@@ -42,7 +42,7 @@ public class UnclassifiedExamsConstraint implements SoftConstraints {
     }
 
     @Override
-    public String getConstrictionID() {
+    public String getConstraintID() {
         return CONSTRICTION_ID;
     }
 }
