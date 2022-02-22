@@ -29,7 +29,7 @@ public class RoundsParser {
      * @param roundsMap A map containing the round identifiers as keys and a list of exam ids with that round id.
      * @param exams Lista de exámenes.
      */
-    public static void createRoundIfNecessary(HashMap<String, List<Integer>> roundsMap, List<Exam> exams) {
+    public void createRoundIfNecessary(HashMap<String, List<Integer>> roundsMap, List<Exam> exams) {
         int roundCounter = 0;
         for(List<Integer> ids : roundsMap.values()) {
             if (ids.size() > 1) {
@@ -47,7 +47,7 @@ public class RoundsParser {
      * Creates a round, sets the hard constraints to the exams. Configures the rounds on the corresponding exams.
      * @param round The list of {@code Exam} that conforms the round.
      */
-    private static void setUpRound(List<Exam> round) {
+    private void setUpRound(List<Exam> round) {
         for (int i = 0; i < round.size(); i++) {
             round.get(i).addRound(round);
             for (int j = i+1; j < round.size(); j++) {

@@ -1,13 +1,16 @@
 package geneticAlgorithm.fitnessFunctions;
 
-import domain.DataHandler;
+import domain.ExamsSchedule;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.counter.DefaultConstraintCounter;
-import domain.constraints.types.softConstraints.SoftConstraints;
-import domain.constraints.types.softConstraints.fullySoftConstraints.*;
+import domain.constraints.types.softConstraints.SoftConstraint;
+import domain.constraints.types.softConstraints.fullySoftConstraints.NumericalComplexityPenalization;
+import domain.constraints.types.softConstraints.fullySoftConstraints.RestingIntervalPenalization;
+import domain.constraints.types.softConstraints.fullySoftConstraints.SameCourseDifferentDayConstraint;
+import domain.constraints.types.softConstraints.fullySoftConstraints.UnscheduledExamsConstraint;
 import domain.constraints.types.softConstraints.userConstraints.*;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.configuration.WeightConfigurer;
+import domain.configuration.WeightConfigurer;
 import greedyAlgorithm.ChromosomeDecoder;
 
 
@@ -26,9 +29,9 @@ import greedyAlgorithm.ChromosomeDecoder;
 public class LinearFitnessFunction implements FitnessFunction {
 
     /**
-     * Link to the {@link DataHandler} instance, where this will check the exam schedule and constraints.
+     * Link to the {@link ExamsSchedule} instance, where this will check the exam schedule and constraints.
      */
-    private final DataHandler dataHandler;
+    private final ExamsSchedule examsSchedule;
 
     /**
      * Instance of {@code CromosomeDecoder}
@@ -38,24 +41,24 @@ public class LinearFitnessFunction implements FitnessFunction {
 
     /**
      * Constructor for the class
-     * @param dataHandler Instance where the function will check the exam schedule and constraints.
+     * @param examsSchedule Instance where the function will check the exam schedule and constraints.
      */
-    public LinearFitnessFunction(DataHandler dataHandler){
-        this.decoder = new ChromosomeDecoder(dataHandler.getConfigurer());
-        this.dataHandler = dataHandler;
+    public LinearFitnessFunction(ExamsSchedule examsSchedule){
+        this.decoder = new ChromosomeDecoder(examsSchedule.getConfigurer());
+        this.examsSchedule = examsSchedule;
     }
 
     @Override
     public double apply(Individual a) {
 
-        dataHandler.resetScheduling();
+        examsSchedule.resetScheduling();
 
         // Deconde the cromosome
-        decoder.decode(a, dataHandler);
+        decoder.decode(a, examsSchedule);
 
         //Count constraints
         ConstraintCounter counter = new DefaultConstraintCounter();
-        for (SoftConstraints constraint: dataHandler.getConstraints()) {
+        for (SoftConstraint constraint: examsSchedule.getConstraints()) {
                 constraint.checkConstraint(counter);
         }
 
@@ -69,7 +72,7 @@ public class LinearFitnessFunction implements FitnessFunction {
      * @return the final fitness value.
      */
     private double formula(ConstraintCounter counter) {
-        WeightConfigurer wc = dataHandler.getConfigurer().getWeightConfigurer();
+        WeightConfigurer wc = examsSchedule.getConfigurer().getWeightConfigurer();
 
         return counter.getCountOfTimeDisplacementConstraint()
                         * wc.getConstraintWeight(TimeDisplacementConstraint.CONSTRICTION_ID) +
@@ -77,16 +80,16 @@ public class LinearFitnessFunction implements FitnessFunction {
                         * wc.getConstraintWeight(DayBannedConstraint.CONSTRICTION_ID) +
                 counter.getCountOfSameDayConstraint()
                         * wc.getConstraintWeight(SameDayConstraint.CONSTRICTION_ID) +
-                counter.getCountOfUnclassifiedExamsConstraint()
-                        * wc.getConstraintWeight(UnclassifiedExamsConstraint.CONSTRICTION_ID) +
+                counter.getCountOfUnscheduledExamsConstraint()
+                        * wc.getConstraintWeight(UnscheduledExamsConstraint.CONSTRICTION_ID) +
                 counter.getCountOfDifferentDayConstraint()
                         * wc.getConstraintWeight(DifferentDayConstraint.CONSTRICTION_ID) +
                 counter.getCountOrderExamsConstraint()
                         * wc.getConstraintWeight(OrderExamsConstraint.CONSTRICTION_ID) +
                 counter.getCountSameCourseDifferentDayConstraint()
                         * wc.getConstraintWeight(SameCourseDifferentDayConstraint.CONSTRICTION_ID) +
-                counter.getCountProhibitedIntervalPenalization()
-                        * wc.getConstraintWeight(ProhibitedIntervalPenalization.CONSTRICTION_ID) +
+                counter.getCountRestingIntervalPenalization()
+                        * wc.getConstraintWeight(RestingIntervalPenalization.CONSTRICTION_ID) +
                 counter.getNumericalComplexityPenalization()
                         * wc.getConstraintWeight(NumericalComplexityPenalization.CONSTRICTION_ID) +
                 counter.getCountDayIntervalConstraint()

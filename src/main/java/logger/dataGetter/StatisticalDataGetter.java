@@ -1,6 +1,6 @@
 package logger.dataGetter;
 
-import domain.DataHandler;
+import domain.ExamsSchedule;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.counter.DefaultConstraintCounter;
 import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
@@ -12,6 +12,7 @@ import utils.Utils;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Locale;
 
 /**
@@ -49,22 +50,26 @@ public class StatisticalDataGetter {
      * Writes the statistics log file, with the results of the execution.
      * @param finalOne Best individual of the execution
      * @param decoder Decoding method.
-     * @param dataHandler Data handler instance with the data of the execution.
+     * @param examsSchedule Data handler instance with the data of the execution.
      */
-    public void writeLogFor(Individual finalOne, ChromosomeDecoder decoder, DataHandler dataHandler) {
+    public void writeLogFor(Individual finalOne, ChromosomeDecoder decoder, ExamsSchedule examsSchedule) {
+        String path = examsSchedule.getConfigurer().getFilePaths("statisticsBaseDirectory") + subDirectory;
+        Utils.createDirectory(path);
 
-        Utils.createDirectory(dataHandler.getConfigurer().getFilePaths("statisticsBaseDirectory") + "/" + subDirectory);
+        writeLog(finalOne, decoder, examsSchedule, path);
+    }
 
-        dataHandler.resetScheduling();
+    private void writeLog(Individual finalOne, ChromosomeDecoder decoder, ExamsSchedule examsSchedule, String path) {
+        examsSchedule.resetScheduling();
 
-        decoder.decode(finalOne, dataHandler);
+        decoder.decode(finalOne, examsSchedule);
         PrettyTimetable prettyTimetable = new PrettyTimetable();
-        prettyTimetable.orderScheduling(dataHandler);
+        prettyTimetable.orderScheduling(examsSchedule);
         ConstraintCounter constraintCounter = new DefaultConstraintCounter();
-        dataHandler.verifyConstraints(constraintCounter);
+        examsSchedule.verifyConstraints(constraintCounter);
 
 
-        int unplacedExams = constraintCounter.getCountOfUnclassifiedExamsConstraint();
+        int unplacedExams = constraintCounter.getCountOfUnscheduledExamsConstraint();
 
         int unfulfilledConstraintCounter = 0;
         unfulfilledConstraintCounter += constraintCounter.getCountDayIntervalConstraint();
@@ -74,7 +79,7 @@ public class StatisticalDataGetter {
         unfulfilledConstraintCounter += constraintCounter.getCountOfDaysBannedConstraint();
         unfulfilledConstraintCounter += constraintCounter.getCountOfSameDayConstraint();
 
-        long minutesOnProhibitedInterval = constraintCounter.getCountProhibitedIntervalPenalization();
+        long minutesOnProhibitedInterval = constraintCounter.getCountRestingIntervalPenalization();
 
         String sb = unplacedExams +
                 "," +
@@ -86,8 +91,7 @@ public class StatisticalDataGetter {
                 "," +
                 minutesOnProhibitedInterval +
                 "\n";
-        writeStatisticsToFile(dataHandler.getConfigurer().getFilePaths("statisticsBaseDirectory") + "/" + subDirectory,
-                sb);
+        writeStatisticsToFile(path,sb);
     }
 
     /**
@@ -122,5 +126,16 @@ public class StatisticalDataGetter {
     public void resetConstraintCounter() {
         this.weakConstraints = 0;
         this.constraints = 0;
+    }
+
+    public void writeLogFor(HashSet<Individual> elite, ChromosomeDecoder chromosomeDecoder,
+                            ExamsSchedule examsSchedule, String outputFileName) {
+        String path;
+        int counter = 0;
+        for (Individual idv: elite) {
+            path = subDirectory + outputFileName + "_" + counter++;
+            Utils.createDirectory(path);
+            writeLog(idv, chromosomeDecoder, examsSchedule, path);
+        }
     }
 }

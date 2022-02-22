@@ -1,6 +1,6 @@
 package geneticAlgorithm.output;
 
-import domain.DataHandler;
+import domain.ExamsSchedule;
 import geneticAlgorithm.Individual;
 
 import java.io.BufferedWriter;
@@ -23,7 +23,7 @@ public class OutputHandler {
     /**
      * The {@code DataHandler} instance with all the execution data.
      */
-    private final DataHandler dataHandler;
+    private final ExamsSchedule examsSchedule;
 
     /**
      * The {@code ExcelWriter} to be used when writing the output.
@@ -32,14 +32,14 @@ public class OutputHandler {
 
     /**
      * Default constructor for the class.
-     * @param dataHandler The {@code DataHandler} instance with all the execution data.
+     * @param examsSchedule The {@code DataHandler} instance with all the execution data.
      * @param outputFileName The name of the output excel file.
      * @param excelWriter The {@code ExcelWriter} to be used when writing the output.
      */
-    public OutputHandler(DataHandler dataHandler, String outputFileName, String outputDirectory,
+    public OutputHandler(ExamsSchedule examsSchedule, String outputFileName, String outputDirectory,
                          ExcelWriter excelWriter) {
         this.outputDirectory = outputDirectory;
-        this.dataHandler = dataHandler;
+        this.examsSchedule = examsSchedule;
         this.outputFilename = outputFileName;
         this.excelWriter = excelWriter;
 
@@ -49,7 +49,7 @@ public class OutputHandler {
      * Writes the output files, the excel and the log file.
      */
     public void writeOutputFiles(HashSet<Individual> outputIndividuals, String loggedData, String fitnessGraphData)  {
-        excelWriter.excelWrite(outputIndividuals, dataHandler, outputDirectory, outputFilename);
+        excelWriter.excelWrite(outputIndividuals, examsSchedule, outputDirectory, outputFilename);
         writeLogData(loggedData);
         writeFitnessGraphData(fitnessGraphData);
         //writeInputLogData();

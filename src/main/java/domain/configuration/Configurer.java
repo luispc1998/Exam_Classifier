@@ -1,4 +1,4 @@
-package geneticAlgorithm.configuration;
+package domain.configuration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

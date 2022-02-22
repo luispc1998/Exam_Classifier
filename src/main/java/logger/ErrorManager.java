@@ -31,6 +31,7 @@ public class ErrorManager {
 
     public String getFormattedString() {
         StringBuilder output = new StringBuilder();
+        output.append("\n");
         if (notShowedErrors.size() > 0) {
             output.append("---NEW ERRORS---\n\n");
             for (String error : notShowedErrors) {
@@ -49,6 +50,7 @@ public class ErrorManager {
                 output.append("\n");
             }
         }
+        output.append("\n");
         markPendingErrorsAsShowed();
         return output.toString();
     }

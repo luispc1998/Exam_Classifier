@@ -1,19 +1,18 @@
 package domain.constraints.types.softConstraints.fullySoftConstraints;
 
-import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstraints.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.entities.Exam;
 
 import java.util.List;
 
 /**
- * This {@link Constraint} penalizes schedules by the number of unclassified {@link Exam}.
+ * This {SoftConstraint} penalizes schedules by the number of unclassified {@link Exam}.
  */
-public class UnclassifiedExamsConstraint implements SoftConstraints {
+public class UnscheduledExamsConstraint implements SoftConstraint {
 
     /**
-     * Constraint with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of constraint.
      */
     public final static String CONSTRICTION_ID = "UE";
 
@@ -27,7 +26,7 @@ public class UnclassifiedExamsConstraint implements SoftConstraints {
      * Constructor for the class
      * @param exams List of {@link Exam} to check the schedule.
      */
-    public UnclassifiedExamsConstraint(List<Exam> exams) {
+    public UnscheduledExamsConstraint(List<Exam> exams) {
         this.exams = exams;
     }
 

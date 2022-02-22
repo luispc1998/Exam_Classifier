@@ -1,7 +1,6 @@
 package domain.constraints.types.softConstraints.userConstraints;
 
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstraints.SoftConstraints;
 
 /**
  * Default implementation of {@code checkConstraint} method, and implementation of the logic to hold the result of the
@@ -12,7 +11,7 @@ import domain.constraints.types.softConstraints.SoftConstraints;
  * logic, and the call to {@code ConstraintCounter}, as is requested in the abstract methods {@code isFulfilled} and
  * {@code countMe}.
  */
-public abstract class AbstractUserConstraint implements UserConstraint, SoftConstraints {
+public abstract class AbstractUserConstraint implements UserConstraint {
 
     /**
      * Stores the value of the last evaluation of isFulfilled.

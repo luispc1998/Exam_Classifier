@@ -1,7 +1,7 @@
 package geneticAlgorithm.operators;
 
 import geneticAlgorithm.operators.crossing.CrossingOperator;
-import geneticAlgorithm.operators.crossing.OXCrosssingOperator;
+import geneticAlgorithm.operators.crossing.OXCrossoverOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.mutation.MutationSwap;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
@@ -48,7 +48,7 @@ public class GeneticOperators {
     public GeneticOperators(int populationSize) {
         this.selectionOperator = new RouletteSelection();
         this.mutationOperator = new MutationSwap();
-        this.crossingOperator = new OXCrosssingOperator();
+        this.crossingOperator = new OXCrossoverOperator();
         //this.replacementOperator = new ReplacementOperatorFitnessBiased();
         this.replacementOperator = new ReplacementOperatorClassic(populationSize/25);
     }

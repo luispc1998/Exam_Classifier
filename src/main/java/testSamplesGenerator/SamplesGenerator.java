@@ -1,6 +1,6 @@
 package testSamplesGenerator;
 
-import domain.constraints.Constraint;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.constraints.types.softConstraints.userConstraints.*;
 import domain.entities.Exam;
 import domain.entities.Interval;
@@ -109,7 +109,7 @@ public class SamplesGenerator {
     /**
      * The final list of constraints of the instance
      */
-    private static HashMap<String, List<Constraint>> constraints = new HashMap<>();
+    private static HashMap<String, List<SoftConstraint>> constraints = new HashMap<>();
 
     /**
      * The final calendar of days of the instance.

@@ -15,7 +15,7 @@ public class DefaultConstraintCounter implements ConstraintCounter {
     private int differentDayCounter;
     private int orderExamsCounter;
     private int sameCourseDifferentDayCounter;
-    private long prohibitedIntervalPenalizationCounter;
+    private long restingIntervalPenalizationCounter;
     private long unbalancedDaysPenalizationCounter;
     private double numericalComplexityPenalizationCounter;
     private int dayIntervalCounter;
@@ -36,7 +36,7 @@ public class DefaultConstraintCounter implements ConstraintCounter {
     }
 
     @Override
-    public void count(UnclassifiedExamsConstraint unclassifiedExamsConstraint) {
+    public void count(UnscheduledExamsConstraint unscheduledExamsConstraint) {
         unclassifiedExamsCounter++;
     }
 
@@ -56,8 +56,8 @@ public class DefaultConstraintCounter implements ConstraintCounter {
     }
 
     @Override
-    public void count(ProhibitedIntervalPenalization prohibitedIntervalPenalization) {
-        prohibitedIntervalPenalizationCounter = prohibitedIntervalPenalization.getMinutes();
+    public void count(RestingIntervalPenalization restingIntervalPenalization) {
+        restingIntervalPenalizationCounter = restingIntervalPenalization.getMinutes();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class DefaultConstraintCounter implements ConstraintCounter {
     }
 
     @Override
-    public int getCountOfUnclassifiedExamsConstraint() {
+    public int getCountOfUnscheduledExamsConstraint() {
         return unclassifiedExamsCounter;
     }
 
@@ -111,13 +111,8 @@ public class DefaultConstraintCounter implements ConstraintCounter {
     }
 
     @Override
-    public long getCountProhibitedIntervalPenalization() {
-        return prohibitedIntervalPenalizationCounter;
-    }
-
-    @Override
-    public long getCountUnbalancedDaysPenalization() {
-        return unbalancedDaysPenalizationCounter;
+    public long getCountRestingIntervalPenalization() {
+        return restingIntervalPenalizationCounter;
     }
 
     @Override

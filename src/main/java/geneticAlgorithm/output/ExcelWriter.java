@@ -1,9 +1,9 @@
 package geneticAlgorithm.output;
 
-import domain.DataHandler;
-import domain.constraints.Constraint;
+import domain.ExamsSchedule;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.counter.DefaultConstraintCounter;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.entities.Exam;
 import domain.entities.ExamDatesComparator;
 import domain.entities.Interval;
@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import utils.Utils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,35 +52,36 @@ public class ExcelWriter {
     /**
      * This writes the provided individuals to excel files. One per individual
      * @param outputIndividuals The {@code Individual} instances, that lead to the final scheduling to be outputted.
-     * @param dataHandler The {@code DataHandler} instance over which the individuals will be decoded.
+     * @param examsSchedule The {@code DataHandler} instance over which the individuals will be decoded.
      * @param directory The output directory.
      * @param outputFileName The name prefix of the output file.
      */
-    public void excelWrite(HashSet<Individual> outputIndividuals, DataHandler dataHandler,
+    public void excelWrite(HashSet<Individual> outputIndividuals, ExamsSchedule examsSchedule,
                                   String directory, String outputFileName) {
 
-        ChromosomeDecoder decoder = new ChromosomeDecoder(dataHandler.getConfigurer());
+        ChromosomeDecoder decoder = new ChromosomeDecoder(examsSchedule.getConfigurer());
         PrettyTimetable prettyTimetable = new PrettyTimetable();
 
 
 
         int counter = 0;
         for (Individual idv: outputIndividuals) {
-            writeIndividualToExcel(dataHandler, directory, outputFileName, decoder, prettyTimetable, counter++, idv);
+            writeIndividualToExcel(examsSchedule, directory, outputFileName, decoder, prettyTimetable, counter++, idv);
         }
     }
 
-    public void writeIndividualToExcel(DataHandler dataHandler, String directory, String outputFileName, ChromosomeDecoder decoder, PrettyTimetable prettyTimetable, int counter, Individual idv) {
-        dataHandler.resetScheduling();
-        decoder.decode(idv, dataHandler);
-        prettyTimetable.orderScheduling(dataHandler);
-        List<Exam> finalResult = dataHandler.getClonedSchedule();
+    public void writeIndividualToExcel(ExamsSchedule examsSchedule, String directory, String outputFileName,
+                                       ChromosomeDecoder decoder, PrettyTimetable prettyTimetable, int counter, Individual idv) {
+        examsSchedule.resetScheduling();
+        decoder.decode(idv, examsSchedule);
+        prettyTimetable.orderScheduling(examsSchedule);
+        List<Exam> finalResult = examsSchedule.getClonedSchedule();
         ConstraintCounter constraintCounter = new DefaultConstraintCounter();
-        HashMap<String, List<Constraint>> verifiedConstraints = dataHandler.verifyConstraints(constraintCounter);
+        HashMap<String, List<SoftConstraint>> verifiedConstraints = examsSchedule.verifyConstraints(constraintCounter);
         Comparator<Exam> examComparator = new ExamDatesComparator();
         finalResult.sort(examComparator);
         parseExamListToExcel(directory, outputFileName, counter, finalResult,
-                verifiedConstraints, dataHandler.getConfigurer().getDateTimeConfigurer().getExamDatesWithTimes());
+                verifiedConstraints, examsSchedule.getConfigurer().getDateTimeConfigurer().getExamDatesWithTimes());
     }
 
     /**
@@ -92,12 +94,15 @@ public class ExcelWriter {
      * @param calendar The calendar of days to be written
      */
     public void parseExamListToExcel(String directory, String outputFileName, int counter, List<Exam> finalResult, HashMap<String,
-            List<Constraint>> verifiedConstraints, HashMap<LocalDate, Interval> calendar) {
+            List<SoftConstraint>> verifiedConstraints, HashMap<LocalDate, Interval> calendar) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         examParser.parseToExcel(finalResult, workbook);
         constraintParser.parseToExcel(verifiedConstraints, workbook);
         writeCalendar(workbook, calendar);
-        String path = directory + outputFileName + "_" + counter + ".xlsx";
+        String subDirectory = directory + outputFileName + "_" + counter;
+        Utils.createDirectory(subDirectory);
+        String path = directory + outputFileName + "_" + counter + "/" + outputFileName + "_" + counter + ".xlsx";
+
         try (FileOutputStream outputStream = new FileOutputStream(path)) {
             workbook.write(outputStream);
         } catch (IOException e) {

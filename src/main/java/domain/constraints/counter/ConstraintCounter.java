@@ -1,6 +1,5 @@
 package domain.constraints.counter;
 
-import domain.constraints.Constraint;
 import domain.constraints.types.softConstraints.fullySoftConstraints.*;
 import domain.constraints.types.softConstraints.userConstraints.*;
 
@@ -17,77 +16,77 @@ public interface ConstraintCounter {
 
     /**
      * Increments the value of the counter for {@link TimeDisplacementConstraint}
-     * @param timeDisplacementConstraint the {@link Constraint}
+     * @param timeDisplacementConstraint the constraint
      *                                     whose condition was not fulfilled.
      */
     void count(TimeDisplacementConstraint timeDisplacementConstraint);
 
     /**
      * Increments the value of the counter for {@link DayBannedConstraint}
-     * @param daysBannedConstraint the {@link Constraint}
+     * @param daysBannedConstraint the constraint
      *                                     whose condition was not fulfilled.
      */
     void count(DayBannedConstraint daysBannedConstraint);
 
     /**
      * Increments the value of the counter for {@link SameDayConstraint}
-     * @param sameDayConstraint the {@link Constraint}
+     * @param sameDayConstraint the constraint
      *                               whose condition was not fulfilled.
      */
     void count(SameDayConstraint sameDayConstraint);
 
     /**
-     * Increments the value of the counter for {@link UnclassifiedExamsConstraint}
-     * @param unclassifiedExamsConstraint the {@link Constraint}
+     * Increments the value of the counter for {@link UnscheduledExamsConstraint}
+     * @param unscheduledExamsConstraint the constraint
      *                                    whose condition was not fulfilled.
      */
-    void count(UnclassifiedExamsConstraint unclassifiedExamsConstraint);
+    void count(UnscheduledExamsConstraint unscheduledExamsConstraint);
 
     /**
      * Increments the value of the counter for {@link DifferentDayConstraint}
-     * @param differentDayConstraint the {@link Constraint}
+     * @param differentDayConstraint the constraint
      *                                    whose condition was not fulfilled.
      */
     void count(DifferentDayConstraint differentDayConstraint);
 
     /**
      * Increments the value of the counter for {@link OrderExamsConstraint}
-     * @param orderExamsConstraint the {@link Constraint}
+     * @param orderExamsConstraint the constraint
      *                                       whose condition was not fulfilled.
      */
     void count(OrderExamsConstraint orderExamsConstraint);
 
     /**
      * Increments the value of the counter for {@link SameCourseDifferentDayConstraint}
-     * @param sameCourseDifferentDayConstraint the {@link Constraint}
+     * @param sameCourseDifferentDayConstraint the constraint
      *                                        whose condition was not fulfilled.
      */
     void count(SameCourseDifferentDayConstraint sameCourseDifferentDayConstraint);
 
     /**
-     * Increments the value of the counter for {@link ProhibitedIntervalPenalization}
-     * @param prohibitedIntervalPenalization the {@link Constraint}
+     * Increments the value of the counter for {@link RestingIntervalPenalization}
+     * @param restingIntervalPenalization the constraint
      *                                        whose condition was not fulfilled.
      */
-    void count(ProhibitedIntervalPenalization prohibitedIntervalPenalization);
+    void count(RestingIntervalPenalization restingIntervalPenalization);
 
     /**
      * Increments the value of the counter for {@link UnbalancedDaysPenalization}
-     * @param unbalancedDaysPenalization the {@link Constraint}
+     * @param unbalancedDaysPenalization the constraint
      *                                        whose condition was not fulfilled.
      */
     void count(UnbalancedDaysPenalization unbalancedDaysPenalization);
 
     /**
      * Increments the value of the counter for {@link UnbalancedDaysPenalization}
-     * @param numericalComplexityPenalization the {@link Constraint}
+     * @param numericalComplexityPenalization the constraint
      *                                        whose condition was not fulfilled.
      */
     void count(NumericalComplexityPenalization numericalComplexityPenalization);
 
     /**
      * Increments the value of the counter for {@link DayIntervalConstraint}
-     * @param dayIntervalConstraint the {@link domain.constraints.Constraint}
+     * @param dayIntervalConstraint the constraint
      *                                       whose condition was not fulfilled.
      */
     void count(DayIntervalConstraint dayIntervalConstraint);
@@ -111,10 +110,10 @@ public interface ConstraintCounter {
     int getCountOfSameDayConstraint();
 
     /**
-     * Returns the current counter for {@link UnclassifiedExamsConstraint}
-     * @return the current counter for {@link UnclassifiedExamsConstraint}
+     * Returns the current counter for {@link UnscheduledExamsConstraint}
+     * @return the current counter for {@link UnscheduledExamsConstraint}
      */
-    int getCountOfUnclassifiedExamsConstraint();
+    int getCountOfUnscheduledExamsConstraint();
 
     /**
      * Returns the current counter for {@link DifferentDayConstraint}
@@ -135,17 +134,10 @@ public interface ConstraintCounter {
     int getCountSameCourseDifferentDayConstraint();
 
     /**
-     * Returns the current counter for {@link ProhibitedIntervalPenalization}
-     * @return the current counter for {@link ProhibitedIntervalPenalization}
+     * Returns the current counter for {@link RestingIntervalPenalization}
+     * @return the current counter for {@link RestingIntervalPenalization}
      */
-    long getCountProhibitedIntervalPenalization();
-
-
-    /**
-     * Returns the current counter for {@link UnbalancedDaysPenalization}
-     * @return the current counter for {@link UnbalancedDaysPenalization}
-     */
-    long getCountUnbalancedDaysPenalization();
+    long getCountRestingIntervalPenalization();
 
     /**
      * Returns the current counter for {@link NumericalComplexityPenalization}

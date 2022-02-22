@@ -1,8 +1,7 @@
 package domain.constraints.types.softConstraints.fullySoftConstraints;
 
-import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstraints.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -14,10 +13,10 @@ import java.util.Set;
 /**
  * This represents a constraint that states that the same course exams should take place on different days.
  */
-public class SameCourseDifferentDayConstraint implements SoftConstraints {
+public class SameCourseDifferentDayConstraint implements SoftConstraint {
 
     /**
-     * Constraint with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of constraint.
      */
     public final static String CONSTRICTION_ID = "SCDD";
 

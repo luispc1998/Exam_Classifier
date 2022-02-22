@@ -1,12 +1,12 @@
-package geneticAlgorithm.configuration;
+package domain.configuration;
 
 import domain.entities.Exam;
 import domain.entities.Interval;
+import logger.ConsoleLogger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import logger.ConsoleLogger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,14 +33,14 @@ public class DateTimeConfigurer {
     private final HashMap<LocalDate, Interval> examDates;
 
     /**
-     * Initial hour for a prohibited interval where the exams cannot start.
+     * Initial hour for a resting interval where the exams cannot start.
      */
-    private LocalTime prohibitedIntervalInitialHour;
+    private LocalTime restingIntervalInitialHour;
 
     /**
-     * Ending hour for a prohibited interval where the exams cannot start.
+     * Ending hour for a resting interval where the exams cannot start.
      */
-    private LocalTime prohibitedIntervalEndingHour;
+    private LocalTime restingIntervalEndingHour;
 
     /**
      * Default time to be added to the exam duration in order to compute its finishing hour.
@@ -90,14 +90,14 @@ public class DateTimeConfigurer {
             throw new IllegalArgumentException("Could not parse properties in dates and times configuration file");
         }
         try {
-            this.prohibitedIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningProhibitedIntervalHour"));
-            this.prohibitedIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endProhibitedIntervalHour"));
-            this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultCleaningTimeMinutes")));
+            this.restingIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningRestingIntervalHour"));
+            this.restingIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endRestingIntervalHour"));
+            this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultExtraTimeMinutes")));
             this.defaultExtraTimeEnabled = Boolean.parseBoolean(fileProperties.getProperty("defaultExtraTimeEnabled"));
             this.deliveryCollisionEnabled = Boolean.parseBoolean(fileProperties.getProperty("deliveryCollisionEnabled"));
             this.deliveryIdentifier = String.valueOf(fileProperties.get("deliveryIdentifier"));
         } catch (NullPointerException e) {
-            String[] neededProperties = {"beginningProhibitedIntervalHour", "endProhibitedIntervalHour", "defaultCleaningTimeMinutes", "mutationProb",
+            String[] neededProperties = {"beginningRestingIntervalHour", "endRestingIntervalHour", "defaultExtraTimeMinutes", "mutationProb",
                     "defaultExtraTimeEnabled", "deliveryCollisionEnabled", "deliveryIdentifier"};
             throw new IllegalArgumentException("Missing properties in date and time configuration file.\n" +
                     "The following properties are mandatory: " + Arrays.toString(neededProperties));
@@ -133,9 +133,9 @@ public class DateTimeConfigurer {
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Fechas creadas: " + i);
 
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not find input excel file");
+            throw new IllegalArgumentException("Could not find input excel file: " + inputDataFilepath);
         } catch (IOException | NullPointerException e) {
-            throw new IllegalArgumentException("Could not parse input excel file");
+            throw new IllegalArgumentException("Could not parse input excel file: " + inputDataFilepath);
         }
 
     }
@@ -163,23 +163,23 @@ public class DateTimeConfigurer {
     }
 
     /**
-     * Checks whether a given hour is in the prohibited interval or not.
+     * Checks whether a given hour is in the resting interval or not.
      * @param currentHour The hour to be checked.
-     * @return true in case it is contained in the prohibited interval, false otherwise.
+     * @return true in case it is contained in the resting interval, false otherwise.
      */
-    public boolean isHourInProhibitedInterval(LocalTime currentHour) {
+    public boolean isHourInRestingInterval(LocalTime currentHour) {
 
-        return (currentHour.isAfter(prohibitedIntervalInitialHour) &&
-                currentHour.isBefore(prohibitedIntervalEndingHour))
-                || currentHour.equals(prohibitedIntervalInitialHour);
+        return (currentHour.isAfter(restingIntervalInitialHour) &&
+                currentHour.isBefore(restingIntervalEndingHour))
+                || currentHour.equals(restingIntervalInitialHour);
     }
 
     /**
-     * Returns the ending hour of the prohibited interval.
-     * @return the ending hour of the prohibited interval.
+     * Returns the ending hour of the resting interval.
+     * @return the ending hour of the resting interval.
      */
-    public LocalTime getFinishingHourProhibitedInterval() {
-        return prohibitedIntervalEndingHour;
+    public LocalTime getFinishingHourRestingInterval() {
+        return restingIntervalEndingHour;
     }
 
     /**
@@ -237,11 +237,11 @@ public class DateTimeConfigurer {
     }
 
     /**
-     * Returns the initial hour of the prohibited interval.
-     * @return The {@code LocalTime} at which the prohibited interval ends.
+     * Returns the initial hour of the resting interval.
+     * @return The {@code LocalTime} at which the resting interval ends.
      */
-    public LocalTime getProhibitedIntervalInitialHour() {
-        return prohibitedIntervalInitialHour;
+    public LocalTime getRestingIntervalInitialHour() {
+        return restingIntervalInitialHour;
     }
 
     /**
@@ -259,7 +259,7 @@ public class DateTimeConfigurer {
      * Returns the time intervals at which exams can be placed.
      *
      * <p>
-     * Note that the current implementation considers just a prohibited interval, in case that there were more,
+     * Note that the current implementation considers just a resting interval, in case that there were more,
      * then this method should return every possible time interval.
      *
      * @return A list with the time intervals at which exams can be placed.
@@ -268,15 +268,15 @@ public class DateTimeConfigurer {
     public List<Interval> getValidIntervals(LocalDate day){
         List<Interval>  result = new ArrayList<>();
 
-        if (getDayInitialHour(day).isBefore(getProhibitedIntervalInitialHour())){
-            result.add(new Interval(getDayInitialHour(day), getProhibitedIntervalInitialHour()));
-            result.add(new Interval(getFinishingHourProhibitedInterval(), getDayEndingHour(day)));
+        if (getDayInitialHour(day).isBefore(getRestingIntervalInitialHour())){
+            result.add(new Interval(getDayInitialHour(day), getRestingIntervalInitialHour()));
+            result.add(new Interval(getFinishingHourRestingInterval(), getDayEndingHour(day)));
             return result;
         }
 
-        // In the prohibited interval?
-        if (getDayInitialHour(day).isBefore(getFinishingHourProhibitedInterval())) {
-            result.add(new Interval(getFinishingHourProhibitedInterval(), getDayEndingHour(day)));
+        // In the resting interval?
+        if (getDayInitialHour(day).isBefore(getFinishingHourRestingInterval())) {
+            result.add(new Interval(getFinishingHourRestingInterval(), getDayEndingHour(day)));
             return result;
         }
 

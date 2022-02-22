@@ -15,11 +15,11 @@ public class ReplacementOperatorFitnessBiased implements ReplacementOperator {
 
 
     @Override
-    public List<Individual> doReplacement(List<Individual> prevGeneration, List<Individual> childs,
+    public List<Individual> doReplacement(List<Individual> prevGeneration, List<Individual> children,
                                           FitnessFunction fitnessFunction) {
 
         List<Individual> tmp = new ArrayList<>();
-        tmp.addAll(childs);
+        tmp.addAll(children);
         tmp.addAll(prevGeneration);
         tmp.sort(Comparator.comparingDouble(c -> c.getFitnessScore(fitnessFunction)));
 

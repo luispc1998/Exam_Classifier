@@ -1,12 +1,12 @@
 package greedyAlgorithm;
 
-import domain.DataHandler;
+import domain.ExamsSchedule;
 import domain.constraints.types.hardConstraints.HardConstraint;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.configuration.Configurer;
-import geneticAlgorithm.configuration.DateTimeConfigurer;
+import domain.configuration.Configurer;
+import domain.configuration.DateTimeConfigurer;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -37,14 +37,14 @@ public class ChromosomeDecoder {
     /**
      * Gets the exam list ordered as stated in the chromosome.
      * @param chromosome The chromosome of the {@code Individual} that we are decoding.
-     * @param dataHandler The {@code DataHandler} instance.
+     * @param examsSchedule The {@code DataHandler} instance.
      * @return The list of {@code Exam} to schedule ordered as stated in {@code chromosome}.
      */
-    private List<Exam> getExamsOrderedForChromosome(List<Integer> chromosome, DataHandler dataHandler){
+    private List<Exam> getExamsOrderedForChromosome(List<Integer> chromosome, ExamsSchedule examsSchedule){
         List<Exam> exams = new ArrayList<>();
 
         for (Integer examId: chromosome) {
-            exams.add(dataHandler.getExamById(examId));
+            exams.add(examsSchedule.getExamById(examId));
         }
 
         return exams;
@@ -67,31 +67,31 @@ public class ChromosomeDecoder {
     /**
      * Decodes the provided individual.
      * @param individual The {@code Individual} to be decoded.
-     * @param dataHandler The {@code DataHandler} instance over which the individual will be decoded.
+     * @param examsSchedule The {@code DataHandler} instance over which the individual will be decoded.
      */
-    public void decode(Individual individual, DataHandler dataHandler){
+    public void decode(Individual individual, ExamsSchedule examsSchedule){
 
-        DateTimeConfigurer dateTimeConfigurer = dataHandler.getConfigurer().getDateTimeConfigurer();
+        DateTimeConfigurer dateTimeConfigurer = examsSchedule.getConfigurer().getDateTimeConfigurer();
 
         // Times for the days.
         HashMap<LocalDate, LocalTime> daysTimes = initializeDays(dateTimeConfigurer);
 
         // Exams to schedule
         List<Integer> cromosome = individual.getChromosome();
-        List<Exam> exams = getExamsOrderedForChromosome(cromosome, dataHandler);
+        List<Exam> exams = getExamsOrderedForChromosome(cromosome, examsSchedule);
 
 
         // Fin de la declaración de variables.
         for(Exam exam : exams) {
-            classifyExam(dataHandler, dateTimeConfigurer, daysTimes, exam, 0);
+            classifyExam(examsSchedule, dateTimeConfigurer, daysTimes, exam, 0);
         }
 
     }
 
     /**
      * Tries to classify an exam.
-     * @param dataHandler The {@code DataHandler} instance where the scheduling is.
-     * @param dateTimeConfigurer The {@code DateTimeConfigurer} instance where the hour configurations, including the prohibited
+     * @param examsSchedule The {@code DataHandler} instance where the scheduling is.
+     * @param dateTimeConfigurer The {@code DateTimeConfigurer} instance where the hour configurations, including the resting
      *                           interval bounds are.
      * @param daysTimes A {@code HashMap} where the keys are the calendar days and the value the first hour of each day in which an
      *                  exam can start.
@@ -99,7 +99,7 @@ public class ChromosomeDecoder {
      * @param depth The depth of the repairing tree.
      * @return True if the exam was classified. False otherwise.
      */
-    private boolean classifyExam(DataHandler dataHandler, DateTimeConfigurer dateTimeConfigurer, HashMap<LocalDate,
+    private boolean classifyExam(ExamsSchedule examsSchedule, DateTimeConfigurer dateTimeConfigurer, HashMap<LocalDate,
             LocalTime> daysTimes, Exam exam, int depth) {
 
         Set<LocalDate> viableDays;
@@ -111,18 +111,18 @@ public class ChromosomeDecoder {
             currentHour = daysTimes.get(day);
 
             Exam collidingExam = null;
-            while (dateTimeConfigurer.isHourInProhibitedInterval(currentHour) ||
-                    collidingConditions(dataHandler, exam) &&
-                    (collidingExam = dataHandler.checkCollisionOf(day, currentHour, exam.getChunkOfTime())) != null) {
+            while (dateTimeConfigurer.isHourInRestingInterval(currentHour) ||
+                    collidingConditions(examsSchedule, exam) &&
+                    (collidingExam = examsSchedule.checkCollisionOf(day, currentHour, exam.getChunkOfTime())) != null) {
 
 
-                if(collidingConditions(dataHandler, exam) && collidingExam != null){
+                if(collidingConditions(examsSchedule, exam) && collidingExam != null){
                     daysTimes.put(day, collidingExam.getFinishingHour());
                     currentHour = daysTimes.get(day);
                 }
 
-                if (dateTimeConfigurer.isHourInProhibitedInterval(currentHour)){
-                    daysTimes.put(day, dateTimeConfigurer.getFinishingHourProhibitedInterval());
+                if (dateTimeConfigurer.isHourInRestingInterval(currentHour)){
+                    daysTimes.put(day, dateTimeConfigurer.getFinishingHourRestingInterval());
                 }
 
                 currentHour = daysTimes.get(day);
@@ -130,8 +130,8 @@ public class ChromosomeDecoder {
 
 
             if (dateTimeConfigurer.isValidEndingHourFor(day, currentHour.plus(exam.getChunkOfTime()))){
-                dataHandler.schedule(exam, day, currentHour);
-                if (collidingConditions(dataHandler, exam)) {
+                examsSchedule.schedule(exam, day, currentHour);
+                if (collidingConditions(examsSchedule, exam)) {
                     daysTimes.put(day, exam.getFinishingHour());
                 }
                 scheduled = true;
@@ -144,26 +144,26 @@ public class ChromosomeDecoder {
         // Tienen que durar lo mismo o más.
         // copia de daysTimes
         if (!scheduled && depth < limitDepth) {
-            List<Exam> candidates = dataHandler.getSwappableExamsOfOver(exam, viableDays);
+            List<Exam> candidates = examsSchedule.getSwappableExamsOfOver(exam, viableDays);
 
             for (Exam examCandidate : candidates) {
                 LocalDate actualDate = examCandidate.getDate();
                 LocalTime actualHour = examCandidate.getInitialHour();
 
                 // Lo asignamos por restricciones como exámenes el mismo día o en día.
-                dataHandler.schedule(exam, actualDate , actualHour);
-                dataHandler.unSchedule(examCandidate, actualDate);
+                examsSchedule.schedule(exam, actualDate , actualHour);
+                examsSchedule.unSchedule(examCandidate, actualDate);
 
                 HashMap<LocalDate, LocalTime> daysTimesCopy = cloneMap(daysTimes);
 
-                if (classifyExam(dataHandler, dateTimeConfigurer, daysTimesCopy, examCandidate, depth + 1)) {
+                if (classifyExam(examsSchedule, dateTimeConfigurer, daysTimesCopy, examCandidate, depth + 1)) {
                     writeNewDaysTimes(daysTimes, daysTimesCopy);
                     scheduled = true;
                     break;
                 }
                 else {
-                    dataHandler.unSchedule(exam, actualDate);
-                    dataHandler.schedule(examCandidate, actualDate, actualHour);
+                    examsSchedule.unSchedule(exam, actualDate);
+                    examsSchedule.schedule(examCandidate, actualDate, actualHour);
                 }
 
             }
@@ -173,8 +173,8 @@ public class ChromosomeDecoder {
         return scheduled;
     }
 
-    private boolean collidingConditions(DataHandler dataHandler, Exam exam) {
-        return dataHandler.getConfigurer().getDateTimeConfigurer().areCollisionsEnabledFor(exam);
+    private boolean collidingConditions(ExamsSchedule examsSchedule, Exam exam) {
+        return examsSchedule.getConfigurer().getDateTimeConfigurer().areCollisionsEnabledFor(exam);
     }
 
     /**

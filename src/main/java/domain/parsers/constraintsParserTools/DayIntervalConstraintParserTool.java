@@ -1,7 +1,7 @@
 package domain.parsers.constraintsParserTools;
 
-import domain.DataHandler;
-import domain.constraints.Constraint;
+import domain.ExamsSchedule;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.constraints.types.softConstraints.userConstraints.DayIntervalConstraint;
 import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import domain.entities.Exam;
@@ -21,11 +21,11 @@ import java.util.List;
 public class DayIntervalConstraintParserTool extends AbstractConstraintParserTool {
 
     @Override
-    public UserConstraint specificParseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint specificParseConstraint(Row row, int baseExcelColumn, ExamsSchedule examsSchedule) {
         Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2, baseExcelColumn + 3},
                 "Error creating Day Interval Constraint.");
-        List<LocalDate> calendar = dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates();
-        Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
+        List<LocalDate> calendar = examsSchedule.getConfigurer().getDateTimeConfigurer().getExamDates();
+        Exam exam1 = examsSchedule.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
         UserConstraint uc = new DayIntervalConstraint(exam1, row.getCell(baseExcelColumn+1).getDateCellValue()
                 .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate(), row.getCell(baseExcelColumn+2).getDateCellValue()
@@ -36,7 +36,7 @@ public class DayIntervalConstraintParserTool extends AbstractConstraintParserToo
     }
 
     @Override
-    public void writeConstraint(Constraint con, Row row, int baseExcelColumn) {
+    public void writeConstraint(SoftConstraint con, Row row, int baseExcelColumn) {
         DayIntervalConstraint dic = (DayIntervalConstraint) con;
         int cellCounter = baseExcelColumn -1;
         Cell cell = row.createCell(++cellCounter);

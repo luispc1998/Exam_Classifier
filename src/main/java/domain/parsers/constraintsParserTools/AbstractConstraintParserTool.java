@@ -1,10 +1,10 @@
 package domain.parsers.constraintsParserTools;
 
-import domain.DataHandler;
+import domain.ExamsSchedule;
 import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
+import logger.ConsoleLogger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import logger.ConsoleLogger;
 import utils.Utils;
 
 import java.util.NoSuchElementException;
@@ -54,9 +54,9 @@ public abstract class AbstractConstraintParserTool implements ConstraintParserTo
 
 
     @Override
-    public UserConstraint parseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint parseConstraint(Row row, int baseExcelColumn, ExamsSchedule examsSchedule) {
         try {
-            return specificParseConstraint(row, baseExcelColumn, dataHandler);
+            return specificParseConstraint(row, baseExcelColumn, examsSchedule);
         } catch (IllegalArgumentException e) {
             ConsoleLogger.getConsoleLoggerInstance().logError(e.getMessage() + " Skipping...");
         } catch (NoSuchElementException e) {
@@ -65,7 +65,7 @@ public abstract class AbstractConstraintParserTool implements ConstraintParserTo
         return null;
     }
 
-    public abstract UserConstraint specificParseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler);
+    public abstract UserConstraint specificParseConstraint(Row row, int baseExcelColumn, ExamsSchedule examsSchedule);
 
     /**
      * Generalizes the writing of common fields to all constraints

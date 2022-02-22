@@ -1,13 +1,14 @@
 package main;
 
-import domain.DataHandler;
+import domain.ExamsSchedule;
+import domain.configuration.GeneticParameters;
 import domain.entities.Exam;
 import domain.parsers.ConstraintParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.configuration.Configurer;
+import domain.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.fitnessFunctions.LinearFitnessFunction;
 import geneticAlgorithm.operators.GeneticOperators;
@@ -19,7 +20,10 @@ import utils.Utils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * This is the main class used for tuning the values of the genetic parameters. It is prepared to be run by script.
@@ -27,7 +31,7 @@ import java.util.*;
  * <p>
  * Note that for performance issues it will advisable to comment all the console printing statements in {@code GeneticCore}.
  *
- * @see geneticAlgorithm.configuration.GeneticParameters
+ * @see GeneticParameters
  */
 public class AppFinalVersion {
 
@@ -81,10 +85,10 @@ public class AppFinalVersion {
             // Iteration start
             ConstraintParser constraintParser = new ConstraintParser(conf, statisticalDataGetter);
             List<Exam> exams = examParser.parseExams(conf.getFilePaths("inputFile"), conf);
-            DataHandler dataHandler = new DataHandler(conf, exams, constraintParser);
+            ExamsSchedule examsSchedule = new ExamsSchedule(conf, exams, constraintParser);
 
-            Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
-            FitnessFunction fn = new LinearFitnessFunction(dataHandler);
+            Individual individualPrime = basicEncoder.encodeListExams(examsSchedule);
+            FitnessFunction fn = new LinearFitnessFunction(examsSchedule);
 
             GeneticOperators geneticOperators = new GeneticOperators(conf.getGeneticParameters().getPopulationSize());
             GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize(),
@@ -108,7 +112,7 @@ public class AppFinalVersion {
 
 
 
-            statisticalDataGetter.writeLogFor(finalOne, new ChromosomeDecoder(conf), dataHandler);
+            statisticalDataGetter.writeLogFor(finalOne, new ChromosomeDecoder(conf), examsSchedule);
 
 
         }

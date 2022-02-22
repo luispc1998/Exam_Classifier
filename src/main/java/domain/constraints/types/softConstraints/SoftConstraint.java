@@ -1,6 +1,5 @@
 package domain.constraints.types.softConstraints;
 
-import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 
 /**
@@ -10,7 +9,7 @@ import domain.constraints.counter.ConstraintCounter;
  * @see geneticAlgorithm.Individual
  * @see geneticAlgorithm.fitnessFunctions.FitnessFunction
  */
-public interface SoftConstraints extends Constraint {
+public interface SoftConstraint {
 
     /**
      * Evaluates the constrains and increments its type counter if necessary.
@@ -21,7 +20,11 @@ public interface SoftConstraints extends Constraint {
      */
     void checkConstraint(ConstraintCounter counter);
 
-
+    /**
+     * Returns the string id for the type of {@code Constraint}.
+     * @return The String id for the type of {@code Constraint}.
+     */
+    String getConstraintID();
 
 
 }

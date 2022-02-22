@@ -2,7 +2,7 @@ package test.operators;
 
 import geneticAlgorithm.Individual;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
-import geneticAlgorithm.operators.crossing.OXCrosssingOperator;
+import geneticAlgorithm.operators.crossing.OXCrossoverOperator;
 import org.junit.Assert;
 import org.junit.Test;
 import random.RandomCromosomeGenerator;

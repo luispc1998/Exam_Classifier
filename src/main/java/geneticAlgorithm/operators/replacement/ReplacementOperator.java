@@ -14,10 +14,10 @@ public interface ReplacementOperator {
     /**
      * Selects which {@code Individual} among the old and new ones will go on to the next generation.
      * @param prevGeneration Individuals of the previous generation.
-     * @param child Individuals created by crossing the individuals in {@code prevGeneration}.
+     * @param children Individuals created by crossing the individuals in {@code prevGeneration}.
      * @param fitnessFunction The fitness function of the algorithm.
      * @return The new generation of Individuals.
      */
-    List<Individual> doReplacement(List<Individual> prevGeneration, List<Individual> child,
+    List<Individual> doReplacement(List<Individual> prevGeneration, List<Individual> children,
                                    FitnessFunction fitnessFunction);
 }

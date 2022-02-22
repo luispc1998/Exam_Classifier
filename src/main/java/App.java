@@ -1,24 +1,22 @@
-package main;
-
-import domain.DataHandler;
+import domain.ExamsSchedule;
 import domain.entities.Exam;
 import domain.parsers.ConstraintParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.configuration.Configurer;
+import domain.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.fitnessFunctions.LinearFitnessFunction;
-import logger.dataGetter.fitnessLogger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.output.ExcelWriter;
 import geneticAlgorithm.output.OutputHandler;
 import greedyAlgorithm.ChromosomeDecoder;
 import logger.ConsoleLogger;
 import logger.ErrorManager;
-import utils.Utils;
 import logger.dataGetter.StatisticalDataGetter;
+import logger.dataGetter.fitnessLogger.GeneticLogger;
+import utils.Utils;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -56,10 +54,22 @@ public class App {
         Enconder basicEncoder = new Enconder();
 
         int repetitions = conf.getGeneticParameters().getAlgorithmRepetitions();
+        if (repetitions<1) {
+            repetitions = 1;
+        }
         boolean errorAsking = conf.getGeneticParameters().isErrorAsking();
 
+
+
+        HashSet<Individual> elite = new HashSet<>();
+        Individual bestFitnessIndividual;
+        ExamsSchedule examsSchedule = null;
+        GeneticCore genCore = null;
+        OutputHandler outputHandler = null;
+        String outputDirectory = Utils.createOutputDirectory(conf.getFilePaths("outputBaseDirectory"));
+
         if (args[2] != null) {
-            statisticalDataGetter = new StatisticalDataGetter(args[2], Utils.createDirectoryStringBasedOnHour());
+            statisticalDataGetter = new StatisticalDataGetter(args[2], outputDirectory);
             constraintParser = new ConstraintParser(conf, statisticalDataGetter);
         }
         else {
@@ -72,59 +82,60 @@ public class App {
                 System.out.println("Repetition: " + j);
             }
             // Iteration start
+
             ErrorManager errorManager = ConsoleLogger.getConsoleLoggerInstance().getErrorManager();
             List<Exam> exams = examParser.parseExams(conf.getFilePaths("inputFile"), conf);
-            String outputDirectory = Utils.createOutputDirectory(conf.getFilePaths("outputBaseDirectory"));
 
 
 
-            if (errorAsking && errorManager.wasThereErrorsOrWarnings()) {
-                System.out.println("Se encontraron errores durante la generación de exámenes, por favor revise el archivo errorLog en la carpeta de salida.");
+            if (errorAsking && errorManager.wasThereErrorsOrWarnings() && j==1) {
+                System.out.println("Se encontraron errores durante la generación de exámenes.");
                 ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
                 stoppingInputRequest();
             }
 
-            DataHandler dataHandler = new DataHandler(conf, exams, constraintParser);
+            examsSchedule = new ExamsSchedule(conf, exams, constraintParser);
             ExcelWriter excelWriter = new ExcelWriter(examParser, constraintParser);
-            OutputHandler outputHandler = new OutputHandler(dataHandler, outputFileName, outputDirectory, excelWriter);
+            outputHandler = new OutputHandler(examsSchedule, outputFileName, outputDirectory, excelWriter);
 
 
 
-            if (errorAsking && errorManager.wasThereErrorsOrWarnings()) {
-                System.out.println("Se encontraron errores o avisos, por favor revise el archivo errorLog en la carpeta de salida.");
+            if (errorAsking && errorManager.wasThereErrorsOrWarnings() && j==1) {
+                System.out.println("Se encontraron errores o avisos durante el parseo de restricciones.");
                 ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
                 stoppingInputRequest();
             }
 
 
-            Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
-            FitnessFunction fn = new LinearFitnessFunction(dataHandler);
+            Individual individualPrime = basicEncoder.encodeListExams(examsSchedule);
+            FitnessFunction fn = new LinearFitnessFunction(examsSchedule);
 
             GeneticOperators geneticOperators = new GeneticOperators(conf.getGeneticParameters().getPopulationSize());
             GeneticLogger logger = new GeneticLogger();
-            GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize(),
-                    geneticOperators, logger);
+            genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize(),
+                    geneticOperators, logger, elite);
 
 
-            Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
+            bestFitnessIndividual = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
                     conf.getGeneticParameters().getCrossingProbability(), fn,
                     conf.getGeneticParameters().getGenerations(), conf.getGeneticParameters().getLoggingFrequency());
 
 
             List<Individual> finalPopulation = genCore.getPopulation();
             finalPopulation.sort(Comparator.comparingDouble(i -> i.getFitnessScore(fn)));
+            elite.clear();
+            elite.add(bestFitnessIndividual);
 
-            HashSet<Individual> outputIndividuals = new HashSet<>();
-            outputIndividuals.add(finalOne);
-
-            Utils.getBestSchedules(finalPopulation, outputIndividuals, conf.getGeneticParameters().getMaxSchedulesToTake());
+            Utils.getBestSchedules(finalPopulation, elite, conf.getGeneticParameters().getMaxSchedulesToTake());
 
 
-            if (statisticalDataGetter != null) {
-                statisticalDataGetter.writeLogFor(finalOne, new ChromosomeDecoder(conf), dataHandler);
-            }
-            outputHandler.writeOutputFiles(outputIndividuals, genCore.getLogging(), genCore.getFitnessGraphData());
+
         }
+
+        if (statisticalDataGetter != null) {
+            statisticalDataGetter.writeLogFor(elite, new ChromosomeDecoder(conf), examsSchedule, outputFileName);
+        }
+        outputHandler.writeOutputFiles(elite, genCore.getLogging(), genCore.getFitnessGraphData());
     }
 
     private static void stoppingInputRequest() {

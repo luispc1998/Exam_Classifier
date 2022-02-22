@@ -1,12 +1,11 @@
 package domain.constraints.types.softConstraints.userConstraints;
 
 
-import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.HardConstraint;
-import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedUserConstraint;
 import domain.entities.Exam;
-import geneticAlgorithm.configuration.DateTimeConfigurer;
+import domain.configuration.DateTimeConfigurer;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,14 +15,14 @@ import java.util.List;
  * being X a natural number.
  *
  * <p>
- * Note that X will be a number of positions in the calendar of {@link LocalDate} in {@link geneticAlgorithm.configuration.DateTimeConfigurer}.
+ * Note that X will be a number of positions in the calendar of {@link LocalDate} in {@link DateTimeConfigurer}.
  *
  * @see DateTimeConfigurer#getExamDates()
  */
 public class TimeDisplacementConstraint extends AbstractUserConstraint {
 
     /**
-     * Constraint with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of constraint.
      */
     public final static String CONSTRICTION_ID = "TD";
 
@@ -110,7 +109,7 @@ public class TimeDisplacementConstraint extends AbstractUserConstraint {
 
     @Override
     public void specificHardify() {
-        HardConstraint hConstraint = new HardifiedConstraint(this);
+        HardConstraint hConstraint = new HardifiedUserConstraint(this);
         first.addHardConstraint(hConstraint);
         second.addHardConstraint(hConstraint);
     }

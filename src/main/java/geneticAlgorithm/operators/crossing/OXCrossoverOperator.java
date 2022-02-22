@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * This operators implements de OX Crossing algorithm to reproduce {@code Individual}.
  */
-public class OXCrosssingOperator implements CrossingOperator {
+public class OXCrossoverOperator implements CrossingOperator {
 
     //For testing
     private Random generator;
@@ -19,14 +19,14 @@ public class OXCrosssingOperator implements CrossingOperator {
     /**
      * Default Constructor for the class;
      */
-    public OXCrosssingOperator(){}
+    public OXCrossoverOperator(){}
 
     /**
      * Constructor specifiying the random object used to get the points for
      * the crossing at the crossing method.
      * @param generatorWithSeed A {@code Random} object.
      */
-    public OXCrosssingOperator(Random generatorWithSeed) {
+    public OXCrossoverOperator(Random generatorWithSeed) {
         this.generator = generatorWithSeed;
     }
 
@@ -37,7 +37,7 @@ public class OXCrosssingOperator implements CrossingOperator {
      * @return A List of individuals, the result of crossing a and b one or multiple times.
      */
     @Override
-    public List<Individual> doCrossing(Individual a, Individual b) {
+    public List<Individual> crossover(Individual a, Individual b) {
         List<Individual> childs = new ArrayList<>();
         childs.add(cross(a, b));
 

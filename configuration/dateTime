@@ -4,13 +4,13 @@
 defaultExtraTimeEnabled=False
 
 ### Extra time to be added by default to the exams if no value provided
-defaultCleaningTimeMinutes=10
+defaultExtraTimeMinutes=10
 
 ## Starting hour of the special interval used for lunch
-beginningProhibitedIntervalHour=13:00
+beginningRestingIntervalHour=13:00
 
 ## Ending hour of the special interval used for lunch
-endProhibitedIntervalHour=15:00
+endRestingIntervalHour=15:00
 
 
 

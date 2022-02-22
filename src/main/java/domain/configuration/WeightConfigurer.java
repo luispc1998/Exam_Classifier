@@ -1,6 +1,6 @@
-package geneticAlgorithm.configuration;
+package domain.configuration;
 
-import domain.constraints.Constraint;
+import domain.constraints.types.softConstraints.fullySoftConstraints.RestingIntervalPenalization;
 import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import logger.ConsoleLogger;
 
@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Properties;
 
 /**
- * This is in charge of providing the weights of the {@link Constraint} for the
+ * This is in charge of providing the weights of the {@link domain.constraints.types.softConstraints.SoftConstraint} for the
  * {@link geneticAlgorithm.fitnessFunctions.FitnessFunction}.
  * <p>
- * It is also used to check the existence of {@link Constraint}, because
+ * It is also used to check the existence of {@link domain.constraints.types.softConstraints.SoftConstraint}, because
  * a given ID does not appear in {@code weights} as a key, then it won't be related to a constraint.
  */
 public class WeightConfigurer {
@@ -34,6 +34,10 @@ public class WeightConfigurer {
     public WeightConfigurer(String weightFilepath) {
         weights = new HashMap<>();
 
+        parseWeights(weightFilepath);
+    }
+
+    private void parseWeights(String weightFilepath) {
         InputStream configStream;
         Properties weigthProperties = new Properties();
 
@@ -52,7 +56,7 @@ public class WeightConfigurer {
 
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando pesos fitness...");
         String[] neededProperties = {"DB", "TD", "SD", "DD",
-                "OE", "DI", "PIP", "NCP", "UE", "SCDD"};
+                "OE", "DI", "RIP", "NCP", "UE", "SCDD"};
         for (String key: neededProperties) {
             try {
                 weights.put(key, Double.parseDouble(weigthProperties.getProperty(key)));
@@ -74,11 +78,11 @@ public class WeightConfigurer {
 
     /**
      * Returns the weight of a given constraint id.
-     * @param constrinctionID The constraint id whose weight is wanted to be returned.
+     * @param constraintID The constraint id whose weight is wanted to be returned.
      * @return the corresponding weight to the constraint id provided as parameter.
      */
-    public double getConstraintWeight(String constrinctionID){
-        return weights.get(constrinctionID);
+    public double getConstraintWeight(String constraintID){
+        return weights.get(constraintID);
     }
 
     /**
@@ -105,11 +109,11 @@ public class WeightConfigurer {
     }
 
     /**
-     * Changes the current value for the {@link domain.constraints.types.softConstraints.fullySoftConstraints.ProhibitedIntervalPenalization} weight.
-     * @param prohibitedIntervalWeight New value for the weight of the Prohibited Interval Penalization.
+     * Changes the current value for the {@link RestingIntervalPenalization} weight.
+     * @param restingIntervalWeight New value for the weight of the Prohibited Interval Penalization.
      */
-    public void setProhibitedIntervalWeight(double prohibitedIntervalWeight) {
-        weights.put("PIP", prohibitedIntervalWeight);
+    public void setProhibitedIntervalWeight(double restingIntervalWeight) {
+        weights.put("RIP", restingIntervalWeight);
     }
 
     /**

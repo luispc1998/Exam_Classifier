@@ -1,4 +1,4 @@
-package geneticAlgorithm.configuration;
+package domain.configuration;
 
 import logger.dataGetter.fitnessLogger.GeneticLogger;
 
@@ -79,10 +79,6 @@ public class GeneticParameters {
         this.repairingDepth = repairingDepth;
         this.algorithmRepetitions = algorithmRepetitions;
         this.errorAsking = errorAsking;
-    }
-
-    public int getRepairingDepth() {
-        return repairingDepth;
     }
 
     public int getAlgorithmRepetitions() {

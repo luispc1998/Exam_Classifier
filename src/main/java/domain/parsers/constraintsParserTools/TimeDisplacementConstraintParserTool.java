@@ -1,7 +1,7 @@
 package domain.parsers.constraintsParserTools;
 
-import domain.DataHandler;
-import domain.constraints.Constraint;
+import domain.ExamsSchedule;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.constraints.types.softConstraints.userConstraints.TimeDisplacementConstraint;
 import domain.constraints.types.softConstraints.userConstraints.UserConstraint;
 import domain.entities.Exam;
@@ -16,13 +16,13 @@ public class TimeDisplacementConstraintParserTool extends AbstractConstraintPars
 
 
     @Override
-    public UserConstraint specificParseConstraint(Row row, int baseExcelColumn, DataHandler dataHandler) {
+    public UserConstraint specificParseConstraint(Row row, int baseExcelColumn, ExamsSchedule examsSchedule) {
         Utils.checkCellValuesArePresent(row, new int[]{baseExcelColumn, baseExcelColumn+1, baseExcelColumn+2},
                 "Error creating Time Displacement Constraint.");
-        Exam exam1 = dataHandler.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
-        Exam exam2 = dataHandler.getExamById((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
+        Exam exam1 = examsSchedule.getExamById((int) row.getCell(baseExcelColumn).getNumericCellValue());
+        Exam exam2 = examsSchedule.getExamById((int) (row.getCell(baseExcelColumn + 1).getNumericCellValue()));
         UserConstraint uc = new TimeDisplacementConstraint(exam1, exam2, (long) row.getCell(baseExcelColumn + 2).getNumericCellValue(),
-                dataHandler.getConfigurer().getDateTimeConfigurer().getExamDates());
+                examsSchedule.getConfigurer().getDateTimeConfigurer().getExamDates());
         checkIfMustBeHard(uc, row, baseExcelColumn + 3);
         return uc;
     }
@@ -30,7 +30,7 @@ public class TimeDisplacementConstraintParserTool extends AbstractConstraintPars
 
 
     @Override
-    public void writeConstraint(Constraint con, Row row, int baseExcelColumn) {
+    public void writeConstraint(SoftConstraint con, Row row, int baseExcelColumn) {
         TimeDisplacementConstraint tdc = (TimeDisplacementConstraint) con;
         int cellCounter = baseExcelColumn -1;
         Cell cell = row.createCell(++cellCounter);

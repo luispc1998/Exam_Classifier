@@ -102,7 +102,7 @@ public class Utils {
             if (maxToTake == 0) {
                 break;
             }
-            if (! sadContains(finalSet, idv)) {
+            if (! hashSetContains(finalSet, idv)) {
                 finalSet.add(idv);
                 maxToTake--;
             }
@@ -115,7 +115,7 @@ public class Utils {
      * @param idv The individual that we are checking if in {@code finalSet}.
      * @return True un case the individuals was contained on the set, False otherwise.
      */
-    public static boolean sadContains(Set<Individual> finalSet, Individual idv) {
+    public static boolean hashSetContains(Set<Individual> finalSet, Individual idv) {
         for (Individual fidv: finalSet) {
             if (fidv.equals(idv)) {
                 return true;

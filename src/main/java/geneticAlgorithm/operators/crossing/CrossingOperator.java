@@ -18,6 +18,6 @@ public interface CrossingOperator {
      * @param b Second individual.
      * @return Returns a set of {@code Individual} based on the crossing of the parameters.
      */
-    List<Individual> doCrossing(Individual a, Individual b);
+    List<Individual> crossover(Individual a, Individual b);
 
 }

@@ -1,7 +1,7 @@
 package domain.constraints.types.softConstraints.fullySoftConstraints;
 
 import domain.constraints.counter.ConstraintCounter;
-import domain.constraints.types.softConstraints.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 
 //TODO, what to do with this?
-public class UnbalancedDaysPenalization implements SoftConstraints {
+public class UnbalancedDaysPenalization implements SoftConstraint {
 
     /**
      * Constraint id of this type of {@code Constraint}.
      */
-    public final static String CONSTRICTION_ID = "PIP";
+    public final static String CONSTRICTION_ID = "RIP";
 
 
     /**

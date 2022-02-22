@@ -1,18 +1,17 @@
 package domain.parsers;
 
-import domain.DataHandler;
-import domain.constraints.Constraint;
-import domain.constraints.types.softConstraints.SoftConstraints;
+import domain.ExamsSchedule;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.constraints.types.softConstraints.userConstraints.*;
 import domain.parsers.constraintsParserTools.*;
-import geneticAlgorithm.configuration.Configurer;
+import domain.configuration.Configurer;
+import logger.ConsoleLogger;
+import logger.dataGetter.StatisticalDataGetter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import logger.ConsoleLogger;
-import logger.dataGetter.StatisticalDataGetter;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -53,7 +52,7 @@ public class ConstraintParser {
      *
      * @see ConstraintParserTool
      */
-    private static ConstraintParserTool parserTool;
+    private ConstraintParserTool parserTool;
 
     /**
      * The tools that were used by the  parser.
@@ -81,11 +80,11 @@ public class ConstraintParser {
     /**
      * Method to parse the {@code Constraint} objects from the excel.
      * @param filepath The input data excel filepath.
-     * @param dataHandler The current dataHandler instance being use
+     * @param examsSchedule The current dataHandler instance being use
      * @return The {@code List} of {@code Constraint} parsed from the excel.
      */
-    public List<SoftConstraints> parseConstraints(String filepath, DataHandler dataHandler) {
-        List<SoftConstraints> constraints = new ArrayList<>();
+    public List<SoftConstraint> parseConstraints(String filepath, ExamsSchedule examsSchedule) {
+        List<SoftConstraint> constraints = new ArrayList<>();
         int i = 0;
         //creating workbook instance that refers to .xls file
         try (FileInputStream fis = new FileInputStream(filepath);
@@ -99,13 +98,13 @@ public class ConstraintParser {
 
                 if (shouldBeJumped(row)) continue;
 
-                if (isAToolSwapNeeded(row.getCell(baseExcelColumn), dataHandler)){
+                if (isAToolSwapNeeded(row.getCell(baseExcelColumn), examsSchedule)){
                     swapTool(row, sheet.getRow(row.getRowNum() + 1), sheet.getRow(row.getRowNum() + 2));
                     jumpLines = 2;
                 }
                 else{
 
-                    UserConstraint constraint = parserTool.parseConstraint(row, baseExcelColumn, dataHandler);
+                    UserConstraint constraint = parserTool.parseConstraint(row, baseExcelColumn, examsSchedule);
 
                     if (constraint != null) {
                     /*
@@ -225,13 +224,13 @@ public class ConstraintParser {
     /**
      * Checks whether it is needed to change the {@code ConstraintParserTool}.
      * @param cell Excel cell.
-     * @param dataHandler Current dataHandler.
+     * @param examsSchedule Current dataHandler.
      * @return true if it is needed to change the tool, false otherwise.
      */
-    private boolean isAToolSwapNeeded(Cell cell, DataHandler dataHandler) {
+    private boolean isAToolSwapNeeded(Cell cell, ExamsSchedule examsSchedule) {
         try {
             String value = cell.getStringCellValue();
-            return dataHandler.getConfigurer().existsConstraintID(value);
+            return examsSchedule.getConfigurer().existsConstraintID(value);
 
         } catch (RuntimeException e){
             return false;
@@ -243,7 +242,7 @@ public class ConstraintParser {
      * @param verifiedConstraints The list of constraints to be written on the workbook.
      * @param workbook The workbook in which the constraints will be written.
      */
-    public void parseToExcel(HashMap<String, List<Constraint>> verifiedConstraints, Workbook workbook) {
+    public void parseToExcel(HashMap<String, List<SoftConstraint>> verifiedConstraints, Workbook workbook) {
 
             //creating workbook instance that refers to .xls file
             if (usedTools.size() == 0) {
@@ -252,7 +251,7 @@ public class ConstraintParser {
             Sheet sheet = workbook.createSheet("Restricciones");
             int rowCount = 0;
 
-            for(Map.Entry<String, List<Constraint>> entry: verifiedConstraints.entrySet()) {
+            for(Map.Entry<String, List<SoftConstraint>> entry: verifiedConstraints.entrySet()) {
                 if (usedTools.get(entry.getKey()) == null ){
                     continue;
                 }
@@ -277,7 +276,7 @@ public class ConstraintParser {
 
                 // Write data of the constraints
 
-                for (Constraint con: entry.getValue()) {
+                for (SoftConstraint con: entry.getValue()) {
                     row = sheet.createRow(baseExcelRow + ++rowCount);
                     parserTool.writeConstraint(con, row, baseExcelColumn);
                 }

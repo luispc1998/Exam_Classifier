@@ -8,17 +8,17 @@ public class FitnessGraphDto {
     /**
      * Best fitness during the generation.
      */
-    private double bestFitness;
+    private final double bestFitness;
 
     /**
      * Average fitness during the generation.
      */
-    private double averageFitness;
+    private final double averageFitness;
 
     /**
      * How much time has taken the algorithm until reaching this point.
      */
-    private long seconds;
+    private final long seconds;
 
     /**
      * Default constructor for the class.

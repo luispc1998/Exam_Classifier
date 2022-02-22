@@ -1,6 +1,6 @@
 package main;
 
-import domain.DataHandler;
+import domain.ExamsSchedule;
 import domain.entities.Exam;
 import domain.entities.Interval;
 
@@ -26,7 +26,7 @@ public class PrettyTimetable {
      * Improves the exam schedule in the provided {@code dataHandler}
      * @param datahandler The {@code DataHandler} object in which the exam schedule is.
      */
-    public void orderScheduling(DataHandler datahandler) {
+    public void orderScheduling(ExamsSchedule datahandler) {
         List<LocalDate> calendar = datahandler.getConfigurer().getDateTimeConfigurer().getExamDates();
         for (LocalDate day : calendar) {
             orderDay(datahandler, day);
@@ -35,16 +35,16 @@ public class PrettyTimetable {
 
     /**
      * Tries to round the hours of a day.
-     * @param dataHandler The instance containing all the data and configurations for the execution.
+     * @param examsSchedule The instance containing all the data and configurations for the execution.
      * @param day The day whose exam hours we want to round.
      */
-    private void orderDay(DataHandler dataHandler, LocalDate day) {
+    private void orderDay(ExamsSchedule examsSchedule, LocalDate day) {
 
-        List<Interval> validIntervals = dataHandler.getConfigurer().getDateTimeConfigurer().getValidIntervals(day);
+        List<Interval> validIntervals = examsSchedule.getConfigurer().getDateTimeConfigurer().getValidIntervals(day);
 
         for (Interval interval: validIntervals) {
-            List<Exam> examsOnDay = dataHandler.getExamsAt(day, interval);
-            if (isThereFixedExam(dataHandler, examsOnDay)){
+            List<Exam> examsOnDay = examsSchedule.getExamsAt(day, interval);
+            if (isThereFixedExam(examsSchedule, examsOnDay)){
                 continue;
             }
             Duration examsChunkOfTime = addDurations(examsOnDay);
@@ -64,12 +64,12 @@ public class PrettyTimetable {
 
     /**
      * Checks wether there is an exam on the {@code examsOnDay}.
-     * @param dataHandler The dataHandler instance with all the execution data.
+     * @param examsSchedule The dataHandler instance with all the execution data.
      * @param examsOnDay The list of exams to be checked.
      * @return True if there was a preScheduled exam on the list, False otherwise.
      */
-    private boolean isThereFixedExam(DataHandler dataHandler, List<Exam> examsOnDay) {
-        List<Exam> preScheduledExams = dataHandler.getPreScheduledExams();
+    private boolean isThereFixedExam(ExamsSchedule examsSchedule, List<Exam> examsOnDay) {
+        List<Exam> preScheduledExams = examsSchedule.getPreScheduledExams();
         for(Exam exam: examsOnDay) {
             if (preScheduledExams.contains(exam)) {
                 return true;

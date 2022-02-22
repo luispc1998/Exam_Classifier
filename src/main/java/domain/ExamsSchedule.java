@@ -1,17 +1,16 @@
 package domain;
 
-import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.fullyHardConstraints.IsolateCourseOnDayConstraint;
-import domain.constraints.types.softConstraints.SoftConstraints;
+import domain.constraints.types.softConstraints.SoftConstraint;
 import domain.constraints.types.softConstraints.fullySoftConstraints.NumericalComplexityPenalization;
-import domain.constraints.types.softConstraints.fullySoftConstraints.ProhibitedIntervalPenalization;
+import domain.constraints.types.softConstraints.fullySoftConstraints.RestingIntervalPenalization;
 import domain.constraints.types.softConstraints.fullySoftConstraints.SameCourseDifferentDayConstraint;
-import domain.constraints.types.softConstraints.fullySoftConstraints.UnclassifiedExamsConstraint;
+import domain.constraints.types.softConstraints.fullySoftConstraints.UnscheduledExamsConstraint;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import domain.parsers.ConstraintParser;
-import geneticAlgorithm.configuration.Configurer;
+import domain.configuration.Configurer;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
  * This is responsible to provide the logic to schedule the exam, as well to check the collisions. It holds the list
  * of {@code Exam} as well as the list of {@code SoftConstraints}.
  */
-public class DataHandler {
+public class ExamsSchedule {
 
     /**
      * Configurer instance of the program.
@@ -48,14 +47,14 @@ public class DataHandler {
     /**
      * List of {@code SoftConstraints} to be considered.
      */
-    private final List<SoftConstraints> constraints;
+    private final List<SoftConstraint> constraints;
 
 
     /**
      * Constructor for the class
      * @param configurer Configurer that contains all the configurations options.
      */
-    public DataHandler(Configurer configurer, List<Exam> exams, ConstraintParser constraintParser) {
+    public ExamsSchedule(Configurer configurer, List<Exam> exams, ConstraintParser constraintParser) {
 
         this.configurer = configurer;
         this.preScheduledExams = new HashSet<>();
@@ -81,9 +80,9 @@ public class DataHandler {
         }
 
         //Weak
-        addConstraint(new UnclassifiedExamsConstraint(exams));
+        addConstraint(new UnscheduledExamsConstraint(exams));
         addConstraint(new SameCourseDifferentDayConstraint(exams));
-        addConstraint(new ProhibitedIntervalPenalization(exams, configurer));
+        addConstraint(new RestingIntervalPenalization(exams, configurer));
         addConstraint(new NumericalComplexityPenalization(exams));
     }
 
@@ -162,7 +161,7 @@ public class DataHandler {
      * Returns the list of {@code WeakConstraint}.
      * @return The list of {@code WeakConstraint}.
      */
-    public List<SoftConstraints> getConstraints() {
+    public List<SoftConstraint> getConstraints() {
         return new ArrayList<>(constraints);
     }
 
@@ -229,7 +228,7 @@ public class DataHandler {
      * Adds a {@code WeakConstraint}.
      * @param constraint The {@code WeakConstraint} to be added.
      */
-    public void addConstraint(SoftConstraints constraint) {
+    public void addConstraint(SoftConstraint constraint) {
         constraints.add(constraint);
     }
 
@@ -238,10 +237,10 @@ public class DataHandler {
      * @param counter The constraint counter instance that will be used for the checking of the weak constraints.
      * @return A {@code HashMap} being the keys the constraints ids, and the values a list of that type of constraint.
      */
-    public HashMap<String, List<Constraint>> verifyConstraints(ConstraintCounter counter) {
-        HashMap<String, List<Constraint>> verifiedConstraints = new HashMap<>();
+    public HashMap<String, List<SoftConstraint>> verifyConstraints(ConstraintCounter counter) {
+        HashMap<String, List<SoftConstraint>> verifiedConstraints = new HashMap<>();
 
-        for (SoftConstraints cons: constraints) {
+        for (SoftConstraint cons: constraints) {
             cons.checkConstraint(counter);
             if (! verifiedConstraints.containsKey(cons.getConstraintID())) {
                 verifiedConstraints.put(cons.getConstraintID(), new ArrayList<>());

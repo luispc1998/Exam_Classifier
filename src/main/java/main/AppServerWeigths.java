@@ -1,20 +1,21 @@
 package main;
 
-import domain.DataHandler;
+import domain.ExamsSchedule;
+import domain.configuration.WeightConfigurer;
 import domain.entities.Exam;
 import domain.parsers.ConstraintParser;
 import domain.parsers.ExamParser;
 import geneticAlgorithm.Enconder;
 import geneticAlgorithm.GeneticCore;
 import geneticAlgorithm.Individual;
-import geneticAlgorithm.configuration.Configurer;
+import domain.configuration.Configurer;
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
 import geneticAlgorithm.fitnessFunctions.LinearFitnessFunction;
-import logger.dataGetter.fitnessLogger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import greedyAlgorithm.ChromosomeDecoder;
-import utils.Utils;
 import logger.dataGetter.StatisticalDataGetter;
+import logger.dataGetter.fitnessLogger.GeneticLogger;
+import utils.Utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,7 +28,7 @@ import java.util.*;
  * <p>
  * Note that for performance issues it will advisable to comment all the console printing statements in {@code GeneticCore}.
  *
- * @see geneticAlgorithm.configuration.WeightConfigurer
+ * @see WeightConfigurer
  */
 public class AppServerWeigths {
 
@@ -39,10 +40,10 @@ public class AppServerWeigths {
         StatisticalDataGetter statisticalDataGetter;
 
         double userConstraintsWeight = Double.parseDouble(args[0]);
-        double prohibitedIntervalWeight = Double.parseDouble(args[1]);
+        double restingIntervalWeight = Double.parseDouble(args[1]);
         double numericalComplexityWeight = Double.parseDouble(args[2]);
 
-        String folderName = generateFolderName(userConstraintsWeight, prohibitedIntervalWeight, numericalComplexityWeight);
+        String folderName = generateFolderName(userConstraintsWeight, restingIntervalWeight, numericalComplexityWeight);
         folderName = "weightsResults/" + folderName;
         Utils.createDirectory(folderName);
 
@@ -53,7 +54,7 @@ public class AppServerWeigths {
         Configurer conf = new Configurer(filesFile);
 
         conf.getWeightConfigurer().setUserConstraintsWeight(userConstraintsWeight);
-        conf.getWeightConfigurer().setProhibitedIntervalWeight(prohibitedIntervalWeight);
+        conf.getWeightConfigurer().setProhibitedIntervalWeight(restingIntervalWeight);
         conf.getWeightConfigurer().setNumericalComplexityWeight(numericalComplexityWeight);
 
         //Set the right input file in the configurer!
@@ -78,10 +79,10 @@ public class AppServerWeigths {
                 // Iteration start
                 ConstraintParser constraintParser = new ConstraintParser(conf, statisticalDataGetter);
                 List<Exam> exams = examParser.parseExams(conf.getFilePaths("inputFile"), conf);
-                DataHandler dataHandler = new DataHandler(conf, exams, constraintParser);
+                ExamsSchedule examsSchedule = new ExamsSchedule(conf, exams, constraintParser);
 
-                Individual individualPrime = basicEncoder.encodeListExams(dataHandler);
-                FitnessFunction fn = new LinearFitnessFunction(dataHandler);
+                Individual individualPrime = basicEncoder.encodeListExams(examsSchedule);
+                FitnessFunction fn = new LinearFitnessFunction(examsSchedule);
 
                 GeneticOperators geneticOperators = new GeneticOperators(conf.getGeneticParameters().getPopulationSize());
                 GeneticCore genCore = new GeneticCore(individualPrime, conf.getGeneticParameters().getPopulationSize(),
@@ -105,7 +106,7 @@ public class AppServerWeigths {
 
 
 
-                statisticalDataGetter.writeLogFor(finalOne, new ChromosomeDecoder(conf), dataHandler);
+                statisticalDataGetter.writeLogFor(finalOne, new ChromosomeDecoder(conf), examsSchedule);
 
 
             }
@@ -121,10 +122,10 @@ public class AppServerWeigths {
 
     }
 
-    private static String generateFolderName(double userConstraintsWeight, double prohibitedIntervalWeight, double
+    private static String generateFolderName(double userConstraintsWeight, double restingIntervalWeight, double
             numericalComplexityWeight) {
 
-        return userConstraintsWeight + "uc_" + String.format(Locale.UK, "%.2f",prohibitedIntervalWeight) + "pi_"
+        return userConstraintsWeight + "uc_" + String.format(Locale.UK, "%.2f",restingIntervalWeight) + "pi_"
                 + String.format(Locale.UK, "%.1f", numericalComplexityWeight) + "nc";
     }
 

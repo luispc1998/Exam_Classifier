@@ -1,11 +1,12 @@
 package domain.parsers;
 
+import domain.configuration.ExcelConfigurer;
 import domain.entities.Exam;
-import geneticAlgorithm.configuration.Configurer;
+import domain.configuration.Configurer;
+import logger.ConsoleLogger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import logger.ConsoleLogger;
 import utils.Utils;
 
 import java.io.FileInputStream;
@@ -75,7 +76,7 @@ public class ExamParser {
 
             for (Row row : sheet) {
                 if (! foundHeaderRow) {
-                    foundHeaderRow = isHeaderRow(row);
+                    foundHeaderRow = isHeaderRow(row, configurer.getExcelConfigurer());
                 }
                 if (foundHeaderRow) {
                     i++;
@@ -106,16 +107,17 @@ public class ExamParser {
         }
 
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + i);
-        RoundsParser.createRoundIfNecessary(rounds, exams);
+        RoundsParser roundsParser = new RoundsParser();
+        roundsParser.createRoundIfNecessary(rounds, exams);
         return exams;
     }
 
-    private boolean isHeaderRow(Row row) {
+    private boolean isHeaderRow(Row row, ExcelConfigurer excelConfigurer) {
         if (row.getCell(0) == null || !row.getCell(0).getCellTypeEnum().equals(CellType.STRING)){
             return false;
         }
         else{
-            return row.getCell(0).getStringCellValue().equals(excelHeaders[0]);
+            return row.getCell(0).getStringCellValue().equals(excelConfigurer.getExamFirstHeader());
         }
     }
 

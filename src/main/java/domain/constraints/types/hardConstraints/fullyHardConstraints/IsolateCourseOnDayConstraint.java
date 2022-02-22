@@ -1,6 +1,5 @@
 package domain.constraints.types.hardConstraints.fullyHardConstraints;
 
-import domain.constraints.Constraint;
 import domain.constraints.types.hardConstraints.AbstractHardConstraint;
 import domain.constraints.types.hardConstraints.HardConstraint;
 import domain.entities.Exam;
@@ -9,7 +8,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 /**
- * This {@link Constraint} is a {@link HardConstraint}
+ * This is a {@link HardConstraint} that
  * ensures that there is no more than one exam of each course on a day.
  *
  * <p>

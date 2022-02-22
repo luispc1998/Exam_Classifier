@@ -1,10 +1,9 @@
 package domain.constraints.types.softConstraints.userConstraints;
 
 
-import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.HardConstraint;
-import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedUserConstraint;
 import domain.entities.Exam;
 
 /**
@@ -13,7 +12,7 @@ import domain.entities.Exam;
 public class SameDayConstraint extends AbstractUserConstraint {
 
     /**
-     * Constraint with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of constraint.
      */
     public final static String CONSTRICTION_ID= "SD";
 
@@ -77,7 +76,7 @@ public class SameDayConstraint extends AbstractUserConstraint {
 
     @Override
     public void specificHardify() {
-        HardConstraint hConstraint = new HardifiedConstraint(this);
+        HardConstraint hConstraint = new HardifiedUserConstraint(this);
         first.addHardConstraint(hConstraint);
         second.addHardConstraint(hConstraint);
     }

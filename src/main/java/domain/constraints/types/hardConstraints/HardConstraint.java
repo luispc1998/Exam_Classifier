@@ -1,6 +1,5 @@
 package domain.constraints.types.hardConstraints;
 
-import domain.constraints.Constraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ import java.util.Set;
  * available days (initially the whole calendar). The output of the first call will be the input of the second call, and
  * so far so forth. Finally the set of days in which the hard constraints of the exam allow it to be placed will be obtained.
  */
-public interface HardConstraint extends Constraint {
+public interface HardConstraint {
 
     /**
      * Filters a list of days. Returning another list with days that meet the constraint.
@@ -26,5 +25,9 @@ public interface HardConstraint extends Constraint {
      */
     Set<LocalDate> filterViableDays(Set<LocalDate> days, Exam examToCheck);
 
-
+    /**
+     * Returns the string id for the type of {@code Constraint}.
+     * @return The String id for the type of {@code Constraint}.
+     */
+    String getConstraintID();
 }

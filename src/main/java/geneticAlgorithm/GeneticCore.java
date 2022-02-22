@@ -1,17 +1,18 @@
 package geneticAlgorithm;
 
 import geneticAlgorithm.fitnessFunctions.FitnessFunction;
-import logger.dataGetter.fitnessLogger.GeneticLogger;
 import geneticAlgorithm.operators.GeneticOperators;
 import geneticAlgorithm.operators.crossing.CrossingOperator;
 import geneticAlgorithm.operators.mutation.MutationOperator;
 import geneticAlgorithm.operators.replacement.ReplacementOperator;
 import geneticAlgorithm.operators.selection.SelectionOperator;
+import logger.dataGetter.fitnessLogger.GeneticLogger;
 import me.tongfei.progressbar.ProgressBar;
 import utils.Utils;
 import utils.random.RandomGenerator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -93,6 +94,30 @@ public class GeneticCore {
     }
 
     /**
+     * Constructor for the class
+     * @param individualPrime First individual from which the initial population will be created.
+     * @param popSize Size of the population to be handled by the algorithm.
+     * @param geneticOperators Operator configuration for the algorithm.
+     * @param geneticLogger The Genetic Logger for the algorithm
+     * @param elite Set of Individuals that must be considered by the algorithm since generation 0
+     */
+    public GeneticCore(Individual individualPrime, int popSize, GeneticOperators geneticOperators,
+                       GeneticLogger geneticLogger, HashSet<Individual> elite) {
+
+        this(individualPrime, popSize, geneticOperators, geneticLogger);
+
+        if (elite.size() > popSize)
+            throw new IllegalArgumentException("Elite indviduals set is larger than the actual population.");
+
+        for (Individual idv : elite) {
+            population.remove(0);
+            population.add(idv);
+        }
+
+
+    }
+
+    /**
      * Genetic algorithm skeleton
      * @param mutationProbability Probability for new individuals to mutate
      * @param fitnessFunction Fitness function to be used by the algorithm
@@ -115,12 +140,12 @@ public class GeneticCore {
                 (System.currentTimeMillis() - initialTime)/1000);
 
 
-        /*
+
         System.out.println("\n" + "Gen: " + genCounter
                 + ", Best Fitness: " + bestIndividual.getFitnessScore(fitnessFunction)
                 + ", Avg Fitness: " + averageFitness);
          System.out.println(bestIndividual);
-         */
+
 
 
 
@@ -129,7 +154,7 @@ public class GeneticCore {
         logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
 
 
-        //try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
+        try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
             while (genCounter < maxIterations) { //limit by iterations, limit by finnding a solution.
 
                 population = computeNewGeneration(fitnessFunction, mutationProbability, crossingProbability);
@@ -144,10 +169,10 @@ public class GeneticCore {
                 if (genCounter % loggingFrequency == 0) {
                     logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
                 }
-/*
-               // pb.step();
-               // pb.setExtraMessage("BF: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction)) +
-               //         ", AF: " + String.format("%.2f",averageFitness));
+
+                pb.step();
+                pb.setExtraMessage("BF: " + String.format("%.2f",bestIndividual.getFitnessScore(fitnessFunction)) +
+                        ", AF: " + String.format("%.2f",averageFitness));
             }
 
             System.out.println("\n" + "[Gen: " + genCounter
@@ -156,7 +181,7 @@ public class GeneticCore {
 
             System.out.println(bestIndividual);
 
-             */
+
         }
             return bestIndividual;
     }
@@ -218,7 +243,7 @@ public class GeneticCore {
             Individual mother = selectionOperator.selection(population, fitnessFunction);
 
             if (RandomGenerator.getGenerator().nextDouble() <= crossingProb){
-                List<Individual> childs = crossingOperator.doCrossing(father, mother);
+                List<Individual> childs = crossingOperator.crossover(father, mother);
                 checkForMutation(childs, mutationProbability);
                 newGenChilds.addAll(childs);
             }

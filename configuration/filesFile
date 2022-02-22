@@ -1,13 +1,10 @@
 # Input files
 inputFile=files/pruebas/v6_sF_numericalComplexity.xlsx
-inputFile4=files/testFilesGenerated/20220117_1056/test_5.xlsx
-inputFile8=Instances/complex_scenario_0.xlsx
-inputFile2=files/testFilesGenerated/test.xslx_1.xlsx
-inputFileOld=files/output/2021127_1111/test_4.xlsx
+
 
 # Output geneticAlgorithm.configuration
 outputBaseDirectory=files/output/
-statisticsBaseDirectory=files/statistics
+statisticsBaseDirectory=files/output/
 
 # Configuration files paths
 ## Properties files

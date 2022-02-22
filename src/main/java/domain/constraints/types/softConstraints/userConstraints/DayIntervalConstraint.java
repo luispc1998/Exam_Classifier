@@ -1,9 +1,8 @@
 package domain.constraints.types.softConstraints.userConstraints;
 
-import domain.constraints.Constraint;
 import domain.constraints.counter.ConstraintCounter;
 import domain.constraints.types.hardConstraints.HardConstraint;
-import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedConstraint;
+import domain.constraints.types.hardConstraints.hardUserConstraints.HardifiedUserConstraint;
 import domain.entities.Exam;
 
 import java.time.LocalDate;
@@ -15,7 +14,7 @@ import java.util.List;
 public class DayIntervalConstraint extends AbstractUserConstraint {
 
     /**
-     * Constraint with the identifier for this type of {@link Constraint}.
+     * Constraint with the identifier for this type of constraint.
      */
     public final static String CONSTRICTION_ID = "DI";
 
@@ -118,7 +117,7 @@ public class DayIntervalConstraint extends AbstractUserConstraint {
 
     @Override
     public void specificHardify() {
-        HardConstraint hConstraint = new HardifiedConstraint(this);
+        HardConstraint hConstraint = new HardifiedUserConstraint(this);
         exam.addHardConstraint(hConstraint);
     }
 }
