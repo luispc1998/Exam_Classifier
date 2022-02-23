@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 /**
@@ -96,6 +97,8 @@ public class DateTimeConfigurer {
             this.defaultExtraTimeEnabled = Boolean.parseBoolean(fileProperties.getProperty("defaultExtraTimeEnabled"));
             this.deliveryCollisionEnabled = Boolean.parseBoolean(fileProperties.getProperty("deliveryCollisionEnabled"));
             this.deliveryIdentifier = String.valueOf(fileProperties.get("deliveryIdentifier"));
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Could not parse property/ies in Genetic Parameters configuration file due to date/time format problems.");
         } catch (NullPointerException e) {
             String[] neededProperties = {"beginningRestingIntervalHour", "endRestingIntervalHour", "defaultExtraTimeMinutes", "mutationProb",
                     "defaultExtraTimeEnabled", "deliveryCollisionEnabled", "deliveryIdentifier"};

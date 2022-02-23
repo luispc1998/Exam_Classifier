@@ -96,7 +96,7 @@ public class AppFinalVersion {
 
 
             Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
-                    conf.getGeneticParameters().getCrossingProbability(), fn,
+                    conf.getGeneticParameters().getCrossoverProbability(), fn,
                     conf.getGeneticParameters().getGenerations(), conf.getGeneticParameters().getLoggingFrequency());
 
 

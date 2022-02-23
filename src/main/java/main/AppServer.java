@@ -55,7 +55,7 @@ public class AppServer {
 
         conf.getGeneticParameters().setPopulationSize(populationSize);
         conf.getGeneticParameters().setMutationProb(mutationProb);
-        conf.getGeneticParameters().setCrossingProb(crossingProb);
+        conf.getGeneticParameters().setCrossoverProb(crossingProb);
         conf.getGeneticParameters().setRepairingDepth(repairingDepth);
 
         //Set the right input file in the configurer!
@@ -91,7 +91,7 @@ public class AppServer {
 
 
                 Individual finalOne = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
-                        conf.getGeneticParameters().getCrossingProbability(), fn,
+                        conf.getGeneticParameters().getCrossoverProbability(), fn,
                         conf.getGeneticParameters().getGenerations(), conf.getGeneticParameters().getLoggingFrequency());
 
 

@@ -44,7 +44,7 @@ public class GeneticParameters {
     /**
      * Crossing probability to be considered by the algorithm.
      */
-    private double crossingProbability;
+    private double crossoverProbability;
 
     /**
      * Maximum depth of the tree of changes of the repairing algorithm.
@@ -68,14 +68,14 @@ public class GeneticParameters {
     private final boolean errorAsking;
 
     private GeneticParameters(int generations, int populationSize, int loggingFrequency, double mutationProbability,
-                              int maxSchedulesToTake, double crossingProbability, int repairingDepth,
+                              int maxSchedulesToTake, double crossoverProbability, int repairingDepth,
                               int algorithmRepetitions, boolean errorAsking) {
         this.generations = generations;
         this.populationSize = populationSize;
         this.loggingFrequency = loggingFrequency;
         this.mutationProbability = mutationProbability;
         this.maxSchedulesToTake = maxSchedulesToTake;
-        this.crossingProbability = crossingProbability;
+        this.crossoverProbability = crossoverProbability;
         this.repairingDepth = repairingDepth;
         this.algorithmRepetitions = algorithmRepetitions;
         this.errorAsking = errorAsking;
@@ -109,11 +109,11 @@ public class GeneticParameters {
         return maxSchedulesToTake;
     }
 
-    public double getCrossingProbability() {
-        return crossingProbability;
+    public double getCrossoverProbability() {
+        return crossoverProbability;
     }
 
-    public int getRepairingAlgorithmDepth() {
+    public int getRepairingAlgorithmMaxDepth() {
         return repairingDepth;
     }
 
@@ -123,7 +123,6 @@ public class GeneticParameters {
         try (InputStream configStream = new FileInputStream(filePath)) {
 
             geneticProperties.load(configStream);
-
             return new GeneticParameters(Integer.parseInt(geneticProperties.getProperty("generations")),
                     Integer.parseInt(geneticProperties.getProperty("populationSize")),
                     Integer.parseInt(geneticProperties.getProperty("loggingFreq")),
@@ -140,10 +139,12 @@ public class GeneticParameters {
                 "maxSchedulesToTake", "crossingProb", "repairingDepth", "algorithmRepetitions", "inputWarningsStop"};
             throw new IllegalArgumentException("Missing properties in genetic parameters configuration file.\n" +
                     "The following properties are mandatory: " + Arrays.toString(neededProperties));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Could not parse property/ies in Genetic Parameters configuration file due to number format problems.");
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not parse Genetic parameters geneticAlgorithm.configuration file");
+            throw new IllegalArgumentException("Could not find Genetic parameters configuration file");
         } catch (IOException e) {
-            throw new IllegalArgumentException("Could not parse properties in Genetic parameters geneticAlgorithm.configuration file");
+            throw new IllegalArgumentException("Could not parse properties in Genetic parameters configuration file");
         }
     }
 
@@ -156,8 +157,8 @@ public class GeneticParameters {
         this.mutationProbability = mutationProb;
     }
 
-    public void setCrossingProb(double crossingProb) {
-        this.crossingProbability = crossingProb;
+    public void setCrossoverProb(double crossoverProb) {
+        this.crossoverProbability = crossoverProb;
     }
 
     public void setRepairingDepth(int repairingDepth) {
@@ -166,5 +167,37 @@ public class GeneticParameters {
 
     public void setGenerations(int generations) {
         this.generations = generations;
+    }
+
+    public String getStatusMessage() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("PARÁMETROS DE COFIGURACIÓN DEL ALGORITMO:");
+        sb.append("\n");
+        sb.append("Population Size: ");
+        sb.append(getPopulationSize());
+        sb.append("\n");
+
+        sb.append("Mutation Probability: ");
+        sb.append(getMutationProbability());
+        sb.append("\n");
+
+        sb.append("Crossover Probability: ");
+        sb.append(getCrossoverProbability());
+        sb.append("\n");
+
+        sb.append("Repairing MaxDepth: ");
+        sb.append(getRepairingAlgorithmMaxDepth());
+        sb.append("\n");
+
+        sb.append("Algorithm Generations: ");
+        sb.append(getGenerations());
+        sb.append("\n");
+
+        sb.append("Algorithm Repetitions: ");
+        sb.append(getAlgorithmRepetitions());
+        sb.append("\n");
+
+        return sb.toString();
     }
 }

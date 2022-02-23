@@ -27,15 +27,20 @@ public class ExcelConfigurer {
         try {
             configStream = new FileInputStream(excelConfigFilepath);
             fileProperties.load(configStream);
-        } catch (FileNotFoundException e) {
+
+            this.excelConstraintBaseColumn = Integer.parseInt(fileProperties.getProperty("constraintsFirstCol"));
+            this.excelConstraintBaseRow = Integer.parseInt(fileProperties.getProperty("constraintsFirstRow"));
+            this.examFirstHeader = fileProperties.getProperty("examFirstHeader").trim();
+
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Could not parse property/ies in Excel configuration file due to number format problems.");
+        }catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find excel configuration file");
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not parse properties in excel configuration file");
         }
 
-        this.excelConstraintBaseColumn = Integer.parseInt(fileProperties.getProperty("constraintsFirstCol"));
-        this.excelConstraintBaseRow = Integer.parseInt(fileProperties.getProperty("constraintsFirstRow"));
-        this.examFirstHeader = fileProperties.getProperty("examFirstHeader").trim();
+
 
     }
 

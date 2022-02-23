@@ -31,7 +31,7 @@ public class ChromosomeDecoder {
 
 
     public ChromosomeDecoder(Configurer configurer) {
-        limitDepth = configurer.getGeneticParameters().getRepairingAlgorithmDepth();
+        limitDepth = configurer.getGeneticParameters().getRepairingAlgorithmMaxDepth();
     }
 
     /**

@@ -107,6 +107,10 @@ public class App {
             }
 
 
+            if (j == 1) {
+                System.out.println(conf.getGeneticParameters().getStatusMessage());
+            }
+
             Individual individualPrime = basicEncoder.encodeListExams(examsSchedule);
             FitnessFunction fn = new LinearFitnessFunction(examsSchedule);
 
@@ -117,7 +121,7 @@ public class App {
 
 
             bestFitnessIndividual = genCore.geneticAlgorithm(conf.getGeneticParameters().getMutationProbability(),
-                    conf.getGeneticParameters().getCrossingProbability(), fn,
+                    conf.getGeneticParameters().getCrossoverProbability(), fn,
                     conf.getGeneticParameters().getGenerations(), conf.getGeneticParameters().getLoggingFrequency());
 
 
