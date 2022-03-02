@@ -113,7 +113,7 @@ public class ExamParser {
     }
 
     private boolean isHeaderRow(Row row, ExcelConfigurer excelConfigurer) {
-        if (row.getCell(0) == null || !row.getCell(0).getCellTypeEnum().equals(CellType.STRING)){
+        if (row.getCell(0) == null || !row.getCell(0).getCellType().equals(CellType.STRING)){
             return false;
         }
         else{
@@ -203,7 +203,7 @@ public class ExamParser {
         if (row.getCell(cell) == null) {
             throw new IllegalArgumentException("Cannot omit cell: " + cell + " for an exam");
         }
-        if (row.getCell(cell).getCellTypeEnum().equals(CellType.BLANK)) {
+        if (row.getCell(cell).getCellType().equals(CellType.BLANK)) {
             throw new IllegalArgumentException("Cannot omit cell: " + cell + " for an exam");
         }
         return Double.valueOf(row.getCell(cell).getNumericCellValue()).intValue();
@@ -216,8 +216,8 @@ public class ExamParser {
      */
     private boolean checkForAlreadyClassifiedExam(Row row) {
 
-        if (row.getCell(10) != null && !row.getCell(10).getCellTypeEnum().equals(CellType.BLANK)
-            &&  row.getCell(12) != null && !row.getCell(12).getCellTypeEnum().equals(CellType.BLANK)) {
+        if (row.getCell(10) != null && !row.getCell(10).getCellType().equals(CellType.BLANK)
+            &&  row.getCell(12) != null && !row.getCell(12).getCellType().equals(CellType.BLANK)) {
             try {
                 return !row.getCell(10).getDateCellValue().toString().equals("") && row.getCell(12).getNumericCellValue() != 0;
             } catch (Exception e){

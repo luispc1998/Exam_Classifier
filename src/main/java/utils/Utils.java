@@ -151,7 +151,7 @@ public class Utils {
 
 
     public static void checkCellValueIsPresent(Row row, int i, String errorMessage) {
-        if (row.getCell(i) == null || row.getCell(i).getCellTypeEnum().equals(CellType.BLANK)){
+        if (row.getCell(i) == null || row.getCell(i).getCellType().equals(CellType.BLANK)){
             throw new IllegalArgumentException(errorMessage);
         }
     }
@@ -159,7 +159,7 @@ public class Utils {
     public static void checkCellValuesArePresent(Row row, int[] cells, String initialErrorMessage) {
         List<Integer> notPresent = new ArrayList<>();
         for (Integer i: cells) {
-            if (row.getCell(i) == null || row.getCell(i).getCellTypeEnum().equals(CellType.BLANK)){
+            if (row.getCell(i) == null || row.getCell(i).getCellType().equals(CellType.BLANK)){
                 notPresent.add(i);
             }
         }
