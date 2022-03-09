@@ -49,7 +49,7 @@ public class App {
 
 
         Configurer conf = new Configurer(args[0]);
-        ExamParser examParser = new ExamParser();
+
         ConstraintParser constraintParser;
         Enconder basicEncoder = new Enconder();
 
@@ -82,7 +82,7 @@ public class App {
                 System.out.println("Repetition: " + j);
             }
             // Iteration start
-
+            ExamParser examParser = new ExamParser();
             ErrorManager errorManager = ConsoleLogger.getConsoleLoggerInstance().getErrorManager();
             List<Exam> exams = examParser.parseExams(conf.getFilePaths("inputFile"), conf);
 

@@ -24,7 +24,7 @@ generations=1500
 algorithmRepetitions=2
 
 ## Desired maximum amount of different schedules to be retrieved at the end. 
-maxSchedulesToTake=2
+maxSchedulesToTake=1
 
 ## Specifies if the application must stop when detecting warnings on the parsing.
 inputWarningsStop=true

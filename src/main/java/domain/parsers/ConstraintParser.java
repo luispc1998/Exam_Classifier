@@ -7,10 +7,7 @@ import domain.parsers.constraintsParserTools.*;
 import domain.configuration.Configurer;
 import logger.ConsoleLogger;
 import logger.dataGetter.StatisticalDataGetter;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
@@ -96,7 +93,9 @@ public class ConstraintParser {
 
             for (Row row : sheet) {
 
-                if (shouldBeJumped(row)) continue;
+                if (shouldBeJumped(row)) {
+                    continue;
+                }
 
                 if (isAToolSwapNeeded(row.getCell(baseExcelColumn), examsSchedule)){
                     swapTool(row, sheet.getRow(row.getRowNum() + 1), sheet.getRow(row.getRowNum() + 2));
@@ -136,18 +135,23 @@ public class ConstraintParser {
      * @return true if it should be jumped, false otherwise.
      */
     private boolean shouldBeJumped(Row row) {
-        if (jumpLines > 0 || row.getCell(baseExcelColumn) == null) {
+        if (jumpLines > 0) {
             jumpLines--;
             return true;
         }
 
-        try {
-            return (row.getCell(baseExcelColumn).getStringCellValue().equals("")) ;
-        } catch (IllegalStateException e) {
-            return false;
-        }
+        return isEmptyRow(row);
     }
 
+    private boolean isEmptyRow(Row row) {
+        for (int i = 0; i < 5; i++) {
+            if (! (row.getCell(baseExcelColumn + i) == null ||
+                    row.getCell(baseExcelColumn + i).getCellType().equals(CellType.BLANK))) {
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * Method to change the parsing type of Cosntriction when detecting it on the Excel.
      * @param constraintIdRow The row with the constraint data
