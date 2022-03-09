@@ -46,11 +46,14 @@ public class ExamParser {
             "Tanda"
     };
 
+    private int headerRow;
+
     private final static int[] mandatoryColumns = {
             0, 1, 7, 9, 16
     };
 
     private final HashMap<String, List<Integer>> rounds = new HashMap<>();
+    private final HashMap<Integer, Integer> idRows = new HashMap<>();
 
     /**
      * Parsing method of the exams.
@@ -60,7 +63,6 @@ public class ExamParser {
      */
     public List<Exam> parseExams(String filepath, Configurer configurer) {
         List<Exam> exams = new ArrayList<>();
-        int i = -1;
         try (FileInputStream fis = new FileInputStream(filepath);
              Workbook workbook = new XSSFWorkbook(fis)
         ) {
@@ -69,7 +71,6 @@ public class ExamParser {
 
             Map<Integer, List<String>> data = new HashMap<>();
 
-            int jumpLines = 1;
             boolean foundHeaderRow = false;
 
             ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando exámenes...");
@@ -77,15 +78,12 @@ public class ExamParser {
             for (Row row : sheet) {
                 if (! foundHeaderRow) {
                     foundHeaderRow = isHeaderRow(row, configurer.getExcelConfigurer());
+                    headerRow = row.getRowNum();
                 }
-                if (foundHeaderRow) {
-                    i++;
-                    if (jumpLines > 0) {
-                        jumpLines--;
-                        continue;
-                    }
+                else {
 
                     Exam exam = generateExam(row, configurer);
+
                     if (exam == null) {
                         continue;
                     }
@@ -106,9 +104,13 @@ public class ExamParser {
             throw new IllegalArgumentException("Could not parse input excel file");
         }
 
-        ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + i);
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + exams.size());
         RoundsParser roundsParser = new RoundsParser();
         roundsParser.createRoundIfNecessary(rounds, exams);
+
+        if (exams.size() == 0) {
+            throw new IllegalArgumentException("There were no exams in excel file");
+        }
         return exams;
     }
 
@@ -123,7 +125,7 @@ public class ExamParser {
 
 
     private  Exam generateExam(Row row, Configurer configurer) {
-        Exam exam = null;
+        Exam exam;
         String round;
         try {
             //checkVitalRowData(row, i);
@@ -142,6 +144,8 @@ public class ExamParser {
                     (int) row.getCell(15).getNumericCellValue(),
                     parseMandatoryNumberCell(row, 16),
                     null);
+
+
 
             if (row.getCell(17) != null && ! row.getCell(17).getStringCellValue().isEmpty()) {
                 round = row.getCell(17).getStringCellValue();
@@ -164,23 +168,36 @@ public class ExamParser {
                 exam.setExtraTime(configurer.getDateTimeConfigurer().getDefaultExamExtraMinutes());
             }
 
-
+            if (idRows.containsKey(exam.getId())){
+                throw new IllegalArgumentException("Invalid exam ID. [Line: " + getRowStartingAtOne(row) + "]"
+                        + " Exam id was already declared on line: " + idRows.get(exam.getId())
+                        );
+            }
+            else{
+                idRows.put(exam.getId(), getRowStartingAtOne(row));
+            }
 
         } catch (IllegalArgumentException e) {
             ConsoleLogger.getConsoleLoggerInstance().logError(e.getMessage() + " Skipping...");
+            return null;
         } catch (IllegalStateException e) {
-            ConsoleLogger.getConsoleLoggerInstance().logError("Cannot parse exam. Check value types on the cells. "
-                    + "[Line: " + row.getRowNum() + "] Skipping...");
+            ConsoleLogger.getConsoleLoggerInstance().logError("Error creating exam. "
+                            + "[Line: " + getRowStartingAtOne(row) + "] Check value types on the cells. " +
+                     "Skipping...");
+            return null;
         } catch (Exception e){
             ConsoleLogger.getConsoleLoggerInstance().logError("Unknown error raised when creating exam "
-                    + "[Line: " + row.getRowNum() + "] Skipping...");
+                    + "[Line: " + getRowStartingAtOne(row) + "] Skipping...");
+            return null;
 
         }
 
         return exam;
     }
 
-
+    private int getRowStartingAtOne(Row row) {
+        return row.getRowNum() + 1;
+    }
 
 
     /**

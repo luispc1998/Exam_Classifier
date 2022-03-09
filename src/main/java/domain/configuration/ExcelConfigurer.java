@@ -1,6 +1,8 @@
 package domain.configuration;
 
 
+import utils.Utils;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,10 +30,12 @@ public class ExcelConfigurer {
             configStream = new FileInputStream(excelConfigFilepath);
             fileProperties.load(configStream);
 
-            this.excelConstraintBaseColumn = Integer.parseInt(fileProperties.getProperty("constraintsFirstCol"));
-            this.excelConstraintBaseRow = Integer.parseInt(fileProperties.getProperty("constraintsFirstRow"));
-            this.examFirstHeader = fileProperties.getProperty("examFirstHeader").trim();
-
+            this.excelConstraintBaseColumn = Integer.parseInt(Utils.nullFilter(fileProperties.getProperty("constraintsFirstCol")));
+            this.excelConstraintBaseRow = Integer.parseInt(Utils.nullFilter(fileProperties.getProperty("constraintsFirstRow")));
+            this.examFirstHeader = Utils.nullFilter(fileProperties.getProperty("examFirstHeader")).trim();
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("Missing configuration option in Excel configuration file. Mandatory options: [constraintsFirstCol , " +
+                    "constraintsFirstRow, examFirstHeader].");
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Could not parse property/ies in Excel configuration file due to number format problems.");
         }catch (FileNotFoundException e) {

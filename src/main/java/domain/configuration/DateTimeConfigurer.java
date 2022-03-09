@@ -3,10 +3,12 @@ package domain.configuration;
 import domain.entities.Exam;
 import domain.entities.Interval;
 import logger.ConsoleLogger;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import utils.Utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -91,14 +93,14 @@ public class DateTimeConfigurer {
             throw new IllegalArgumentException("Could not parse properties in dates and times configuration file");
         }
         try {
-            this.restingIntervalInitialHour = LocalTime.parse(fileProperties.getProperty("beginningRestingIntervalHour"));
-            this.restingIntervalEndingHour = LocalTime.parse(fileProperties.getProperty("endRestingIntervalHour"));
-            this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(fileProperties.getProperty("defaultExtraTimeMinutes")));
-            this.defaultExtraTimeEnabled = Boolean.parseBoolean(fileProperties.getProperty("defaultExtraTimeEnabled"));
-            this.deliveryCollisionEnabled = Boolean.parseBoolean(fileProperties.getProperty("deliveryCollisionEnabled"));
-            this.deliveryIdentifier = String.valueOf(fileProperties.get("deliveryIdentifier"));
+            this.restingIntervalInitialHour = LocalTime.parse(Utils.nullFilter(fileProperties.getProperty("beginningRestingIntervalHour")));
+            this.restingIntervalEndingHour = LocalTime.parse(Utils.nullFilter(fileProperties.getProperty("endRestingIntervalHour")));
+            this.defaultExamExtraMinutes = Duration.ofMinutes(Long.parseLong(Utils.nullFilter(fileProperties.getProperty("defaultExtraTimeMinutes"))));
+            this.defaultExtraTimeEnabled = Boolean.parseBoolean(Utils.nullFilter(fileProperties.getProperty("defaultExtraTimeEnabled")));
+            this.deliveryCollisionEnabled = Boolean.parseBoolean(Utils.nullFilter(fileProperties.getProperty("deliveryCollisionEnabled")));
+            this.deliveryIdentifier = Utils.nullFilter(fileProperties.getProperty("deliveryIdentifier"));
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Could not parse property/ies in Genetic Parameters configuration file due to date/time format problems.");
+            throw new IllegalArgumentException("Could not parse property/ies in Date and time configuration file due to date/time format problems.");
         } catch (NullPointerException e) {
             String[] neededProperties = {"beginningRestingIntervalHour", "endRestingIntervalHour", "defaultExtraTimeMinutes", "mutationProb",
                     "defaultExtraTimeEnabled", "deliveryCollisionEnabled", "deliveryIdentifier"};
@@ -125,6 +127,9 @@ public class DateTimeConfigurer {
 
             for (Row row : sheet) {
                 LocalDate date = generateDate(row);
+                if (Utils.emptyCell(row.getCell(1)) || Utils.emptyCell(row.getCell(2))) {
+                    throw new IllegalArgumentException();
+                }
 
                 Interval dayInterval = new Interval(setHourFromExcel(row.getCell(1).getNumericCellValue()),
                         setHourFromExcel(row.getCell(2).getNumericCellValue()));
@@ -137,8 +142,8 @@ public class DateTimeConfigurer {
 
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input excel file: " + inputDataFilepath);
-        } catch (IOException | NullPointerException e) {
-            throw new IllegalArgumentException("Could not parse input excel file: " + inputDataFilepath);
+        } catch (IOException | NullPointerException | IllegalArgumentException e ) {
+            throw new IllegalArgumentException("Could not parse calendar in input excel file: " + inputDataFilepath);
         }
 
     }
@@ -162,6 +167,10 @@ public class DateTimeConfigurer {
      * @return the corresponding {@code LocalDate} object.
      */
     private LocalDate generateDate(Row row) {
+
+        if (Utils.emptyCell(row.getCell(0))){
+            throw new IllegalArgumentException();
+        }
         return LocalDate.ofInstant(row.getCell(0).getDateCellValue().toInstant(), ZoneId.systemDefault());
     }
 

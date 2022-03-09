@@ -123,8 +123,8 @@ public class ConstraintParser {
 
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input excel file");
-        } catch (IOException | NullPointerException e) {
-            throw new IllegalArgumentException("Could not parse input excel file");
+        } catch (IOException | NullPointerException | NumberFormatException | IllegalStateException e) {
+            throw new IllegalArgumentException("Could not parse input excel file, constrains tab.");
         }
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Restricciones creadas: " + i);
         return constraints;

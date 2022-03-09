@@ -1,6 +1,7 @@
 package domain.configuration;
 
 import logger.dataGetter.fitnessLogger.GeneticLogger;
+import utils.Utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -123,15 +124,15 @@ public class GeneticParameters {
         try (InputStream configStream = new FileInputStream(filePath)) {
 
             geneticProperties.load(configStream);
-            return new GeneticParameters(Integer.parseInt(geneticProperties.getProperty("generations")),
-                    Integer.parseInt(geneticProperties.getProperty("populationSize")),
-                    Integer.parseInt(geneticProperties.getProperty("loggingFreq")),
-                    Double.parseDouble(geneticProperties.getProperty("mutationProb")),
-                    Integer.parseInt(geneticProperties.getProperty("maxSchedulesToTake")),
-                    Double.parseDouble(geneticProperties.getProperty("crossingProb")),
-                    Integer.parseInt(geneticProperties.getProperty("repairingDepth")),
-                    Integer.parseInt(geneticProperties.getProperty("algorithmRepetitions")),
-                    Boolean.parseBoolean(geneticProperties.getProperty("inputWarningsStop")));
+            return new GeneticParameters(Integer.parseInt(Utils.nullFilter(geneticProperties.getProperty("generations"))),
+                    Integer.parseInt(Utils.nullFilter(geneticProperties.getProperty("populationSize"))),
+                    Integer.parseInt(Utils.nullFilter(geneticProperties.getProperty("loggingFreq"))),
+                    Double.parseDouble(Utils.nullFilter(geneticProperties.getProperty("mutationProb"))),
+                    Integer.parseInt(Utils.nullFilter(geneticProperties.getProperty("maxSchedulesToTake"))),
+                    Double.parseDouble(Utils.nullFilter(geneticProperties.getProperty("crossingProb"))),
+                    Integer.parseInt(Utils.nullFilter(geneticProperties.getProperty("repairingDepth"))),
+                    Integer.parseInt(Utils.nullFilter(geneticProperties.getProperty("algorithmRepetitions"))),
+                    Boolean.parseBoolean(Utils.nullFilter(geneticProperties.getProperty("inputWarningsStop"))));
 
 
         } catch (NullPointerException e) {

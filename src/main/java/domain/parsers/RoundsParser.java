@@ -38,7 +38,7 @@ public class RoundsParser {
                 roundCounter++;
             }
         }
-        ConsoleLogger.getConsoleLoggerInstance().logInfo("Tardas parseadas: " + roundCounter);
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Tandas parseadas: " + roundCounter);
     }
 
 

@@ -1,6 +1,7 @@
 package utils;
 
 import geneticAlgorithm.Individual;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import utils.random.RandomGenerator;
@@ -184,7 +185,14 @@ public class Utils {
     }
 
 
+    public static String nullFilter(String stringProperty) {
+        if (stringProperty == null){
+            throw new NullPointerException();
+        }
+        return stringProperty;
+    }
 
-
-
+    public static boolean emptyCell(Cell cell) {
+        return cell == null || cell.getCellType().equals(CellType.BLANK);
+    }
 }
