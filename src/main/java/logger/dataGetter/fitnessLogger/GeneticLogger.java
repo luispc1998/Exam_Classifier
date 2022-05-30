@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * This logs the current state of the genetic algorithm over the generations.
+ * This logs the current state of the Genetic Algorithm over the generations.
  */
 public class GeneticLogger {
 
@@ -20,8 +20,9 @@ public class GeneticLogger {
     private StringBuilder data;
 
     private HashMap<Integer, List<FitnessGraphDto>> fitnessGraphDataMap;
+
     /**
-     * Default constructor for the class
+     * Default constructor for the class.
      */
     public GeneticLogger() {
         data = new StringBuilder();
@@ -32,9 +33,9 @@ public class GeneticLogger {
 
     /**
      * Adds a log string to {@code data}.
-     * @param iterations Number of iterations (generations) of the genetic algorithm.
-     * @param bestIndividual The current best individual of the genetic algorithm.
-     * @param avgFitness The average fitness of the population of the genetic algorithm.
+     * @param iterations Number of iterations (generations) of the Genetic Algorithm.
+     * @param bestIndividual The current best individual of the Genetic Algorithm.
+     * @param avgFitness The average fitness of the population of the Genetic Algorithm.
      * @param fitnessFunction The current fitness function used.
      */
     public void log(int iterations, Individual bestIndividual, double avgFitness, FitnessFunction fitnessFunction) {

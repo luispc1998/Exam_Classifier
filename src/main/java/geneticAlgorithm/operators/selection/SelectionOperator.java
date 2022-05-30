@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Operator to select which or how many individuals are going to be selected to do the crossing
- * on {@link geneticAlgorithm.GeneticCore}
+ * on {@link geneticAlgorithm.GeneticCore}.
  *
  * @see geneticAlgorithm.GeneticCore
  */

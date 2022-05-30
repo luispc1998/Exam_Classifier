@@ -64,6 +64,7 @@ public class DayIntervalConstraint extends AbstractUserConstraint {
         this.intervalEnd = intervalEnd;
     }
 
+
     public boolean containedOnInterval(LocalDate testingDate) {
         return (testingDate.isAfter(intervalStart) && testingDate.isBefore(intervalEnd))
                 || testingDate.isEqual(intervalStart)

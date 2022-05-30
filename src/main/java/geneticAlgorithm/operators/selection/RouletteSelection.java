@@ -13,7 +13,7 @@ import java.util.List;
 public class RouletteSelection implements SelectionOperator {
 
     /**
-     * Constructor for the class
+     * Constructor for the class.
      */
     public RouletteSelection() {
 
@@ -32,7 +32,7 @@ public class RouletteSelection implements SelectionOperator {
     @Override
     public Individual selection(List<Individual> population, FitnessFunction fitnessFunction) {
 
-        // Default result is last individual
+        // Default result is last individual.
         // (just to avoid problems with rounding errors)
         Individual selected = population.get(population.size() - 1);
 

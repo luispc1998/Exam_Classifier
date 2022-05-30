@@ -18,7 +18,7 @@ import greedyAlgorithm.ChromosomeDecoder;
  * This is a linear fitness function.
  *
  * <p>
- * It will add the times each type of constraint was not fulfilled. It will use a {@code CromosomeDecoder} for such
+ * It will add the times each type of constraint was not fulfilled. It will use a {@code ChromosomeDecoder} for such
  * a purpose. Each type of constraint will also have a weight, that will be a coefficient in the linear function.
  *
  * <p>
@@ -34,13 +34,13 @@ public class LinearFitnessFunction implements FitnessFunction {
     private final ExamsSchedule examsSchedule;
 
     /**
-     * Instance of {@code CromosomeDecoder}
+     * Instance of {@code ChromosomeDecoder}.
      */
     private final ChromosomeDecoder decoder;
 
 
     /**
-     * Constructor for the class
+     * Constructor for the class.
      * @param examsSchedule Instance where the function will check the exam schedule and constraints.
      */
     public LinearFitnessFunction(ExamsSchedule examsSchedule){
@@ -53,7 +53,7 @@ public class LinearFitnessFunction implements FitnessFunction {
 
         examsSchedule.resetScheduling();
 
-        // Deconde the cromosome
+        // Deconde the Chromosome
         decoder.decode(a, examsSchedule);
 
         //Count constraints

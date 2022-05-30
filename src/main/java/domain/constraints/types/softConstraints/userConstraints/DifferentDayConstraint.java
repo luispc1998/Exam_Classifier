@@ -16,19 +16,19 @@ public class DifferentDayConstraint extends AbstractUserConstraint {
     public final static String CONSTRICTION_ID = "DD";
 
     /**
-     * {@link Exam} that cannot take place on the same date as {@code second}
+     * {@link Exam} that cannot take place on the same date as {@code second}.
      */
     private final Exam first;
 
     /**
-     * {@link Exam} that cannot take place on the same date as {@code first}
+     * {@link Exam} that cannot take place on the same date as {@code first}.
      */
     private final Exam second;
 
     /**
      * Default constructor for the class.
-     * @param first one of the exams
-     * @param second the other exam
+     * @param first one of the exams.
+     * @param second the other exam.
      */
     public DifferentDayConstraint(Exam first, Exam second){
         this.first = first;

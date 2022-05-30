@@ -33,7 +33,7 @@ public class StatisticalDataGetter {
     private int constraints;
 
     /**
-     * Default constructor for the class
+     * Default constructor for the class.
      * @param statisticsFileName Filename given to the statistics file.
      * @param subDirectory Subdirectory created for the algorithm files.
      */
@@ -59,7 +59,15 @@ public class StatisticalDataGetter {
         writeLog(finalOne, decoder, examsSchedule, path);
     }
 
+
     private void writeLog(Individual finalOne, ChromosomeDecoder decoder, ExamsSchedule examsSchedule, String path) {
+
+        String[] statisticHeaders = new String[] {"Unscheduled_exams", "Unfulfilled_user_constraints",
+                "Unfulfilled_user_constrains / Soft_user_constraints", "Unfulfilled_user_constrains, / User_constraints",
+                "Minutes_in_resting_interval"};
+
+
+
         examsSchedule.resetScheduling();
 
         decoder.decode(finalOne, examsSchedule);
@@ -81,17 +89,18 @@ public class StatisticalDataGetter {
 
         long minutesOnProhibitedInterval = constraintCounter.getCountRestingIntervalPenalization();
 
-        String sb = unplacedExams +
-                "," +
-                unfulfilledConstraintCounter +
-                "," +
-                String.format(Locale.UK, "%.2f",unfulfilledConstraintCounter / (double) weakConstraints) +
-                "," +
-                String.format(Locale.UK, "%.2f",unfulfilledConstraintCounter / (double) constraints) +
-                "," +
-                minutesOnProhibitedInterval +
-                "\n";
-        writeStatisticsToFile(path,sb);
+        StringBuilder sb = new StringBuilder();
+        sb.append(statisticHeaders[0]);
+        for (int i = 1; i < statisticHeaders.length; i++) {
+            sb.append(",");
+            sb.append(statisticHeaders[i]);
+        }
+
+        sb.append(unplacedExams).append(",").append(unfulfilledConstraintCounter).append(",")
+                .append(String.format(Locale.UK, "%.2f", unfulfilledConstraintCounter / (double) weakConstraints))
+                .append(",").append(String.format(Locale.UK, "%.2f", unfulfilledConstraintCounter / (double) constraints))
+                .append(",").append(minutesOnProhibitedInterval).append("\n");
+        writeStatisticsToFile(path,sb.toString());
     }
 
     /**
@@ -110,7 +119,7 @@ public class StatisticalDataGetter {
     }
 
     /**
-     * Increments the constraints counters {@code constraints} and {@code weakConstraints}
+     * Increments the constraints counters {@code constraints} and {@code weakConstraints}.
      * @param constraint The constraint that will increment the counters.
      */
     public void countConstraint(UserConstraint constraint) {
@@ -127,6 +136,7 @@ public class StatisticalDataGetter {
         this.weakConstraints = 0;
         this.constraints = 0;
     }
+
 
     public void writeLogFor(HashSet<Individual> elite, ChromosomeDecoder chromosomeDecoder,
                             ExamsSchedule examsSchedule, String outputFileName) {

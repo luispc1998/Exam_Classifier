@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
  * This tries to spread in the calendar exams of the same complexity.
  *
  * <p>
- * Consider two exams of complexity 10, such as could be "Cálculo" and "Diseño de Lenguajes de Programación". This
+ * Consider two exams of complexity 10, A and B. This
  * weak constraint will penalize the fact that these two exams are near in the calendar, the nearer the more penalization.
- * This makes that the algorithm solutions tend to be more spreaded in terms of complexity.
+ * This makes that the algorithm spread the exams along the calendar days.
  */
 public class NumericalComplexityPenalization implements SoftConstraint {
 

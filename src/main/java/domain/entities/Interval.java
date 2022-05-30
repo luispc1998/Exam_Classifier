@@ -14,7 +14,7 @@ public class Interval {
     private LocalTime start;
 
     /**
-     * Ending hour of the interval
+     * Ending hour of the interval.
      */
     private LocalTime end;
 
@@ -57,7 +57,7 @@ public class Interval {
 
 
     /**
-     * Rounds the bounds of the interval
+     * Rounds the bounds of the interval.
      */
     public void roundBoundsToHours() {
         if (start.getMinute() != 0) {

@@ -19,26 +19,26 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This parses from the input excel file the constraints stated by the user.
+ * This parses from the input Excel file the constraints stated by the user.
  */
 public class ConstraintParser {
 
     /**
-     * Dinamic counter that states if lines should be jumped.
+     * Dynamic counter that states if lines should be jumped.
      *
      * Its value is changed dynamically.
      */
     private static int jumpLines = 0;
 
     /**
-     * Attribute to state which is the first column of the excel.
+     * Attribute to state which is the first column of the Excel.
      *
      * It is needed in case all the tables are not stuck to the first column.
      */
     private int baseExcelColumn = 0;
 
     /**
-     * Attribute to state which is the first row of the excel.
+     * Attribute to state which is the first row of the Excel.
      *
      * It is needed in case all the tables are not stuck to the first row.
      */
@@ -75,10 +75,10 @@ public class ConstraintParser {
     }
 
     /**
-     * Method to parse the {@code Constraint} objects from the excel.
-     * @param filepath The input data excel filepath.
+     * Method to parse the {@code Constraint} objects from the Excel.
+     * @param filepath The input data Excel filepath.
      * @param examsSchedule The current dataHandler instance being use
-     * @return The {@code List} of {@code Constraint} parsed from the excel.
+     * @return The {@code List} of {@code Constraint} parsed from the Excel.
      */
     public List<SoftConstraint> parseConstraints(String filepath, ExamsSchedule examsSchedule) {
         List<SoftConstraint> constraints = new ArrayList<>();
@@ -121,9 +121,9 @@ public class ConstraintParser {
             }
 
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not find input excel file");
+            throw new IllegalArgumentException("Could not find input Excel file");
         } catch (IOException | NullPointerException | NumberFormatException | IllegalStateException e) {
-            throw new IllegalArgumentException("Could not parse input excel file, constrains tab.");
+            throw new IllegalArgumentException("Could not parse input Excel file, constrains tab.");
         }
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Restricciones creadas: " + i);
         return constraints;

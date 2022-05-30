@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This represents each of the members of the population for the {@link GeneticCore}
+ * This represents each of the members of the population for the {@link GeneticCore}.
  *
  * <p>
  * The main purpose of this class is to contain the {@code chromosome} and provide methods to
- * get its {@code fitnessScore}
+ * get its {@code fitnessScore}.
  *
  * <p>
  * There are many functionalities  that work over Individuals.
@@ -44,8 +44,8 @@ public class Individual {
     }
 
     /**
-     * Returns the {@code chromosome}
-     * @return The {@code chromosome}
+     * Returns the {@code chromosome}.
+     * @return The {@code chromosome}.
      */
     public List<Integer> getChromosome() {
         return new ArrayList<>(chromosome);
@@ -53,9 +53,9 @@ public class Individual {
 
 
     /**
-     * Returns the fitness score of the Individual
+     * Returns the fitness score of the Individual.
      * @param fitnessFunction In case {@code fitnessScore} is not computed. It is computed with this function.
-     * @return the value of {@code fitnessScore} for the indivial.
+     * @return the value of {@code fitnessScore} for the individual.
      */
     public double getFitnessScore(FitnessFunction fitnessFunction) {
         if (fitnessScore == null) {

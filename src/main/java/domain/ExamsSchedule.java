@@ -51,7 +51,7 @@ public class ExamsSchedule {
 
 
     /**
-     * Constructor for the class
+     * Constructor for the class.
      * @param configurer Configurer that contains all the configurations options.
      */
     public ExamsSchedule(Configurer configurer, List<Exam> exams, ConstraintParser constraintParser) {
@@ -87,7 +87,7 @@ public class ExamsSchedule {
     }
 
     /**
-     * Checks {@code exams} and add the id to {@code preScheduledExams}
+     * Checks {@code exams} and add the id to {@code preScheduledExams}.
      */
     private void identifyScheduledExams() {
         for (Exam exam: exams) {
@@ -99,7 +99,7 @@ public class ExamsSchedule {
 
     /**
      * Resets the scheduling of all {@code Exam} at {@code exams} whose id
-     * is not in {@code preScheduledExams}
+     * is not in {@code preScheduledExams}.
      */
     public void resetScheduling(){
         for (Exam exam: exams) {

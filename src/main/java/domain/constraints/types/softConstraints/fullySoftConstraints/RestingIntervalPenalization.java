@@ -13,7 +13,7 @@ import java.util.List;
  *
  * <p>
  * By using it the algorithm prioritizes schedules/solutions which have less high duration exams on the mornings, leaving
- * them for the afternoon. It's specially effective when having not too much hard constraints.
+ * them for the afternoon.
  */
 public class RestingIntervalPenalization implements SoftConstraint {
 

@@ -32,7 +32,7 @@ public class SamplesGenerator {
      * If the school has a mean of 62 exams, and we set 2 as repetitions, then the instance will have 124 exams.
      * The concrete formula is 74 * repetitions.
      */
-    private final static int repetitions = 1;
+    private final static int repetitions = 5;
 
     /**
      * States if there will be hard constraints among the generated user constraints.
@@ -146,7 +146,7 @@ public class SamplesGenerator {
     /**
      * Number of instances to be generated simultaneously.
      */
-    private final static int instancesNumberToGenerate = 30;
+    private final static int instancesNumberToGenerate = 10;
 
     /**
      * Just generates an instance according to the provided data.

@@ -15,12 +15,12 @@ import java.util.NoSuchElementException;
 public abstract class AbstractConstraintParserTool implements ConstraintParserTool {
 
     /**
-     * Description for the type of Constraint in the excel.
+     * Description for the type of Constraint in the Excel.
      */
     private String description;
 
     /**
-     * Headers for the type of Constraint in the excel.
+     * Headers for the type of Constraint in the Excel.
      */
     private String[] headers;
 

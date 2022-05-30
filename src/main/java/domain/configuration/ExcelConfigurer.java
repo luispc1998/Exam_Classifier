@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * This class is in charge of parsing the properties file associated with the excel.
+ * This class is in charge of parsing the properties file associated with the Excel.
  *
  * <p>
  * There should be specified the headers of the exam, as well as the initial row and columns to read and parse constraints.
@@ -39,9 +39,9 @@ public class ExcelConfigurer {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Could not parse property/ies in Excel configuration file due to number format problems.");
         }catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not find excel configuration file");
+            throw new IllegalArgumentException("Could not find Excel configuration file");
         } catch (IOException e) {
-            throw new IllegalArgumentException("Could not parse properties in excel configuration file");
+            throw new IllegalArgumentException("Could not parse properties in Excel configuration file");
         }
 
 

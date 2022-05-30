@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 
+/**
+ * This class creates the directories and the file hierarchies that must be outputted.
+ */
 public class OutputHandler {
 
     /**
@@ -16,7 +19,7 @@ public class OutputHandler {
     private final String outputDirectory;
 
     /**
-     * The name of the output excel file.
+     * The name of the output Excel file.
      */
     private final String outputFilename;
 
@@ -33,7 +36,7 @@ public class OutputHandler {
     /**
      * Default constructor for the class.
      * @param examsSchedule The {@code DataHandler} instance with all the execution data.
-     * @param outputFileName The name of the output excel file.
+     * @param outputFileName The name of the output Excel file.
      * @param excelWriter The {@code ExcelWriter} to be used when writing the output.
      */
     public OutputHandler(ExamsSchedule examsSchedule, String outputFileName, String outputDirectory,
@@ -46,7 +49,7 @@ public class OutputHandler {
     }
 
     /**
-     * Writes the output files, the excel and the log file.
+     * Writes the output files, the Excel and the log file.
      */
     public void writeOutputFiles(HashSet<Individual> outputIndividuals, String loggedData, String fitnessGraphData)  {
         excelWriter.excelWrite(outputIndividuals, examsSchedule, outputDirectory, outputFilename);
@@ -66,20 +69,20 @@ public class OutputHandler {
         try (BufferedWriter bfWriterUncolored = new BufferedWriter(new FileWriter(path))) {
             bfWriterUncolored.write(string);
         } catch (IOException e) {
-            throw new IllegalStateException("Could not write the genetic algorithm log at path: ["
+            throw new IllegalStateException("Could not write the Genetic Algorithm log at path: ["
                     + path + "]" );
         }
     }
 
     /**
-     * Writes the genetic algorithm file.
+     * Writes the Genetic Algorithm file.
      */
     private void writeLogData(String loggedData) {
         String path = outputDirectory + "gLog.txt";
         try (BufferedWriter bfWriter = new BufferedWriter(new FileWriter(path))){
             bfWriter.write(loggedData);
         } catch (IOException e) {
-            throw new IllegalStateException("Could not write the genetic algorithm log at path: ["
+            throw new IllegalStateException("Could not write the Genetic Algorithm log at path: ["
                     + path + "]" );
         }
 

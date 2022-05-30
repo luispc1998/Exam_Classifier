@@ -16,12 +16,12 @@ public class OrderExamsConstraint extends AbstractUserConstraint {
     public final static String CONSTRICTION_ID = "OE";
 
     /**
-     * {@link Exam} that must take place before than {@code second}
+     * {@link Exam} that must take place before than {@code second}.
      */
     private final Exam first;
 
     /**
-     * {@link Exam} that must take place after than {@code first}
+     * {@link Exam} that must take place after than {@code first}.
      */
     private final Exam second;
 

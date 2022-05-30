@@ -13,12 +13,12 @@ import java.util.Random;
 public class RandomCromosomeGenerator {
 
     /**
-     * Generates a cromosome given the length.
-     * @param length Length of the cromosome to be created.
+     * Generates a Chromosome given the length.
+     * @param length Length of the Chromosome to be created.
      * @param generator Random object to do the shuffling
-     * @return a new randomized cromosome.
+     * @return a new randomized Chromosome.
      */
-    public static List<Integer> generateCromosome(int length, Random generator){
+    public static List<Integer> generateChromosome(int length, Random generator){
 
 
         List<Integer> list = new ArrayList<>();
@@ -31,13 +31,13 @@ public class RandomCromosomeGenerator {
     }
 
     /**
-     * Generates an individual given the length of its cromosome.
-     * @param length Length of the cromosome to be created.
+     * Generates an individual given the length of its Chromosome.
+     * @param length Length of the Chromosome to be created.
      * @param generator Random object to do the shuffling
-     * @return an individual with a randomized cromosome.
+     * @return an individual with a randomized Chromosome.
      */
     public static Individual generateIndividual(int length, Random generator){
-        return new Individual(generateCromosome(length, generator));
+        return new Individual(generateChromosome(length, generator));
     }
 
 }

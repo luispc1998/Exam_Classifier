@@ -17,12 +17,12 @@ public class OXCrossoverOperator implements CrossingOperator {
 
 
     /**
-     * Default Constructor for the class;
+     * Default Constructor for the class.
      */
     public OXCrossoverOperator(){}
 
     /**
-     * Constructor specifiying the random object used to get the points for
+     * Constructor specifying the random object used to get the points for
      * the crossing at the crossing method.
      * @param generatorWithSeed A {@code Random} object.
      */
@@ -31,7 +31,7 @@ public class OXCrossoverOperator implements CrossingOperator {
     }
 
     /**
-     * Method with the logic to perform the OX Crossing algorithm
+     * Method with the logic to perform the OX Crossing algorithm.
      * @param a First individual.
      * @param b Second individual.
      * @return A List of individuals, the result of crossing a and b one or multiple times.
@@ -52,16 +52,16 @@ public class OXCrossoverOperator implements CrossingOperator {
      */
     private Individual cross(Individual a, Individual b) {
 
-        // Get the cromosomes
-        List<Integer> aCromosome = a.getChromosome();
-        List<Integer> bCromosome = b.getChromosome();
-        List<Integer> newCromosome = new ArrayList<>(aCromosome.size());
-        for (int i = 0; i < aCromosome.size(); i++) {
-            newCromosome.add(0);
+        // Get the Chromosomes
+        List<Integer> aChromosome = a.getChromosome();
+        List<Integer> bChromosome = b.getChromosome();
+        List<Integer> newChromosome = new ArrayList<>(aChromosome.size());
+        for (int i = 0; i < aChromosome.size(); i++) {
+            newChromosome.add(0);
         }
         //Generate two random positions
         Random generator = chooseGenerator();
-        int chromosomeLength = aCromosome.size();
+        int chromosomeLength = aChromosome.size();
         int lowerLimit = generator.nextInt(chromosomeLength);
         int upperLimit = generator.nextInt(chromosomeLength);
         
@@ -75,8 +75,8 @@ public class OXCrossoverOperator implements CrossingOperator {
 
         ArrayList<Integer> usedValues = new ArrayList<>();
         for (int i = lowerLimit; i <= upperLimit; i++) {
-            newCromosome.set(i, aCromosome.get(i));
-            usedValues.add(aCromosome.get(i));
+            newChromosome.set(i, aChromosome.get(i));
+            usedValues.add(aChromosome.get(i));
         }
 
 
@@ -84,12 +84,12 @@ public class OXCrossoverOperator implements CrossingOperator {
         int cIndex = 0;
         while (cIndex < chromosomeLength && currentPos<chromosomeLength) {
             // Check if we must ignore value
-            if (usedValues.contains(bCromosome.get(cIndex))){
+            if (usedValues.contains(bChromosome.get(cIndex))){
                 cIndex++;
                 continue;
             }
 
-            //Check if the pointer in the new cromosome should jump over the bounded limits.
+            //Check if the pointer in the new Chromosome should jump over the bounded limits.
             if (currentPos == lowerLimit)
                 currentPos = upperLimit+1;
 
@@ -97,7 +97,7 @@ public class OXCrossoverOperator implements CrossingOperator {
                 break;
 
             //Place number in actual pointer
-            newCromosome.set(currentPos, bCromosome.get(cIndex));
+            newChromosome.set(currentPos, bChromosome.get(cIndex));
 
             //Move pointers
             cIndex++;
@@ -105,7 +105,7 @@ public class OXCrossoverOperator implements CrossingOperator {
 
         }
 
-        return new Individual(newCromosome);
+        return new Individual(newChromosome);
     }
 
     /**

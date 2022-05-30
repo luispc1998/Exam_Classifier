@@ -25,12 +25,12 @@ public class Configurer {
     private Properties filePaths;
 
     /**
-     * The weigth configurer
+     * The weight configurer.
      */
     private WeightConfigurer weigthConfigurer;
 
     /**
-     * The dateTime configurer
+     * The dateTime configurer.
      */
     private DateTimeConfigurer dateTimeConfigurer;
 
@@ -45,7 +45,7 @@ public class Configurer {
     private final String statisticalFolder;
 
     /**
-     * Configurer with the excel configurations.
+     * Configurer with the Excel configurations.
      */
     private ExcelConfigurer excelConfigurer;
 
@@ -94,7 +94,7 @@ public class Configurer {
     }
 
     /**
-     * Loads the parameters of the genetic algorithm.
+     * Loads the parameters of the Genetic Algorithm.
      * @param geneticConfiguration The file where the parameters are specified.
      */
     private void loadGeneticAlgorithmParameters( String geneticConfiguration) {
@@ -102,8 +102,8 @@ public class Configurer {
     }
 
     /**
-     * Returns the parameters of the genetic algorithm.
-     * @return the parameters of the genetic algorithm.
+     * Returns the parameters of the Genetic Algorithm.
+     * @return the parameters of the Genetic Algorithm.
      */
     public GeneticParameters getGeneticParameters() {
         return geneticParameters;
@@ -111,7 +111,7 @@ public class Configurer {
 
     /**
      * Creates a new instance of the WeightConfigurer.
-     * @param weightsFile filepath to the properties file where the weights for the constraints are declared
+     * @param weightsFile filepath to the properties file where the weights for the constraints are declared.
      */
     private void loadWeightConfigurer(String weightsFile) {
         this.weigthConfigurer = new WeightConfigurer(weightsFile);
@@ -120,14 +120,14 @@ public class Configurer {
     /**
      * Creates a new instance of the DateTimeConfigurer
      * @param dateTimeFilepath filepath to the properties file where the date and times configurations are declared.
-     * @param inputDataFilepath filepath to the input excel file where the exams, constraints, and calendar are declared.
+     * @param inputDataFilepath filepath to the input Excel file where the exams, constraints, and calendar are declared.
      */
     private void loadDateTimeConfigurer( String dateTimeFilepath,  String inputDataFilepath) {
         this.dateTimeConfigurer = new DateTimeConfigurer(dateTimeFilepath, inputDataFilepath);
     }
 
     /**
-     * Creates the excel configurer instance laoding the configuration file.
+     * Creates the Excel configurer instance laoding the configuration file.
      * @param excelFilepath The path of the configuration file of the excel.
      */
     private void loadExcelConfigurer(String excelFilepath) {

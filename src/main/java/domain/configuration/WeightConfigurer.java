@@ -22,7 +22,7 @@ import java.util.Properties;
 public class WeightConfigurer {
 
     /**
-     * Hashmap where the keys are constraint ids, and the values their corresponding weights
+     * Hashmap where the keys are constraint ids, and the values their corresponding weights.
      * (coefficients) in the {@link geneticAlgorithm.fitnessFunctions.FitnessFunction}
      */
     final HashMap<String, Double> weights;
@@ -86,8 +86,8 @@ public class WeightConfigurer {
     }
 
     /**
-     * Checks wether a given string matches the id of a key in {@code weights}
-     * @param id the id to be checked
+     * Checks wether a given string matches the id of a key in {@code weights}.
+     * @param id the id to be checked.
      * @return true if it is a key in the map, false otherwise.
      */
     public boolean existsConstraintID(String id){

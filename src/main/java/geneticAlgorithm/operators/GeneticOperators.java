@@ -10,7 +10,7 @@ import geneticAlgorithm.operators.selection.RouletteSelection;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 
 /**
- * This groups the operators to be passed as parameter to the genetic algorithm.
+ * This groups the operators to be passed as parameter to the Genetic Algorithm.
  */
 public class GeneticOperators {
 

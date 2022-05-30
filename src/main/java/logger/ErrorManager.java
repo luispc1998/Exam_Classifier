@@ -25,11 +25,12 @@ public class ErrorManager {
         notShowedErrors = new ArrayList<>();
     }
 
-    public boolean wasThereErrorsOrWarnings() {
+    public boolean wasThereNewErrorsOrWarnings() {
         return notShowedErrors.size() > 0;
     }
 
-    public String getFormattedString() {
+
+    public String getFormattedStringOfErrors() {
         StringBuilder output = new StringBuilder();
         output.append("\n");
         if (notShowedErrors.size() > 0) {

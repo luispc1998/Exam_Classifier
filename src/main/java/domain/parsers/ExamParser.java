@@ -93,15 +93,15 @@ public class ExamParser {
 
             }
             if (! foundHeaderRow){
-                throw new IllegalStateException("Could not find headers row in input excel file. " +
+                throw new IllegalStateException("Could not find headers row in input Excel file. " +
                         "Check that the configuration headers are the same as " +
-                        "the excel ones.");
+                        "the Excel ones.");
             }
 
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not find input excel file");
+            throw new IllegalArgumentException("Could not find input Excel file");
         } catch (IOException | NullPointerException e) {
-            throw new IllegalArgumentException("Could not parse input excel file");
+            throw new IllegalArgumentException("Could not parse input Excel file");
         }
 
         ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + exams.size());
@@ -109,7 +109,7 @@ public class ExamParser {
         roundsParser.createRoundIfNecessary(rounds, exams);
 
         if (exams.size() == 0) {
-            throw new IllegalArgumentException("There were no exams in excel file");
+            throw new IllegalArgumentException("There were no exams in Excel file");
         }
         return exams;
     }
@@ -304,7 +304,7 @@ public class ExamParser {
     }
 
     /**
-     * Writes the headers row for the excel file
+     * Writes the headers row for the Excel file
      * @param row The row at which the Headers will be written.
      */
     private void writeHeaders(Row row) {

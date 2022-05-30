@@ -2,6 +2,7 @@ package domain.configuration;
 
 import domain.entities.Exam;
 import domain.entities.Interval;
+import geneticAlgorithm.output.ExcelWriter;
 import logger.ConsoleLogger;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -61,23 +62,22 @@ public class DateTimeConfigurer {
     private boolean deliveryCollisionEnabled;
 
     /**
-     * String id used in the exams at the excel to identify deliveries on the Modality field.
+     * String id used in the exams at the Excel to identify deliveries on the Modality field.
      */
     private String deliveryIdentifier;
 
     /**
-     * Constructor for the class
+     * Constructor for the class,
      * @param dateTimeFilepath filepath to property files where the date and time configurations are stored.
-     * @param inputDataFilepath filepath to the input excel, where the exams, constraints and calendar are provided.
+     * @param inputDataFilepath filepath to the input Excel, where the exams, constraints and calendar are provided.
      */
     public DateTimeConfigurer(String dateTimeFilepath, String inputDataFilepath) {
-        this.examDates = new HashMap<>();
-        parseDates(inputDataFilepath);
+        examDates = ExcelWriter.parseDates(inputDataFilepath);
         parseTimeConfigurations(dateTimeFilepath);
     }
 
     /**
-     * Parses the configurations from the property file
+     * Parses the configurations from the property file,
      * @param dateTimeFilepath filepath to the properties file where the date and time configurations are stored.
      */
     private void parseTimeConfigurations(String dateTimeFilepath) {
@@ -109,70 +109,9 @@ public class DateTimeConfigurer {
         }
     }
 
-    /**
-     * Parses the dates from the input Excel file
-     * @param inputDataFilepath filepath to the input excel, where the exams, constraints and calendar are provided.
-     */
-    private void parseDates(String inputDataFilepath) {
-
-        //creating workbook instance that refers to .xls file
-        try (FileInputStream fis = new FileInputStream(inputDataFilepath);
-        Workbook workbook = new XSSFWorkbook(fis)
-        ) {
-            Sheet sheet = workbook.getSheetAt(2);
-
-            int i = -1;
-
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando fechas...");
-
-            for (Row row : sheet) {
-                LocalDate date = generateDate(row);
-                if (Utils.emptyCell(row.getCell(1)) || Utils.emptyCell(row.getCell(2))) {
-                    throw new IllegalArgumentException();
-                }
-
-                Interval dayInterval = new Interval(setHourFromExcel(row.getCell(1).getNumericCellValue()),
-                        setHourFromExcel(row.getCell(2).getNumericCellValue()));
-                dayInterval.roundBoundsToHours();
-                examDates.put(date, dayInterval);
-                i++;
-            }
-
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Fechas creadas: " + i);
-
-        } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not find input excel file: " + inputDataFilepath);
-        } catch (IOException | NullPointerException | IllegalArgumentException e ) {
-            throw new IllegalArgumentException("Could not parse calendar in input excel file: " + inputDataFilepath);
-        }
-
-    }
-
-    /**
-     * Transforms the Excel hour format into {@link LocalTime}
-     * @param excelHour Hour in excel hour format.
-     * @return A LocalTime object referring the same time.
-     */
-    public LocalTime setHourFromExcel(double excelHour) {
-        return LocalTime.ofSecondOfDay((long) (excelHour * 3600 * 24));
-    }
 
 
 
-    /**
-     * Auxiliar method. Creates a {@code LocalDate} object from an excel row.
-     * <p>
-     * It is assumed that the date is in the first cell of the row.
-     * @param row the excel row that contains the date to be parsed.
-     * @return the corresponding {@code LocalDate} object.
-     */
-    private LocalDate generateDate(Row row) {
-
-        if (Utils.emptyCell(row.getCell(0))){
-            throw new IllegalArgumentException();
-        }
-        return LocalDate.ofInstant(row.getCell(0).getDateCellValue().toInstant(), ZoneId.systemDefault());
-    }
 
     /**
      * Checks whether a given hour is in the resting interval or not.
@@ -297,6 +236,11 @@ public class DateTimeConfigurer {
         return result;
     }
 
+    /**
+     * Checks if an exam can collide with other exams.
+     * @param exam The exam to be checked
+     * @return True if the exam can collide with other exams, false otherwise.
+     */
     public boolean areCollisionsEnabledFor(Exam exam) {
         if (! deliveryCollisionEnabled){
             return ! deliveryIdentifier.equalsIgnoreCase(exam.getModality());

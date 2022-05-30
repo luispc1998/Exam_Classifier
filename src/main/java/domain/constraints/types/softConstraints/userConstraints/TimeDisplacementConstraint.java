@@ -27,12 +27,12 @@ public class TimeDisplacementConstraint extends AbstractUserConstraint {
     public final static String CONSTRICTION_ID = "TD";
 
     /**
-     * {@link Exam} that must take place before than {@code second}
+     * {@link Exam} that must take place before than {@code second}.
      */
     private final Exam first;
 
     /**
-     * {@link Exam} that must take place after than {@code first}
+     * {@link Exam} that must take place after than {@code first}.
      */
     private final Exam second;
 
@@ -47,9 +47,9 @@ public class TimeDisplacementConstraint extends AbstractUserConstraint {
     private final List<LocalDate> calendar;
 
     /**
-     * Constructor for the class
-     * @param first {@link Exam} that must take place before than {@code second}
-     * @param second {@link Exam} that must take place after than {@code first}
+     * Constructor for the class.
+     * @param first {@link Exam} that must take place before than {@code second}.
+     * @param second {@link Exam} that must take place after than {@code first}.
      * @param distanceInDays Days that must be between {@code first} and {@code second}.
      * @param calendar The calendar of possible dates. It is assumed that it is sorted.
      */

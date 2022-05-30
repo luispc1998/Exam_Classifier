@@ -58,7 +58,7 @@ public class ConsoleLogger {
              BufferedWriter bfWriterErrorLog = new BufferedWriter(new FileWriter(outputDirectory + "errorLog.txt"))){
 
             bfWriterUncolored.write(ConsoleLogger.getConsoleLoggerInstance().getLogMessages());
-            String errors = ConsoleLogger.getConsoleLoggerInstance().getErrorManager().getFormattedString();
+            String errors = ConsoleLogger.getConsoleLoggerInstance().getErrorManager().getFormattedStringOfErrors();
             bfWriterErrorLog.write(errors);
             System.out.println(errors);
 

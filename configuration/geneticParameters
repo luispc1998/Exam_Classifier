@@ -21,7 +21,7 @@ repairingDepth=3
 generations=1500
 
 ## Specifies if the number of times the algorithm must be executed (used for statistical purposes)
-algorithmRepetitions=2
+algorithmRepetitions=1
 
 ## Desired maximum amount of different schedules to be retrieved at the end. 
 maxSchedulesToTake=1

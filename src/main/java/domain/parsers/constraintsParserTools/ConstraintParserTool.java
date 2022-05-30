@@ -12,8 +12,8 @@ import org.apache.poi.ss.usermodel.Row;
  *
  * <p>
  * This is a State design pattern over the {@link ConstraintParser}, so that when
- * finding a new set of {@link UserConstraint} in the excel, the parser can swap (if needed) the creation method to
- * the one needed for that type of {@link UserConstraint}
+ * finding a new set of {@link UserConstraint} in the Excel, the parser can swap (if needed) the creation method to
+ * the one needed for that type of {@link UserConstraint}.
  *
  * @see ConstraintParser
  */
@@ -29,34 +29,34 @@ public interface ConstraintParserTool {
     UserConstraint parseConstraint(Row row, int baseExcelColumn, ExamsSchedule examsSchedule);
 
     /**
-     * Sets the description of this constraint in the excel.
-     * @param description The description of this constraint in the excel.
+     * Sets the description of this constraint in the Excel.
+     * @param description The description of this constraint in the Excel.
      */
     void setDescription(String description);
 
     /**
-     * Gets the description of this constraint in the excel.
-     * @return The description for the type of constraint in the excel.
+     * Gets the description of this constraint in the Excel.
+     * @return The description for the type of constraint in the Excel.
      */
     String getDescription();
 
     /**
-     * Headers for this type of constraint in the excel
-     * @param headers Headers in the excel.
+     * Headers for this type of constraint in the Excel
+     * @param headers Headers in the Excel.
      */
     void setHeaders(String[] headers);
 
     /**
-     * Gets the headers for this type of constraint in the excel.
-     * @return The headers to be written in the excel.
+     * Gets the headers for this type of constraint in the Excel.
+     * @return The headers to be written in the Excel.
      */
     String[] getHeaders();
 
     /**
-     * Writes the constraint to excel format.
+     * Writes the constraint to Excel format.
      * @param con The constraint to be written.
-     * @param row The excel row in which the constraint will be written.
-     * @param baseExcelColumn The base excel column from which the data can be written.
+     * @param row The Excel row in which the constraint will be written.
+     * @param baseExcelColumn The base Excel column from which the data can be written.
      */
     void writeConstraint(SoftConstraint con, Row row, int baseExcelColumn);
 }

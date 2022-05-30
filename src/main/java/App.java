@@ -47,7 +47,6 @@ public class App {
         String outputFileName = args[1];
         StatisticalDataGetter statisticalDataGetter = null;
 
-
         Configurer conf = new Configurer(args[0]);
 
         ConstraintParser constraintParser;
@@ -88,7 +87,7 @@ public class App {
 
 
 
-            if (errorAsking && errorManager.wasThereErrorsOrWarnings() && j==1) {
+            if (errorAsking && errorManager.wasThereNewErrorsOrWarnings() && j==1) {
                 System.out.println("Se encontraron errores durante la generación de exámenes.");
                 ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
                 stoppingInputRequest();
@@ -100,7 +99,7 @@ public class App {
 
 
 
-            if (errorAsking && errorManager.wasThereErrorsOrWarnings() && j==1) {
+            if (errorAsking && errorManager.wasThereNewErrorsOrWarnings() && j==1) {
                 System.out.println("Se encontraron errores o avisos durante el parseo de restricciones.");
                 ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
                 stoppingInputRequest();
@@ -131,7 +130,7 @@ public class App {
             elite.add(bestFitnessIndividual);
 
             Utils.getBestSchedules(finalPopulation, elite, conf.getGeneticParameters().getMaxSchedulesToTake());
-
+            ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
 
 
         }

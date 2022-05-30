@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is in charge of enconding the cromosomes to build the {@link Individual} objects.
+ * This is in charge of enconding the Chromosomes to build the {@link Individual} objects.
  *
  * <p>
  * It ignores the already scheduled exams since they are fixed to a date, and therefore they

@@ -29,8 +29,8 @@ public class DayBannedConstraint extends AbstractUserConstraint {
 
 
     /**
-     * Cosntructor for the class
-     * @param exam the exam that would no be able to take place on {@code dayBanned}
+     * Cosntructor for the class.
+     * @param exam the exam that would no be able to take place on {@code dayBanned}.
      * @param dayBanned the date in which {@code exam} cannot take place.
      */
     public DayBannedConstraint(Exam exam, LocalDate dayBanned) {

@@ -11,7 +11,7 @@ import java.util.List;
 public class AllSelection implements SelectionOperator {
 
     /**
-     * A pointer to the index of the last retrieved {@code Individual}
+     * A pointer to the index of the last retrieved {@code Individual}.
      */
     public int indexPointer;
 
@@ -21,8 +21,8 @@ public class AllSelection implements SelectionOperator {
     public final int problemSize;
 
     /**
-     * Constructor for the class
-     * @param problemSize Size of the population
+     * Constructor for the class.
+     * @param problemSize Size of the population.
      */
     public AllSelection(int problemSize) {
         this.problemSize = problemSize;

@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * This Mutation operator performs a swap in the cromosome of the Individual.
+ * This Mutation operator performs a swap in the Chromosome of the Individual.
  */
 public class MutationSwap implements MutationOperator {
 
     /**
-     * Swaps two of the values in the Individual chromosome
-     * @param individual The individual to which the mutation must be performed
+     * Swaps two of the values in the Individual chromosome.
+     * @param individual The individual to which the mutation must be performed.
      * @return A new Individual with the mutated chromosome.
      */
     @Override

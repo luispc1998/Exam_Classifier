@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * The class itself contains all the data that an Exam in our domain can have, but most of it will not be used
  * in the application.
  * <p>
- * The most relevant is the code that refers to the exam schedule being such:
+ * The most relevant code is the one that refers to the exam schedule being such:
  * {@code date}, {@code initialHour}, {@code duration}, {@code extraTime} and {@code getFinishingHour}
  *
  * <p>
@@ -226,9 +226,9 @@ public class Exam {
 
 
     /**
-     * Transforms a duration from the Excel format
-     * @param duration Duration in excel format
-     * @return the duration in minutes
+     * Transforms a duration from the Excel format.
+     * @param duration Duration in Excel format.
+     * @return the duration in minutes.
      */
     private long transformDuration(double duration) {
         return (long) (duration * 24 * 60);
@@ -237,7 +237,7 @@ public class Exam {
     /**
      * Transforms a duration to the Excel format
      * @return the duration in Excel format
-     * @param duration the duration object to be transformed to excel format.
+     * @param duration the duration object to be transformed to Excel format.
      */
     private double transformToDuration(Duration duration) {
         return duration.toMinutes() / 60.0 / 24.0;
@@ -272,15 +272,15 @@ public class Exam {
 
     /**
      * Returns the extra time for the exam.
-     * @return the extra time for the exam
+     * @return the extra time for the exam.
      */
     public Duration getExtraTime() {
         return extraTime;
     }
 
     /**
-     * Sets {@code date} to the new value
-     * @param dateCellValue new value for {@code date}
+     * Sets {@code date} to the new value.
+     * @param dateCellValue new value for {@code date}.
      */
     public void setDateFromExcel(Date dateCellValue) {
         this.date = dateCellValue.toInstant().atZone(ZoneId.systemDefault())
@@ -299,7 +299,7 @@ public class Exam {
     }
 
     /**
-     * Set {@code initialHour} to the new value. Transforms the Excel hour format into {@link LocalTime}
+     * Set {@code initialHour} to the new value. Transforms the Excel hour format into {@link LocalTime}.
      * @param excelHour Initial hour for the exam in excel hour format.
      */
     public void setHourFromExcel(double excelHour) {
@@ -325,7 +325,7 @@ public class Exam {
     }
 
     /**
-     * Cleans the scheduling of the instance
+     * Cleans the scheduling of the instance.
      */
     public void resetScheduling() {
         this.date = null;
@@ -402,8 +402,8 @@ public class Exam {
 
 
     /**
-     * Returns an array with all the data of the object to be written in the excel.
-     * @return an array with all the data of the object to be written in the excel.
+     * Returns an array with all the data of the object to be written in the Excel.
+     * @return an array with all the data of the object to be written in the Excel.
      */
     public Object[] getAttributes() {
 
@@ -448,7 +448,7 @@ public class Exam {
 
     /**
      * Sets an Excel extra time to the  object
-     * @param excelExtraTime The extra time in excel format.
+     * @param excelExtraTime The extra time in Excel format.
      */
     public void setExtraTimeFromExcel(double excelExtraTime) {
         this.extraTime = Duration.ofMinutes(transformDuration(excelExtraTime));
@@ -546,7 +546,7 @@ public class Exam {
 
     /**
      * Returns {@code cn}  value.
-     * @return {@code cn}  value,
+     * @return {@code cn}  value.
      */
     public int getCn() {
         return cn;

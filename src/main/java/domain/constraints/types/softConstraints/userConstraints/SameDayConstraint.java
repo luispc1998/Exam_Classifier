@@ -28,8 +28,8 @@ public class SameDayConstraint extends AbstractUserConstraint {
 
     /**
      * Default constructor for the class.
-     * @param first one of the exams
-     * @param second the other exam
+     * @param first one of the exams.
+     * @param second the other exam.
      */
     public SameDayConstraint(Exam first, Exam second){
         this.first = first;

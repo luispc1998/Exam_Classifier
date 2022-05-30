@@ -8,7 +8,15 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO, what to do with this?
+/**
+ * The aim of this class is to try that the calendar days have the same amount of exams, so that there are no empty
+ * days, while others are full.
+ *
+ * The idea was adding the duration of all the exams, computing the average duration. Then, an addition of the duration
+ * of each day will be computed and the distance between that value and the previously computed mean would be computed.
+ *
+ * At the moment, this is class is not used since it was tested and it did not work well.
+ */
 public class UnbalancedDaysPenalization implements SoftConstraint {
 
     /**
@@ -24,6 +32,10 @@ public class UnbalancedDaysPenalization implements SoftConstraint {
 
     private long minutes = 0;
 
+    /**
+     * Constructor for the class
+     * @param exams The list of exams to check
+     */
     public UnbalancedDaysPenalization(List<Exam> exams) {
         this.exams = exams;
     }

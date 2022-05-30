@@ -11,6 +11,7 @@ import domain.configuration.DateTimeConfigurer;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This decodes an {@code Individual} by using a greedy deterministic algorithm over the collection of exams
@@ -73,15 +74,15 @@ public class ChromosomeDecoder {
 
         DateTimeConfigurer dateTimeConfigurer = examsSchedule.getConfigurer().getDateTimeConfigurer();
 
-        // Times for the days.
+
         HashMap<LocalDate, LocalTime> daysTimes = initializeDays(dateTimeConfigurer);
 
-        // Exams to schedule
-        List<Integer> cromosome = individual.getChromosome();
-        List<Exam> exams = getExamsOrderedForChromosome(cromosome, examsSchedule);
+
+        List<Integer> chromosome = individual.getChromosome();
+        List<Exam> exams = getExamsOrderedForChromosome(chromosome, examsSchedule);
 
 
-        // Fin de la declaración de variables.
+
         for(Exam exam : exams) {
             classifyExam(examsSchedule, dateTimeConfigurer, daysTimes, exam, 0);
         }
@@ -103,11 +104,14 @@ public class ChromosomeDecoder {
             LocalTime> daysTimes, Exam exam, int depth) {
 
         Set<LocalDate> viableDays;
+        List<LocalDate> viableDaysRandomized;
         LocalTime currentHour;
         viableDays = exam.getViableDays(daysTimes.keySet());
+        viableDaysRandomized = new ArrayList<>(viableDays);
+        Collections.shuffle(viableDaysRandomized, new Random(exam.getId()));
         boolean scheduled = false;
 
-        for (LocalDate day :viableDays){
+        for (LocalDate day :viableDaysRandomized){
             currentHour = daysTimes.get(day);
 
             Exam collidingExam = null;
@@ -139,10 +143,7 @@ public class ChromosomeDecoder {
             }
         }
 
-        // reparación
-        // Coger todos los exámenes móviles fechados esos días.
-        // Tienen que durar lo mismo o más.
-        // copia de daysTimes
+
         if (!scheduled && depth < limitDepth) {
             List<Exam> candidates = examsSchedule.getSwappableExamsOfOver(exam, viableDays);
 

@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Properties;
 
 /**
- * This represents all the parameters to configure the genetic algorithm.
+ * This represents all the parameters to configure the Genetic Algorithm.
  */
 public class GeneticParameters {
 
@@ -53,7 +53,7 @@ public class GeneticParameters {
     private int repairingDepth;
 
     /**
-     * Number of times the genetic algorithm must be repeated.
+     * Number of times the Genetic Algorithm must be repeated.
      *
      * <p>
      * This is used for statistical purposes, normally it will be set to one.

@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * This in the genetic algorithm. In this class the process to produce new generations is declared.
+ * This in the Genetic Algorithm. In this class the process to produce new generations is declared.
  *
  * <p>
  * The operators used by the algorithm are externalized and they are implemented by means of the Strategy design pattern.
@@ -29,42 +29,42 @@ import java.util.List;
 public class GeneticCore {
 
     /**
-     * Current population of individuals
+     * Current population of individuals.
      */
     private List<Individual> population;
 
-    // Operators that will be used in the execution
+    // Operators that will be used in the execution.
 
     /**
-     * Selection operator for the genetic algorithm.
+     * Selection operator for the Genetic Algorithm.
      * <p>
      * The design follows the "Strategy" design pattern.
      */
     private final SelectionOperator selectionOperator;
 
     /**
-     * Mutation operator for the genetic algorithm.
+     * Mutation operator for the Genetic Algorithm.
      * <p>
      * The design follows the "Strategy" design pattern.
      */
     private final MutationOperator mutationOperator;
 
     /**
-     * Crossing operator for the genetic algorithm.
+     * Crossing operator for the Genetic Algorithm.
      * <p>
      * The design follows the "Strategy" design pattern.
      */
     private final CrossingOperator crossingOperator;
 
     /**
-     * Replacement operator for the genetic algorithm.
+     * Replacement operator for the Genetic Algorithm.
      * <p>
      * The design follows the "Strategy" design pattern.
      */
     private final ReplacementOperator replacementOperator;
 
     /**
-     * Logger for the genetic algorithm.
+     * Logger for the Genetic Algorithm.
      */
     private final GeneticLogger logger;
 
@@ -94,12 +94,12 @@ public class GeneticCore {
     }
 
     /**
-     * Constructor for the class
+     * Constructor for the class.
      * @param individualPrime First individual from which the initial population will be created.
      * @param popSize Size of the population to be handled by the algorithm.
      * @param geneticOperators Operator configuration for the algorithm.
-     * @param geneticLogger The Genetic Logger for the algorithm
-     * @param elite Set of Individuals that must be considered by the algorithm since generation 0
+     * @param geneticLogger The Genetic Logger for the algorithm.
+     * @param elite Set of Individuals that must be considered by the algorithm since generation 0.
      */
     public GeneticCore(Individual individualPrime, int popSize, GeneticOperators geneticOperators,
                        GeneticLogger geneticLogger, HashSet<Individual> elite) {
@@ -118,12 +118,12 @@ public class GeneticCore {
     }
 
     /**
-     * Genetic algorithm skeleton
-     * @param mutationProbability Probability for new individuals to mutate
-     * @param fitnessFunction Fitness function to be used by the algorithm
+     * Genetic algorithm skeleton.
+     * @param mutationProbability Probability for new individuals to mutate.
+     * @param fitnessFunction Fitness function to be used by the algorithm.
      * @param maxIterations Maximum number of iterations that the algorithm will do.
      * @param loggingFrequency Number of iterations after which the algorithm logs its state.
-     * @return The best individual
+     * @return The best individual.
      */
     public Individual geneticAlgorithm(double mutationProbability, double crossingProbability, FitnessFunction fitnessFunction, int maxIterations,
                                        int loggingFrequency) {
@@ -206,9 +206,9 @@ public class GeneticCore {
      * Returns the best individual of the population.
      *
      * <p>
-     * The best individual is the one with less fitness value. We are maximizing f(x) = 1 / fitnessValue
-     * @param fitnessFunction Fitness function to be used by the algorithm,
-     * @return The individual with less fitness value of the population
+     * The best individual is the one with less fitness value. We are maximizing f(x) = 1 / fitnessValue.
+     * @param fitnessFunction Fitness function to be used by the algorithm.
+     * @return The individual with less fitness value of the population.
      */
     private Individual getBestIndividual(FitnessFunction fitnessFunction) {
         // We are minimizing, the best individual is the closest fitness to 0
@@ -228,7 +228,7 @@ public class GeneticCore {
 
     /**
      * Computes a new generation of the population.
-     * @param fitnessFunction Fitness function to be used by the algorithm
+     * @param fitnessFunction Fitness function to be used by the algorithm.
      * @param mutationProbability The mutation probability of the new individuals.
      * @param crossingProb The crossing probability of the individuals.
      * @return The new population.
@@ -254,8 +254,8 @@ public class GeneticCore {
     }
 
     /**
-     * Checks if a child must have a mutation
-     * @param childs List of the new individuals
+     * Checks if a child must have a mutation.
+     * @param childs List of the new individuals.
      * @param mutationProb The mutation probability of the new individuals.
      */
     private void checkForMutation(List<Individual> childs, double mutationProb) {
