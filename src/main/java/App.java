@@ -88,7 +88,7 @@ public class App {
 
 
             if (errorAsking && errorManager.wasThereNewErrorsOrWarnings() && j==1) {
-                System.out.println("Se encontraron errores durante la generación de exámenes.");
+                System.out.println("There were errors in exam parsing.");
                 ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
                 stoppingInputRequest();
             }
@@ -100,7 +100,7 @@ public class App {
 
 
             if (errorAsking && errorManager.wasThereNewErrorsOrWarnings() && j==1) {
-                System.out.println("Se encontraron errores o avisos durante el parseo de restricciones.");
+                System.out.println("There were errors in constraint parsing.");
                 ConsoleLogger.getConsoleLoggerInstance().writeInputLogData(outputDirectory);
                 stoppingInputRequest();
             }
@@ -142,14 +142,14 @@ public class App {
     }
 
     private static void stoppingInputRequest() {
-        System.out.print("Introduzca '0' para abortar la ejecución. Cierre los archivos de log y pulse ENTER para continuarla: ");
+        System.out.print("Type '0' to abort execution. Close log files and press ENTER to continue: ");
 
         String input = scan.nextLine();
         if (input.equals("0")) {
-            System.out.println("La aplicación procederá a cerrarse.");
+            System.out.println("The application will end its execution.");
             System.exit(0);
         } else {
-            System.out.println("La aplicación continuará con la ejecución...");
+            System.out.println("The application will continue its execution...");
         }
 
     }

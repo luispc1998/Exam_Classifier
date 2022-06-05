@@ -168,7 +168,7 @@ public class ExcelWriter {
 
             int i = -1;
 
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando fechas...");
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parsing calendar...");
 
             for (Row row : sheet) {
                 if (i<0) {
@@ -187,7 +187,7 @@ public class ExcelWriter {
                 i++;
             }
 
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Fechas creadas: " + i);
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Calendar days created: " + i);
             return examDates;
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Could not find input Excel file: " + inputDataFilepath);

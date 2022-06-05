@@ -89,7 +89,7 @@ public class ConstraintParser {
              ) {
             Sheet sheet = workbook.getSheetAt(1);
 
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando restricciones...");
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parsing constraints...");
 
             for (Row row : sheet) {
 
@@ -125,7 +125,7 @@ public class ConstraintParser {
         } catch (IOException | NullPointerException | NumberFormatException | IllegalStateException e) {
             throw new IllegalArgumentException("Could not parse input Excel file, constrains tab.");
         }
-        ConsoleLogger.getConsoleLoggerInstance().logInfo("Restricciones creadas: " + i);
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Constraints parsed: " + i);
         return constraints;
     }
 

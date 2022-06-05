@@ -73,7 +73,7 @@ public class ExamParser {
 
             boolean foundHeaderRow = false;
 
-            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando exámenes...");
+            ConsoleLogger.getConsoleLoggerInstance().logInfo("Parsing exams...");
 
             for (Row row : sheet) {
                 if (! foundHeaderRow) {
@@ -104,7 +104,7 @@ public class ExamParser {
             throw new IllegalArgumentException("Could not parse input Excel file");
         }
 
-        ConsoleLogger.getConsoleLoggerInstance().logInfo("Examenes creados: " + exams.size());
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Exams parsed: " + exams.size());
         RoundsParser roundsParser = new RoundsParser();
         roundsParser.createRoundIfNecessary(rounds, exams);
 
@@ -297,8 +297,6 @@ public class ExamParser {
                 }
 
             }
-
-
 
         }
     }

@@ -173,7 +173,7 @@ public class GeneticParameters {
     public String getStatusMessage() {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
-        sb.append("PARÁMETROS DE COFIGURACIÓN DEL ALGORITMO:");
+        sb.append("CONFIGURATION PARAMETERS:");
         sb.append("\n");
         sb.append("Population Size: ");
         sb.append(getPopulationSize());

@@ -54,7 +54,7 @@ public class WeightConfigurer {
         // Properties p = new Properties();
         // p.load(getClass().getClassLoader().getResourceAsStream(weightFilepath));
 
-        ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseando pesos fitness...");
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Parsing fitness weights...");
         String[] neededProperties = {"DB", "TD", "SD", "DD",
                 "OE", "DI", "RIP", "NCP", "UE", "SCDD"};
         for (String key: neededProperties) {
@@ -73,7 +73,7 @@ public class WeightConfigurer {
             }
         }
 
-        ConsoleLogger.getConsoleLoggerInstance().logInfo("Parseados " + weights.size() + " pesos");
+        ConsoleLogger.getConsoleLoggerInstance().logInfo("Fitness weights parsed:" + weights.size());
     }
 
     /**
