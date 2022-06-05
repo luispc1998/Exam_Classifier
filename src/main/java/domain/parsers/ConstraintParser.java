@@ -8,6 +8,7 @@ import domain.configuration.Configurer;
 import logger.ConsoleLogger;
 import logger.dataGetter.StatisticalDataGetter;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
@@ -262,13 +263,18 @@ public class ConstraintParser {
                 parserTool = usedTools.get(entry.getKey());
 
                 // Write ID
-                Row row = sheet.createRow(baseExcelRow + ++rowCount);
+                int temp = baseExcelRow + ++rowCount;
+                Row row = sheet.createRow(temp);
                 row.createCell(baseExcelColumn).setCellValue(entry.getKey());
+                sheet.addMergedRegion(new CellRangeAddress(temp, temp,baseExcelColumn,
+                        baseExcelColumn + parserTool.getHeaders().length-1));
 
                 // Write descriptions
-                row = sheet.createRow(baseExcelRow + ++rowCount);
+                temp = baseExcelRow + ++rowCount;
+                row = sheet.createRow(temp);
                 row.createCell(baseExcelColumn).setCellValue(parserTool.getDescription());
-
+                sheet.addMergedRegion(new CellRangeAddress(temp, temp,baseExcelColumn,
+                        baseExcelColumn + parserTool.getHeaders().length-1));
 
                 // Write headers
                 int col = 0;
