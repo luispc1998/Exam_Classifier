@@ -155,7 +155,7 @@ public class GeneticCore {
 
 
         try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
-            while (genCounter < maxIterations) { //limit by iterations, limit by finnding a solution.
+            while (genCounter < maxIterations) { //limit by iterations, limit by finding a solution.
 
                 population = computeNewGeneration(fitnessFunction, mutationProbability, crossingProbability);
                 genCounter++;

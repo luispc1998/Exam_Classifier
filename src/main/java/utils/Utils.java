@@ -100,7 +100,7 @@ public class Utils {
      */
     public static void getBestSchedules(List<Individual> finalPopulation, HashSet<Individual> finalSet, int maxToTake) {
         for (Individual idv: finalPopulation) {
-            if (maxToTake == 0) {
+            if (maxToTake <= 1) {
                 break;
             }
             if (! hashSetContains(finalSet, idv)) {

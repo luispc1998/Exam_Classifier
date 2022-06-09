@@ -67,7 +67,7 @@ public class App {
         OutputHandler outputHandler = null;
         String outputDirectory = Utils.createOutputDirectory(conf.getFilePaths("outputBaseDirectory"));
 
-        if (args[2] != null) {
+        if (args.length == 3) {
             statisticalDataGetter = new StatisticalDataGetter(args[2], outputDirectory);
             constraintParser = new ConstraintParser(conf, statisticalDataGetter);
         }
