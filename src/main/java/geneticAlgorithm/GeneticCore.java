@@ -8,9 +8,13 @@ import geneticAlgorithm.operators.replacement.ReplacementOperator;
 import geneticAlgorithm.operators.selection.SelectionOperator;
 import logger.dataGetter.fitnessLogger.GeneticLogger;
 import me.tongfei.progressbar.ProgressBar;
+import me.tongfei.progressbar.ProgressBarStyle;
 import utils.Utils;
 import utils.random.RandomGenerator;
 
+import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -154,7 +158,9 @@ public class GeneticCore {
         logger.log(genCounter, bestIndividual, averageFitness, fitnessFunction);
 
 
-        try (ProgressBar pb = new ProgressBar("GA", maxIterations)) { // name, initial max
+        try (ProgressBar pb =
+                     new ProgressBar("GA", maxIterations, 1500, System.out, ProgressBarStyle.UNICODE_BLOCK,
+                             "", 1L, false, (DecimalFormat)null, ChronoUnit.SECONDS, 0L, Duration.ZERO)) { // name, initial max
             while (genCounter < maxIterations) { //limit by iterations, limit by finding a solution.
 
                 population = computeNewGeneration(fitnessFunction, mutationProbability, crossingProbability);

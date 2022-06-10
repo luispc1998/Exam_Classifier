@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This handles all the data. That is the list of exams, the configurations, etc.
+ * This handles all the data of the problem instance. That is the list of exams, the configurations, etc.
  *
  * <p>
  * This is responsible to provide the logic to schedule the exam, as well to check the collisions. It holds the list
