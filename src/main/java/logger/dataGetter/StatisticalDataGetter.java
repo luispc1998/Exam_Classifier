@@ -95,6 +95,7 @@ public class StatisticalDataGetter {
             sb.append(",");
             sb.append(statisticHeaders[i]);
         }
+        sb.append("\n");
 
         sb.append(unplacedExams).append(",").append(unfulfilledConstraintCounter).append(",")
                 .append(String.format(Locale.UK, "%.2f", unfulfilledConstraintCounter / (double) weakConstraints))
